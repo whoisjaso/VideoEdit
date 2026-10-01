@@ -6,6 +6,7 @@ sections.json (paths relative to the json file):
   {"sources": {"p1": {"video": "p1.mov", "audio": "p1_voice.wav", "words": "p1c/words.json"}},
    "gap_max": 1.4, "gap_keep": 0.75,          # only dead air > gap_max is shortened, to gap_keep (his pauses stay)
    "alias": {"psycho": "cycle"},              # recognizer mis-hear -> confirmed word (aligns captions to timing)
+   "snap": 0.08,                              # cut points snap to the quietest spot within +/-80ms (0 = off)
    "keep": [["p1", 0.62, 10.45, "Exact confirmed words ...", "hook"], ...]}   # in HIS order; tag = section name
 Caption markup inside the text: ^gold  +green  !red   {words} = caption hidden (a graphic carries those words).
 Video comes from the phone clip, audio from the enhanced voice track (scripts/voice_enhance.py)."""
@@ -33,6 +34,25 @@ def spans(p, a, b):
     out.append((t, b)); return out
 
 pieces = [(p, a, b, tag, k) for k, (p, a0, b0, txt, tag) in enumerate(KEEP) for a, b in spans(p, a0, b0)]
+
+# snap every cut point to the quietest 10ms within +/-SNAP s, so a splice never clips a word (ep #4 word-level splices)
+SNAP = cfg.get("snap", 0.08)
+if SNAP:
+    import numpy as np
+    def load(path):
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "8000", "-f", "s16le", "-"], capture_output=True, check=True).stdout
+        return np.frombuffer(raw, dtype=np.int16).astype(np.float32)
+    AUD = {k: load(v[1]) for k, v in SRC.items()}
+    def quiet(p, t):
+        x, sr, w = AUD[p], 8000, 80
+        best, bt = None, t
+        for d in np.arange(-SNAP, SNAP + 1e-9, 0.005):
+            i = int((t + d) * sr)
+            if i - w < 0 or i + w > len(x): continue
+            e = float(np.mean(x[i - w:i + w] ** 2))
+            if best is None or e < best - 1e-6 or (abs(e - best) <= 1e-6 and abs(d) < abs(bt - t)): best, bt = e, t + d
+        return max(0.0, bt)
+    pieces = [(p, quiet(p, a), quiet(p, b), tag, k) for p, a, b, tag, k in pieces]
 edl, f = [], 0
 for i, (p, a, b, tag, k) in enumerate(pieces):
     out = f"{OUT}/pieces/q{i:03d}.mp4"; d = b - a; N = round(d * FPS); T = N / FPS; vsrc, asrc = SRC[p]

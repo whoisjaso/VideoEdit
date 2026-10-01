@@ -1,0 +1,233 @@
+{
+ "sources": {
+  "p1": {
+   "video": "../../../../../raw/ep04/part1.mov",
+   "audio": "p1_voice.wav",
+   "words": "p1c/words.json"
+  },
+  "p2": {
+   "video": "../../../../../raw/ep04/part2.mov",
+   "audio": "p2_voice.wav",
+   "words": "p2c/words.json"
+  },
+  "p3": {
+   "video": "../../../../../raw/ep04/part3.mov",
+   "audio": "p3_voice.wav",
+   "words": "p3c/words.json"
+  }
+ },
+ "gap_max": 1.4,
+ "gap_keep": 0.75,
+ "snap": 0.08,
+ "alias": {
+  "conscientious": "conscious",
+  "nigger": "nigga",
+  "niggers": "niggas",
+  "series": "serious",
+  "love": "laugh",
+  "sight": "like",
+  "in": "as",
+  "play": "like",
+  "give": "giving",
+  "it": "a",
+  "bro": "fuck",
+  "sick": "six",
+  "far": "five",
+  "saw": "six",
+  "manager": "a",
+  "elephant": "female",
+  "dick": "dick",
+  "no": "your",
+  "dog": "be",
+  "makes": "niggas",
+  "yadda": "y'all",
+  "lotta": "lot",
+  "risk": "your",
+  "group": "script",
+  "league": "nigga",
+  "screw": "script",
+  "start": "stop",
+  "khamenei": "khamani",
+  "some": "telling",
+  "can": "can't",
+  "us": "it",
+  "the": "that",
+  "impose": "post",
+  "folk": "fuck",
+  "taxi": "talks",
+  "rope": "broke",
+  "make": "nigga",
+  "go": "give"
+ },
+ "keep": [
+  [
+   "p2",
+   62.45,
+   67.35,
+   "A lot of people prioritize being perceived as ^nice rather than actually being nice.",
+   "cold"
+  ],
+  [
+   "p1",
+   0.5,
+   7.5,
+   "It's really a shame, because a lot of y'all niggas, a lot of y'all females, I see you guys literally have ^potential,",
+   "potential"
+  ],
+  [
+   "p1",
+   8.15,
+   14.55,
+   "not only to become successful, but I literally see you guys as, like, you can be +influential.",
+   "potential"
+  ],
+  [
+   "p1",
+   14.8,
+   24.6,
+   "But you guys are too scared of the !opinions of others. Nobody gives a fuck. You have to ^rewire your mindset.",
+   "opinions"
+  ],
+  [
+   "p1",
+   25.4,
+   30.9,
+   "Every single person that talks shit is !broke.",
+   "broke"
+  ],
+  [
+   "p1",
+   33.15,
+   36.3,
+   "Like, they're literally broke. Why are you giving a fuck?",
+   "broke"
+  ],
+  [
+   "p1",
+   36.8,
+   44.9,
+   "Think about it. You're only conscious about the fact that they're gonna talk shit about you, because in reality you believe you're !broke.",
+   "broke"
+  ],
+  [
+   "p1",
+   45.3,
+   54.4,
+   "Think about it, I'm six-five, right? If a nigga came up to me and said, you short ass nigga, I'ma laugh. I'm not gonna take them serious, because I'm fucking six-five.",
+   "sixfive"
+  ],
+  [
+   "p1",
+   55.85,
+   56.05,
+   "If",
+   "female"
+  ],
+  [
+   "p1",
+   61.4,
+   62.62,
+   "a female",
+   "female"
+  ],
+  [
+   "p1",
+   56.3,
+   59.65,
+   "{came up to me and said, your dick small,}",
+   "female"
+  ],
+  [
+   "p1",
+   63.65,
+   64.95,
+   "I'ma laugh,",
+   "female"
+  ],
+  [
+   "p1",
+   65.85,
+   70.1,
+   "because I know who I am. I have a strong ^belief about myself.",
+   "female"
+  ],
+  [
+   "p1",
+   70.7,
+   76.95,
+   "So if you're conscious over the fact that niggas talking, saying, oh, he just, he be yapping,",
+   "yapping"
+  ],
+  [
+   "p1",
+   80.55,
+   88.85,
+   "I got +money. I don't give a fuck if niggas talk shit about me, because they're !broke.",
+   "yapping"
+  ],
+  [
+   "p2",
+   1.95,
+   17.7,
+   "A lot of y'all are +influential, a lot of y'all know how to speak, a lot of y'all are funny as fuck. But the only thing that's holding you back is yourself and your ^belief about yourself. So change the way you believe yourself to be. And how do you do it?",
+   "believe"
+  ],
+  [
+   "p2",
+   18.25,
+   26.1,
+   "You repeat actions every single day that disrupt your ^script. If you have a script of waking up, going to work,",
+   "script"
+  ],
+  [
+   "p2",
+   28.95,
+   32.3,
+   "Nigga, you have to go to a different state, a different city. Do it, bro.",
+   "script"
+  ],
+  [
+   "p2",
+   34.0,
+   44.0,
+   "You have to change your script. You have to change the way you view yourself, bro. And you have to stop letting other people !dictate the way you view yourself, bro.",
+   "script"
+  ],
+  [
+   "p2",
+   49.6,
+   56.45,
+   "A lot of y'all could be extremely +successful if you stop giving a fuck about your appearance to others.",
+   "appearance"
+  ],
+  [
+   "p2",
+   56.5,
+   59.5,
+   "And this is another thing my boy Khamani said this in his video.",
+   "nice"
+  ],
+  [
+   "p2",
+   62.45,
+   89.6,
+   "A lot of people prioritize being !perceived as nice rather than actually being nice. And oftentimes it's the reason why a lot of people can't say no to new people they've just met. For example, you don't mind telling your sister, your mom, your dad, your brother, no, I don't wanna do that. But if somebody new came into your life and said, hey, can you do this for me? You would say +yes. Not because you're nice, but because",
+   "nice"
+  ],
+  [
+   "p3",
+   0.0,
+   23.6,
+   "they don't know that you're a nice person. You want them to perceive you as a nice person. And because you want them to perceive you as a nice person, you do whatever the fuck it is they want you to do, even if that compromises your !beliefs. And that is a big problem. Your ^ego is a fucking big !problem. Let it go. You're not that important for anybody to give a fuck about, nigga.",
+   "ego"
+  ],
+  [
+   "p3",
+   23.7,
+   30.4,
+   "Just fucking +post. Fuck everybody that talks shit. They're !broke. They're broke, nigga.",
+   "post"
+  ]
+ ],
+ "_note": "Episode #4. Run from a work dir holding p{1,2,3}_voice.wav (scripts/voice_enhance.py on raw/ep04/partN.mov) and p{1,2,3}c/words.json (transcribe.py on the RAW part1 for p1 -- the cleaned part1 lost its first 5s -- and on the voice wav for p2/p3). Video paths are relative to this file."
+}

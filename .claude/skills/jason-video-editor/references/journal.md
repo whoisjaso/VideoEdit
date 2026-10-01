@@ -167,3 +167,48 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - Every graphic rendered: Notes hook, grade ticks, $1,000,000 counter, sell tiles, PROBLEM/CHANGE/EXECUTE hero words, Chess streak, the black-and-white freeze on "STILL", the PURPOSE CTA and the follow card with Jason's avatar.
 - Text-behind-you works: the cutout layer clips the bottom of the hero word.
 - Not yet proven on real footage: the person cutout's edges, and caption timing on a real transcript. Episode #4 is the first real check.
+
+## Episode #4: "Perceived as nice" (car, white durag + polo) · 2026-10-01 · v1 · score: pending Jason
+**Raw → final:** 3 parts (3:30 raw) → 3:01 cut + 4s outro. Part order was confirmed by the words: part 2 ends "not because you're nice but because…" and part 3 continues "…they don't know that you're a nice person."
+
+**The one idea:** you care what broke people think because your ego wants to be *perceived* as nice. Let it go and just post.
+
+**What I did (the 8.3 recipe, step by step):**
+1. **Raw saved first** to `raw/ep04/`. The push is still blocked: the environment needs `lfs.github.com` allowed.
+2. **Voice cleaned** (DeepFilterNet3 chain), then re-transcribed. The cleaned part 1 lost its first 5 seconds of words, so part 1's timings come from the raw transcript. Lesson: always check that the clean transcript starts where the raw one does.
+3. **Asked before cutting.** I sent Jason 9 unclear spots. He answered 6:
+   - "see you guys as, like, you can be influential"
+   - "why are you giving a fuck"
+   - "if a **female**…" (he corrected himself on camera; keep only the female version)
+   - "**stop** giving a fuck"
+   - his boy "**Khamani**"
+   - the closer: "Just fucking post. Fuck everybody that talks shit. They're broke. They're broke, nigga."
+   The 3 he didn't answer were short unclear bits, and I cut them instead of guessing.
+4. **Hook (Jason approved: "I like the hook"):** cold open on "A lot of people prioritize being perceived as nice rather than actually being nice." Then the video starts at his real first line. Now a rule in SKILL.md.
+5. **Word-level splice:** the female line joins four moments ("If" + "a female" + "came up to me… your dick small" + "I'ma laugh"). To keep a word from being clipped, `cut_sections.py` now **snaps every cut to the quietest spot within ±80ms** (new `snap` setting).
+   - The middle phrase couldn't be transcribed exactly, so its caption is hidden and an iMessage from "Her: your dick small 😂" carries it. **Never guess a caption; let a graphic say it.**
+6. **One designed beat per sentence** (13 graphics). 8 new components were added to the library (`template/src/lib/Mg.tsx`) for future episodes:
+   - **NiceSplit** (🎭 perceived vs 💛 actually): used in the cold open and again as a **callback** when he says the line in place. That callback is new; §18 asked for callbacks, and episode #3 had none.
+   - **Meter** (potential bar → "✓ Influential")
+   - **CommentRain** (opinions pour in → freeze → "0 people actually care"). It dissolves before reaching his face.
+   - **SettingToggle** ("Care what others think" flips OFF on "rewire")
+   - **BrokeHater** (hater comment → their Chase balance drops to $4.12)
+   - **HeightTag** (6'5" with a ruler)
+   - **Tiles** (Influential / Know how to speak / Funny as fuck)
+   - **NewCity** (route to a new-city pin)
+   - **PostUpload** ("Posting…" → "Shared ✓")
+   - **LetGo** (the words float up and dissolve)
+   Existing components reused: Notes, Banner, BannerStack, SameWeek.
+7. **Hero words behind his head:** BROKE (red), BELIEF (yellow), SCRIPT (yellow), EGO (red).
+   - **Placement rule for this framing** (head top ≈ y 735–865): word top ≈ 615–690.
+   - The first try put them fully *above* the head (top 545). The stills check caught it, and they were moved down until the durag clips ~25%.
+   - BELIEF needed 50px less overlap than the others, because the head was higher in that shot. Check each hero still, not just one.
+8. **Captions** sit on the chest (y 1440) all video. At the default 1070 they'd cover his mouth on this framing.
+9. **Motion in the first 15 frames:** a zoom punch + hit on frame 3. The split only lands at 2s, so without it the open would be still.
+
+**Mistakes I made and caught (so the next session doesn't repeat them):**
+- A wait loop used `pgrep -f matte.py` while its own command contained "matte.py", so it waited forever. The SKILL.md warning is about `pkill`; it applies to `pgrep` too. Wait on the output file instead.
+- `setup.sh` was missing vosk's runtime packages (tqdm etc.). Fixed in setup.sh.
+- `download.pytorch.org` is blocked here; installing torch from PyPI works (slower). Then `pip install --ignore-installed packaging deepfilternet`.
+
+**Guesses to confirm** (captions I couldn't verify 100%): "you short ass nigga" (the 6'5" joke), "oh, he just, he be yapping", "telling your sister…", "Hey, can you do this for me?"

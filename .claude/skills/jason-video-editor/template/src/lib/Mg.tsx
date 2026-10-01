@@ -561,3 +561,238 @@ export const CtaPurpose: React.FC<{ from: number; dm: number; to: number }> = ({
     </>
   );
 };
+
+/* ───────────── Episode #4 ("Perceived as nice") additions ───────────── */
+
+/** PERCEIVED nice (mask, red) vs ACTUALLY nice (heart, green): two cards; the "actually" card lands on its word */
+export const NiceSplit: React.FC<{ from: number; perceived: number; actually: number; to: number; top?: number }> = ({ from, perceived, actually, to, top = 120 }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  if (f < from - 1 || f >= to) return null;
+  const out = interpolate(f, [to - 7, to], [1, 0], clamp);
+  const card = (at: number, emoji: string, label: string, color: string, dim: boolean) => {
+    const p = spring({ frame: f - at, fps, config: POP });
+    if (f < at - 1) return <div style={{ width: 430 }} />;
+    return (
+      <div style={{ width: 430, height: 430, ...glass, borderRadius: 48, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: `3px solid ${color}88`,
+        boxShadow: `0 24px 60px rgba(0,0,0,.5), 0 0 ${dim ? 0 : 50}px ${color}55`, transform: `scale(${p}) rotate(${(1 - p) * (color === G ? 10 : -10)}deg)`, opacity: dim ? 0.5 : 1 }}>
+        <div style={{ fontSize: 170 }}>{emoji}</div>
+        <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(255,255,255,.65)", marginTop: 6 }}>{label}</div>
+        <div style={{ fontFamily: "Nunito Sans", fontWeight: 900, fontSize: 92, color, letterSpacing: "-0.02em", lineHeight: 1 }}>NICE</div>
+      </div>
+    );
+  };
+  return (
+    <div style={{ position: "absolute", top, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 40, opacity: out }}>
+      {card(perceived, "🎭", "PERCEIVED", R, f >= actually + 8)}
+      {card(actually, "💛", "ACTUALLY", G, false)}
+    </div>
+  );
+};
+
+/** potential meter: a bar fills to 100%, then a sub-label ("Influential") pops */
+export const Meter: React.FC<{ from: number; fill: number; sub: number; to: number; label: string; subLabel: string; top?: number }> = ({ from, fill, sub, to, label, subLabel, top = 130 }) => {
+  const { f, fps, p, out, on } = useWin(from, to);
+  if (!on) return null;
+  const q = interpolate(f, [fill, fill + 26], [0.08, 1], ease);
+  const ps = spring({ frame: f - sub, fps, config: POP });
+  return (
+    <div style={{ position: "absolute", top, left: 80, right: 80, ...glass, padding: "30px 36px", ...blurIn(p, out, -40) }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 34, fontWeight: 700 }}><span>{label}</span><span style={{ color: G, fontVariantNumeric: "tabular-nums" }}>{Math.round(q * 100)}%</span></div>
+      <div style={{ height: 26, borderRadius: 13, background: "#ffffff22", marginTop: 18, overflow: "hidden" }}>
+        <div style={{ width: `${q * 100}%`, height: "100%", borderRadius: 13, background: `linear-gradient(90deg, ${G}, #9BFFC6)`, boxShadow: `0 0 24px ${G}` }} />
+      </div>
+      {f >= sub - 1 && <div style={{ marginTop: 22, display: "inline-flex", gap: 14, alignItems: "center", background: `${G}22`, border: `2px solid ${G}88`, borderRadius: 40, padding: "10px 26px",
+        fontSize: 40, fontWeight: 800, color: G, transform: `scale(${ps})`, transformOrigin: "0 50%" }}>✓ {subLabel}</div>}
+    </div>
+  );
+};
+
+/** comments pour in (other people's opinions) → at `freeze` they grey out and a "0 actually care" pill lands */
+export const CommentRain: React.FC<{ from: number; freeze: number; to: number; comments: string[] }> = ({ from, freeze, to, comments }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  if (f < from || f >= to) return null;
+  const tt = Math.min(f, freeze) - from;
+  const grey = interpolate(f, [freeze, freeze + 10], [0, 1], ease);
+  const pz = spring({ frame: f - freeze, fps, config: POP });
+  const out = interpolate(f, [to - 7, to], [1, 0], clamp);
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none", opacity: out }}>
+      {Array.from({ length: 18 }).map((_, i) => {
+        const st = i * 2.6, y = -160 + Math.max(0, tt - st) * (26 + random(`cv${i}`) * 14);
+        if (tt < st || y > 640) return null;
+        const fadeOut = interpolate(y, [380, 640], [1, 0], clamp); // dissolve before the face (never cover the face)
+        return (
+          <div key={i} style={{ position: "absolute", top: y, left: 30 + random(`cl${i}`) * 360, width: 660, ...glass, borderRadius: 30, padding: "16px 22px", display: "flex", gap: 16, alignItems: "center", opacity: fadeOut,
+            transform: `rotate(${(random(`cr${i}`) - 0.5) * 10}deg)`, filter: `grayscale(${grey}) brightness(${1 - 0.4 * grey})` }}>
+            <div style={{ width: 54, height: 54, borderRadius: 27, background: `hsl(${random(`ch${i}`) * 360},40%,45%)`, flexShrink: 0 }} />
+            <div><div style={{ fontSize: 22, color: "rgba(255,255,255,.55)", fontWeight: 600 }}>user{Math.floor(random(`cn${i}`) * 9000 + 1000)}</div>
+              <div style={{ fontSize: 32, fontWeight: 700 }}>{comments[i % comments.length]}</div></div>
+          </div>
+        );
+      })}
+      {f >= freeze && (
+        <div style={{ position: "absolute", top: 300, left: 0, right: 0, textAlign: "center", transform: `scale(${pz})` }}>
+          <span style={{ ...glass, display: "inline-block", padding: "22px 44px", borderRadius: 60, fontSize: 52, fontWeight: 800, color: "#fff", border: `2px solid ${Y}` }}>
+            <span style={{ color: Y }}>0</span> people actually care
+          </span>
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+/** iOS Settings row: a toggle flips OFF on its word */
+export const SettingToggle: React.FC<{ at: number; flip: number; until: number; label: string; top?: number }> = ({ at, flip, until, label, top = 140 }) => {
+  const { f, fps, p, out, on } = useWin(at, until);
+  if (!on) return null;
+  const q = spring({ frame: f - flip, fps, config: IOS });
+  const offAmt = f >= flip ? q : 0;
+  return (
+    <div style={{ position: "absolute", top, left: 70, right: 70, ...glass, padding: "18px 30px", ...blurIn(p, out, -40) }}>
+      <div style={{ fontSize: 26, color: "rgba(255,255,255,.5)", fontWeight: 700, letterSpacing: "0.06em", margin: "6px 0 12px" }}>SETTINGS · MINDSET</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0" }}>
+        <span style={{ fontSize: 42, fontWeight: 600 }}>{label}</span>
+        <div style={{ width: 120, height: 72, borderRadius: 36, background: interpolate(offAmt, [0, 1], [0, 1]) > 0.5 ? "#3a3a3c" : "#34C759", position: "relative", flexShrink: 0 }}>
+          <div style={{ position: "absolute", top: 5, left: interpolate(offAmt, [0, 1], [53, 5]), width: 62, height: 62, borderRadius: 31, background: "#fff", boxShadow: "0 3px 8px rgba(0,0,0,.35)" }} />
+        </div>
+      </div>
+      <div style={{ fontSize: 30, color: f >= flip ? G : "rgba(255,255,255,.45)", fontWeight: 600, paddingBottom: 8 }}>{f >= flip ? "Rewired ✓" : "On"}</div>
+    </div>
+  );
+};
+
+/** a hater's comment, then the bank balance under their name drops to almost nothing (red) */
+export const BrokeHater: React.FC<{ comment: number; broke: number; to: number; text: string; balance?: number }> = ({ comment, broke, to, text, balance = 4.12 }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  if (f < comment - 1 || f >= to) return null;
+  const out = interpolate(f, [to - 7, to], [1, 0], clamp);
+  const pc = spring({ frame: f - comment, fps, config: IOS });
+  const pb = spring({ frame: f - broke, fps, config: IOS });
+  const v = interpolate(f, [broke, broke + 22], [2480, balance], ease);
+  return (
+    <div style={{ position: "absolute", top: 100, left: 70, right: 70, opacity: out }}>
+      <div style={{ ...glass, borderRadius: 34, padding: "20px 26px", display: "flex", gap: 18, alignItems: "center", ...blurIn(pc, 1, -40) }}>
+        <Logo name="instagram" color="#fff" bg="linear-gradient(45deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5)" size={64} radius={18} />
+        <div><div style={{ fontSize: 24, color: "rgba(255,255,255,.55)", fontWeight: 600 }}>hater_2026 · commented</div><div style={{ fontSize: 38, fontWeight: 700 }}>{text}</div></div>
+      </div>
+      {f >= broke - 1 && (
+        <div style={{ marginTop: 22, height: 250, borderRadius: 36, background: "linear-gradient(135deg,#117ACA,#0b3f7a)", boxShadow: "0 24px 60px rgba(0,0,0,.5)", padding: 30, fontFamily: fontUI, color: "#fff", ...blurIn(pb) }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Logo name="chase" color="#117ACA" size={60} radius={14} /><span style={{ fontSize: 28, opacity: 0.8 }}>hater_2026 · Checking</span>
+          </div>
+          <div style={{ fontSize: 28, opacity: 0.75, marginTop: 20 }}>Available balance</div>
+          <div style={{ fontSize: 90, fontWeight: 800, fontVariantNumeric: "tabular-nums", color: f >= broke + 22 ? "#FF6B6B" : "#fff" }}>${v.toFixed(2)}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/** height tag: a ruler draws up and the number lands (6'5") */
+export const HeightTag: React.FC<{ at: number; until: number; text: string }> = ({ at, until, text }) => {
+  const { f, fps, t, out, on } = useWin(at, until);
+  if (!on) return null;
+  const q = interpolate(t, [0, 18], [0, 1], ease);
+  const pn = spring({ frame: t - 10, fps, config: POP });
+  return (
+    <div style={{ position: "absolute", top: 120, right: 70, height: 640, display: "flex", gap: 22, alignItems: "flex-start", opacity: out }}>
+      <div style={{ ...glass, borderRadius: 34, padding: "22px 30px", marginTop: 20, transform: `scale(${pn})`, transformOrigin: "100% 0%" }}>
+        <div style={{ fontSize: 26, color: "rgba(255,255,255,.6)", fontWeight: 700, letterSpacing: "0.1em" }}>HEIGHT</div>
+        <div style={{ fontFamily: "Nunito Sans", fontWeight: 900, fontSize: 130, color: Y, lineHeight: 1, textShadow: `0 0 40px ${Y}66` }}>{text}</div>
+      </div>
+      <div style={{ width: 60, height: 620 * q, borderRadius: 10, background: "rgba(255,255,255,.12)", border: "2px solid rgba(255,255,255,.4)", position: "relative", overflow: "hidden", marginTop: 620 * (1 - q) }}>
+        {Array.from({ length: 26 }).map((_, i) => <div key={i} style={{ position: "absolute", left: 0, top: i * 24, width: i % 4 ? 22 : 40, height: 3, background: "#fff" }} />)}
+      </div>
+    </div>
+  );
+};
+
+/** generic glass tiles that pop in one by one under a small heading */
+export const Tiles: React.FC<{ from: number; to: number; title: string; tiles: { emoji: string; label: string; at: number }[]; top?: number }> = ({ from, to, title, tiles, top = 120 }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  if (f < from - 1 || f >= to) return null;
+  const out = interpolate(f, [to - 7, to], [1, 0], clamp);
+  return (
+    <div style={{ position: "absolute", top, left: 0, right: 0, opacity: out }}>
+      <div style={{ textAlign: "center", fontFamily: fontUI, fontWeight: 700, fontSize: 34, color: "rgba(255,255,255,.6)", letterSpacing: "0.2em", marginBottom: 24 }}>{title}</div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 26 }}>
+        {tiles.map((t) => {
+          const p = spring({ frame: f - t.at, fps, config: POP });
+          if (f < t.at - 1) return <div key={t.label} style={{ width: 290 }} />;
+          return (
+            <div key={t.label} style={{ width: 290, height: 300, borderRadius: 44, background: "#fff", boxShadow: "0 24px 50px rgba(0,0,0,.45)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              transform: `scale(${p}) rotate(${(1 - p) * -12}deg)`, fontFamily: fontUI, padding: 14, textAlign: "center" }}>
+              <div style={{ fontSize: 120 }}>{t.emoji}</div>
+              <div style={{ fontSize: 32, fontWeight: 800, color: "#111", marginTop: 6, lineHeight: 1.1 }}>{t.label}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/** Maps: a route draws from HOME to a NEW CITY pin */
+export const NewCity: React.FC<{ at: number; city: number; until: number }> = ({ at, city, until }) => {
+  const { f, fps, p, out, on } = useWin(at, until);
+  if (!on) return null;
+  const q = interpolate(f, [at + 4, city + 14], [0, 1], ease);
+  const pc = spring({ frame: f - city, fps, config: POP });
+  const path = "M150,330 C330,120 560,420 830,140";
+  return (
+    <div style={{ position: "absolute", top: 110, left: 60, right: 60, height: 480, borderRadius: 40, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,.5)", border: "1px solid #ffffff22", ...blurIn(p, out, -40),
+      background: "linear-gradient(160deg,#1f2a22,#18202a)" }}>
+      <svg width="960" height="480" style={{ position: "absolute", inset: 0 }}>
+        {Array.from({ length: 9 }).map((_, i) => <line key={`h${i}`} x1="0" y1={i * 60} x2="960" y2={i * 60 + 30} stroke="#ffffff10" strokeWidth="10" />)}
+        {Array.from({ length: 9 }).map((_, i) => <line key={`v${i}`} x1={i * 120} y1="0" x2={i * 120 - 40} y2="480" stroke="#ffffff0c" strokeWidth="8" />)}
+        <path d={path} stroke="#0A84FF" strokeWidth="14" fill="none" strokeLinecap="round" strokeDasharray="1100" strokeDashoffset={1100 * (1 - q)} />
+        <circle cx="150" cy="330" r="22" fill="#fff" /><circle cx="150" cy="330" r="12" fill="#0A84FF" />
+      </svg>
+      <div style={{ position: "absolute", left: 100, top: 370, fontFamily: fontUI, fontSize: 30, fontWeight: 700, color: "rgba(255,255,255,.75)" }}>Same old routine</div>
+      {f >= city - 1 && (
+        <div style={{ position: "absolute", left: 830 - 60, top: 140 - 130, width: 120, textAlign: "center", transform: `scale(${pc})`, transformOrigin: "50% 100%" }}>
+          <div style={{ fontSize: 100 }}>📍</div>
+        </div>
+      )}
+      {f >= city - 1 && <div style={{ position: "absolute", right: 40, top: 190, fontFamily: fontUI, fontSize: 40, fontWeight: 800, color: G, transform: `scale(${pc})` }}>New city</div>}
+    </div>
+  );
+};
+
+/** "Posting…" upload bar → "Shared ✓" */
+export const PostUpload: React.FC<{ at: number; until: number }> = ({ at, until }) => {
+  const { f, fps, p, out, on } = useWin(at, until);
+  if (!on) return null;
+  const q = interpolate(f, [at + 4, at + 30], [0, 1], ease);
+  const done = q >= 1;
+  const pd = spring({ frame: f - (at + 30), fps, config: POP });
+  return (
+    <div style={{ position: "absolute", top: 120, left: 80, right: 80, ...glass, padding: "28px 34px", ...blurIn(p, out, -40) }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        <Logo name="instagram" color="#fff" bg="linear-gradient(45deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5)" size={70} radius={20} />
+        <span style={{ fontSize: 44, fontWeight: 700 }}>{done ? "Shared" : "Posting…"}</span>
+        {done && <span style={{ marginLeft: "auto", width: 64, height: 64, borderRadius: 32, background: G, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40, fontWeight: 900, transform: `scale(${pd})` }}>✓</span>}
+      </div>
+      <div style={{ height: 20, borderRadius: 10, background: "#ffffff22", marginTop: 22, overflow: "hidden" }}>
+        <div style={{ width: `${q * 100}%`, height: "100%", borderRadius: 10, background: done ? G : "#fff" }} />
+      </div>
+    </div>
+  );
+};
+
+/** "LET IT GO": the words drift up and dissolve */
+export const LetGo: React.FC<{ at: number; until: number; text?: string; top?: number }> = ({ at, until, text = "LET IT GO", top = 260 }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  if (f < at - 1 || f >= until) return null;
+  const p = spring({ frame: f - at, fps, config: IOS });
+  const rise = interpolate(f, [Math.max(at + 26, until - 22), until], [0, 1], ease);
+  return (
+    <div style={{ position: "absolute", top: top - rise * 160, left: 0, right: 0, textAlign: "center", fontFamily: "Nunito Sans", fontWeight: 900, fontSize: 150, color: "#fff", letterSpacing: `${-0.02 + rise * 0.25}em`,
+      opacity: Math.min(1, p * 1.3) * (1 - rise), filter: `blur(${(1 - p) * 14 + rise * 16}px)`, textShadow: `0 0 50px rgba(255,255,255,.4)` }}>{text}</div>
+  );
+};
