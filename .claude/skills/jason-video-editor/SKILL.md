@@ -175,6 +175,9 @@ When Jason sends more reference videos: md5-check for duplicates first. Then con
 - **Real iOS sounds only (1:1):** use `assets/sfx/ios/`, never a synthesized chime.
 - **Hook:** open on his cleanest, boldest line, untouched.
 
+## Rules Jason approved (episode #4)
+- **Cold open on the boldest quotable line when his first line is soft (Jason: "I like the hook", 2026-10-01).** Pull his single most quotable sentence (episode #4: "A lot of people prioritize being perceived as nice rather than actually being nice.") as a 3–5s cold open, then start the video from his real first line in his order. The line plays again in place later; that repeat is the payoff of the open loop. When his first line is already the boldest line, open on it as-is (episode #3).
+
 ## Rules from episode #3 brief
 - **Motion graphics > AI images** for explaining ideas (animated UI, counters, diagrams, kinetic type).
 - **Respect his pauses:** only cut stutters, restarts and dead air over ~1.5s (leave ~0.7s). Never drop a key word. Never break the logical order: hook → argument → payoff → CTA.
