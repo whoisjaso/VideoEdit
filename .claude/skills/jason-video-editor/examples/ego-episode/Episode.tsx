@@ -93,7 +93,6 @@ const Sound: React.FC = () => {
       <Sfx f={A.six1 + 8} name={S.shine} v={0.5} />
       {/* her message → I know who I am */}
       <Sfx f={A.your - 2} name={S.received} v={0.6} />
-      <Sfx f={A.female - 2} name={S.received} v={0.6} />
       <Sfx f={A.know - 2} name={S.note} v={0.5} />
       <Sfx f={A.belief1} name={S.typing} v={0.35} />
       {/* yapping comment → money */}
@@ -154,8 +153,7 @@ export const Episode: React.FC = () => (
     {/* 4 — I'm six-five */}
     <HeightTag at={A.six1 - 2} until={fem0} text={"6’5”"} />
     {/* 5 — a female says it → I know who I am */}
-    <Banner at={A.your - 2} until={A.female - 2} {...MSG} title="Some guy" body="your dick small 😂" />
-    <Banner at={A.female - 2} until={A.imaLaugh + 14} {...MSG} title="Her" body="your dick small 😂" />
+    <Banner at={A.your - 2} until={A.imaLaugh + 14} {...MSG} title="Her 👩🏾" body="your dick small 😂" />
     <Notes from={A.because - 2} to={yap0} title="Me" lines={[{ text: "I know who I am", at: A.know }, { text: "Strong belief about myself", at: A.belief1 }]} />
     {/* 6 — "he just be yapping" → I got money */}
     <Banner at={A.niggas - 2} until={A.got - 2} {...IG} app="INSTAGRAM" title="hater_2026 commented" body="he just be yapping 🙄" />

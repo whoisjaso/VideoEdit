@@ -233,3 +233,9 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 1. iOS-coded motion graphics over B-roll, with iOS sounds and iOS animation (what he loved in the 8.3).
 2. The on-screen text must read logically start to finish. I now print and read the full caption transcript before every render.
 **Craft lesson:** when an instruction could mean "fix the caption" or "change the edit", it almost always means the caption. The order of his words is his argument; touching it is never a small change.
+
+### Episode #4 v3: Jason: "I said a guy on accident. I'd rather it be a female… cut that out and make it say a female. Let the female text me with a girl emoji"
+- Now **his** explicit request, so the splice is right this time: "If a" + "female" (62.10–62.64s exact) + "came up to me and said…" + "I'ma laugh, because I know who I am". "Nigga", "never" and the trailing "a female, nigga" are gone. Re-transcribed alone: the spliced audio has no stray words.
+- One text only: **"Her 👩🏾": "your dick small 😂"**. The "Some guy" text is removed.
+- Rule refined: never reorder his words *on my own*; splice only when he explicitly asks to replace a word.
+- **Lesson:** I should have asked one question at v2 ("keep both, or female only?") instead of guessing twice. When two readings change the edit, ask.
