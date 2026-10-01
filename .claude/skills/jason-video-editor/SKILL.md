@@ -56,7 +56,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - Cut only stutters, restarts, unclear asides, and dead air. His pauses are delivery; the script handles dead air.
 - The text is his **exact** words. Mark keywords `^gold` (default), `+green` (money/wins), `!red` (problems). Wrap words a graphic will show in `{…}` so captions don't repeat them.
 - Add every recognizer mis-hear to `alias` (heard → said) so caption timing still locks to his voice.
-- **Word splices** (stitching words from different moments, e.g. his on-camera correction "a ni— a female"): cut the exact word from a 40ms energy map, mark the piece `{"snap": 0}`, then re-transcribe the spliced stretch alone to hear what it says. Never splice from the recognizer's word times alone: they lump neighbouring words together.
+- **Word splices are banned** (see "Never reorder his words"). Cut points still get a 40ms energy check (`snap`), and every changed stretch gets re-transcribed alone to confirm it says what the captions say.
 - **Before rendering, send Jason a list of every word you're unsure of** (faith lines especially: a garbled word that could be "God" is asked, never guessed).
 
 **Step 7, the beat sheet (template/src/ep/Episode.tsx):**
@@ -180,6 +180,10 @@ When Jason sends more reference videos: md5-check for duplicates first. Then con
 
 ## Rules Jason approved (episode #4)
 - **Cold open on the boldest quotable line when his first line is soft (Jason: "I like the hook", 2026-10-01).** Pull his single most quotable sentence (episode #4: "A lot of people prioritize being perceived as nice rather than actually being nice.") as a 3–5s cold open, then start the video from his real first line in his order. The line plays again in place later; that repeat is the payoff of the open loop. When his first line is already the boldest line, open on it as-is (episode #3).
+
+- **LOCKED: iOS-coded motion graphics instead of B-roll (Jason, 2026-10-01: "I really appreciated… iOS coded, which I loved, with the iOS sound effects and the animations").** Every explainer beat is an iOS/app UI: Messages, Notes, Calendar, Wallet/Apple Pay, Settings toggles, Activity rings, app notifications, real brand logos. Use real iOS system sounds 1:1 and iOS-style motion (no-bounce springs, blur-in, frosted glass). No stock or AI B-roll unless Jason asks.
+- **Never reorder his words, not even to apply his own correction (Jason, ep #4 v2: "why would you change that order in a way that doesn't logically make sense").** A self-correction ("if a nigga… a female, nigga") stays exactly where he said it. When he says "get the female part", it means *caption it correctly*, not splice it somewhere else. Splicing words from different moments is banned. If a stretch is unclear, keep the audio in place and let a graphic carry the unclear words.
+- **The on-screen text must read logically, start to finish (Jason, ep #4).** Before rendering, print the full caption transcript in order (hidden words in [brackets]) and read it as a viewer would. Hidden words must never leave a sentence that doesn't make sense: show the words that carry the logic, and hide only what a graphic shows instead.
 
 ## Rules from episode #3 brief
 - **Motion graphics > AI images** for explaining ideas (animated UI, counters, diagrams, kinetic type).

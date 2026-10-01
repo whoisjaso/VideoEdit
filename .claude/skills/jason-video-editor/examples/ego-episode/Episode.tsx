@@ -28,7 +28,7 @@ const A = {
   opinions: at("opinions", "OPINIONS"), nobody: at("opinions", "NOBODY"), rewire: at("opinions", "REWIRE"),
   talks: at("broke", "TALKS"), broke1: at("broke", "BROKE", 1), think: at("broke", "THINK"), talk: at("broke", "TALK"), broke3: at("broke", "BROKE", 3),
   six1: at("sixfive", "SIX-FIVE", 1), laugh1: at("sixfive", "LAUGH"), six2: at("sixfive", "SIX-FIVE", 2),
-  female: at("female", "FEMALE"), came: at("female", "CAME"), imaLaugh: at("female", "I'MA"), because: at("female", "BECAUSE"), know: at("female", "KNOW"), belief1: at("female", "BELIEF"),
+  female: at("female", "FEMALE"), your: at("female", "YOUR"), imaLaugh: at("female", "I'MA"), because: at("female", "BECAUSE"), know: at("female", "KNOW"), belief1: at("female", "BELIEF"),
   niggas: at("yapping", "NIGGAS", 1), got: at("yapping", "GOT"), money: at("yapping", "MONEY"), fuckY: at("yapping", "FUCK"), brokeY: at("yapping", "BROKE"),
   influential2: at("believe", "INFLUENTIAL"), speak: at("believe", "SPEAK"), funny: at("believe", "FUNNY"), but: at("believe", "BUT"), belief2: at("believe", "BELIEF"), so: at("believe", "SO"),
   script1: at("script", "SCRIPT", 1), script2: at("script", "SCRIPT", 2), nigga: at("script", "NIGGA"), state: at("script", "STATE"), city: at("script", "CITY"), script3: at("script", "SCRIPT", 3), you3: at("script", "YOU", 5),
@@ -92,7 +92,8 @@ const Sound: React.FC = () => {
       <Sfx f={A.six1 - 2} name={S.whoosh} v={0.35} />
       <Sfx f={A.six1 + 8} name={S.shine} v={0.5} />
       {/* her message → I know who I am */}
-      <Sfx f={A.came - 2} name={S.received} v={0.6} />
+      <Sfx f={A.your - 2} name={S.received} v={0.6} />
+      <Sfx f={A.female - 2} name={S.received} v={0.6} />
       <Sfx f={A.know - 2} name={S.note} v={0.5} />
       <Sfx f={A.belief1} name={S.typing} v={0.35} />
       {/* yapping comment → money */}
@@ -153,7 +154,8 @@ export const Episode: React.FC = () => (
     {/* 4 — I'm six-five */}
     <HeightTag at={A.six1 - 2} until={fem0} text={"6’5”"} />
     {/* 5 — a female says it → I know who I am */}
-    <Banner at={A.came - 2} until={A.imaLaugh + 14} {...MSG} title="Her" body="your dick small 😂" />
+    <Banner at={A.your - 2} until={A.female - 2} {...MSG} title="Some guy" body="your dick small 😂" />
+    <Banner at={A.female - 2} until={A.imaLaugh + 14} {...MSG} title="Her" body="your dick small 😂" />
     <Notes from={A.because - 2} to={yap0} title="Me" lines={[{ text: "I know who I am", at: A.know }, { text: "Strong belief about myself", at: A.belief1 }]} />
     {/* 6 — "he just be yapping" → I got money */}
     <Banner at={A.niggas - 2} until={A.got - 2} {...IG} app="INSTAGRAM" title="hater_2026 commented" body="he just be yapping 🙄" />

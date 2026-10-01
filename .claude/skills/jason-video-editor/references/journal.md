@@ -225,3 +225,11 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - Both are now rules in SKILL.md (the recipe's audio-gate step + the word-splice rule).
 
 **Craft lesson:** sound problems are the fastest way to lose a viewer and the hardest for me to notice, because I can't hear. So every audio decision now gets a measurement: levels per half-second, words-over-silence, and re-transcribing every splice.
+
+### Episode #4 v2 → v3: Jason: "the 'Nigerian elephant' part should come after the dick small part… why would you change that order?"
+**What I did wrong:** he said "make sure you get the female part". I read that as *splice "a female" to the front of the line*. He meant *make sure the caption says "female"* (the transcriber heard "elephant"). So in v1 and v2 I moved his words out of the order he said them. That broke his logic: in the original, he says the "dick small" line first and *then* corrects himself with "a female, nigga".
+**Fix (v3):** the whole line plays exactly as recorded (55.85–70.1s, no splice). Captions: "If a nigga came up to me and said… a female, nigga, I'ma laugh, because I know who I am." Visual: a text from "Some guy: your dick small 😂", then when he says "a female", a second text from "Her" says the same. That shows his point (man or woman, he laughs) instead of hiding it.
+**Also asked by Jason this round, now locked rules in SKILL.md:**
+1. iOS-coded motion graphics over B-roll, with iOS sounds and iOS animation (what he loved in the 8.3).
+2. The on-screen text must read logically start to finish. I now print and read the full caption transcript before every render.
+**Craft lesson:** when an instruction could mean "fix the caption" or "change the edit", it almost always means the caption. The order of his words is his argument; touching it is never a small change.
