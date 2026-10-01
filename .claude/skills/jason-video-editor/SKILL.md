@@ -156,7 +156,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - [ ] No duplicated text: captions hidden under combos, and caption pages repeating a pop-up hidden
 - [ ] Nothing from the "Do not add" list; no invented text
 - [ ] Stills checked at every beat; the final encode checked (duration, 1080x1920, loudness peak ≤ 0 dB)
-- [ ] Deliver: MP4 (<30MB for chat), music recommendation from the playbook, list of any uncertain caption words
+- [ ] Deliver: MP4 in chat (hard limit **30 MB**: two-pass x264 at 1080×1920, video bitrate = 28MB×8 ÷ seconds − 96k audio; ep #4 3:05 → `-b:v 1150k`, text stays crisp), full-quality copy (CRF 23) to `renders/`, music recommendation from the playbook, list of any uncertain caption words
 
 ## Extending the playbook
 When Jason sends more reference videos: md5-check for duplicates first. Then contact sheet at 2fps, transcript, spectrogram, and zoomed crops to read on-screen labels verbatim. Frame-step any animation at 15fps to measure it. Cross-reference with existing rules (count ×N appearances) and add to `references/playbook.md` with the reel number. Rules seen in 3+ reels are defaults.
