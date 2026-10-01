@@ -8,6 +8,7 @@ sections.json (paths relative to the json file):
    "alias": {"psycho": "cycle"},              # recognizer mis-hear -> confirmed word (aligns captions to timing)
    "snap": 0.08,                              # cut points snap to the quietest spot within +/-80ms (0 = off)
    "keep": [["p1", 0.62, 10.45, "Exact confirmed words ...", "hook"], ...]}   # in HIS order; tag = section name
+                                              # optional 6th field {"snap": 0}: keep this piece's cut points exact (word splices)
 Caption markup inside the text: ^gold  +green  !red   {words} = caption hidden (a graphic carries those words).
 Video comes from the phone clip, audio from the enhanced voice track (scripts/voice_enhance.py)."""
 import json, os, re, subprocess, sys, difflib
@@ -33,6 +34,8 @@ def spans(p, a, b):
             h = GAP_KEEP / 2; out.append((t, x["end"] + h)); t = y["start"] - h
     out.append((t, b)); return out
 
+OPTS = {k: (row[5] if len(row) > 5 else {}) for k, row in enumerate(KEEP)}   # optional 6th field, e.g. {"snap": 0} for an exact word splice
+KEEP = [row[:5] for row in KEEP]
 pieces = [(p, a, b, tag, k) for k, (p, a0, b0, txt, tag) in enumerate(KEEP) for a, b in spans(p, a0, b0)]
 
 # snap every cut point to the quietest 10ms within +/-SNAP s, so a splice never clips a word (ep #4 word-level splices)
@@ -52,7 +55,7 @@ if SNAP:
             e = float(np.mean(x[i - w:i + w] ** 2))
             if best is None or e < best - 1e-6 or (abs(e - best) <= 1e-6 and abs(d) < abs(bt - t)): best, bt = e, t + d
         return max(0.0, bt)
-    pieces = [(p, quiet(p, a), quiet(p, b), tag, k) for p, a, b, tag, k in pieces]
+    pieces = [(p, a, b, tag, k) if OPTS[k].get("snap", 1) == 0 else (p, quiet(p, a), quiet(p, b), tag, k) for p, a, b, tag, k in pieces]
 edl, f = [], 0
 for i, (p, a, b, tag, k) in enumerate(pieces):
     out = f"{OUT}/pieces/q{i:03d}.mp4"; d = b - a; N = round(d * FPS); T = N / FPS; vsrc, asrc = SRC[p]

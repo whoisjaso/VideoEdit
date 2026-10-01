@@ -39,6 +39,7 @@ PYTHONPATH=/tmp/stub python3 scripts/transcribe.py p1_voice.wav p1c/
 # 3. WRITE sections.json BY HAND (see examples/purpose-episode/sections.json): his sections, in his order, exact words
 # 4. CUT: keeps his pauses, shortens only dead air > 1.4s (to 0.75s)
 python3 scripts/cut_sections.py sections.json work/      # -> work/cut.mp4, edl.json, captions.json
+python3 scripts/check_voice.py work/                     # AUDIO GATE: must pass (0 words over silence) before anything else
 # 5. PERSON CUTOUT for hero words behind his head
 python3 scripts/matte.py work/cut.mp4 work/fg.webm work/edl.json
 # 6. PROJECT: the 8.3 build, every asset in place
@@ -55,6 +56,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - Cut only stutters, restarts, unclear asides, and dead air. His pauses are delivery; the script handles dead air.
 - The text is his **exact** words. Mark keywords `^gold` (default), `+green` (money/wins), `!red` (problems). Wrap words a graphic will show in `{…}` so captions don't repeat them.
 - Add every recognizer mis-hear to `alias` (heard → said) so caption timing still locks to his voice.
+- **Word splices** (stitching words from different moments, e.g. his on-camera correction "a ni— a female"): cut the exact word from a 40ms energy map, mark the piece `{"snap": 0}`, then re-transcribe the spliced stretch alone to hear what it says. Never splice from the recognizer's word times alone: they lump neighbouring words together.
 - **Before rendering, send Jason a list of every word you're unsure of** (faith lines especially: a garbled word that could be "God" is asked, never guessed).
 
 **Step 7, the beat sheet (template/src/ep/Episode.tsx):**
@@ -76,6 +78,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 | Captions always move | #2 (7/10) | Static captions felt dead |
 | Real iOS sounds, real logos | #2 (7/10) | Synth chimes sounded fake |
 | QA against the references before sending | #3 (8.3) | Weak beats shipped that would have been caught |
+| Audio gate (`check_voice.py`) + capped denoise | #4 v1 | Denoise erased his quiet opening; a splice said "Nigerian elephant". Jason heard it before I did |
 
 ## Editorial pass (the thinking, done before any code)
 1. **Read the whole transcript and name the video's one idea.** Example: "Label people → they commit → they buy."

@@ -212,3 +212,16 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - `download.pytorch.org` is blocked here; installing torch from PyPI works (slower). Then `pip install --ignore-installed packaging deepfilternet`.
 
 **Guesses to confirm** (captions I couldn't verify 100%): "you short ass nigga" (the 6'5" joke), "oh, he just, he be yapping", "telling your sister…", "Hey, can you do this for me?"
+
+### Episode #4 v1 → v2: Jason: "the audio comes out so fucked up. 'Nigerian elephant' is misplaced, some places stop talking"
+**What was wrong (both my fault, both now caught by tools):**
+1. **"Some places stop talking":** the voice cleanup (DeepFilterNet) decided his quieter first 5 seconds were background noise and **erased them**. "It's really a shame, because a lot of y'all…" played silent under the captions. 14 captioned words had no voice under them.
+2. **"Nigerian elephant":** to splice "a female" I used the recognizer's word times. That piece really held "a [nigga] [female]" run together, so it sounded like "a Nigerian elephant".
+
+**Fixes:**
+- `voice_enhance.py` now **caps how much it can remove (15 dB)** and adds a **leveler** that lifts quiet stretches before compression. His opening went from silent (−90 to 15 dB) to 70–77 dB, the same as the rest of the video.
+- New **`check_voice.py` audio gate**: it fails if any captioned word plays over silence, and lists every pause over 1s. v1 would have failed it with 14 words. v2 passes with 0 words and no pause over 1s.
+- The splice was rebuilt from a 40ms energy map: "If a" + **"female" (62.10–62.64s exactly, before he says "nigga" again)** + "came up to me…". Snapping is off for those pieces, and the spliced stretch was re-transcribed alone to check it.
+- Both are now rules in SKILL.md (the recipe's audio-gate step + the word-splice rule).
+
+**Craft lesson:** sound problems are the fastest way to lose a viewer and the hardest for me to notice, because I can't hear. So every audio decision now gets a measurement: levels per half-second, words-over-silence, and re-transcribing every splice.

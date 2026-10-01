@@ -119,23 +119,32 @@
   [
    "p1",
    55.85,
-   56.05,
-   "If",
-   "female"
+   56.07,
+   "If a",
+   "female",
+   {
+    "snap": 0
+   }
   ],
   [
    "p1",
-   61.4,
-   62.62,
-   "a female",
-   "female"
+   62.1,
+   62.64,
+   "female",
+   "female",
+   {
+    "snap": 0
+   }
   ],
   [
    "p1",
-   56.3,
+   56.34,
    59.65,
    "{came up to me and said, your dick small,}",
-   "female"
+   "female",
+   {
+    "snap": 0
+   }
   ],
   [
    "p1",
