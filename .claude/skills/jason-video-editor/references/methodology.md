@@ -1,6 +1,6 @@
 # THE METHODOLOGY: 12-reel reference set (Jason, 2026-10-08: "this must be our methodology")
 
-Decoded from Jason's 12 reference reels: frame-stepped at 10-15fps, contact sheets, transcripts, and an audio-vs-visual sync analyzer (`scratchpad tools/sync.py`, method in SKILL.md "Extending the playbook"). Every rule below cites its reels as [r##]. Where a rule here conflicts with a **locked** Jason rule in SKILL.md, the locked rule wins; conflicts are flagged at the end.
+Decoded from Jason's 12 reference reels: frame-stepped at 10-15fps, contact sheets, transcripts, and an audio-vs-visual sync analyzer (`scripts/ref_sync.py`; contact sheets in `references/ref-sheets/`). Every rule below cites its reels as [r##]. Where a rule here conflicts with a **locked** Jason rule in SKILL.md, the locked rule wins; conflicts are flagged at the end.
 
 ## The 12 reels (what each one is, and the one thing to steal)
 | # | Creator | What it is | Steal this |
