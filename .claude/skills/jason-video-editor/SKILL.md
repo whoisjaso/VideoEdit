@@ -54,7 +54,7 @@ bash scripts/new_episode.sh proj && cp work/{cut.mp4,fg.webm} proj/public/ep/ &&
 # 8. STILLS at every beat -> QA against the reference reels -> fix -> full render
 # 9. DELIVER: send the MP4 to Jason -> copy to renders/epNN-title-v1.mp4 -> push -> journal entry -> ask for his score
 ```
-Remotion needs `--browser-executable=/opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell` in the cloud container. Delete `/tmp/remotion-webpack-bundle-*` after each stills run, or the disk fills.
+Remotion needs `--browser-executable=/opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell` in the cloud container. Delete `/tmp/remotion-webpack-bundle-*` after each stills run, or the disk fills. **Never delete bundles while a render is running** (it reads assets from its bundle; deleting it killed the iOS v3 render at frame 565). Delete only the bundle a finished still/render made, or clean up after all renders end.
 Never `pkill -f` a pattern that matches your own shell command. It kills the tool call; kill by PID instead.
 
 **Step 3, sections.json (where the score is won or lost):**
