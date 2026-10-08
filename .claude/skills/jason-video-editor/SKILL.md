@@ -9,6 +9,8 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 >
 > **Visuals:** for every edit, output an image prompt pack (see `references/image-prompts.md`: style lock + one prompt per picturable noun). Jason generates the images (ChatGPT, or the Higgsfield connector when he approves credits) and they fill the §18 cards.
 >
+> **MOTION-GRAPHICS QUALITY BAR (Jason, 2026-10-08: "this is the quality I expect"):** reel r05, decoded in `references/mg-quality-bar.md`: one navy-blueprint world with bloom and micro-labels, every sentence turned into a literal diagram, spoken-word orange sweep, comets along lines, line-draw everything, full-screen word slams. Every motion graphic is judged against it.
+>
 > **THE METHODOLOGY (Jason, 2026-10-08):** `references/methodology.md`, decoded from his 12 reference reels (psychology, hook shapes, typography, color, motion, SFX↔animation timing, audio craft, CTA). Plan every edit against it; locked rules below still win where they conflict (the conflicts are listed at the end of that file).
 >
 > **Start here:** read `references/journal.md`. It holds the scored history (current best **8.3/10**, episode #3), what Jason loved (locked), his corrections, and the backlog. Every new edit should beat the best score. After delivery, ask for his score and log it.

@@ -258,3 +258,7 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - **Duplicate spotted:** r04 is the same reel as our `pack3` source (sound names and timings match).
 - **Conflicts with Jason's locked rules** (music bed, comment-CTA vs follow card, karaoke vs two-tier captions) are flagged in the file, not applied. Waiting on Jason.
 - **Jason's decisions (same day):** keep no-music · comment-keyword CTA becomes the default close (the offer must be real, so ask him) · karaoke captions yes, on screen-led teaching segments. All three are written as rules in SKILL.md.
+
+## 2026-10-08 · Motion-graphics quality bar set (Jason: r05 "this is the quality I expect for motion graphics")
+- Decoded r05 frame by frame (4 × 24-frame screen crops). Spec in `references/mg-quality-bar.md`; SKILL.md points to it at the top.
+- **Honest gap vs our 8.3 graphics:** ours are good iOS cards on top of footage. r05 builds a **whole technical world** (navy blueprint grid, bloom, micro-labels) and turns **every sentence into a literal diagram** that animates on the spoken words (strike-through timelines, node chains with travelling sparks, typing prompt boxes, code + live artboard, paper forms with hand-drawn strikes, dictionary entries, full-screen word slams). That's the level to reach.
