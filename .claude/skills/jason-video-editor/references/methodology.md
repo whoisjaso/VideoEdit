@@ -76,7 +76,7 @@ Rules: text on screen by frame 1-3; the hook words themselves appear **word by w
 
 ## How this maps onto Jason's locked rules
 - Locked and **confirmed** by this set: two-tier yellow keyword captions [r08], iOS/app-UI motion graphics instead of stock B-roll [r03 r05 r12], real UI sounds 1:1, a hook in the first seconds, the sound↔event pairings (§3 of the playbook).
-- **Conflicts, flagged, NOT applied without Jason's yes:**
-  1. The references all carry a music bed; Jason's locked rule is **no music in the render** (he adds it in TikTok). Keep the rule.
-  2. The references end on a comment-keyword CTA; Jason's default is the follow card. Ep #3 used "comment PURPOSE" and scored 8.3, so **propose a comment-keyword CTA whenever the episode has something to give away**, else keep the follow card.
-  3. Karaoke captions [r02] vs the locked two-tier yellow captions: use karaoke only on **screen-led teaching** segments where the screen is the star; two-tier stays the default.
+- **Conflicts: DECIDED by Jason (2026-10-08):**
+  1. Music bed → **no**: his rule stands, no music in the render.
+  2. CTA → **comment-keyword CTA is the default close** (real giveaway only; ask him what it is).
+  3. Karaoke captions → **yes, on screen-led teaching segments**; two-tier yellow stays on talking head.

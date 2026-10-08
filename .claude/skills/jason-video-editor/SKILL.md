@@ -194,6 +194,11 @@ When Jason sends more reference videos: md5-check for duplicates first. Then con
 - **Never reorder his words on your own (Jason, ep #4 v2: "why would you change that order in a way that doesn't logically make sense").** A self-correction stays where he said it, and "get the female part" means *caption it correctly*. **Only when Jason explicitly asks to replace a word** ("I said a guy on accident… cut that out and make it say a female") do you splice: cut the exact word from a 40ms energy map, set `{"snap": 0}`, and re-transcribe the spliced stretch alone to confirm it's clean. If a stretch is unclear, keep the audio and let a graphic carry the unclear words.
 - **The on-screen text must read logically, start to finish (Jason, ep #4).** Before rendering, print the full caption transcript in order (hidden words in [brackets]) and read it as a viewer would. Hidden words must never leave a sentence that doesn't make sense: show the words that carry the logic, and hide only what a graphic shows instead.
 
+## Rules Jason approved (methodology decisions, 2026-10-08)
+- **No music in the render. LOCKED, reconfirmed** after seeing every reference carry a music bed ("keep my rule"). Deliver voice + SFX; recommend a track.
+- **End on a comment-keyword CTA (default from now on).** Big glowing keyword in quotes ("Comment "EGO""), plus what they get in DM, shown at the end (in offer videos, from the middle onward as a persistent element). The keyword comes from the episode's one idea. **The promise must be real:** ask Jason what he's giving away (guide, course link, list…) before rendering; never invent an offer. The follow card can still play after it.
+- **Karaoke captions on screen-led teaching segments** (when a mockup/screen/UI is the star): small white bold, low-center, the phrase builds word by word and clears at the phrase end [r02]. Talking-head segments keep the locked two-tier yellow-keyword captions.
+
 ## Rules from episode #3 brief
 - **Motion graphics > AI images** for explaining ideas (animated UI, counters, diagrams, kinetic type).
 - **Respect his pauses:** only cut stutters, restarts and dead air over ~1.5s (leave ~0.7s). Never drop a key word. Never break the logical order: hook → argument → payoff → CTA.

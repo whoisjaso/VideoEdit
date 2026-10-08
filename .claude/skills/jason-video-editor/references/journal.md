@@ -257,3 +257,4 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   6. **Audio craft:** add an echo/reverb tail where the voice is cut, so nothing stops dead.
 - **Duplicate spotted:** r04 is the same reel as our `pack3` source (sound names and timings match).
 - **Conflicts with Jason's locked rules** (music bed, comment-CTA vs follow card, karaoke vs two-tier captions) are flagged in the file, not applied. Waiting on Jason.
+- **Jason's decisions (same day):** keep no-music · comment-keyword CTA becomes the default close (the offer must be real, so ask him) · karaoke captions yes, on screen-led teaching segments. All three are written as rules in SKILL.md.
