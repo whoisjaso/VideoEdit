@@ -95,6 +95,13 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 6. **Gold keywords are rationed.** Pick about 1 per idea, and only concept words (the words that, read in sequence, *are* the lesson). Don't gold a word every time it repeats, or viewers stop reading gold. Roughly 8% of words. Specify by `[WORD, occurrence]`.
 7. **Beat sheet:** map every section to what fires. Use the table below, and derive every frame from a spoken word with `w("WORD", n)`, never from hard-coded numbers.
 
+## SFX library (Jason: "make SFX library", 2026-10-08)
+- **77 sounds sorted by job** in `references/sfx-library.md` (built from `assets/sfx/library.json` by `scripts/build_sfx_library.py`). Jobs: hook · impact · whoosh · shutter · click · typing · ios · win · reveal · build · negative · tech · texture. Every sound has a "use for", default volume and origin (real / lifted from a reference reel / synth stand-in).
+- **Sound lands ON the frame.** Use `<Hit at={frame} id="pack6.impact_1" />` (`template/src/lib/sfx.tsx`). It starts the file early by its measured `lead`, so the **peak** (impact, whoosh, reveal, build) or the **onset** (iOS, click, typing, win) lands exactly on the motion. The references hit within 3-45 ms. Starting the file on the frame made CineStrike land ~16 frames late in eps #3/#4.
+- **Pick by job, then rotate within the job** (button_1 → button_2 → combo) so repeats don't sound identical; keep the *same job* for the same event every time (conditioned reward).
+- New packs: drop the wavs in `assets/sfx/packN/` with a manifest, add each to `CAT` in the build script, run it. The audition reel (`examples/sfx-demo/SfxDemo.tsx`) re-renders from the library.
+- **Replace first:** the 6 `synth` stand-ins (pop, click, typing, kaching, ding, riser). The 18 `lifted` sounds are reference-grade; the clean packs come from commenting "SFX" on reels r10/r11.
+
 ## What fires when (the rules, with their source)
 | Moment | Visual | SFX (his CapCut name → our stand-in) | Why |
 |---|---|---|---|

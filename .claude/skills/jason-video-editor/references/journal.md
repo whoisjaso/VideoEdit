@@ -239,3 +239,9 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - One text only: **"Her 👩🏾": "your dick small 😂"**. The "Some guy" text is removed.
 - Rule refined: never reorder his words *on my own*; splice only when he explicitly asks to replace a word.
 - **Lesson:** I should have asked one question at v2 ("keep both, or female only?") instead of guessing twice. When two readings change the edit, ask.
+
+## 2026-10-08 · SFX library built (Jason: "make SFX library")
+- **What:** every sound we own (60) plus 17 new ones, cut from Jason's new reference reels r10 (Zenix: Button 1-3, Combo, Sparkle, Deep Whoosh, Typing) and r11 (vishu: Hook 1-2, Impact 1-2, Blade, Camera action, Tension, UI+SFX, Shutter, Click+SFX). That's **77 sounds sorted into 13 jobs**, each with when to use it, a default volume and where it came from. Sounds were cut per on-screen label window (label changes detected at 30fps). r11 has no music bed under the effects (silence between them), so the cuts are clean.
+- **The big finding:** I measured where each sound actually *hits*. CineStrike peaks 0.53s in, the camera click 0.54s, Digital Text 1.34s, Tension 3.7s. In episodes #3-#4 I started files a frame before the word, so heavy hits landed up to ~16 frames late. The reference reels land the sound within 3-45 ms of the motion. New `<Hit>` helper: it lines up the peak (impacts, whooshes) or the onset (iOS/UI/clicks) with the frame automatically.
+- **Audition reel** (reference style, playhead over waveforms, job-colored): every sound plays with its name and job. The source is in `examples/sfx-demo/`.
+- **Honest limits:** 6 sounds are still my synthesized stand-ins (pop, click, typing, kaching, ding, riser), and 18 are lifted from reels (reference-grade). Biggest upgrade available: Jason comments "SFX" on reels r01/r10/r11 and sends the clean packs.
