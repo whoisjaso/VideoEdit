@@ -49,3 +49,11 @@ Typewriter / `pack5.typing_2` per typed word in prompts · `ui.data_loading` und
 3. Does every sub-element arrive on a spoken word, with a sound?
 4. Is something drawing, travelling or moving on every frame?
 5. Would it look at home in r05? If not, it's not done.
+
+## 8. The four layers every beat needs (after Jason scored v1 6.8: "the glows, smooth animations, the backgrounds, the infinitesimal details")
+Kit: `template/src/lib/Blueprint2.tsx` (v1 `Blueprint.tsx` stays for the paper `Form` + `Finale`).
+1. **BLOOM:** wrap the foreground in `<Bloom>`. It re-renders it blurred 14px + 55px and screen-blends it, so light spills into the air. A text-shadow is NOT bloom. Sounds stay outside `<Bloom>` (it renders children 3×).
+2. **SMOOTHNESS:** the background layer in `<Cam depth={0.35}>`, the foreground in `<Cam depth={1}>` (parallax + noise drift + eased push); the whole composition in `CameraMotionBlur samples={5} shutterAngle={170}` (@remotion/motion-blur, **pin the same version as remotion**); scene changes via `<Push>` (zoom-through + blur + RGB split, needs `<Filters/>` once). Headlines reveal **per character** (blur 9→0, rise 16px, 0.9f stagger).
+3. **DEPTH BACKGROUND:** `<World>`: a blurred far grid + a sharp near grid with intersection dots, light **pools** that fade in on their word (put one behind every hot element), a top light leak, drifting dust (70 particles, depth-blurred), scanlines, animated SVG grain, a vignette; `floor` for a 3D grid; `paper` for light form scenes (+ `PaperDetail`: punch holes, red margin, typed fields, checkboxes, signature).
+4. **HUD MICRO-DETAIL:** `<Hud>` on every scene (corner brackets, edge rulers with numbers, live timecode, a progress hairline, scene id/frame, readouts), `<Anchor>` (crosshair + live coordinates) on every node/endpoint, `<Dash>` construction lines, `Panel` header strips with ids + status, `Beam` flowing dash particles + a comet with an anamorphic flare + an arrival ring, `Slash` sparks with gravity + a crossing flash, `SlamV2` grid + grain + light sweep on the orange.
+**Self-check:** render stills of every scene and put them next to an r05 frame. Every one of the four layers must be visible in every still.

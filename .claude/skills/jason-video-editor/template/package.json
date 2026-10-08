@@ -22,6 +22,8 @@
     "@fontsource/great-vibes": "^5",
     "@fontsource/archivo-black": "^5",
     "@fontsource/inter": "^5",
-    "@fontsource/nunito-sans": "^5"
+    "@fontsource/nunito-sans": "^5",
+    "@remotion/motion-blur": "4.0.534",
+    "@remotion/noise": "4.0.534"
   }
 }
