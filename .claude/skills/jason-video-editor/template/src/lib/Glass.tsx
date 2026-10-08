@@ -1,4 +1,5 @@
 import React from "react";
+import "@fontsource-variable/inter/opsz.css";
 import { AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { noise2D } from "@remotion/noise";
 
@@ -9,7 +10,7 @@ import { noise2D } from "@remotion/noise";
  * Quality layers still apply: wrap the foreground in <Bloom k≈0.6> (Blueprint2), parallax <Cam>, CameraMotionBlur.
  */
 export const G = { ink: "#F5F7FF", sub: "rgba(235,240,255,0.62)", faint: "rgba(235,240,255,0.32)", accent: "#FF6A3D", accent2: "#FFB36B", red: "#FF453A", green: "#30D158",
-  font: "Inter", glass: "rgba(255,255,255,0.10)", glassHot: "rgba(255,106,61,0.18)" };
+  font: "'Inter Variable', Inter", glass: "rgba(255,255,255,0.10)", glassHot: "rgba(255,106,61,0.18)" };
 export const IOS = { damping: 30, stiffness: 210, mass: 1 }; // no overshoot
 const cl = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const sm = (t: number) => (t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t));

@@ -1,17 +1,20 @@
 import React from "react";
+import "@fontsource-variable/inter/opsz.css";
 import { interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 
 /**
  * iPhone notifications, built to iOS 17/18 metrics (Jason 2026-10-08: "iPhone notifications exactly how it looks, real assets").
  * Scale: 1080px frame = 393pt iPhone width → 1pt = 2.748px. Banner = full width − 16pt margins, radius 23pt, padding 14pt,
  * icon 38pt superellipse, title 15pt semibold, body 15pt regular, time 13pt secondary, line 20pt.
- * Font: Apple's SF Pro is licensed for Apple-platform app UI only (not videos), so Inter with iOS sizes/weights/tracking stands in.
+ * Font: Apple's SF Pro license (developer.apple.com/fonts) allows UI mock-ups by a registered Apple Developer only and forbids "artwork… or any
+ * other work product" and transfer, so it can't be rendered here. Stand-in: Inter 4 VARIABLE with the optical-size axis (like SF's Text/Display
+ * split): small text gets the Text design, big text the Display design automatically (font-optical-sizing: auto). Import "@fontsource-variable/inter/opsz.css".
  * Brand icons: real simple-icons glyphs on official brand colors (assets/logos). Apple system app icons are drawn originals in Apple's colors.
  * Sounds: pair with the real iOS sounds in the SFX library (ios.ios_tritone for a banner, ios.ios_received in-thread).
  */
 const PT = 1080 / 393;
 const px = (pt: number) => Math.round(pt * PT);
-export const NOTIF_FONT = "Inter";
+export const NOTIF_FONT = "'Inter Variable', Inter";
 
 /** iOS superellipse (continuous corners) as a CSS clip-path polygon */
 const SQUIRCLE = (() => {
@@ -101,7 +104,7 @@ export const Notification: React.FC<NotifProps> = ({ app, title, body, at, until
     <div style={{ position: "absolute", left: px(8), top: y, width: W, borderRadius: R, ...mat, padding: `${px(12)}px ${pad}px`, display: "flex", gap: px(10), alignItems: "center",
       boxShadow: "0 12px 40px rgba(0,0,0,0.28)", transform: `translateY(${(1 - i) * -px(110) - o * px(120)}px) scale(${0.96 + 0.04 * i})`, opacity: Math.min(1, i * 1.6) * (1 - o) }}>
       {avatar ? <Avatar initials={avatar.initials} hue={avatar.hue ?? 220} app={app} size={icon} /> : <AppIcon app={app} size={icon} />}
-      <div style={{ flex: 1, minWidth: 0, fontFamily: NOTIF_FONT, letterSpacing: "-0.012em" }}>
+      <div style={{ flex: 1, minWidth: 0, fontFamily: NOTIF_FONT, fontOpticalSizing: "auto", letterSpacing: "-0.012em" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: px(8) }}>
           <span style={{ fontSize: px(15), fontWeight: 600, color: fg, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</span>
           <span style={{ fontSize: px(13), color: sec, flexShrink: 0 }}>{time}</span>
