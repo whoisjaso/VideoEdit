@@ -245,3 +245,15 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - **The big finding:** I measured where each sound actually *hits*. CineStrike peaks 0.53s in, the camera click 0.54s, Digital Text 1.34s, Tension 3.7s. In episodes #3-#4 I started files a frame before the word, so heavy hits landed up to ~16 frames late. The reference reels land the sound within 3-45 ms of the motion. New `<Hit>` helper: it lines up the peak (impacts, whooshes) or the onset (iOS/UI/clicks) with the frame automatically.
 - **Audition reel** (reference style, playhead over waveforms, job-colored): every sound plays with its name and job. The source is in `examples/sfx-demo/`.
 - **Honest limits:** 6 sounds are still my synthesized stand-ins (pop, click, typing, kaching, ding, riser), and 18 are lifted from reels (reference-grade). Biggest upgrade available: Jason comments "SFX" on reels r01/r10/r11 and sends the clean packs.
+
+## 2026-10-08 · Methodology from 12 reference reels (Jason: "this must be our methodology… understand the psychology, hooks, typography, SFX timing, everything")
+- **All 12 analyzed** (r07 was a photo carousel; only its cover was reachable without login): frame-stepped, transcribed, plus a new audio-vs-visual sync analyzer. Written up as `references/methodology.md`. SKILL.md now points to it first.
+- **Key findings in plain English:**
+  1. **Sound leads the picture by up to 2 frames, never trails it.** Measured on 7 reels (−83 to +28 ms). Our old habit landed heavy hits up to 16 frames late; `<Hit>` fixes that.
+  2. **Five hook shapes:** a question they can't answer yet, a contrast (okay vs scroll-stopping), "what if I told you", calling out their pain, want + offer.
+  3. **Typography:** a sandwich title (small / BIG glowing word / small), one word at a time synced to speech, words growing on the key phrase, a highlight box on the keyword, karaoke captions when the screen is the star.
+  4. **Color:** one accent per video; triadic pairs (120° apart) for maximum contrast; flip the background light↔dark when a new idea starts; one full-screen color slam on the punchline.
+  5. **Psychology:** value first; show the result before the method; prove by pattern (3 examples); name the concept; "the answer is simple" before the payoff; a comment-keyword CTA.
+  6. **Audio craft:** add an echo/reverb tail where the voice is cut, so nothing stops dead.
+- **Duplicate spotted:** r04 is the same reel as our `pack3` source (sound names and timings match).
+- **Conflicts with Jason's locked rules** (music bed, comment-CTA vs follow card, karaoke vs two-tier captions) are flagged in the file, not applied. Waiting on Jason.
