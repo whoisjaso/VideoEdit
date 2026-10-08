@@ -57,3 +57,12 @@ Kit: `template/src/lib/Blueprint2.tsx` (v1 `Blueprint.tsx` stays for the paper `
 3. **DEPTH BACKGROUND:** `<World>`: a blurred far grid + a sharp near grid with intersection dots, light **pools** that fade in on their word (put one behind every hot element), a top light leak, drifting dust (70 particles, depth-blurred), scanlines, animated SVG grain, a vignette; `floor` for a 3D grid; `paper` for light form scenes (+ `PaperDetail`: punch holes, red margin, typed fields, checkboxes, signature).
 4. **HUD MICRO-DETAIL:** `<Hud>` on every scene (corner brackets, edge rulers with numbers, live timecode, a progress hairline, scene id/frame, readouts), `<Anchor>` (crosshair + live coordinates) on every node/endpoint, `<Dash>` construction lines, `Panel` header strips with ids + status, `Beam` flowing dash particles + a comet with an anamorphic flare + an arrival ring, `Slash` sparks with gravity + a crossing flash, `SlamV2` grid + grain + light sweep on the orange.
 **Self-check:** render stills of every scene and put them next to an r05 frame. Every one of the four layers must be visible in every still.
+
+## 9. The look is iOS (Jason: "iOS-like UX, soft borderless animations")
+Kit: `template/src/lib/Glass.tsx`, sample `examples/mg-quality-sample/IosSample.tsx`. r05 = the **quality**, iOS = the **language**:
+- `Wallpaper` (slow mesh-gradient blobs, a faint dot grid, dust, grain, vignette; `light` for paper/Reminders scenes) replaces the blueprint grid.
+- `Card`/`glassStyle`: frosted, **no borders**, radius 44, an inner highlight + layered soft shadow; small-caps grey section header + a grey footnote ("Updated just now").
+- `Row` (rounded glyph tile + title + subtitle + trailing accessory), `Chip` capsules, `Ring` progress, `Chrome` page dots + home indicator.
+- Motion: `IOS` spring (damping 30, stiffness 210, no overshoot); entrances fade + scale .94→1 + blur 16→0 + rise 40px; `Island` pill → card shared-element morph; `Swipe` = swipe-to-delete (the iOS way to strike something); `Moment` soft full-screen word beat (no hard flash cuts); `Soft` scene transitions (scale .93→1 + blur).
+- Keep the quality layers: `<Bloom k≈0.55>`, parallax `<Cam>`, `CameraMotionBlur`.
+- Sounds: real iOS first (tri-tone for a card arriving, tink for checks, success for a win, received for a message), then soft UI clicks.
