@@ -285,3 +285,4 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 3. **Camera:** v3 = flat 2D drift; r05 = a real 3D camera (tilt, dolly, whip).
 4. **Transitions:** v3 = soft fades; r05 = whip pans with heavy blur smears.
 **Rule:** frame 1 must already move; a big focal object in the center third at all times; a new element every ~0.5s; a 3D camera move on every scene; whip transitions between scenes.
+- **MG v4 delivered** (`renders/mg-ios-sample-v4.mp4`): 3D camera fly-in on every scene, Z-depth layers, whip transitions, motion blur ×8, the "You" orb as the focal object from frame 4. Self-check of its first second: much more motion than v3, but the lower third is still emptier than r05. Waiting on Jason's score.
