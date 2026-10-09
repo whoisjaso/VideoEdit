@@ -46,3 +46,17 @@ Plain English. After every piece: what shipped, his score, what to fix, rules he
   - the orange tile didn't match the first image at the drop;
   - the wave trace appeared early;
   - the rays → logo ghosting (redesigned as an implosion).
+
+### Claude ad v1 score: **8 / 10** (Jason): "I absolutely adore this… extremely clean, extremely nice." Best motion-graphics score so far.
+- Jason found the source: prompt-motion.com, "Engraving-style Claude ad" by Leon Lin (@LexnLin). Its video is "a lot better"; the goal is to reach that level, not to copy it.
+- **His ask:** a skill so this system can be replicated across Claude ads, other brands' ads and our motion graphics.
+- **Gap, decoded from his video** (14.5 s, 1080×1920, 60 fps):
+  - every asset is a grayscale engraving or plate, cut out on white;
+  - one orange dot threads every shot and is the match-cut anchor;
+  - compass circles and construction lines;
+  - one bold lowercase serif word at a time, with orange punctuation;
+  - shots of about 0.25 s;
+  - two black flash frames;
+  - a soft clay 3D spark;
+  - the dot blooms into the spark, ending on the lockup.
+- Leon also open-sourced his method (the `cinetic` skill, MIT). A craft digest was written from it: whole-frame grids, 3 easing curves, velocity across cuts, one device that becomes the mark, accent at about 5%, sound computed from the picture, a ship gate.
