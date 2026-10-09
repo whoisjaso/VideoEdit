@@ -1,5 +1,7 @@
 import subprocess, numpy as np, json, sys
-SFX='/tmp/claude-0/-home-user-ApoheniaQuest/a7864f3b-0e94-5f00-94a5-59ce23b410f7/scratchpad/v5/public/sfx/'
+import os
+# the shared SFX library lives in the editor skill; override with SFX_DIR=...
+SFX=os.environ.get('SFX_DIR', os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../jason-video-editor/assets/sfx/'))
 SR=48000
 def load(p):
     raw=subprocess.run(['ffmpeg','-v','error','-i',p,'-ac','2','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout

@@ -1,9 +1,11 @@
 ---
 name: jason-video-editor
-description: Jason's default short-form video edit. Use EVERY time Jason drops raw footage (talking head, car/selfie vlogs, motivational, teaching "game", business/AI content, screen recordings) to edit, cut, caption, add SFX/motion graphics, or "make it hit". Turns raw vertical footage into a finished 9:16 reel. It opens with a hook, cuts dead air and stutters, uses raw uncensored captions with gold keywords, and puts slow-mo on curse words. It pairs every event with the right SFX, adds font-combo titles with text behind the speaker, pops up graphics, and ends on an animated follow CTA. Everything follows the decoded creator playbook in references/playbook.md. Also use when Jason sends more "use this for that" reference videos to study; decode them and extend the playbook.
+description: Jason's default short-form video edit. Use EVERY time Jason drops raw footage (talking head, car/selfie vlogs, motivational, teaching "game", business/AI content, screen recordings) to edit, cut, caption, add SFX/motion graphics, or "make it hit". Turns raw vertical footage into a finished 9:16 reel. It opens with a hook, cuts dead air and stutters, uses raw uncensored captions with gold keywords, and puts slow-mo on curse words. It pairs every event with the right SFX, adds font-combo titles with text behind the speaker, pops up graphics, and ends on an animated follow CTA. Everything follows the decoded creator playbook in references/playbook.md. Also use when Jason sends more "use this for that" reference videos to study; decode them and extend the playbook. NOT for standalone motion-graphics pieces with no footage of him (UI morph loops, kinetic type, animated UI from a brief): use jason-motion-graphics for those.
 ---
 
 # Jason Video Editor — SOP
+
+> **TWO SKILLS (Jason, 2026-10-09):** this skill = edits of his raw footage (cut, captions, SFX, graphic cutaways). Standalone motion pieces with no footage (UI morph loops, kinetic type, animated UI from a brief) → `../jason-motion-graphics/SKILL.md`.
 
 > **THE BAR:** playbook §18 ("My work vs Original"): every sentence gets a designed visual beat, nouns become full-screen editorial cards, giant hero words go behind the speaker, numbers roll, one accent color sits on a moody grade, and there's editorial micro-type. Jason called it the standard he expects. Plan every edit against it.
 >
@@ -11,7 +13,7 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 >
 > **MOTION-GRAPHICS LANGUAGE = iOS (Jason, 2026-10-08: "iOS-like UX, soft borderless animations"):** r05 sets the *quality* (bloom, smoothness, depth, micro-detail); iOS sets the *look*: frosted borderless cards, big continuous corner radii, soft layered shadows, no hard outlines, critically-damped springs (no bounce), fade+scale 0.96→1+blur entrances, shared-element morphs (pill → card → full screen, Dynamic-Island style). Hard-lined HUD boxes are out; detail comes from iOS-native micro-UI (status bar, captions, SF-symbol-style glyphs, progress rings, segmented controls).
 >
-> **MOTION-GRAPHICS QUALITY BAR (Jason, 2026-10-08: "this is the quality I expect"):** reel r05, decoded in `references/mg-quality-bar.md`: one navy-blueprint world with bloom and micro-labels, every sentence turned into a literal diagram, spoken-word orange sweep, comets along lines, line-draw everything, full-screen word slams. Every motion graphic is judged against it.
+> **MOTION-GRAPHICS QUALITY BAR (Jason, 2026-10-08: "this is the quality I expect"):** reel r05, decoded in `../jason-motion-graphics/references/mg-quality-bar.md`: one navy-blueprint world with bloom and micro-labels, every sentence turned into a literal diagram, spoken-word orange sweep, comets along lines, line-draw everything, full-screen word slams. Every motion graphic is judged against it.
 >
 > **THE METHODOLOGY (Jason, 2026-10-08):** `references/methodology.md`, decoded from his 12 reference reels (psychology, hook shapes, typography, color, motion, SFX↔animation timing, audio craft, CTA). Plan every edit against it; locked rules below still win where they conflict (the conflicts are listed at the end of that file).
 >

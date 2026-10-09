@@ -9,6 +9,8 @@ One element, never cut: Post button → loader → check → Dynamic Island → 
 - Text inside a morphing container has its own enter/exit window (`WIN`) with a blur, so swaps never overlap.
 - Loop check: frame 0 vs t=13.999 must match (mean pixel difference < 0.01). Every spring started near the end must be stiff enough to settle before 14 s, the camera included.
 
+**Files:** `morph.html` (engine + the piece), `inter.woff2` (Inter Variable, OFL; must sit next to the HTML), `render.js` (needs `npm i playwright-core@1.56.1` and Chromium at /opt/pw-browsers), `bpm.py`/`grid.py` (numpy beat analysis), `mixmorph.py` (SFX from `../../jason-video-editor/assets/sfx/`, or set `SFX_DIR`).
+
 **Pipeline:**
 ```
 python3 bpm.py music/*.mp3            # tempo of candidate tracks (numpy, spectral-flux autocorrelation)

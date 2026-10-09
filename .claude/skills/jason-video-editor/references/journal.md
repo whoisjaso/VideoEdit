@@ -317,3 +317,8 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   - the loop seam was off by 0.6% camera zoom (last spring too slow; fixed to mean pixel difference 0.002);
   - the chart fill appeared ahead of the line (now grows with the tip).
 - Two files: with music (to judge timing) and SFX-only (for posting; our no-music rule).
+
+## 2026-10-09 · Split into two skills (Jason: "the prompt I gave was more motion graphics; we need 2 skills for distinguishing the type of edits")
+- **jason-video-editor** (this one) = edits of his raw footage: cut, captions, SFX, graphic cutaways (Coop look).
+- **jason-motion-graphics** (new) = standalone motion pieces from a brief, no footage: the one-shape morph engine, the r05 quality bar, a brief template, its own score journal.
+- Shared between both: the Remotion kits (`template/src/lib/`) and the SFX library (`assets/sfx/`).
