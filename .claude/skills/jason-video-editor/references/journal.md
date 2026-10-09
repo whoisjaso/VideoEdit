@@ -322,3 +322,27 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - **jason-video-editor** (this one) = edits of his raw footage: cut, captions, SFX, graphic cutaways (Coop look).
 - **jason-motion-graphics** (new) = standalone motion pieces from a brief, no footage: the one-shape morph engine, the r05 quality bar, a brief template, its own score journal.
 - Shared between both: the Remotion kits (`template/src/lib/`) and the SFX library (`assets/sfx/`).
+
+## 2026-10-09 · Episode #5 "Chosen" v1, the first talking head with engraving cutaways (score pending)
+- **Raw:** 2 clips (90 s + 12.8 s, car selfie). The second clip continues the first mid-word ("be- / -lieves"). Saved to `raw/ep05/`.
+- **One idea:** you can't beat someone who believes he's chosen by God.
+  - Cold open = the payoff line ("How can you beat a nigga that literally believes he is chosen by God himself"), then his opening in his order.
+  - Cut: 1:43. 3 curse slow-mos: "shit", "fuck", the last "bitch". His hat-tip smile is kept as a beat.
+- **Transcription:**
+  - Whisper (faster-whisper medium.en in its own venv) was far more accurate than Vosk on this clip. Vosk garbled about a third of it.
+  - The multilingual model found his Spanish and Mandarin lines and one more language it couldn't name.
+  - Vosk timings + alias map + Whisper text = captions. **New tool rule:** run Whisper as the text check on every clip.
+- **Engraving cutaways** (the new rule, first use), rendered by `engraving/` (new reusable engine):
+  - "I'm so perspicacious": Galileo. The dot falls from the sun to his eye. Definition line.
+  - "I'm so indefatigable": Goltzius' Great Hercules. The dot lands on his heart.
+  - "because my belief on who I am is so fucking high": Napoleon crossing the Alps. The dot climbs knee → heart → hat.
+  - "chosen by God himself, like handpicked from God himself, Yahweh Yeshua HaMashiach":
+    - Polidoro's Creation of Adam: God's fingertip → Adam's hand → God's face;
+    - match cut on God's head into Preti's Moses: the three names, one at a time;
+    - iOS success on HaMashiach.
+  - iOS tink on every landing. Never music.
+- **Face beats:** CHOSEN / GIFTED / CANNOT / 1,000 / EGO / ARROGANT behind his head; 6'5" height tag; AMAZING ✓ HANDSOME ✓; iOS Translate cards for Spanish and Mandarin; a "Confidence on who I am · 100% · so fucking high" meter; the insults as iMessage notifications; follow card.
+- **QA fixes before render:** hero words moved above the hat (his head was covering more than 30% of them); notifications scaled 1.55× to be readable; God's face kept in frame; the plates' top edge faded to white.
+- **Tools improved:** `cut_sections.py` has curse slow-mo windows (`"slow"`); `metengr.py` takes queries and is crash-safe.
+- **Asked Jason** (word check, after v1 because the render is cheap to redo): the third language at 0:15–0:19; the Spanish translation; his Chinese name "Ou Jie"; "I say Jason" vs "they say Jason"; the quoted hard-r (written "nigga" per the vocabulary rule); the last line "Or don't, have a ___, bitch".
+- `renders/ep05-chosen-v1.mp4` (master, −14 LUFS, −1.5 dBTP).
