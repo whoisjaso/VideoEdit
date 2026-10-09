@@ -134,7 +134,7 @@ export const CoopCaptions: React.FC<{ accents: Record<string, string>; hide: [nu
               fontFamily: acc ? SERIF : SANS, fontStyle: acc ? "italic" : "normal", fontWeight: acc ? 400 : 700,
               fontSize: acc ? 112 : 86, letterSpacing: acc ? "-0.01em" : "-0.035em", color: acc || C.ink, lineHeight: 1.1,
               opacity: p, transform: `translateY(${(1 - p) * 14}px) scale(${0.94 + 0.06 * p})`, filter: `blur(${(1 - p) * 6}px)`,
-              textShadow: acc ? `0 0 28px ${acc}88, 0 4px 18px rgba(0,0,0,.55)` : "0 4px 18px rgba(0,0,0,.6), 0 0 2px rgba(0,0,0,.4)",
+              textShadow: acc ? `0 0 3px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.85), 0 0 34px rgba(0,0,0,.6), 0 0 26px ${acc}66` : "0 4px 18px rgba(0,0,0,.6), 0 0 2px rgba(0,0,0,.4)",
             }}>{key}</span>
           );
         })}
@@ -279,7 +279,7 @@ export const Toggle: React.FC<{ label: string; flip: number; pre?: string; accen
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 80 }}>
       <div style={{ width: 760, padding: "40px 40px", borderRadius: 48, background: C.card, display: "flex", alignItems: "center", gap: 28, opacity: enter, transform: `translateY(${(1 - enter) * 40}px)`, boxShadow: "0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.07)" }}>
         <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(180deg,#8E8E93,#636366)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>⚙️</div>
-        <span style={{ fontFamily: SANS, fontWeight: 600, fontSize: 42, color: C.ink, letterSpacing: "-0.02em", flex: 1 }}>{label}</span>
+        <span style={{ fontFamily: SANS, fontWeight: 600, fontSize: 40, color: C.ink, letterSpacing: "-0.02em", flex: 1, whiteSpace: "nowrap" }}>{label}</span>
         <div style={{ width: 150, height: 90, borderRadius: 45, background: s > 0.5 ? "rgba(120,120,128,.36)" : C.green, position: "relative", boxShadow: s > 0.5 ? "none" : `0 0 30px ${C.green}88` }}>
           <div style={{ position: "absolute", top: 6, left: 66 - s * 60, width: 78, height: 78, borderRadius: 39, background: "#fff", boxShadow: "0 4px 12px rgba(0,0,0,.35)" }} />
         </div>
