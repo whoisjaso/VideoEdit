@@ -305,3 +305,15 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 ### Jason on v5: "I just wish the animations felt a lot smoother and non-laggy."
 - The cause was Cooperson's 12 fps stepping (held frames). Jason's taste beats the reference: **rule: motion is always smooth 30 fps, never stepped.**
 - v6: STEP = 1, motion blur (6 samples, 180°) on every cutaway, springs forced to no-wobble (critical damping), captions ease in over 7 frames with ease-out instead of a 4-frame snap. `renders/mg-coop-sample-v6-smooth.mp4`.
+
+## 2026-10-09 · One-shape UI morph "Just Post" v1 (Jason's Dribbble-style brief, "in relation to our context")
+- Jason on v6 (smooth): "this was a lot better". Approved the beat grid with "let's do it". Defaults I picked because he didn't: his story as the state list, black/white + gold accent, Mixkit track #802 (free commercial license).
+- **His premise as UI:** Post → loader → Posted ✓ → Dynamic Island "3" → "3 new comments" → hater comment swiped away → Apple Pay "Payment received" → "Care what others think" toggle dragged past max (rubber stretch) and flipped off on the beat → the knob becomes the liquid tab indicator (Views / Followers / Money) → chart draws itself, tooltip "+212%" then "all-time high" → ⌘K "who's talking" → the 3 haters filter to one row "every single person that talks · broke" → toast "They're broke." → back to Post. 120 BPM, 28 beats, 14 s, loops seamlessly.
+- **Built as an engine** (`examples/ui-morph/`): pure `seek(t)`, closed-form springs summed per change, two-edge springs on knob/indicator, direct-manipulation drags, 60 fps from 4 blended subframes (motion blur), 40 UI sounds placed by measured peak, beat grid measured with numpy (120.0 BPM exactly).
+- **QA caught before delivery:**
+  - the tooltip collided with the Money tab;
+  - the cursor covered "Post";
+  - the label swapped before the tooltip arrived at the peak;
+  - the loop seam was off by 0.6% camera zoom (last spring too slow; fixed to mean pixel difference 0.002);
+  - the chart fill appeared ahead of the line (now grows with the tip).
+- Two files: with music (to judge timing) and SFX-only (for posting; our no-music rule).
