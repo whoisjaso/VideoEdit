@@ -1,6 +1,6 @@
 ---
 name: jason-motion-graphics
-description: Jason's standalone motion-graphics pieces. NO raw footage of him. Use when Jason asks for a motion graphic, UI animation, one-shape morph loop, kinetic typography, app/iPhone UI demo, animated explainer or a Dribbble-style motion piece, or pastes a brief with <inputs>/<direction>/<structure>/<build> sections. Output is a finished, beat-synced, looping MP4 built from code (pure seek(t) HTML engine or Remotion). If Jason sends raw talking-head/vlog footage to cut and caption, use jason-video-editor instead (graphic cutaways inside a footage edit stay in that skill).
+description: Jason's standalone motion-graphics pieces. NO raw footage of him. Use when Jason asks for a motion graphic, UI animation, one-shape morph loop, kinetic typography, app/iPhone UI demo, animated explainer or a Dribbble-style motion piece, or pastes a brief with inputs, direction, structure and build sections. Output is a finished, beat-synced, looping MP4 built from code (pure seek(t) HTML engine or Remotion). If Jason sends raw talking-head/vlog footage to cut and caption, use jason-video-editor instead (graphic cutaways inside a footage edit stay in that skill).
 ---
 
 # Jason Motion Graphics — SOP
