@@ -23,3 +23,26 @@ Plain English. After every piece: what shipped, his score, what to fix, rules he
   - silent hovers.
 - Transitions dropped 4-6 dB so the interactions lead. Every sound is still placed by its measured peak.
 - **Waiting:** which single sound he disliked. When he names it, it's banned for motion pieces (rule here).
+
+## 2026-10-09 · Claude spec ad v1: "Every masterpiece started as a thought." (15 s, 60 fps)
+- **Brief:** a fast Claude ad, light mode, an art reimagine, paint on the images, perfect morphs, ends on the logo.
+- **Reference video:** it never arrived (the uploads folder was empty). Built from the brief; asked Jason to resend it.
+- **Research:** Claude's brand is the clay spark (#D97757), near-black #141413, a Tiempos-style serif, and hand-drawn illustration. Its parchment beige was swapped for pure white, per "no beige".
+- **Assets:** 18 public-domain masterpieces from the Met Open Access (CC0); the Art Institute's server blocked bots. Credits in `examples/claude-ad/CREDITS.md`.
+- **Music:** Mixkit #623, measured 120.0 BPM, cut so its drop lands on the montage at 4.0 s.
+- **Morph chain:**
+  - spark draws → its rays open into a marble head → card → circle + pen halo;
+  - the spark "thought" pops → dive into it → the orange collapses into the first collage tile;
+  - Hokusai grows from a tile → becomes the front card of a 3D carousel → Van Gogh grows from it;
+  - match cuts land each face inside one fixed ring → the red-chalk Michelangelo;
+  - a ring of works → rays → implode → the spark turns in 3D → "Claude" lockup.
+- **Self-QA fixes before delivery:**
+  - letter gaps: the "Serif" font name collided with the browser's generic serif;
+  - text over the busy sculpture;
+  - the underline crossed the word;
+  - carousel hand-off maths;
+  - faces near a painting's top edge forced absurd zooms;
+  - the word sat over the full-frame Hokusai;
+  - the orange tile didn't match the first image at the drop;
+  - the wave trace appeared early;
+  - the rays → logo ghosting (redesigned as an implosion).
