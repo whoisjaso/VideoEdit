@@ -7,6 +7,7 @@ sections.json (paths relative to the json file):
    "gap_max": 1.4, "gap_keep": 0.75,          # only dead air > gap_max is shortened, to gap_keep (his pauses stay)
    "alias": {"psycho": "cycle"},              # recognizer mis-hear -> confirmed word (aligns captions to timing)
    "snap": 0.08,                              # cut points snap to the quietest spot within +/-80ms (0 = off)
+   "slow": [["p1", 53.86, 54.2], ...],       # optional: curse punchlines -> 0.5x + octave pitch drop (source seconds, word only)
    "keep": [["p1", 0.62, 10.45, "Exact confirmed words ...", "hook"], ...]}   # in HIS order; tag = section name
                                               # optional 6th field {"snap": 0}: keep this piece's cut points exact (word splices)
 Caption markup inside the text: ^gold  +green  !red   {words} = caption hidden (a graphic carries those words).
@@ -56,16 +57,32 @@ if SNAP:
             if best is None or e < best - 1e-6 or (abs(e - best) <= 1e-6 and abs(d) < abs(bt - t)): best, bt = e, t + d
         return max(0.0, bt)
     pieces = [(p, a, b, tag, k) if OPTS[k].get("snap", 1) == 0 else (p, quiet(p, a), quiet(p, b), tag, k) for p, a, b, tag, k in pieces]
+# curse slow-mo (Jason's rule): split pieces at the "slow" windows; those parts play at 0.5x with the pitch an octave down
+SLOWW = [tuple(x) for x in cfg.get("slow", [])]
+def split(pc):
+    p, a, b, tag, k = pc; cuts = [(a, b, 1.0)]
+    for sp_, s0, s1 in SLOWW:
+        if sp_ != p: continue
+        nxt = []
+        for x, y, sp in cuts:
+            if sp == 1.0 and x < s1 and s0 < y:
+                if x < s0: nxt.append((x, s0, 1.0))
+                nxt.append((max(x, s0), min(y, s1), 0.5))
+                if s1 < y: nxt.append((s1, y, 1.0))
+            else: nxt.append((x, y, sp))
+        cuts = nxt
+    return [(p, x, y, tag, k, sp) for x, y, sp in cuts if y - x >= 0.05]   # drop slivers left at a piece edge
+pieces = [q for pc in pieces for q in split(pc)]
 edl, f = [], 0
-for i, (p, a, b, tag, k) in enumerate(pieces):
-    out = f"{OUT}/pieces/q{i:03d}.mp4"; d = b - a; N = round(d * FPS); T = N / FPS; vsrc, asrc = SRC[p]
+for i, (p, a, b, tag, k, sp) in enumerate(pieces):
+    out = f"{OUT}/pieces/q{i:03d}.mp4"; d = b - a; N = round(d / sp * FPS); T = N / FPS; vsrc, asrc = SRC[p]
     if not os.path.exists(out) or os.environ.get("FORCE"):
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(a), "-t", str(d + 0.5), "-i", vsrc, "-ss", str(a), "-t", str(d + 0.5), "-i", asrc,
-            "-filter_complex", f"[0:v]scale=1080:1920:flags=lanczos,setpts=PTS-STARTPTS,fps={FPS},tpad=stop=10:stop_mode=clone,trim=end_frame={N},setpts=N/{FPS}/TB[v];"
-            f"[1:a]atrim=0:{d},asetpts=PTS-STARTPTS,apad,atrim=0:{T},afade=t=in:d=0.015,afade=t=out:st={T-0.03}:d=0.03[a]",
+            "-filter_complex", f"[0:v]scale=1080:1920:flags=lanczos,setpts=(PTS-STARTPTS)/{sp},fps={FPS},tpad=stop=10:stop_mode=clone,trim=end_frame={N},setpts=N/{FPS}/TB[v];"
+            f"[1:a]atrim=0:{d},asetpts=PTS-STARTPTS" + (f",aresample=48000,asetrate={48000 * sp},aresample=48000" if sp < 1 else "") + f",apad,atrim=0:{T},afade=t=in:d=0.015,afade=t=out:st={T-0.03}:d=0.03[a]",
             "-map", "[v]", "-map", "[a]", "-r", str(FPS), "-c:v", "libx264", "-crf", "15", "-preset", "fast", "-pix_fmt", "yuv420p",
             "-c:a", "pcm_s16le", "-ar", "48000", out], check=True, timeout=300)
-    edl.append({"p": p, "a": a, "b": b, "speed": 1, "tag": tag, "k": k, "f0": f, "f1": f + N}); f += N
+    edl.append({"p": p, "a": a, "b": b, "speed": sp, "tag": tag, "k": k, "f0": f, "f1": f + N}); f += N
 
 ins, fc = [], ""
 for i in range(len(pieces)): ins += ["-i", f"{OUT}/pieces/q{i:03d}.mp4"]; fc += f"[{i}:v][{i}:a]"
@@ -75,7 +92,7 @@ json.dump(edl, open(f"{OUT}/edl.json", "w"), indent=0)
 
 def mapt(t, k):
     for e in edl:
-        if e["k"] == k and e["a"] - 1e-6 <= t <= e["b"] + 1e-6: return e["f0"] + (t - e["a"]) * FPS
+        if e["k"] == k and e["a"] - 1e-6 <= t <= e["b"] + 1e-6: return e["f0"] + (t - e["a"]) / e["speed"] * FPS
     for e in edl:
         if e["k"] == k and e["a"] >= t: return e["f0"]
     return [e for e in edl if e["k"] == k][-1]["f1"]
