@@ -1,0 +1,96 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>engraving insert</title>
+<style>
+@font-face { font-family: "SS4"; src: url("serif.woff2") format("woff2"); font-weight: 200 900; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
+#stage { position: absolute; inset: 0; background: #FFFFFF; overflow: hidden; }
+.L { position: absolute; left: 0; top: 0; }
+.shot { position: absolute; left: 0; top: 0; max-width: none; mix-blend-mode: multiply; }
+.line { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; line-height: 1.2; }
+svg { overflow: visible; }
+</style>
+<script src="kit.js"></script><script src="scenes.js"></script>
+</head><body><div id="stage">
+  <div id="world" class="L" style="width:1080px;height:1920px"></div>
+  <svg id="geo" class="L" width="1080" height="1920"></svg>
+  <div id="band" class="L" style="width:1080px;height:1920px;background:linear-gradient(to bottom, #fff 0px, rgba(255,255,255,0) 150px, rgba(255,255,255,0) 1150px, #fff 1330px, #fff 1920px)"></div>
+  <div id="lineA" class="line"></div>
+  <div id="defA" class="line"></div>
+  <svg id="dotSvg" class="L" width="1080" height="1920"></svg>
+</div>
+<script>
+/* Engraving cutaway for a talking-head edit (jason-video-editor ENGRAVING CUTAWAYS rule).
+ * Pure seek(t): t in seconds; internal frame f = t*60. One orange device (the dot) travels between key points
+ * and lands on each engraving's key point (compass ring draws on); his words rise one line at a time in bold serif. */
+const { clamp, lerp, lmix, ease, E, hit, prog } = K;
+const S = SCENES[new URLSearchParams(location.search).get("s")];
+const ORANGE = "#E8622C", INK = "#141413";
+const $ = (id) => document.getElementById(id);
+S.shots.forEach((sh) => { sh.el = new Image(); sh.el.src = "img/" + sh.img + ".png"; sh.el.className = "shot"; sh.el.style.display = "none"; $("world").appendChild(sh.el); });
+const ring = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 2.4, pathLength: 1 }, $("geo"));
+const ring2 = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 1.2, pathLength: 1, "stroke-dasharray": "0.004 0.012" }, $("geo"));
+const rule = K.svg("line", { stroke: INK, "stroke-width": 1.6, pathLength: 1 }, $("geo"));
+const dot = K.svg("circle", { fill: ORANGE }, $("dotSvg"));
+const KEYS = S.dot; // [{f, x, y | shot, fx, fy, dur, r, rule}] f = arrival frame (60 fps units); a key on a plate point rides the plate's dolly
+const SH = Object.fromEntries(S.shots.map((s) => [s.name || s.img, s]));
+const zoomOf = (sh, f) => lmix(sh.z0, sh.z1, E.dolly(prog(f, sh.from, sh.to - sh.from)));
+const dimsOf = (sh) => { const ar = sh.ar || 1; return [sh.w, sh.w * ar]; };
+const plateXY = (sh, fx, fy, f) => { const k = zoomOf(sh, f), [W, H] = dimsOf(sh); return [sh.x + (fx - sh.fx) * W * k, sh.y + (fy - sh.fy) * H * k]; };
+const keyXY = (k, f) => (k.shot ? plateXY(SH[k.shot], k.fx, k.fy, Math.max(SH[k.shot].from, Math.min(f, SH[k.shot].to - 1))) : [k.x, k.y]);
+// match cuts: a shot can place its anchor exactly where another plate's point sits on screen at the cut frame
+function resolveAnchors() { S.shots.forEach((sh) => { if (sh.match) { const m = sh.match; [sh.x, sh.y] = plateXY(SH[m.shot], m.fx, m.fy, m.f); } }); }
+
+function dotAt(f) {
+  const k0 = KEYS[0];
+  if (f <= k0.f) { const [x, y] = keyXY(k0, f); if (k0.from) { const q = E.out(prog(f, k0.f - (k0.dur || 24), k0.dur || 24)); return { x: lerp(k0.from[0], x, q), y: lerp(k0.from[1], y, q), i: -1 }; } return { x, y, i: 0 }; }
+  for (let i = 1; i < KEYS.length; i++) {
+    const a = KEYS[i - 1], b = KEYS[i], d = b.dur || 24;
+    if (f < b.f) {
+      const [ax, ay] = keyXY(a, f), [bx, by] = keyXY(b, f), q = E.inOut(prog(f, b.f - d, d));
+      return { x: lerp(ax, bx, q), y: lerp(ay, by, q), i: f < b.f - d ? i - 1 : -1 };
+    }
+  }
+  const k = KEYS[KEYS.length - 1], [x, y] = keyXY(k, f); return { x, y, i: KEYS.length - 1 };
+}
+
+function seek(t) {
+  const f = t * 60;
+  // shots: anchored so the device point stays put while the plate dollies (log-space scale)
+  S.shots.forEach((sh) => {
+    const on = f >= sh.from && f < sh.to; sh.el.style.display = on ? "" : "none"; if (!on) return;
+    K.anchor(sh.el, sh.x, sh.y, sh.w, sh.fx, sh.fy, 0, zoomOf(sh, f));
+  });
+  // device
+  const p = dotAt(f);
+  const landF = KEYS.map((k) => k.f).filter((a) => f >= a);
+  const pulse = Math.max(0, ...KEYS.map((k) => hit(f - k.f, 2, 7)));
+  dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y); dot.setAttribute("r", (S.dotR || 17) * (1 + 0.35 * pulse));
+  // compass ring around the current landing; lifts off when the device leaves
+  const cur = p.i >= 0 ? KEYS[p.i] : null;
+  if (cur && cur.r) {
+    const next = KEYS[p.i + 1], leave = next ? next.f - (next.dur || 24) : 1e9;
+    cur.x = p.x; cur.y = p.y;
+    ring.setAttribute("cx", cur.x); ring.setAttribute("cy", cur.y); ring.setAttribute("r", cur.r);
+    ring2.setAttribute("cx", cur.x); ring2.setAttribute("cy", cur.y); ring2.setAttribute("r", cur.r * 1.32);
+    K.drawOn(ring, f, cur.f, 22, leave - 8, 10); K.drawOn(ring2, f, cur.f + 6, 26, leave - 8, 10);
+    ring.style.transform = `rotate(${-90}deg)`; ring.style.transformOrigin = `${cur.x}px ${cur.y}px`;
+    ring2.style.transform = `rotate(${-90}deg)`; ring2.style.transformOrigin = `${cur.x}px ${cur.y}px`;
+    if (cur.rule) { rule.setAttribute("x1", cur.x); rule.setAttribute("y1", cur.y + cur.r + 10); rule.setAttribute("x2", cur.x); rule.setAttribute("y2", cur.rule); K.drawOn(rule, f, cur.f + 8, 18, leave - 8, 10); }
+    else rule.style.display = "none";
+  } else { ring.style.display = "none"; ring2.style.display = "none"; rule.style.display = "none"; }
+  // words: one line at a time
+  const ln = S.lines.filter((l) => f >= l.words[0].t - 2 && f <= l.out + 30).slice(-1)[0];
+  if (ln) K.maskLine($("lineA"), ln.words, f, { y: ln.y, size: ln.size || 124, out: ln.out, accent: ORANGE, stagger: 4 });
+  else $("lineA").style.display = "none";
+  const df = (S.defs || []).find((d) => f >= d.t - 1 && f < d.out + 12);
+  if (df) {
+    const q = E.out(prog(f, df.t, 16)), o = 1 - E.in(prog(f, df.out, 10));
+    Object.assign($("defA").style, { display: "", top: df.y + "px", fontFamily: "SS4", fontWeight: 400, fontSize: (df.size || 46) + "px", color: "#55554F", letterSpacing: "0.01em",
+      opacity: q * o, transform: `translateY(${(1 - q) * 18}px)`, filter: `blur(${(1 - q) * 4}px)` });
+    $("defA").innerHTML = df.text;
+  } else $("defA").style.display = "none";
+}
+window.seek = seek;
+window.ready = () => { S.shots.forEach((sh) => { sh.ar = sh.el.naturalHeight / sh.el.naturalWidth; }); resolveAnchors(); seek(0); };
+window.CUE_LIST = () => ({ land: KEYS.filter((k) => k.r).map((k) => k.f / 2), words: S.lines.map((l) => l.words[0].t / 2) });
+</script></body></html>
