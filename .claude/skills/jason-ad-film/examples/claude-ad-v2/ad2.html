@@ -1,0 +1,249 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Claude — the spark</title>
+<style>
+@font-face { font-family: "SS4"; src: url("serif.woff2") format("woff2"); font-weight: 200 900; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
+#stage { position: absolute; inset: 0; background: #FAFAF9; overflow: hidden; }
+.L { position: absolute; left: 0; top: 0; }
+.shot { position: absolute; left: 0; top: 0; max-width: none; }
+.print { mix-blend-mode: multiply; }
+.line { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; line-height: 1.2; }
+svg { overflow: visible; }
+</style>
+<script src="spark.js"></script><script src="kit.js"></script>
+</head><body><div id="stage">
+  <div id="black" class="L" style="width:1080px;height:1920px;background:#141413;display:none"></div>
+  <div id="world" class="L" style="width:1080px;height:1920px"></div>
+  <svg id="geo" class="L" width="1080" height="1920"></svg>
+  <div id="flip" class="L" style="width:1080px;height:1920px;display:none;background:#FAFAF9"></div>
+  <div id="flipWorld" class="L" style="width:1080px;height:1920px;display:none"></div>
+  <div id="lineA" class="line"></div>
+  <div id="lineB" class="line"></div>
+  <div id="dev3d" class="L" style="width:1080px;height:1920px;perspective:1300px">
+    <div id="devWrap" style="position:absolute;transform-style:preserve-3d"></div>
+  </div>
+  <div id="shadow" class="L" style="display:none;border-radius:50%;background:radial-gradient(closest-side, rgba(20,20,19,.22), rgba(20,20,19,0));"></div>
+</div>
+<script>
+const { clamp, lerp, lmix, ease, E, hit, crit, prog } = K;
+const G = K.grid(120), b = G.b, BEAT = G.BEAT;      // 30 f beats, 120 f bars
+const LEN = 900, ORANGE = "#D97757", INK = "#141413";
+const $ = (id) => document.getElementById(id);
+
+// ═════════ the device: Claude's spark, collected one ray at a time ═════════
+// 12 ray tips measured from the real mark (angle°, radius in 24-unit space); hub radius 2.47
+const TIPS = [[-178.9, 11.99], [-146.2, 12.21], [-115.5, 13.16], [-79.9, 11.81], [-49.1, 12.32], [-8.8, 12.04], [13.5, 12.26], [41.9, 12.32], [57.1, 11.86], [92.8, 12.0], [124.1, 11.91], [146.5, 11.35]];
+const HUB = 2.47;
+// when each ray is earned (frame) — every masterpiece hands the spark one stroke
+const AWARD = { 3: 132, 4: 192, 5: 284, 6: 326, 7: 375, 8: 428, 9: 458, 10: 488, 11: 518, 0: 533, 1: 563, 2: 593 };   // clockwise from the top: the spark fills in like a dial
+const S0 = 230; // device size in px (final mark size on screen during the film)
+
+const devWrap = $("devWrap");
+const devSvg = K.svg("svg", { width: 400, height: 400, viewBox: "-200 -200 400 400", style: "position:absolute;left:-200px;top:-200px" }, devWrap);
+const rayEls = TIPS.map(() => K.svg("line", { stroke: ORANGE, "stroke-linecap": "round" }, devSvg));
+const hubEl = K.svg("circle", { fill: ORANGE }, devSvg);
+// the finished mark: an extruded stack of the real path (clay 3D), used from the edge-on frame of the hero turn
+const markLayers = [];
+const MARK_N = 18;
+for (let i = MARK_N - 1; i >= 0; i--) {
+  const s = K.svg("svg", { viewBox: "0 0 24 24", width: 400, height: 400, style: `position:absolute;left:-200px;top:-200px;transform:translateZ(${-i * 1.4}px);display:none` }, devWrap);
+  if (i === 0) { const d = K.svg("defs", {}, s); const g = K.svg("linearGradient", { id: "clay", x1: "0", y1: "0", x2: "1", y2: "1" }, d); K.svg("stop", { offset: "0", "stop-color": "#E89A7C" }, g); K.svg("stop", { offset: "0.55", "stop-color": ORANGE }, g); K.svg("stop", { offset: "1", "stop-color": "#C4644A" }, g); }
+  const k = i / MARK_N;
+  K.svg("path", { d: SPARK, fill: i === 0 ? "url(#clay)" : `rgb(${Math.round(lerp(190, 150, k))},${Math.round(lerp(96, 72, k))},${Math.round(lerp(70, 52, k))})` }, s);
+  markLayers.push(s);
+}
+function drawDevice(f, S, mode) {
+  const u = S / 24;
+  const anyAward = Object.values(AWARD).filter((a) => f >= a);
+  const pulse = Math.max(0, ...Object.values(AWARD).map((a) => hit(f - a, 2, 5)), hit(f, 2, 6));
+  hubEl.setAttribute("r", HUB * u * (1 + 0.2 * pulse));
+  TIPS.forEach(([ang, r], i) => {
+    const a = AWARD[i], g = a === undefined ? 0 : ease(f, a, 14, E.out);
+    const el = rayEls[i];
+    el.style.display = g > 0.002 ? "" : "none";
+    const rad = (ang * Math.PI) / 180, r0 = HUB * 0.9 * u, r1 = lerp(r0, (r - 0.9) * u, g);
+    el.setAttribute("x1", Math.cos(rad) * r0); el.setAttribute("y1", Math.sin(rad) * r0);
+    el.setAttribute("x2", Math.cos(rad) * r1); el.setAttribute("y2", Math.sin(rad) * r1);
+    el.setAttribute("stroke-width", 1.75 * u);
+  });
+  devSvg.style.display = mode === "mark" ? "none" : "";
+  markLayers.forEach((m) => { m.style.display = mode === "mark" ? "" : "none"; m.style.width = S + "px"; m.style.height = S + "px"; m.style.left = -S / 2 + "px"; m.style.top = -S / 2 + "px"; });
+}
+
+// ═════════ shots: each image is anchored to the device, so the eye is already there at every cut ═════════
+// [id, asset, start, end, anchorX, anchorY, width, rot, entry, exit, print?]
+const SHOTS = [
+  ["melen", "melencolia", 102, 174, 0.742, 0.335, 760, 0, "scale", "whip", true],
+  ["eras", "erasmus", 174, 228, 0.505, 0.548, 760, 0, "vel", "drop", true],
+  ["hand", "hand_c", 264, 315, 0.128, 0.03, 560, -6, "rise", "cut", false],
+  ["muy", "muy_cells", 315, 356, 0.664, 0.574, 1150, 0, "cut", "implode", false],
+  ["compass", "compass", 420, 450, 0.52, 0.55, 980, -8, "cut", "cut", false],
+  ["globe", "globe2", 450, 480, 0.392, 0.07, 620, 0, "cut", "cut", false],
+  ["knight", "knight", 480, 510, 0.462, 0.30, 1000, 0, "cut", "cut", true],
+  ["arcade", "arcade", 510, 555, 0.50, 0.53, 1500, 0, "cut", "cut", true],
+  ["bust", "bust", 555, 585, 0.215, 0.445, 1500, 0, "cut", "cut", false],
+  ["sphere", "sphere", 585, 615, 0.50, 0.42, 820, 0, "cut", "collapse", false],
+];
+const world = $("world"), flipWorld = $("flipWorld");
+const shotEl = {};
+for (const s of SHOTS) {
+  const img = document.createElement("img"); img.src = `img/${s[1]}.png`; img.className = "shot" + (s[10] ? " print" : "");
+  (s[2] >= 420 && s[2] < 450 ? flipWorld : world).appendChild(img); shotEl[s[0]] = img;
+}
+// hook: engravings swapped inside one compass circle
+const HOOK = [["moon_engr", 0.48, 0.43, 900], ["roundel", 0.5, 0.5, 820], ["init_O", 0.52, 0.53, 860], ["moon_photo", 0.46, 0.42, 1900], ["moon_engr", 0.48, 0.43, 900]];
+const hookBox = document.createElement("div"); hookBox.className = "L"; hookBox.style.width = "1080px"; hookBox.style.height = "1920px"; world.appendChild(hookBox);
+const hookImgs = HOOK.map(([n]) => { const i = document.createElement("img"); i.src = `img/${n}.png`; i.className = "shot print"; hookBox.appendChild(i); return i; });
+// the drop: the moon on black
+const moon = document.createElement("img"); moon.src = "img/moon_photo.png"; moon.className = "shot"; moon.style.display = "none"; $("black").appendChild(moon);
+
+// geometry layer: compass circles + the pen strokes that hand each ray over
+const geo = $("geo");
+const ring = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 3, pathLength: 1, "stroke-dasharray": "1 3" }, geo);
+const ring2 = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 2.5, pathLength: 1, "stroke-dasharray": "1 3" }, geo);
+const pens = {};
+for (const i in AWARD) pens[i] = K.svg("line", { stroke: ORANGE, "stroke-width": 5, "stroke-linecap": "round", pathLength: 1, "stroke-dasharray": "1 3" }, geo);
+const arcadeLines = [-160, -140, -125, 20, 35, 160].map(() => K.svg("line", { stroke: ORANGE, "stroke-width": 4, "stroke-linecap": "round", pathLength: 1, "stroke-dasharray": "1 3" }, geo));
+
+// ═════════ device path (stage position of the spark's centre) ═════════
+const HOME = [540, 760];
+const DEV = [ // frame → target, critically damped between them
+  [0, 540, 760], [102, 540, 600], [174, 540, 600], [216, 540, 760], [264, 540, 640], [315, 540, 820], [360, 540, 900], [420, 540, 860], [615, 540, 820],
+];
+const LINE_Y = 1270, LINE_SIZE = 124;
+function periodPos() { const w = K.measure("a thought", K.font(LINE_SIZE, 700, "SS4"), -0.045, LINE_SIZE); return [540 + w / 2 - 20 + 26, LINE_Y + LINE_SIZE * 0.86]; }
+function devPos(f) {
+  let x = DEV[0][1], y = DEV[0][2];
+  for (let i = 1; i < DEV.length; i++) { const g = crit(f - DEV[i][0], 0.17); x += (DEV[i][1] - DEV[i - 1][1]) * g; y += (DEV[i][2] - DEV[i - 1][2]) * g; }
+  return [x, y];
+}
+
+// ═════════ render ═════════
+window.CUES = [];
+function seek(t) {
+  const f = clamp(t * FPS, 0, LEN - 1e-3);
+  const [dx, dy] = devPos(f);
+
+  // ── hook: dot → compass circle → iris of engravings inside it ──
+  const hookOn = f < 104;
+  hookBox.style.display = hookOn ? "" : "none";
+  if (hookOn) {
+    const R = 330;
+    const iris = f < 10 ? 0 : Math.min(R, 7 * Math.pow(1.27, f - 10));
+    const shrink = lmix(1, 0.75, E.in(prog(f, 84, 18)));
+    let k = 0; [45, 57, 69, 81].forEach((s, i) => { if (f >= s) k = i + 1; });
+    const swapPunch = 1 + 0.015 * Math.max(...[45, 57, 69, 81].map((s) => hit(f - s, 2, 5)));
+    hookImgs.forEach((im, i) => { im.style.display = i === k ? "" : "none"; });
+    const [n, fx, fy, w] = HOOK[k];
+    K.anchor(hookImgs[k], dx, dy, w, fx, fy, 0, shrink * swapPunch * lmix(1.06, 1, ease(f, 10, 40, E.out)));
+    hookBox.style.clipPath = `circle(${iris * shrink}px at ${dx}px ${dy}px)`;
+    hookImgs[k].style.mixBlendMode = n === "moon_photo" ? "normal" : "multiply";
+    ring.setAttribute("cx", dx); ring.setAttribute("cy", dy); ring.setAttribute("r", (R + 14) * shrink);
+    K.drawOn(ring, f, 4, 34, 84, 14);
+  } else if (f >= 600 && f < 722) {
+    // bookend: the opening compass circle is drawn again, round the finished spark
+    ring.setAttribute("cx", dx); ring.setAttribute("cy", dy); ring.setAttribute("r", 250);
+    K.drawOn(ring, f, 602, 34, 708, 12);
+  } else { ring.style.display = "none"; }
+
+  // ── image shots ──
+  for (const s of SHOTS) {
+    const [id, , t0, t1, fx, fy, w, rot, entry, exit] = s;
+    const img = shotEl[id];
+    const on = f >= t0 && f < t1 + (exit === "whip" || exit === "drop" || exit === "shrink" ? 0 : 0);
+    img.style.display = on ? "" : "none"; if (!on) continue;
+    let k = lmix(1, 1.05, E.dolly(prog(f, t0, t1 - t0)));   // living hold: slow push through every shot
+    let ox = 0, oy = 0, r = rot;
+    if (entry === "scale") k *= lmix(1.8, 1, ease(f, t0, 36, E.out));
+    if (entry === "vel") ox += 520 * (1 - ease(f, t0, 48, E.out));           // enters already moving (~40 px/f), decays
+    if (entry === "rise") oy += 760 * (1 - ease(f, t0, 40, E.out));
+    if (entry === "cut") k *= lmix(1.06, 1, ease(f, t0, 14, E.out));         // a cut that opens in motion
+    if (exit === "whip") ox -= 230 * E.exit(prog(f, t1 - 16, 16));
+    if (exit === "drop") oy += 520 * E.exit(prog(f, t1 - 14, 14));
+    if (exit === "implode") { const q = E.in(prog(f, 342, 14)); k *= lmix(1, 0.03, q); r += -14 * q; }
+    if (exit === "shrink") k *= lmix(1, 0.75, E.in(prog(f, t1 - 16, 16)));
+    if (exit === "collapse") k *= lmix(1, 0.02, E.in(prog(f, t1 - 14, 14)));   // the last artwork falls into the finished spark
+    // the period hand-off: the device leaves Erasmus, so the image stops following it
+    const ax = id === "eras" && f >= 214 ? devPos(213)[0] : dx, ay = id === "eras" && f >= 214 ? devPos(213)[1] : dy;
+    K.anchor(img, ax + ox, ay + oy, w, fx, fy, r, k);
+  }
+
+  // ── pen strokes: each artwork's line is drawn on, then lifts as the ray grows on the spark ──
+  for (const i in AWARD) {
+    const a = AWARD[i], pen = pens[i];
+    const on = f >= a - 10 && f < a + 14;
+    pen.style.display = on ? "" : "none"; if (!on) continue;
+    const ang = (TIPS[i][0] * Math.PI) / 180, L0 = 30, L1 = 300;
+    pen.setAttribute("x1", dx + Math.cos(ang) * L1); pen.setAttribute("y1", dy + Math.sin(ang) * L1);
+    pen.setAttribute("x2", dx + Math.cos(ang) * L0); pen.setAttribute("y2", dy + Math.sin(ang) * L0);
+    K.drawOn(pen, f, a - 10, 10, a, 12);                                     // drawn toward the spark, then absorbed
+  }
+  // arcade: the perspective lines all converge on the spark
+  arcadeLines.forEach((ln, j) => {
+    const on = f >= 512 && f < 552; ln.style.display = on ? "" : "none"; if (!on) return;
+    const ang = ([-160, -140, -125, 20, 35, 160][j] * Math.PI) / 180;
+    ln.setAttribute("x1", dx + Math.cos(ang) * 720); ln.setAttribute("y1", dy + Math.sin(ang) * 720); ln.setAttribute("x2", dx + Math.cos(ang) * 40); ln.setAttribute("y2", dy + Math.sin(ang) * 40);
+    K.drawOn(ln, f, 512 + j * 2, 12, 540, 10);
+  });
+  // a compass circle around Melencolia's gaze
+  const m2 = f >= 110 && f < 172; ring2.style.display = m2 ? "" : "none";
+  if (m2) { ring2.setAttribute("cx", dx); ring2.setAttribute("cy", dy); ring2.setAttribute("r", 150); K.drawOn(ring2, f, 110, 22, 156, 12); }
+
+  // ── the drop: implosion, silence, then black with the moon; the spark fills the frame once ──
+  const blk = f >= 358 && f < 438;
+  $("black").style.display = blk ? "" : "none";
+  if (blk) { moon.style.display = ""; K.anchor(moon, dx, dy, 2100, 0.46, 0.42, 0, lmix(1.35, 1, ease(f, 359, 30, E.out)) * lmix(1, 1.04, E.dolly(prog(f, 380, 60)))); }
+  // flip back to white: a disc opens from the spark (log radius), carrying the next shot inside it
+  const flipOn = f >= 419 && f < 450;
+  [$("flip"), flipWorld].forEach((el) => (el.style.display = flipOn ? "" : "none"));
+  if (flipOn) { const rr = Math.min(2300, 30 * Math.pow(1.28, f - 419)); const cp = `circle(${rr}px at ${dx}px ${dy}px)`; $("flip").style.clipPath = cp; flipWorld.style.clipPath = cp; }
+
+  // ── words: one line at a time, masked rise; the device becomes the period ──
+  const lineA = $("lineA"), lineB = $("lineB");
+  if (f < 100) K.maskLine(lineA, [{ t: 24, w: "Every" }, { t: 30, w: "masterpiece" }], f, { y: LINE_Y, size: LINE_SIZE, out: 90 });
+  else if (f < 180) K.maskLine(lineA, [{ t: 108, w: "started" }, { t: 114, w: "as" }], f, { y: LINE_Y, size: LINE_SIZE, out: 166 });
+  else if (f < 300) { K.maskLine(lineA, [{ t: 204, w: "a" }, { t: 210, w: "thought." }], f, { y: LINE_Y, size: LINE_SIZE, out: 250 }); }
+  else if (f < 645) { lineA.style.transform = ""; K.maskLine(lineA, f < 610 ? [] : [{ t: 615, w: "a" }, { t: 621, w: "thought." }], f, { y: 1210, size: LINE_SIZE }); }
+  else K.morphLine(lineA, "a thought.", "Keep thinking.", f < 712 ? f : 711, 645, { y: 1210, size: LINE_SIZE });
+  if (f >= 705) { const q = E.in(prog(f, 705, 12)); lineA.style.opacity = 1 - q; lineA.style.transform = `translateY(${q * 60}px)`; } else lineA.style.opacity = 1;
+  lineB.style.display = "none";
+
+  // ── device: size, 3D hero turn, then the lockup ──
+  let S = S0, mode = "rays", rotY = 0, tilt = 0, px = dx, py = dy;
+  if (f >= 342 && f < 360) S *= lmix(1, 1.25, E.in(prog(f, 342, 14)));                 // grows while the world implodes
+  if (f >= 360 && f < 420) S *= lmix(1.25, 1.55, ease(f, 360, 20, E.out));                // fills the frame once, on the drop
+  if (f >= 420 && f < 460) S *= lmix(1.55, 1, ease(f, 419, 24, E.out));
+  const H0 = 720;                                                                         // the hero turn on the bar-7 downbeat
+  if (f >= H0) {
+    const p = ease(f, H0, 42, E.inOut); rotY = 360 * p; tilt = 12 * Math.sin(Math.PI * p);
+    if (rotY >= 90) mode = "mark";                                                        // swap to the real mark on the edge-on frame
+    S *= 1 + 0.012 * hit(f - H0, 3, 7) + 0.1 * Math.sin(Math.PI * p);
+  }
+  // lockup: the mark shrinks and slides left; the name arrives beside it
+  const NAME_SIZE = 150, nameFont = K.font(NAME_SIZE, 600, "SS4"), TW = K.measure("Claude", nameFont, -0.03, NAME_SIZE);
+  const MARK = 116, GAP = 40, LX = 540 - (MARK + GAP + TW) / 2, LY = 900;
+  const lk = ease(f, 764, 30, E.inOut);
+  if (f >= 764) { S = lmix(S0, MARK, lk); px = lerp(dx, LX + MARK / 2, lk); py = lerp(dy, LY, lk); }
+  const push = lmix(1, 1.1, E.dolly(prog(f, 795, 105)));
+  devWrap.style.left = px + "px"; devWrap.style.top = py + "px";
+  devWrap.style.transform = `rotateX(${tilt}deg) rotateY(${rotY}deg)`;
+  $("dev3d").style.transformOrigin = `${LX + (MARK + GAP + TW) / 2}px ${LY}px`; $("dev3d").style.transform = `scale(${push})`;
+  drawDevice(f, S, mode);
+  // soft contact shadow only while it turns in 3D
+  const sh = $("shadow"), shOn = f >= H0 && f < H0 + 46; sh.style.display = shOn ? "" : "none";
+  if (shOn) { const w = S * 1.1 * (0.6 + 0.4 * Math.abs(Math.cos((rotY * Math.PI) / 180))); Object.assign(sh.style, { left: px - w / 2 + "px", top: py + S * 0.62 + "px", width: w + "px", height: w * 0.16 + "px", opacity: Math.sin(Math.PI * ease(f, H0, 42, E.inOut)) }); }
+  // the name: tracking collapses, accent relaxes to ink
+  const nm = lineB;
+  if (f >= 776) {
+    const q = ease(f, 776, 24, E.out), c = ease(f, 776, 22, E.smooth);
+    nm.style.display = ""; nm.style.textAlign = "left"; nm.style.width = "auto";
+    nm.innerHTML = "Claude";
+    const col = `rgb(${Math.round(lerp(217, 20, c))},${Math.round(lerp(119, 20, c))},${Math.round(lerp(87, 19, c))})`;
+    Object.assign(nm.style, { left: LX + MARK + GAP + "px", top: LY - NAME_SIZE * 0.62 + "px", fontFamily: "SS4", fontSize: NAME_SIZE + "px", fontWeight: 600, letterSpacing: lerp(0.7, -0.03, q) + "em", color: col, opacity: clamp(prog(f, 776, 6)), fontVariationSettings: '"opsz" 60', transformOrigin: `${-(MARK + GAP) + (MARK + GAP + TW) / 2}px ${NAME_SIZE * 0.62}px`, transform: `scale(${push})` });
+  }
+}
+window.seek = seek;
+window.ready = () => seek(0);
+// sound cues computed from the picture (frame numbers)
+window.CUE_LIST = () => ({ ticks: [0, ...Object.values(AWARD)].sort((a, b) => a - b), swaps: [45, 57, 69, 81], whoosh: [{ apex: 102 }, { apex: 170 }, { apex: 428 }], drop: 360, silence: [356, 360], stop: 720, name: 792, words: [24, 30, 108, 114, 204, 210, 615, 621] });
+</script></body></html>

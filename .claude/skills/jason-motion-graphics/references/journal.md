@@ -60,3 +60,34 @@ Plain English. After every piece: what shipped, his score, what to fix, rules he
   - a soft clay 3D spark;
   - the dot blooms into the spark, ending on the lockup.
 - Leon also open-sourced his method (the `cinetic` skill, MIT). A craft digest was written from it: whole-frame grids, 3 easing curves, velocity across cuts, one device that becomes the mark, accent at about 5%, sound computed from the picture, a ship gate.
+
+## 2026-10-09 · Claude ad v2 (built with the new jason-ad-film skill)
+- **Concept:** the orange dot is Claude's spark under construction. Each engraving hands it one ray, clockwise (12 rays measured from the real logo). The finished spark turns once in 3D and becomes the logo.
+- **Copy:** "Every masterpiece / started as / a thought." → callback "a thought." morphs into "Keep thinking." → "✳ Claude".
+- **Assets:**
+  - all public-domain Met engravings and plates in one treatment (grayscale, paper knocked out, rembg cutouts);
+  - Dürer's *Melencolia I*, *Erasmus* and *Knight*;
+  - Muybridge;
+  - the moon on black (the drop, a polarity flip);
+  - a surveyor's compass, a globe;
+  - an arcade (its perspective converges on the spark);
+  - a plaster hand, a bust, a glass sphere.
+- **Craft:**
+  - 120 BPM whole-frame grid;
+  - the music's drop on 6.0 s with a suck of silence before it;
+  - the music stops on the bar line at the hero turn; one soft bell as "Claude" becomes readable.
+- **Finish:**
+  - adaptive optical-flow motion blur (3,821 samples, 240° shutter, clamped at cuts), float blend;
+  - BT.709;
+  - −14 LUFS target (measured −13.3 integrated, −1.4 dB peak).
+- **QA rounds fixed:**
+  - partial-spark scribbles (now clockwise);
+  - a period hand-off that looked wrong;
+  - a moon card edge;
+  - the bust photo box (cut out) and the Muybridge mount (cropped);
+  - a blank frame at 450;
+  - a hand colliding with the words;
+  - a messy morph;
+  - an empty lull (bookend compass circle);
+  - the sphere popping out (now collapses into the spark);
+  - ghost frames at cuts.
