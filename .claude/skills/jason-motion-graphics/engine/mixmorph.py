@@ -9,15 +9,35 @@ def load(p):
 def peak(x):
     m=np.abs(x).mean(1); win=int(SR*0.005); env=np.convolve(m,np.ones(win)/win,'same'); return int(np.argmax(env))
 B=lambda n:n*0.5
-EV=[ # time, file, gain(dB)
- (B(1),'click.wav',-6),(B(2),'ui/open_ui.wav',-14),(B(3),'ui/success_ui.wav',-8),(B(4),'pop.wav',-12),
- (B(5),'ios/ios_tritone.wav',-8),(B(6),'ui/open_ui.wav',-14),(B(7),'click.wav',-10),(B(7)+0.3,'swoosh.wav',-10),
- (B(8),'pop.wav',-12),(B(9),'ios/ios_success.wav',-9),(B(10),'ios/ios_tink.wav',-6),(B(11),'ui/open_ui.wav',-14),
- (B(12),'click.wav',-10),(B(13),'ios/ios_key.wav',-14),(B(14),'ui/switch.wav',-6),(B(15),'swoosh.wav',-14),
- (B(16),'ios/ios_key.wav',-18),(B(17),'click.wav',-8),(B(18),'click.wav',-8),(B(19),'ui/open_ui.wav',-12),
- (B(20),'swoosh.wav',-14),(B(21),'ios/ios_tink.wav',-10),(B(22),'ios/ios_tink.wav',-8),(B(23),'ui/open_ui.wav',-12),
- *[(B(24)+i*0.032,'ios/ios_key.wav',-20) for i in range(13)],
- (B(25),'pop.wav',-12),(B(26),'ios/ios_received.wav',-8),(B(27),'swoosh.wav',-14),
+EV=[ # time, file, gain(dB). v2 (Jason: "sfx could be better"): one sound per KIND of moment, no repeats of the same swell,
+     # taps = real buttons, panels opening = iOS lock/card sound, transitions quieter and lighter, typing = one key per letter, hovers silent
+ (B(1),'pack5/button_1.wav',-8),            # press Post
+ (B(2),'ios/ios_key.wav',-16),              # becomes loader (light)
+ (B(3),'ui/success_ui.wav',-10),            # Posted ✓
+ (B(4),'pop.wav',-15),                      # island
+ (B(5),'ios/ios_tritone.wav',-11),          # notification
+ (B(6),'ios/ios_lock.wav',-14),             # card opens
+ (B(7),'click.wav',-12),                    # grab
+ (B(7)+0.3,'pack5/deep_whoosh.wav',-14),    # swipe away
+ (B(8),'pop.wav',-16),                      # Apple Pay pill
+ (B(9),'ios/ios_success.wav',-10),          # payment received
+ (B(10),'ios/ios_tink.wav',-8),             # gold check
+ (B(11),'ios/ios_lock.wav',-17),            # settings row
+ (B(12),'click.wav',-12),                   # grab knob
+ (B(13),'ios/ios_key.wav',-18),             # stretch
+ (B(14),'ui/switch.wav',-7),                # flips off ON the beat
+ (B(15),'pack3/woosh.wav',-20),             # knob becomes the tab indicator
+ (B(17),'pack5/button_2.wav',-9),           # tap Followers
+ (B(18),'pack5/button_2.wav',-10),          # tap Money
+ (B(19),'pack5/deep_whoosh.wav',-19),       # chart opens
+ (B(20),'pack5/sparkle.wav',-22),           # line draws
+ (B(21),'ios/ios_tink.wav',-12),            # tooltip
+ (B(22),'ios/ios_tink.wav',-10),            # peak
+ (B(23),'ios/ios_lock.wav',-16),            # ⌘K
+ *[(B(24)+i*0.032,'pack5/typing_2.wav' if i%2==0 else 'ios/ios_key.wav',-19) for i in range(13)],
+ (B(25),'pop.wav',-14),                     # filter to one
+ (B(26),'ios/ios_received.wav',-9),         # toast
+ (B(27),'pack3/woosh.wav',-18),             # back to Post
 ]
 LEN=14.0; N=int(LEN*SR)
 fx=np.zeros((N,2),np.float32); cache={}

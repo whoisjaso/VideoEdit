@@ -13,3 +13,13 @@ Plain English. After every piece: what shipped, his score, what to fix, rules he
 ## 2026-10-09 · Skill split
 - Jason: "we need to create 2 skills for distinguishing the type of edits." So `jason-video-editor` = his footage; `jason-motion-graphics` = standalone motion pieces from a brief.
 - Moved here: the morph engine (`engine/`), `mg-quality-bar.md`, a brief template. The Remotion kits and SFX library stay shared in the editor skill.
+
+## "Just Post" v2: sound pass (Jason: "sfx could be better, there's one sound I don't like"; he hasn't named it yet)
+- Replaced the soft "open" swell, which played 5 times, with a different sound per kind of moment:
+  - real buttons (pack5) for taps;
+  - the iOS lock/card sound for panels opening;
+  - lighter whooshes for transitions;
+  - one real keystroke per typed letter;
+  - silent hovers.
+- Transitions dropped 4-6 dB so the interactions lead. Every sound is still placed by its measured peak.
+- **Waiting:** which single sound he disliked. When he names it, it's banned for motion pieces (rule here).
