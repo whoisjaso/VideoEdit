@@ -223,3 +223,46 @@ export const Moment: React.FC<{ words: { t: string; at: number }[]; until: numbe
     </AbsoluteFill>
   );
 };
+
+/* ---------------- v4: 3D camera + whip transitions (after v3 scored 6.9: "nothing moves, too small, flat camera") ---------------- */
+type CamKey = { f: number; rx?: number; ry?: number; rz?: number; x?: number; y?: number; z?: number };
+const lerpKeys = (keys: CamKey[], f: number) => {
+  const k = [...keys].sort((a, b) => a.f - b.f);
+  if (f <= k[0].f) return k[0];
+  for (let i = 0; i < k.length - 1; i++) {
+    const a = k[i], b = k[i + 1];
+    if (f <= b.f) {
+      const t = (f - a.f) / Math.max(1, b.f - a.f), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // easeInOutCubic
+      const m = (p: keyof CamKey) => ((a[p] as number) ?? 0) + ((((b[p] as number) ?? 0) - ((a[p] as number) ?? 0)) * e);
+      return { f, rx: m("rx"), ry: m("ry"), rz: m("rz"), x: m("x"), y: m("y"), z: m("z") };
+    }
+  }
+  return k[k.length - 1];
+};
+/** a real 3D stage: children are placed in 3D (use <Z depth> inside); the camera flies through keyframes (eased) */
+export const Stage3D: React.FC<{ keys: CamKey[]; children: React.ReactNode; persp?: number }> = ({ keys, children, persp = 1700 }) => {
+  const f = useCurrentFrame();
+  const c = lerpKeys(keys, f);
+  return (
+    <AbsoluteFill style={{ perspective: persp, perspectiveOrigin: "50% 45%" }}>
+      <AbsoluteFill style={{ transformStyle: "preserve-3d", transform: `translate3d(${c.x ?? 0}px, ${c.y ?? 0}px, ${c.z ?? 0}px) rotateX(${c.rx ?? 0}deg) rotateY(${c.ry ?? 0}deg) rotateZ(${c.rz ?? 0}deg)` }}>{children}</AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+/** depth layer inside Stage3D: positive = toward the camera (moves more on camera moves = parallax for free) */
+export const Z: React.FC<{ depth: number; children: React.ReactNode }> = ({ depth, children }) => (
+  <AbsoluteFill style={{ transform: `translateZ(${depth}px)`, transformStyle: "preserve-3d" }}>{children}</AbsoluteFill>
+);
+/** whip: scene enters swinging in from the right (rotateY + x) and exits whipping left; pair with CameraMotionBlur samples≥7 for the smear */
+export const Whip: React.FC<{ from: number; to: number; inLen?: number; outLen?: number; children: React.ReactNode }> = ({ from, to, inLen = 10, outLen = 9, children }) => {
+  const f = useCurrentFrame();
+  if (f < from || f >= to) return null;
+  const ei = (t: number) => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 4), eo = (t: number) => Math.pow(Math.max(0, Math.min(1, t)), 3);
+  const i = from === 0 ? 1 : ei((f - from) / inLen), o = eo((f - (to - outLen)) / outLen);
+  const x = (1 - i) * 1300 - o * 1300, ry = (1 - i) * -38 + o * 38;
+  return (
+    <AbsoluteFill style={{ perspective: 1400 }}>
+      <AbsoluteFill style={{ transform: `translateX(${x}px) rotateY(${ry}deg) scale(${1 - 0.08 * Math.max(1 - i, o)})`, opacity: Math.min(1, i * 2) * (1 - o * 0.6) }}>{children}</AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
