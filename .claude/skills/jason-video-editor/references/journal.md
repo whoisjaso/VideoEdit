@@ -301,3 +301,7 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 **What moved it (my read):** real proof-style UI (comment card, toggle, pixel meter) on one dark stage; hard cutaways that alternate with his face instead of graphics floating over him; 12 fps steppy motion + glow + grain giving a "designed" texture; caption accent words in serif; every graphic on his exact word with a sound.
 **Locked as a rule:** the Coop look is the motion-graphics default (SKILL.md top).
 **To get from 7.7 to 8.5+:** more graphic density per sentence (a new element every ~0.5s inside a cutaway); real logos/thumbnails fetched from the web when a brand is named; a light→dark flip or colour slam on the punchline; text behind his head on one hero word per section (the 8.3 trick) combined with this look.
+
+### Jason on v5: "I just wish the animations felt a lot smoother and non-laggy."
+- The cause was Cooperson's 12 fps stepping (held frames). Jason's taste beats the reference: **rule: motion is always smooth 30 fps, never stepped.**
+- v6: STEP = 1, motion blur (6 samples, 180°) on every cutaway, springs forced to no-wobble (critical damping), captions ease in over 7 frames with ease-out instead of a 4-frame snap. `renders/mg-coop-sample-v6-smooth.mp4`.

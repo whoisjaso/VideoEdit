@@ -2,26 +2,27 @@
  * COOP KIT — the "preset look" decoded from Jason Cooperson's Claude-edited YouTube video (sGt1ACELN4k, 2026-10-08).
  * Every value here is a dialed-in preset value, not a per-episode choice (his rule: "have Claude save the values,
  * so it follows the recipe instead of inventing it every time").
- *   - motion graphics animate at 12 fps on the 30 fps timeline (held frames: 3,2,3,2) -> "cinematic" stepped motion
+ *   - motion is SMOOTH 30 fps + motion blur (Jason, 2026-10-09: the 12 fps stepped look "felt laggy" -> dropped; STEP = 1)
  *   - a glow layer on every graphic + grain on everything
  *   - captions: lowercase bold sans, 2-4 words, ONE accent word in italic serif (Instrument Serif)
  *   - graphics = full-screen hard cutaways on a near-black stage with a blue/violet light band, real UI, real icons
  *   - colour still means something (our locked rule): gold = key idea, green = win, red = problem
  */
 import React from "react";
+import { CameraMotionBlur } from "@remotion/motion-blur";
 import { AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import "@fontsource-variable/inter/opsz.css";
 import "@fontsource/instrument-serif/400-italic.css";
 import { CAPS, Cap } from "../ep/timeline";
 
 export const FPS = 30;
-export const STEP = FPS / 12;
+export const STEP = 1; // Jason: smooth, never steppy. Do not raise this.
 export const SANS = "'Inter Variable', Inter, sans-serif";
 export const SERIF = "'Instrument Serif', serif";
 export const C = { bg: "#060609", ink: "#F4F4F6", dim: "rgba(244,244,246,.46)", gold: "#FFC94A", green: "#34C759", red: "#FF453A", blue: "#3D63FF", violet: "#8B46FF", card: "rgba(28,28,34,.86)" };
 const cl = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-/** current frame snapped to the 12 fps grid (use for every graphic, never for captions) */
+/** frame used by every graphic (kept as a hook so the whole kit shares one clock) */
 export const useStep = () => {
   const f = useCurrentFrame();
   return Math.floor(f / STEP) * STEP;
@@ -29,12 +30,14 @@ export const useStep = () => {
 /** stepped spring: 0 -> 1 starting at `at` (frame inside the current Sequence) */
 export const useIn = (at = 0, damping = 18, stiffness = 170) => {
   const f = useStep();
-  return spring({ frame: f - at, fps: FPS, config: { damping, stiffness, mass: 0.8 } });
+  // never underdamped: iOS-style settle with no wobble (critical damping = 2*sqrt(k*m))
+  const d = Math.max(damping, 2 * Math.sqrt(stiffness * 0.8) * 1.05);
+  return spring({ frame: f - at, fps: FPS, config: { damping: d, stiffness, mass: 0.8 } });
 };
 
 /** grain on everything: animated SVG noise, new seed every 12 fps step */
 export const Grain: React.FC<{ o?: number }> = ({ o = 0.075 }) => {
-  const seed = Math.floor(useCurrentFrame() / STEP) % 9;
+  const seed = Math.floor(useCurrentFrame() / 2) % 9; // grain texture refresh, not motion
   return (
     <AbsoluteFill style={{ pointerEvents: "none", mixBlendMode: "overlay", opacity: o }}>
       <svg width="100%" height="100%"><filter id={`g${seed}`}><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed={seed} stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter={`url(#g${seed})`} /></svg>
@@ -74,12 +77,12 @@ const CutIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const p = useIn(0, 20, 190);
   const f = useStep();
   const { durationInFrames: d } = useVideoConfig();
-  const push = interpolate(f, [0, d], [0, 0.045], cl); // slow push on the 12 fps grid: the graphic is never still
+  const push = interpolate(f, [0, d], [0, 0.045], cl); // slow continuous push: the graphic is never still
   return (
     <AbsoluteFill>
       <Stage />
       <AbsoluteFill style={{ transform: `scale(${1.24 + 0.06 * (1 - p) + push})`, filter: `blur(${(1 - p) * 8}px)` }}>
-        <Glow>{children}</Glow>
+        <CameraMotionBlur samples={6} shutterAngle={180}><Glow>{children}</Glow></CameraMotionBlur>
       </AbsoluteFill>
       <Grain o={0.09} />
     </AbsoluteFill>
@@ -126,7 +129,7 @@ export const CoopCaptions: React.FC<{ accents: Record<string, string>; hide: [nu
         {ch.words.map((w) => {
           const t = f - w.f0 + 1;
           if (t < 0) return null;
-          const p = interpolate(t, [0, 4], [0, 1], cl);
+          const p = interpolate(t, [0, 7], [0, 1], { ...cl, easing: (x) => 1 - Math.pow(1 - x, 3) }); // smooth ease-out, no snap
           const key = clean(w.t);
           const acc = accents[key];
           return (
@@ -235,7 +238,7 @@ export const Comments: React.FC<{ app: string; items: { user: string; text: stri
           <span style={{ fontFamily: SANS, fontWeight: 500, fontSize: 32, color: C.dim, marginLeft: "auto" }}>{items.filter((i) => f >= i.at).length}</span>
         </div>
         {items.map((it) => {
-          const p = spring({ frame: f - it.at, fps: FPS, config: { damping: 18, stiffness: 190 } });
+          const p = spring({ frame: f - it.at, fps: FPS, config: { damping: 28, stiffness: 190 } });
           if (f < it.at) return null;
           return (
             <div key={it.at} style={{ display: "flex", gap: 22, padding: "22px 0", borderTop: "1px solid rgba(255,255,255,.07)", opacity: p, transform: `translateY(${(1 - p) * 30}px)` }}>
