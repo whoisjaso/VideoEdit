@@ -5,6 +5,8 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 
 # Jason Video Editor — SOP
 
+> **SKILL UPKEEP (Jason, 2026-10-09):** Jason's claude.ai account copy of this skill is the MASTER; it is what loads in Claude chat, the Claude app and every Claude Code session. Editing the repo (or `~/.claude/skills/synced/`, a read-only download) does NOT update his account. After every approved change: edit the repo skill → run `bash skills-sync.sh <outdir>` at the repo root → send Jason every zip it marks "NEEDS RE-UPLOAD" and tell him to replace that skill at claude.ai (Settings → Capabilities → Skills). Never report a skill as updated until he has re-uploaded it.
+>
 > **TWO SKILLS (Jason, 2026-10-09):** this skill = edits of his raw footage (cut, captions, SFX, graphic cutaways). Standalone motion pieces with no footage (UI morph loops, kinetic type, animated UI from a brief) → `../jason-motion-graphics/SKILL.md`.
 
 > **THE BAR:** playbook §18 ("My work vs Original"): every sentence gets a designed visual beat, nouns become full-screen editorial cards, giant hero words go behind the speaker, numbers roll, one accent color sits on a moody grade, and there's editorial micro-type. Jason called it the standard he expects. Plan every edit against it.
