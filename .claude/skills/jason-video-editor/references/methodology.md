@@ -17,6 +17,7 @@ Decoded from Jason's 12 reference reels: frame-stepped at 10-15fps, contact shee
 | r10 | Zenix Motion | SFX pack demo, green neon | Each sound **named by its job** (Button, Combo, Sparkle, Deep Whoosh, Typing). In the library as `pack5` |
 | r11 | vishu_edit2 | SFX pack timeline, grey skeuomorphic | Hook, Impact, Blade, Camera action, Tension, UI, Shutter, Click. In the library as `pack6` |
 | r12 | Iqbal Ridwan | CapCut tutorial: smoother audio | **Echo/reverb tail on cut-offs** so voice never stops dead. Dark 3D space, tilted floating screen panels, gold glowing type, "save this video!" |
+| r13 | Jason Cooperson (YouTube, 21 min) | "This entire video was edited by Claude": the video is its own proof | **Presets = saved values**, 12 fps MG + glow + grain, lowercase captions with an italic-serif accent word, hard cutaways ↔ face, real assets, warm grade on camera only, −17 LUFS. Proof stack: repetition, exact numbers, lifestyle payoff, "giving it all away", objections early, testimonials last. Full decode: `cooperson-decode.md` |
 
 ## 1. Psychology & premise
 - **Value first, then the ask.** 9/12 teach or give something. The ask is small and specific: **comment a keyword** to get a free thing in DMs [r01 r03 r04 r08 r09 r10 r11], **save this video** [r12], "screenshot this" [r03]. It turns attention into engagement (comments and saves push reach) and into leads.
