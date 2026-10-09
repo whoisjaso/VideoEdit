@@ -91,3 +91,7 @@ Plain English. After every piece: what shipped, his score, what to fix, rules he
   - an empty lull (bookend compass circle);
   - the sphere popping out (now collapses into the spark);
   - ghost frames at cuts.
+
+### Claude ad v2 score: **8.1–8.2 / 10** (Jason): "a nice stepping stool… I know it could be a lot better (vs Leon's)." Locked: **he loves the antique engraving imagery and this editing style.**
+- **New rule:** engraving cutaways are approved inside talking heads, for certain portions, with iOS SFX (written into jason-video-editor).
+- **He wants the skills usable in the Claude web app too,** not only Claude Code. Exported as uploadable zips.
