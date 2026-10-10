@@ -23,6 +23,8 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 >
 > **ENGRAVING CUTAWAYS (Jason, 2026-10-09: "I would love this type of motion graphics on my talking heads, for certain portions, with the iOS sound effects"):** the antique-engraving look from `../jason-ad-film` is an approved cutaway style for talking heads. Use it on 2–4 portions per video: the big idea, a definition, a "think about it" turn, or the payoff. Pick public-domain engravings that literally match his words (`../jason-ad-film/tools/metengr.py` → `engrave.py`) on a white stage. One orange accent device travels between them and lands on the key point of each engraving. Bold serif words, one line at a time, are his own words. Cut in and out on his sentence boundaries; his face carries the rest. **Sound for these portions stays iOS** (tink on each accent landing, tri-tone or received for a notification beat, success on the payoff), placed by measured peak. Never music.
 >
+> **SCORECARD (Jason, 2026-10-10: "break the video into categories, psychology included, so we know where to revise"):** before delivery, score the final render on `references/scorecard.md` (10 weighted categories, measured from the 1 fps sheet). Fix any category under 7, and send the scorecard with the video.
+>
 > **Start here:** read `references/journal.md`. It holds the scored history (current best **8.3/10**, episode #3), what Jason loved (locked), his corrections, and the backlog. Every new edit should beat the best score. After delivery, ask for his score and log it.
 
 The goal is an edit that makes the viewer stay, feel something, and act. It should match Jason's style exactly, with no need for him to ask for any of it.

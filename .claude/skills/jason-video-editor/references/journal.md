@@ -346,3 +346,17 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - **Tools improved:** `cut_sections.py` has curse slow-mo windows (`"slow"`); `metengr.py` takes queries and is crash-safe.
 - **Asked Jason** (word check, after v1 because the render is cheap to redo): the third language at 0:15–0:19; the Spanish translation; his Chinese name "Ou Jie"; "I say Jason" vs "they say Jason"; the quoted hard-r (written "nigga" per the vocabulary rule); the last line "Or don't, have a ___, bitch".
 - `renders/ep05-chosen-v1.mp4` (master, −14 LUFS, −1.5 dBTP).
+
+### Ep #5 v1 on the new scorecard (2026-10-10, Jason: "the result regressed"): **5.6 / 10**, measured from the 1 fps sheet
+| Category | Score | Why |
+|---|---|---|
+| Hook | 6 | Strong line, but 4 s of bare face before CHOSEN; no designed frame by frame 15 |
+| Psychology | 5 | Pure flex: no viewer want, no "you" turn, no lesson; the open loop is only the cold open |
+| Story | 6 | One idea, but repeats ("better than you" ×4) and no callback |
+| Retention | 4 | **~48 s of 103 (46%) bare face**; worst stretch 69–85 s (14 s with one word card) |
+| MG coverage | 5 | Translate cards sat static for 10 s; most sentences had no beat |
+| Motion craft | 8 | Smooth, blurred, timed to words |
+| Visual language | 5 | 4 type families (Nunito, Inter, Bebas, serif); 4 hard dark→white flashes into the engravings |
+| Captions | 6 | Small, mid-face |
+| Sound | 6 | Mostly tinks; few impacts; long silent stretches |
+| Accuracy/ending | 6 | 6 words unconfirmed; 5 s blurred outro, follow-only CTA |
