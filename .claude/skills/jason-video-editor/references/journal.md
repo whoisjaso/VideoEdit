@@ -360,3 +360,31 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 | Captions | 6 | Small, mid-face |
 | Sound | 6 | Mostly tinks; few impacts; long silent stretches |
 | Accuracy/ending | 6 | 6 words unconfirmed; 5 s blurred outro, follow-only CTA |
+
+## 2026-10-10 · Episode #5 "Chosen" v2: rebuilt on the scorecard (Jason: "do v2 on that plan, dual fonting") · score pending
+- **Changes vs v1 (5.6):**
+  - **Two fonts only:** Inter + Instrument Serif italic, gold accent.
+  - **Engravings:** dark prints with a 5-frame blur-dissolve bridge in and out.
+  - **Hook card:** full-screen kinetic type, the open loop. The SAME card returns at the payoff (callback).
+  - **Viewer turn:** "YOU" staged at the viewer.
+  - **Repeats cut:** the second Tate shout-out, the first "you can't tell me shit", "I just view myself as better than you, or". Word splices were re-transcribed clean. The unnamed third language was cut too.
+  - **New beats:** an iOS Notes "if you want to be like me" checklist (two visits); one-at-a-time Translate cards; a sent iMessage shout-out; a confidence meter; a sorry → not-sorry toggle; me-vs-you bars (up, level, snap on "even though I am"); closer lines; more impacts.
+  - **Captions:** CoopCaptions at y 1460. **Outro:** 96 frames.
+- **Length:** 1:33.
+- **Scorecard (self, from the 1 fps sheet): 7.6.** Bare face ~15% (v1 46%).
+
+| Category | Score |
+|---|---|
+| Hook | 8 |
+| Psychology | 7 |
+| Story | 7 |
+| Retention | 8 |
+| MG coverage | 8 |
+| Craft | 8 |
+| Visual language | 8 |
+| Captions | 7 |
+| Sound | 7 |
+| Accuracy/ending | 6 |
+
+- **Still open:** the 5 words; the CTA (follow only).
+- `renders/ep05-chosen-v2.mp4`
