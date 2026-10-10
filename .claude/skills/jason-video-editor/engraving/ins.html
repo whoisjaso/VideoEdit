@@ -1,11 +1,12 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>engraving insert</title>
 <style>
-@font-face { font-family: "SS4"; src: url("serif.woff2") format("woff2"); font-weight: 200 900; }
+@font-face { font-family: "IS"; src: url("is-italic.woff2") format("woff2"); font-style: italic; font-weight: 400; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
 html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
-#stage { position: absolute; inset: 0; background: #FFFFFF; overflow: hidden; }
+#stage { position: absolute; inset: 0; background: #0B0B0E; overflow: hidden; }
 .L { position: absolute; left: 0; top: 0; }
-.shot { position: absolute; left: 0; top: 0; max-width: none; mix-blend-mode: multiply; }
+.shot { position: absolute; left: 0; top: 0; max-width: none; filter: grayscale(1) sepia(0.12) brightness(0.74) contrast(1.12); }
 .line { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; line-height: 1.2; }
 svg { overflow: visible; }
 </style>
@@ -13,7 +14,8 @@ svg { overflow: visible; }
 </head><body><div id="stage">
   <div id="world" class="L" style="width:1080px;height:1920px"></div>
   <svg id="geo" class="L" width="1080" height="1920"></svg>
-  <div id="band" class="L" style="width:1080px;height:1920px;background:linear-gradient(to bottom, #fff 0px, rgba(255,255,255,0) 150px, rgba(255,255,255,0) 1150px, #fff 1330px, #fff 1920px)"></div>
+  <div id="vig" class="L" style="width:1080px;height:1920px;background:radial-gradient(120% 75% at 50% 38%, rgba(11,11,14,0) 45%, rgba(11,11,14,.55) 75%, #0B0B0E 100%)"></div>
+  <div id="band" class="L" style="width:1080px;height:1920px;background:linear-gradient(to bottom, #0B0B0E 0px, rgba(11,11,14,0) 170px, rgba(11,11,14,0) 1120px, #0B0B0E 1320px, #0B0B0E 1920px)"></div>
   <div id="lineA" class="line"></div>
   <div id="defA" class="line"></div>
   <svg id="dotSvg" class="L" width="1080" height="1920"></svg>
@@ -24,7 +26,7 @@ svg { overflow: visible; }
  * and lands on each engraving's key point (compass ring draws on); his words rise one line at a time in bold serif. */
 const { clamp, lerp, lmix, ease, E, hit, prog } = K;
 const S = SCENES[new URLSearchParams(location.search).get("s")];
-const ORANGE = "#E8622C", INK = "#141413";
+const ORANGE = "#FFC94A", INK = "rgba(240,240,244,0.85)";  // dark plate: one gold accent (same as the captions), light hairlines
 const $ = (id) => document.getElementById(id);
 S.shots.forEach((sh) => { sh.el = new Image(); sh.el.src = "img/" + sh.img + ".png"; sh.el.className = "shot"; sh.el.style.display = "none"; $("world").appendChild(sh.el); });
 const ring = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 2.4, pathLength: 1 }, $("geo"));
@@ -80,12 +82,18 @@ function seek(t) {
   } else { ring.style.display = "none"; ring2.style.display = "none"; rule.style.display = "none"; }
   // words: one line at a time
   const ln = S.lines.filter((l) => f >= l.words[0].t - 2 && f <= l.out + 30).slice(-1)[0];
-  if (ln) K.maskLine($("lineA"), ln.words, f, { y: ln.y, size: ln.size || 124, out: ln.out, accent: ORANGE, stagger: 4 });
+  if (ln) {
+    // dual type: connective words in Inter 800, the key word in Instrument Serif italic, gold (same system as the captions)
+    const serif = !!ln.serif, size = (ln.size || 124) * (serif ? 1.18 : 0.9);
+    K.maskLine($("lineA"), ln.words, f, serif ? { y: ln.y, size, out: ln.out, accent: "#F4F4F6", color: ORANGE, wt: 400, fam: "IS", track: -0.01, stagger: 4 }
+                                              : { y: ln.y, size, out: ln.out, accent: ORANGE, color: "#F4F4F6", wt: 800, fam: "InterV", track: -0.04, stagger: 4 });
+    $("lineA").style.fontStyle = serif ? "italic" : "normal";
+  }
   else $("lineA").style.display = "none";
   const df = (S.defs || []).find((d) => f >= d.t - 1 && f < d.out + 12);
   if (df) {
     const q = E.out(prog(f, df.t, 16)), o = 1 - E.in(prog(f, df.out, 10));
-    Object.assign($("defA").style, { display: "", top: df.y + "px", fontFamily: "SS4", fontWeight: 400, fontSize: (df.size || 46) + "px", color: "#55554F", letterSpacing: "0.01em",
+    Object.assign($("defA").style, { display: "", top: df.y + "px", fontFamily: "InterV", fontWeight: 500, fontSize: (df.size || 42) + "px", color: "#9A9AA2", letterSpacing: "0.01em",
       opacity: q * o, transform: `translateY(${(1 - q) * 18}px)`, filter: `blur(${(1 - q) * 4}px)` });
     $("defA").innerHTML = df.text;
   } else $("defA").style.display = "none";
