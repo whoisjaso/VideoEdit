@@ -388,3 +388,16 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 
 - **Still open:** the 5 words; the CTA (follow only).
 - `renders/ep05-chosen-v2.mp4`
+
+## 2026-10-11 · Ep #5 v3: sound-only remix through the new mix stage (`scripts/mix_talk.py`) · score pending
+- Same picture as v2. Audio rebuilt from the r20 sound spec:
+  - 102 cues, 39 distinct sounds, 12 of 13 jobs (v2: 24 sounds, no layers, all at −17 to −1.4 dB);
+  - low/mid/high whoosh layers;
+  - 3-bass stacks starting 2–3 frames early (CHOSEN, YOU, 1,000, EGO, BITCH);
+  - old-flash texture on every engraving bridge;
+  - digital-text typing under the Translate cards;
+  - silence through his look;
+  - reverb tails on the sparkle and success sounds and the follow ding;
+  - ducking under his voice.
+- Measured: voice −13.6 LUFS, SFX stem −29.2 LUFS (15.6 dB under), master −14.2 LUFS, −1.5 dBTP.
+- `renders/ep05-chosen-v3-soundmix.mp4`

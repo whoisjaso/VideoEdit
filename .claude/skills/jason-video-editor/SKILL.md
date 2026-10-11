@@ -29,6 +29,7 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 > - **Variety:** alternate variants; the last hit of a sequence is the biggest. Use at least 6 of the 13 jobs, texture and tech included.
 > - **Silence and holds:** 0.3–0.8 s of silence before the biggest line. Reverb-end instead of hard stops. Hold 0.5–1.5 s at complex and emotional moments (tag `hold`).
 > - **Build order:** sound bed first, graphics placed onto it.
+> - **Mix stage (the tool):** never set SFX volumes by guess in Remotion. Write a cue list (`examples/chosen-episode/ep05_cues.py` is the template: `whoosh3`, `bass3`, alternating ticks), render the picture, then `python3 scripts/mix_talk.py work/cut.mp4 cues.json assets/sfx/library.json assets/sfx mix.wav --len_s <total s>` and mux the result over the picture. It levels each sound by role relative to his voice, aligns by the measured peak, layers, adds reverb tails, ducks under him, and masters to −14 LUFS. Check: the SFX stem is about 14–17 dB under the voice.
 >
 > **DUAL TYPE (Jason, 2026-10-10: "do v2 on that plan, dual fonting"):** every edit uses exactly two families: **Inter** (sans, 700–900, for everything plain) and **Instrument Serif italic** (the accent word, gold). One accent colour: gold (red only for hard "no" words). No Nunito, Bebas, Anton or Montserrat. Captions = `CoopCaptions` (lowercase Inter + serif accent). Hero words, cards and engraving lines use the same pair.
 >
