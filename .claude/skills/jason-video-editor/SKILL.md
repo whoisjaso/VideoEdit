@@ -23,6 +23,13 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 >
 > **ENGRAVING CUTAWAYS (Jason, 2026-10-09: "I would love this type of motion graphics on my talking heads, for certain portions, with the iOS sound effects"):** the antique-engraving look from `../jason-ad-film` is an approved cutaway style for talking heads. Use it on 2–4 portions per video: the big idea, a definition, a "think about it" turn, or the payoff. Pick public-domain engravings that literally match his words (`../jason-ad-film/tools/metengr.py` → `engrave.py`) on a white stage. One orange accent device travels between them and lands on the key point of each engraving. Bold serif words, one line at a time, are his own words. Cut in and out on his sentence boundaries; his face carries the rest. **Sound for these portions stays iOS** (tink on each accent landing, tri-tone or received for a notification beat, success on the payoff), placed by measured peak. Never music.
 >
+> **SOUND SPEC + GEARS (Jason, 2026-10-11: "our SFX is decent but not pinpoint; we only use a little portion of the library"):** read `references/r20-editing-masterclass.md` (Inside The Edit pacing, Netflix-style doc sound design, Max McCoy story-first). The short version:
+> - **SFX levels sit under his voice:** ticks −30 to −40 dB, textures −28 to −35, whooshes about −24, iOS −16 to −20, bass about −20 across 3 layers. Nothing hotter than −14 except a planned drop.
+> - **Layering:** hero sounds use low/mid/high (one whoosh at 60% speed −5 st + texture + 120%). Bass starts 2–4 frames early.
+> - **Variety:** alternate variants; the last hit of a sequence is the biggest. Use at least 6 of the 13 jobs, texture and tech included.
+> - **Silence and holds:** 0.3–0.8 s of silence before the biggest line. Reverb-end instead of hard stops. Hold 0.5–1.5 s at complex and emotional moments (tag `hold`).
+> - **Build order:** sound bed first, graphics placed onto it.
+>
 > **DUAL TYPE (Jason, 2026-10-10: "do v2 on that plan, dual fonting"):** every edit uses exactly two families: **Inter** (sans, 700–900, for everything plain) and **Instrument Serif italic** (the accent word, gold). One accent colour: gold (red only for hard "no" words). No Nunito, Bebas, Anton or Montserrat. Captions = `CoopCaptions` (lowercase Inter + serif accent). Hero words, cards and engraving lines use the same pair.
 >
 > **ENGRAVING CUTAWAYS v2 (2026-10-10):** the plates are dimmed positive prints on a dark stage with a vignette (no white page: v1's white flashes broke the world). Engraving `ins.html` uses Inter + Instrument Serif and a gold device. Every insert gets a 5-frame blur-dissolve in and a 4-frame one out (`Insert` in `examples/chosen-episode/Episode.v2.tsx`), plus a swoosh on the bridge.
