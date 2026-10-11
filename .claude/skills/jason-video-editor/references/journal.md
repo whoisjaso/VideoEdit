@@ -401,3 +401,16 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   - ducking under his voice.
 - Measured: voice −13.6 LUFS, SFX stem −29.2 LUFS (15.6 dB under), master −14.2 LUFS, −1.5 dBTP.
 - `renders/ep05-chosen-v3-soundmix.mp4`
+
+## 2026-10-11 · Plutarch, Alexander, Bucephalus proof v2 (16:9, 3:01) · Jason: "probably one of the best type of work you've done so far"
+- **New and LOCKED:** the word-timed kinetic captions and the gold reading ball (hops word to word, streak blur, leaps off the text to point at the eye, the shadow, the hand and the mirror). Became the skill rule READING BALL + KINETIC TEXT and `kinetic/`.
+- **Sound world:**
+  - CC0 field recordings: horses on the words (screaming, snorts, stamping, breathing, gallop on "run"); men murmuring, laughing on "laughing at you", cheering on the ride back; courtyard; wind.
+  - Public-domain score: Brahms 1 opening as tension, silence for "What do you do?", Grieg *Morning* peaking on "let him run", Brahms 3/III for the mirror.
+  - Everything ducked under the voice; master −18 LUFS.
+- **Jason's notes during the build:**
+  - "make the text dynamic, flowing, cinematic, sfx and animation coated";
+  - "background noises… horse sounds… music that matches the theme";
+  - "the dot should be motion-graphic heavy, motion blur, trail, bounce across the letters, then go point";
+  - wants to watch pieces while it renders, not just screenshots (send 20 s chunks with sound as they finish).
+- **Framework addition:** the Observer's question "who are we, here?" (role → belief → aligned action; the environment can contradict identity; the room's identity is rented). Placed in ch. 6.

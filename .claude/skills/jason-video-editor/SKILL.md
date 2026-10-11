@@ -37,6 +37,8 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 >
 > **HOOK CARD + CALLBACK (2026-10-10, psychology):** open on a full-screen kinetic-type card of his boldest line over the dimmed footage (open loop). Bring back the SAME card when he says the line at the payoff (closes the loop).
 >
+> **READING BALL + KINETIC TEXT (LOCKED, Jason 2026-10-11: "the motion graphic ball moving around with these captions and pointing at specific things... beautiful... probably one of the best type of work you've done so far"):** narrated and long-form pieces get word-timed kinetic captions plus ONE gold reading ball. The ball hops word to word as each word is spoken, with a motion-blur streak, then springs off the text in a high arc to whatever the story points at, lands with a squash and a drawn ring, and returns to the words. Hero lines arrive letter by letter with a light sweep and lift away. Every text entrance gets sound. Spec, timings and code: `kinetic/README.md` (reference build `kinetic/proof.html`). The world sound is real public-domain/CC0 recordings (`kinetic/world.py`) placed on the words, and score cues follow the story's emotional turns.
+
 > **SCORECARD (Jason, 2026-10-10: "break the video into categories, psychology included, so we know where to revise"):** before delivery, score the final render on `references/scorecard.md` (10 weighted categories, measured from the 1 fps sheet). Fix any category under 7, and send the scorecard with the video.
 >
 > **Start here:** read `references/journal.md`. It holds the scored history (current best **8.3/10**, episode #3), what Jason loved (locked), his corrections, and the backlog. Every new edit should beat the best score. After delivery, ask for his score and log it.
