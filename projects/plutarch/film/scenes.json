@@ -557,8 +557,8 @@
     "pause": 1.4
    },
    {
-    "voice": "bm_george",
-    "text": "He squints up at you and says: Yes. Move. You're blocking my sun.",
+    "voice": "bm_daniel",
+    "text": "Yes. Move. You're blocking my sun.",
     "pause": 3.2
    },
    {
@@ -666,11 +666,11 @@
    {
     "voice": "bm_george",
     "text": "Then a letter arrives from one of your generals. You unfold it.",
-    "pause": 0.9
+    "pause": 1.4
    },
    {
-    "voice": "bm_george",
-    "text": "It says: Philip has been paid by the Persians to poison you.",
+    "voice": "bm_lewis",
+    "text": "Philip has been paid by the Persians to poison you.",
     "pause": 1.4
    },
    {
@@ -866,12 +866,12 @@
    },
    {
     "voice": "bm_george",
-    "text": "Your oldest general, Parmenio, comes to you. Attack them now, in the dark, he says.",
-    "pause": 0.9
+    "text": "Your oldest general, Parmenio, comes to you.",
+    "pause": 1.4
    },
    {
-    "voice": "bm_george",
-    "text": "They'll never see us coming.",
+    "voice": "bm_daniel",
+    "text": "Attack them now, in the dark. They'll never see us coming.",
     "pause": 1.4
    },
    {
@@ -995,11 +995,11 @@
    {
     "voice": "bm_george",
     "text": "He stands, red-faced, and tells the room you owe everything to Macedonian blood.",
-    "pause": 0.9
+    "pause": 1.4
    },
    {
-    "voice": "bm_george",
-    "text": "Then he holds up his right hand and says: This is the hand that saved you.",
+    "voice": "bm_lewis",
+    "text": "This is the hand that saved you.",
     "pause": 1.4
    },
    {
@@ -1088,8 +1088,13 @@
    },
    {
     "voice": "bm_george",
-    "text": "You ask him how he wishes to be treated. Like a king, he says.",
-    "pause": 0.9
+    "text": "You ask him how he wishes to be treated.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_daniel",
+    "text": "Like a king.",
+    "pause": 1.4
    },
    {
     "voice": "bm_george",
@@ -1260,6 +1265,154 @@
    {
     "voice": "bm_george",
     "text": "That was the life of Alexander. Sleep well.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "Prologue",
+  "cues": [
+   "Darkness. One candle. Slow plates: a sleeper by candlelight; an eye; Napoleon; Alexander; the book under the pillow."
+  ],
+  "lines": [
+   {
+    "voice": "bf_emma",
+    "text": "Before we begin, you should know why this was made. It isn't entertainment.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It's an investment. In you.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Everything you do comes from what you believe about yourself. Not what you say you believe.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "What a quieter part of you believes. Call it the Observer. It watches everything you do, and it keeps the record.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It doesn't listen to your words. It believes your actions.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "From that record, it answers one question, in every room you walk into:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "who are we, here?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Whatever it answers, you become. Your voice, your posture, your decisions follow.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "There's a second voice: the ego. It's the identity you borrow from other people, from the way you think they see you.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It feels real, but it's rented. It changes with the room. Walk out, and it's gone.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Identity is different. It's built from evidence. And the strongest evidence is gathered where no one is watching.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Only in front of God, and yourself.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So why stories?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Why Alexander, and Napoleon?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Because before Napoleon ever led an army, he spent his nights reading about men like Alexander.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "And Alexander slept with the story of Achilles under his pillow.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "The greatest people who ever lived were shaped by the stories they let in.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "And when you let them in matters. As you drift toward sleep, your brain slows down.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "The guarded, busy waking mind gives way to slower waves. First alpha.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Then theta, the borderland of dreams. Here, pictures come easily, and the mind is open.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Your brain uses much of the same machinery to imagine an action as it does to perform it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So tonight, you won't just hear what they did. You'll stand where they stood.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "You'll make their choices. And somewhere in the night, the Observer files a quiet note:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "we have been here before. We know how this is done.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "That isn't the whole work. A belief becomes who you are only when you act on it, again and again.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "But this is the first step. The picture. The spark. The first impulse to move.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So get comfortable. Let your breathing slow. And listen. Not as a spectator.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "As them.",
     "pause": 2.4
    }
   ]

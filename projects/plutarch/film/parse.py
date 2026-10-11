@@ -2,9 +2,11 @@
 Pauses: sentence 0.9 s, paragraph 1.4 s, voice change +1.0 s, a [▸ Silence…] cue = 3.2 s, after "What do you do?" 3.2 s."""
 import re, json, sys
 src = open(sys.argv[1] if len(sys.argv) > 1 else "../scripts/01-alexander.md").read()
+pro = open("../scripts/00-prologue.md").read().split("\n---\n", 1)[1]
+VOICE = {"GEORGE": "bm_george", "FABLE": "bm_fable", "GUIDE": "bf_emma", "DIOGENES": "bm_daniel", "LETTER": "bm_lewis", "PARMENIO": "bm_daniel", "CLEITUS": "bm_lewis", "PORUS": "bm_daniel"}
 body = src.split("\n---\n", 1)[1].split("\n---\n*Build notes", 1)[0]
 scenes = []
-for blk in re.split(r"\n### ", "\n" + body)[1:]:
+for blk in re.split(r"\n### ", "\n" + body)[1:] + re.split(r"\n### ", "\n" + pro)[1:]:
     head, *rest = blk.split("\n"); txt = "\n".join(rest)
     sc = {"title": head.strip(), "cues": [], "lines": []}
     voice = None
@@ -15,8 +17,8 @@ for blk in re.split(r"\n### ", "\n" + body)[1:]:
             sc["cues"].append(para.strip("[]▸ "))
             if re.search(r"silence", para, re.I) and sc["lines"]: sc["lines"][-1]["pause"] = max(sc["lines"][-1]["pause"], 3.2)
             continue
-        m = re.match(r"\*\*(GEORGE|FABLE):\*\*\s*(.*)", para, re.S)
-        if m: voice = "bm_george" if m.group(1) == "GEORGE" else "bm_fable"; para = m.group(2)
+        m = re.match(r"\*\*([A-Z]+):\*\*\s*(.*)", para, re.S)
+        if m and m.group(1) in VOICE: voice = VOICE[m.group(1)]; para = m.group(2)
         if voice is None: continue
         for raw in para.split("\n"):
             raw = re.sub(r"^\s*-\s*", "", raw).replace("**", "").replace("*", "").strip()

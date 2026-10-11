@@ -149,28 +149,87 @@ function measure() {
   m.remove();
 }
 function buildHops() {
-  const win = KEYS.map((k, i) => { const [s] = k.at(); const nx = KEYS[i + 1]; return [k.t - 1.6, Math.min(nx ? nx.t - 1.6 : 1e9, s.t1 - 0.8), k]; });
+  const win = KEYS.map((k, i) => { const [s] = k.at(); const nx = KEYS[i + 1]; return [k.t - 1.6, Math.min(nx ? nx.t - 1.6 : 1e9, s.t1 - 0.8, k.t + 3.0), k]; });
   const inWin = (t) => win.some(([a, b]) => t >= a - 0.1 && t < b + 0.35);
   const H = [];
-  PH.forEach((p) => p.w.forEach((w, j) => { if (inWin(w[1])) return;
-    H.push({ at: w[1] + 0.04, kind: "w", r: 8.5, tg: (t) => ({ x: p.cx[j], y: capY(p, t) - 2, a: 1 - E.inOut(K.clamp((t - p.out) / 0.4)) }) }); }));
-  HERO.forEach((h) => h.hop.forEach((o) => { if (inWin(o.at)) return;
-    H.push({ at: o.at, kind: "w", r: 10, tg: (t) => ({ x: o.x, y: h.y - h.size * 0.66, a: 1 - E.inOut(K.clamp((t - h.out) / 0.6)) }) }); }));
+  const iconAt = (t) => (typeof ICONS_AT === "undefined" ? [] : ICONS_AT).find((x) => Math.abs(x[0] - t) < 0.02);
+  let holdTo = -1;
+  PH.forEach((p) => p.w.forEach((w, j) => { if (inWin(w[1]) || w[1] < holdTo) return;
+    const ic = iconAt(w[1]), nxi = ic ? ICONS_AT.find((x) => x[0] > w[1] + 0.05) : null, hold = ic ? Math.min(1.3, nxi ? nxi[0] - w[1] - 0.08 : 1.3) : 0;
+    H.push({ at: w[1] + 0.04, kind: "w", r: 8.5, icon: ic ? ic[1] : null, hold, tg: (t) => ({ x: p.cx[j], y: capY(p, t) - 2, a: 1 - E.inOut(K.clamp((t - p.out) / 0.4)) }) });
+    if (ic) holdTo = w[1] + hold; }));
+  HERO.forEach((h) => h.hop.forEach((o, oi) => { if (inWin(o.at)) return;
+    H.push({ at: o.at, kind: h.icon && oi === h.hop.length - 1 ? "h" : "w", r: 10, icon: h.icon && oi === h.hop.length - 1 ? h.icon : null, hold: h.icon && oi === h.hop.length - 1 ? 2.6 : 0, hx: h, tg: (t) => ({ x: o.x, y: h.y - h.size * 0.66, a: 1 - E.inOut(K.clamp((t - h.out) / 0.6)) }) }); }));
   win.forEach(([a, b, k]) => { const [s, fx, fy] = k.at();
-    H.push({ at: k.t, dur: 1.6, kind: "k", r: 13, tg: (t) => { const [x, y] = plateXY(s, fx, fy, t); return { x, y, a: K.clamp((b + 0.5 - t) / 0.5) * (t < s.t1 ? 1 : 0) }; } }); });
+    H.push({ at: k.t, dur: 1.6, kind: "k", r: 13, icon: k.icon || null, hold: k.icon ? 2.4 : 0, tg: (t) => { const [x, y] = plateXY(s, fx, fy, t); return { x, y, a: K.clamp((b + 0.5 - t) / 0.5) * (t < s.t1 ? 1 : 0) }; } }); });
   H.sort((a, b) => a.at - b.at);
-  H.forEach((h, i) => { const pv = H[i - 1]; if (h.kind === "w") h.dur = Math.max(0.1, Math.min(0.34, pv ? h.at - pv.at : 0.3)); h.t0 = h.at - h.dur; });
+  H.forEach((h, i) => { const pv = H[i - 1]; if (h.kind !== "k") h.dur = Math.max(0.1, Math.min(0.34, pv ? h.at - pv.at : 0.3)); h.t0 = h.at - h.dur; });
   HOPS = H;
 }
 function ballAt(t) {
   let i = -1; for (let j = 0; j < HOPS.length; j++) { if (HOPS[j].t0 <= t) i = j; else break; }
   if (i < 0) return null;
   const h = HOPS[i], to = h.tg(t);
-  if (t >= h.at) { const s = t - h.at, sq = Math.exp(-s * 16) * (h.kind === "k" ? 1.4 : 1); return { x: to.x, y: to.y, a: to.a, r: h.r + (h.kind === "k" ? 6 * Math.exp(-s * 5) : 0), sq }; }
+  if (t >= h.at) { const s = t - h.at, sq = Math.exp(-s * 16) * (h.kind === "k" ? 1.4 : 1);
+    const nx = HOPS[i + 1], end = Math.min(h.at + (h.hold || 0), nx ? nx.t0 : 1e9);
+    const m = h.icon ? Math.min(K.clamp(s / 0.3), K.clamp((end - t) / 0.28)) : 0;
+    return { x: to.x, y: to.y, a: to.a, r: h.r + (h.kind === "k" ? 6 * Math.exp(-s * 5) : 0), sq: sq * (1 - m), icon: h.icon, m, s, kind: h.kind, hx: h.hx }; }
   const pv = HOPS[i - 1], fr = pv ? pv.tg(h.t0) : { x: to.x, y: to.y + 120, a: 0 };
   const p = (t - h.t0) / h.dur, e = h.kind === "k" ? E.inOut(p) : K.E.smooth(p);
   const dist = Math.hypot(to.x - fr.x, to.y - fr.y), Hh = h.kind === "k" ? 180 + 0.25 * dist : 18 + 0.07 * dist;
   return { x: lerp(fr.x, to.x, e), y: lerp(fr.y, to.y, e) - Hh * 4 * e * (1 - e), a: lerp(fr.a, to.a, Math.min(1, p * 1.5)), r: lerp(pv ? pv.r : h.r, h.r, e), sq: 0 };
+}
+
+const ICON = {
+  crown: "M10 46 L13 20 L23 33 L32 14 L41 33 L51 20 L54 46 Z M11 53 H53 M32 14 m0 -4 v0",
+  scales: "M32 8 V54 M20 54 H44 M12 18 H52 M12 18 L5 34 H19 Z M52 18 L45 34 H59 Z M32 8 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0",
+  book: "M32 18 C24 12 14 12 7 14 V50 C14 48 24 48 32 54 C40 48 50 48 57 50 V14 C50 12 40 12 32 18 Z M32 18 V54",
+  sword: "M32 4 L36.5 11 V40 H27.5 V11 Z M18 40 H46 M32 40 V52 M27 57 H37",
+  eye: "M4 32 C15 17 49 17 60 32 C49 47 15 47 4 32 Z M32 32 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 M32 32 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0",
+  sun: "M32 22 a10 10 0 1 0 0.01 0 M32 4 V13 M32 51 V60 M4 32 H13 M51 32 H60 M12.2 12.2 L18.6 18.6 M45.4 45.4 L51.8 51.8 M12.2 51.8 L18.6 45.4 M45.4 18.6 L51.8 12.2",
+  cup: "M19 10 H45 C45 27 39 34 32 34 C25 34 19 27 19 10 Z M32 34 V48 M21 53 H43 M21 17 H43",
+  scroll: "M14 14 H46 C51 14 51 23 46 23 H19 V47 H51 C56 47 56 56 51 56 H19 C14 56 14 47 19 47 M19 14 C14 14 14 23 19 23 M25 31 H41 M25 38 H37",
+  flame: "M32 6 C40 19 47 28 45 40 C43 51 37 56 32 56 C24 56 17 49 19 39 C21 31 27 30 27 21 C33 27 34 33 36 36 C38 29 36 17 32 6 Z",
+  heart: "M32 54 C13 41 7 31 11 22 C15 13 26 13 32 22 C38 13 49 13 53 22 C57 31 51 41 32 54 Z",
+  drop: "M32 6 C40 20 49 29 49 40 A17 17 0 0 1 15 40 C15 29 24 20 32 6 Z M24 41 C24 46 27 49 31 50",
+  mask: "M12 12 C23 17 41 17 52 12 C54 30 47 49 32 54 C17 49 10 30 12 12 Z M20 27 C22 24 27 24 29 27 M35 27 C37 24 42 24 44 27 M23 40 C28 45 36 45 41 40",
+  bolt: "M37 4 L17 34 H30 L25 60 L47 26 H34 Z",
+  q: "M21 22 C21 9 43 8 43 22 C43 31 32 32 32 42 M32 52 V52.5",
+  eyex: "M4 32 C15 17 49 17 60 32 C49 47 15 47 4 32 Z M32 32 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 M8 56 L56 8",
+  laurel: "M20 56 C6 46 4 26 14 12 M44 56 C58 46 60 26 50 12 M14 20 C8 18 6 14 7 10 C12 11 15 14 14 20 M11 30 C5 29 2 25 2 21 C7 21 11 25 11 30 M11 40 C5 41 2 38 1 34 C6 33 10 36 11 40 M15 49 C10 52 6 50 4 47 C8 45 13 46 15 49 M50 20 C56 18 58 14 57 10 C52 11 49 14 50 20 M53 30 C59 29 62 25 62 21 C57 21 53 25 53 30 M53 40 C59 41 62 38 63 34 C58 33 54 36 53 40 M49 49 C54 52 58 50 60 47 C56 45 51 46 49 49",
+};
+const ICONP = Object.fromEntries(Object.entries(ICON).map(([k, v]) => [k, new Path2D(v)]));
+function drawYou(ctx, b, t) {          // "Tonight, you": the light comes toward the viewer: swells, flares, rings out, shrinks back
+  const m = b.m, k = K.clamp(b.s / 1.1), sw = Math.sin(Math.PI * k);
+  ctx.save(); ctx.shadowColor = "rgba(255,201,74,0.95)";
+  const R = 9 + 150 * E.out(sw);
+  const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, R * 1.6);
+  g.addColorStop(0, `rgba(255,246,220,${0.95 * b.a})`); g.addColorStop(0.35, `rgba(255,201,74,${0.75 * b.a * sw})`); g.addColorStop(1, "rgba(255,201,74,0)");
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(b.x, b.y, R * 1.6, 0, 6.283); ctx.fill();
+  for (let i = 0; i < 3; i++) { const q = K.clamp((b.s - i * 0.18) / 0.9); if (q <= 0 || q >= 1) continue;
+    ctx.strokeStyle = `rgba(255,214,120,${(1 - q) * 0.8 * b.a})`; ctx.lineWidth = 2.5; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(b.x, b.y, 20 + 420 * E.out(q), 0, 6.283); ctx.stroke(); }
+  ctx.restore();
+}
+function drawIcon(ctx, b, t) {
+  const m = b.m, e = 1 + 0.18 * Math.sin(Math.PI * Math.min(1, m)) * (m < 1 ? 1 : 0);     // tiny overshoot on arrival
+  if (b.icon === "you") { drawYou(ctx, b, t); return; }
+  let lift = b.kind === "k" ? 0 : 66 * E.out(m), sc = (b.kind === "k" ? 1.6 : 1.5) * (0.35 + 0.65 * E.out(m)) * e;
+  if (b.kind === "h" && b.hx) { const hx = b.hx; b = Object.assign({}, b, { x: 960, y: hx.y - hx.size * 0.12 }); lift = 0; sc = (hx.size * hx.txt.length * 0.66 / 64) * (0.6 + 0.4 * E.out(m)); }
+  const bob = b.icon === "q" ? Math.sin(t * 3.2) * 0.16 : Math.sin(t * 2.0) * 0.04;
+  if (b.icon === "heart") sc *= 1 + 0.16 * Math.pow(Math.max(0, Math.sin(t * 7.2)), 6);    // it beats
+  ctx.save(); ctx.translate(b.x, b.y - lift); ctx.rotate(bob); ctx.scale(sc, sc); ctx.translate(-32, -32);
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.shadowColor = "rgba(255,201,74,0.9)"; ctx.shadowBlur = 22;
+  ctx.fillStyle = `rgba(255,201,74,${0.16 * m * b.a})`; ctx.fill(ICONP[b.icon]);
+  ctx.setLineDash([420 * Math.min(1, m * 1.15), 420]); ctx.strokeStyle = `rgba(255,214,120,${b.a})`; ctx.lineWidth = 3.4 / sc;
+  ctx.stroke(ICONP[b.icon]); ctx.setLineDash([]);
+  if (b.icon === "q") { ctx.fillStyle = `rgba(255,214,120,${b.a * m})`; ctx.beginPath(); ctx.arc(32, 53, 3.6, 0, 6.283); ctx.fill(); }
+  ctx.restore();
+  if (b.s < 0.5) { const k = b.s / 0.5; ctx.save(); ctx.shadowBlur = 8; ctx.shadowColor = "rgba(255,201,74,.8)";       // spark burst as it transforms
+    for (let i = 0; i < 9; i++) { const an = i * 0.698 + 0.3, d = 14 + 48 * E.out(k);
+      ctx.fillStyle = `rgba(255,224,160,${(1 - k) * b.a})`; ctx.beginPath(); ctx.arc(b.x + Math.cos(an) * d, b.y - lift + Math.sin(an) * d, 2.4 * (1 - k) + 0.6, 0, 6.283); ctx.fill(); }
+    ctx.restore(); }
 }
 const tctx = $("trail").getContext("2d");
 function ball(t) {
@@ -187,6 +246,9 @@ function ball(t) {
     tctx.beginPath(); tctx.moveTo(a.x, a.y); tctx.lineTo(b.x, b.y); tctx.stroke();
   }
   const [b] = pts[pts.length - 1]; if (b.a < 0.01) return;
+  if (b.icon && b.m > 0) drawIcon(tctx, b, t);
+  if (b.icon && b.m > 0.98) return;
+  const shrink = b.icon ? 1 - b.m : 1; b.r *= shrink;
   tctx.shadowBlur = 22; tctx.fillStyle = `rgba(255,201,74,${b.a})`;
   tctx.beginPath(); tctx.ellipse(b.x, b.y + b.r * 0.3 * b.sq, b.r * (1 + 0.32 * b.sq), b.r * (1 - 0.3 * b.sq), 0, 0, 6.283); tctx.fill();
   tctx.shadowBlur = 0; tctx.fillStyle = `rgba(255,247,222,${0.75 * b.a})`;          // hot core

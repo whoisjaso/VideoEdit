@@ -13,7 +13,10 @@ for si in want:
         a = np.concatenate([x for _, _, x in pipe(l["text"], voice=l["voice"], speed=0.82)]).astype(np.float32)
         meta.append(dict(i=i, voice=l["voice"], text=l["text"], start=round(t, 3), end=round(t + len(a) / SR, 3)))
         out.append(a); t += len(a) / SR
-        gap = l["pause"] + (1.0 if i + 1 < len(L) and L[i + 1]["voice"] != l["voice"] else 0)
+        NARR = ("bm_george", "bm_fable", "bf_emma"); nv = L[i + 1]["voice"] if i + 1 < len(L) else l["voice"]
+        if l["text"].endswith(":") and nv not in NARR: gap = 0.45                       # "...and says:" -> the character speaks
+        elif l["voice"] not in NARR: gap = l["pause"]                                    # back from a character: no extra breath
+        else: gap = l["pause"] + (1.0 if nv != l["voice"] and nv in NARR else 0)
         out.append(np.zeros(int(SR * gap), np.float32)); t += gap
     sf.write(d + "/vo.wav", np.concatenate(out), SR); json.dump(meta, open(d + "/lines.json", "w"), indent=1)
     print(si, S[si]["title"], round(t, 1), "s", flush=True)

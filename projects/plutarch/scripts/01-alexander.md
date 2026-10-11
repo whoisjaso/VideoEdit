@@ -3,6 +3,8 @@
 **Voices**
 - **GEORGE** = the story (bm_george).
 - **FABLE** = the mirror: names the belief, gives a modern example, asks one question (bm_fable).
+- **Characters**, one voice each for their own spoken lines: DIOGENES (bm_daniel), LETTER (bm_lewis), PARMENIO (bm_daniel), CLEITUS (bm_lewis), PORUS (bm_daniel).
+- The **Prologue** (`00-prologue.md`, voice GUIDE) opens every chapter.
 
 **Pace:** speed 0.82, a breath between lines, a longer pause at every voice change.
 
@@ -141,7 +143,9 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 
 **GEORGE:** You find him stretched out in the sun. You stand over him, the most powerful young man in Greece, and you ask him: *Is there anything I can do for you?*
 
-**GEORGE:** He squints up at you and says: *Yes. Move. You're blocking my sun.*
+**GEORGE:** He squints up at you and says:
+
+**DIOGENES:** Yes. Move. You're blocking my sun.
 
 [▸ Silence. Your friends laughing behind you.]
 
@@ -167,7 +171,9 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 
 **GEORGE:** You swam in an icy river, and now you're burning with fever. Your doctors are afraid to treat you; if you die, they'll be blamed. Only one, Philip, offers to prepare a strong medicine.
 
-**GEORGE:** Then a letter arrives from one of your generals. You unfold it. It says: *Philip has been paid by the Persians to poison you.*
+**GEORGE:** Then a letter arrives from one of your generals. You unfold it. It says:
+
+**LETTER:** Philip has been paid by the Persians to poison you.
 
 **GEORGE:** The tent flap opens. Philip walks in with the cup.
 
@@ -216,7 +222,9 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 
 **GEORGE:** It's the night before the battle that will decide everything. You stand on a hill and look down at the plain. Persian campfires, more than you can count, all the way to the horizon.
 
-**GEORGE:** Your oldest general, Parmenio, comes to you. *Attack them now, in the dark,* he says. *They'll never see us coming.*
+**GEORGE:** Your oldest general, Parmenio, comes to you.
+
+**PARMENIO:** Attack them now, in the dark. They'll never see us coming.
 
 **GEORGE:** It would work. It might save thousands of your men.
 
@@ -248,7 +256,9 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 
 **GEORGE:** You're at a banquet, deep in wine. The room is warm, loud and golden. Your new friends are praising you, above your father, above the old soldiers who bled beside you.
 
-**GEORGE:** Then one voice cuts through. Cleitus. The man who saved your life at the river. He stands, red-faced, and tells the room you owe everything to Macedonian blood. Then he holds up his right hand and says: *This is the hand that saved you.*
+**GEORGE:** Then one voice cuts through. Cleitus. The man who saved your life at the river. He stands, red-faced, and tells the room you owe everything to Macedonian blood. Then he holds up his right hand and says:
+
+**CLEITUS:** This is the hand that saved you.
 
 **GEORGE:** Everyone is looking at you. The wine is loud in your head. There's a spear on the wall behind you.
 
@@ -273,7 +283,11 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 ### 15. The water (IMMERSE)
 [▸ India: elephants in a storm; King Porus, huge and wounded; then a white-hot desert; your cracked hands; a helmet held up to you, water catching the sun; your men's faces watching. The gold dot returns.]
 
-**GEORGE:** You push on to India. At the river Hydaspes, you defeat King Porus, a giant who fights on even with his wounds. You ask him how he wishes to be treated. *Like a king,* he says. And you give him back his kingdom, and more.
+**GEORGE:** You push on to India. At the river Hydaspes, you defeat King Porus, a giant who fights on even with his wounds. You ask him how he wishes to be treated.
+
+**PORUS:** Like a king.
+
+**GEORGE:** And you give him back his kingdom, and more.
 
 **GEORGE:** Old Bucephalus dies there, the horse from your boyhood. You build a city and give it his name.
 

@@ -414,3 +414,19 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   - "the dot should be motion-graphic heavy, motion blur, trail, bounce across the letters, then go point";
   - wants to watch pieces while it renders, not just screenshots (send 20 s chunks with sound as they finish).
 - **Framework addition:** the Observer's question "who are we, here?" (role → belief → aligned action; the environment can contradict identity; the room's identity is rented). Placed in ch. 6.
+
+## 2026-10-11 · Plutarch Bucephalus proof v2 · **Jason: 9/10**
+- **The one miss:** the sun-and-shadow moment. "The animations looked a little bit shitty": a hard black SVG ellipse and an outlined sun circle.
+  - **Fix (v3):** a soft cast shadow pooled under the hooves, swaying with him, with the ball pointing at it. The sun is an amber light cast (multiply) washing in from the right, plus a bloom and slow god-rays (screen). No drawn shapes.
+- **New direction, built during ch.1 (pending his reaction):**
+  - **Shape-shifting ball.** It morphs into a symbol on the word that names it: crown (king), scales (lawgivers), book, sword (generals), eye (Observer, watching), sun, goblet, scroll (letter), flame, a beating heart, water drop, theatre mask (ego), thunderbolt (Zeus), and "?" (question).
+    - On "Tonight, you" it swells toward the viewer. On "spectator" it becomes a struck-through eye. On "As him." it draws a laurel around the hero line.
+    - Spoken lists morph word by word ("generals, lawgivers, kings").
+    - The same symbol never repeats within 9 s.
+    - Each morph gets whoosh + shine.
+  - **Pointing.** It no longer parks on a plate: it lands, rings, and returns to the words within about 3 s.
+- **Ch.1 structure (Jason):**
+  - The **Prologue** (his philosophy: an investment, the Observer, "who are we, here?", rented ego, identity built in private, why bedtime stories) opens EVERY chapter. The final film strings all the chapters together.
+  - Voice: GUIDE = bf_emma.
+  - Character voices: Diogenes, Parmenio and Porus = bm_daniel; the letter and Cleitus = bm_lewis.
+- **Correction given:** the pre-sleep window is alpha → theta, not beta.

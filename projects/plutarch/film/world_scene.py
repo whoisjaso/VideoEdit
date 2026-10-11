@@ -32,6 +32,7 @@ S = {
           hits=[("lion_elephant.wav", 8, 8, "India", -20, 0.3), ("thunder_roll.wav", 0, 8, "Porus", -22, 0), ("river_gentle.wav", 0, 8, "river", -26, -0.2)]),
  16: dict(music=[("eroica_funebre.ogg", 0, -15, None)], beds=[("court_murmur.wav", -40, 0, None, None)]),
  17: dict(music=[("brahms3_iii.ogg", 0, -15, None)], beds=[]),
+ 18: dict(music=[("mendel_scottish_iii.ogg", 0, -15, None)], beds=[("fire_rumble.wav", -42, 0, None, None)]),
 }[si]
 def load(f, ss=0, dur=None):
     cmd = ["ffmpeg", "-v", "error", "-ss", str(ss), "-i", PD + f] + (["-t", str(dur)] if dur else []) + ["-ac", "2", "-ar", str(SR), "-f", "f32le", "-"]
