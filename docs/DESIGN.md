@@ -38,6 +38,15 @@ weights 500 to 800. Buttons stay uppercase with tracking (a mechanic kept from t
 your clips. That's a wrap.* Feedback trains "taste", not "XP". The welcome line is the brand in one
 sentence: *Give me the hour, I'll find the moment.*
 
+## The landing page
+
+`site/index.html`, one theme (paper), one accent (gold), no eyebrows, no mock UI. The hero is a
+real auto-edited clip playing in a phone with Kai beside it; the results row is three real clips
+with their real durations and the editor's own scores; every screenshot is the app over real
+footage. One CTA label everywhere: **Get Kairos**. Radius rule: controls 14px, media 20px, the
+phone 44px. Motion is one entrance in the hero and one reveal per section; Kai blinks and nothing
+else loops.
+
 ## The Duolingo teardown
 
 Kairos's mechanics use Duolingo's design language. Duolingo makes hard, repetitive work (learning a

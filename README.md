@@ -26,8 +26,13 @@ caption, sound and grade, and explains why.
 ## Run it
 
 ```bash
-pip install -e .            # Python 3.10+, plus ffmpeg on your PATH
-pip install -e ".[all]"     # Whisper captions (recommended), face reframe, yt-dlp links
+./start.sh                  # one command: venv, install with Whisper, start, open the browser
+```
+
+Or by hand:
+
+```bash
+pip install -e ".[all]"     # Python 3.10+ and ffmpeg on your PATH; Whisper captions, face reframe, yt-dlp links
 python -m kairos serve      # open http://localhost:8787
 ```
 
