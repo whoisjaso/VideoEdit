@@ -20,6 +20,15 @@ Source: Jason's verbatim brain dump (Claude Doc "Brain Dump: Psychological AI, E
    - "My company did X" vs "my team and I did X".
    - If reality is perception, words shape reality.
 
+7. **The Observer's question: "who are we, here?"** (Jason, 2026-10-11) We act from who we believe we are *in this moment*. In every situation the Observer asks who we are, because until it knows, it doesn't know how to act. Then it runs three steps:
+   - **Role → belief.** A role landing on you (Alexander after Philip's murder: *the king*) isn't enough. The Observer has to *believe* it, and it reaches for evidence: his mother's divine-birth story, the natural order of succession, the people around him, and having already embodied a king's traits before he was one.
+   - **Belief → aligned action.** Thoughts, feelings, actions and behaviour all line up with the answer.
+   - **Environment can contradict identity.** In a job interview the room says *you are the interviewee*, so you speak with less authority. The lifeguard who takes his shirt off can't exist in that room, so the mind rules it out.
+
+   The identity the room hands you is the ego's temporary identity: it lasts only in that environment, with those people. The film's question is what remains when the room is empty.
+   - **Placed in the script:** ch. 6 "A king at twenty" (Fable beat).
+   - **Proof line, if wanted:** in the Bucephalus mirror, "the Observer asked who are we, here? and answered: the one who sees."
+
 **The thesis of the film:** what we watched as children quietly installed beliefs (good-looking people = confident people). This film installs better ones, through the lives of the greatest people who ever lived.
 
 ## How it maps onto Alexander (all events are in Plutarch's *Alexander*, retold in our words)

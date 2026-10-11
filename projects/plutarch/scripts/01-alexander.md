@@ -118,7 +118,17 @@ Plutarch doesn't swear any of it is true. But the boy grew up hearing it.
 
 **GEORGE:** You are twenty. Your father is murdered in front of a crowd by one of his own guards. And in that moment, every face turns toward you. Cities rebel. Advisers tell you to wait, to go carefully.
 
-**GEORGE:** Alexander did the opposite. He moved so fast his enemies couldn't organise. When Thebes rebelled, he destroyed it, a cruelty Plutarch says he regretted for the rest of his life. But no one called him a boy again.
+**FABLE:** Stop here. Underneath everything in this second runs one question. It's the question your Observer asks in every room you walk into: *who are we, here?* Until it has an answer, you don't know how to stand, how to speak, what to do with your hands. Yesterday the answer was *the king's son.* Now the role has landed on you. But a role isn't a belief. The Observer has to believe it, so it reaches for evidence.
+- A mother who told you since you were small that your birth was divine.
+- A father who said Macedonia was too small for you.
+- A horse no grown man could ride.
+- Years of carrying yourself like a king before anyone called you one.
+
+The Observer looks at all of it and answers: *we are the king.* And from that answer everything follows: the voice, the speed, the decisions.
+
+**FABLE:** You do this too. Walk into a job interview, and the room tells your Observer who you are: *the one asking.* So you sit a little smaller. You speak a little softer. You'd never take your shirt off like a lifeguard on the beach, because that person can't exist in this room. Who you think you are and where you are have to agree. But notice: the interview self is rented. It belongs to that room and those people; walk out, and it's gone. The real question is what's left when the room is empty. Who are you when no one has told you?
+
+**GEORGE:** Back in Macedonia, the advisers are still telling you to wait. Alexander did the opposite. He moved so fast his enemies couldn't organise. When Thebes rebelled, he destroyed it, a cruelty Plutarch says he regretted for the rest of his life. But no one called him a boy again.
 
 ---
 
