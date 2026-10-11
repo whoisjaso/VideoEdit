@@ -1,0 +1,5 @@
+# Kairos runtime data (projects, uploads, renders, learned styles). Override with KAIROS_DATA.
+/data/
+__pycache__/
+*.pyc
+.venv/
