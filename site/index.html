@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kairos — Every hour has its moment</title>
+  <meta name="description" content="Kairos is an open-source, agent-native video editor. Drop a long video; it finds the moments worth posting, cuts them in your style, and learns from every note.">
+  <meta property="og:title" content="Kairos — Every hour has its moment">
+  <meta property="og:description" content="Long videos in. Clips that hit, out. Open source, built for agents.">
+  <meta property="og:image" content="img/og.png">
+  <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f0f16" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="img/app.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: "Outfit"; font-weight: 500; font-display: swap; src: url(fonts/outfit-500.woff2) format("woff2"); }
+    @font-face { font-family: "Outfit"; font-weight: 700; font-display: swap; src: url(fonts/outfit-700.woff2) format("woff2"); }
+    @font-face { font-family: "Outfit"; font-weight: 800; font-display: swap; src: url(fonts/outfit-800.woff2) format("woff2"); }
+    :root {
+      --paper: #fffdf7; --paper-2: #f6f3ea; --mist: #e9e4d7; --fog: #b8b1a1; --stone: #7a7466; --ink: #14131a;
+      --gold: #ffc21a; --gold-deep: #d99e00; --gold-tint: #fff3c8; --mint: #2be37a; --mint-deep: #17b45c; --coral: #ff3b3b; --violet: #8b5cf6;
+      --bg: var(--paper); --text: var(--ink); --muted: var(--stone); --card: #fff; color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --paper: #0f0f16; --paper-2: #181824; --mist: #272636; --fog: #4b4a5e; --stone: #a3a1b3; --ink: #f4f2ec;
+        --gold: #ffd24a; --gold-deep: #c99a00; --gold-tint: #2a2410; --mint: #3df08a; --mint-deep: #22c76a; --card: #181824; color-scheme: dark; }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", "SF Pro Display", system-ui, sans-serif; font-weight: 500; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    body { overflow-x: hidden; }
+    h1, h2, h3 { font-weight: 800; letter-spacing: -.02em; line-height: 1.08; margin: 0; }
+    h1 { font-size: clamp(42px, 7vw, 84px); }
+    h2 { font-size: clamp(30px, 4.2vw, 46px); margin-bottom: 14px; }
+    h3 { font-size: 20px; margin-bottom: 6px; }
+    p { margin: 0; }
+    .lede { font-size: clamp(18px, 2vw, 22px); color: var(--muted); max-width: 560px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 18px; }
+    .eyebrow i { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); display: inline-block; }
+
+    nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--mist); }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -.02em; text-decoration: none; }
+    .brand img { width: 32px; height: 32px; }
+    nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-weight: 700; font-size: 15px; }
+    nav ul a { text-decoration: none; color: var(--muted); }
+    nav ul a:hover { color: var(--text); }
+    @media (max-width: 640px) { nav ul li:not(:last-child) { display: none; } }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 14px; border: 0;
+      background: var(--gold); color: #1a1400; font-weight: 800; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+      box-shadow: 0 4px 0 var(--gold-deep); transition: transform .06s, box-shadow .06s; cursor: pointer; }
+    .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--gold-deep); }
+    .btn.ink { background: var(--ink); color: var(--paper); box-shadow: 0 4px 0 color-mix(in srgb, var(--ink) 60%, var(--bg)); }
+    .btn.ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 2px var(--mist); }
+    .btn svg { width: 20px; height: 20px; }
+
+    .hero { padding: 72px 0 40px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
+    .hero .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .hero h1 em { font-style: normal; color: var(--gold-deep); }
+    .hero .lede { margin-top: 22px; }
+    .meta { margin-top: 26px; font-size: 14px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+    .meta b { color: var(--text); }
+    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 44px; } }
+
+    .phone { width: 300px; margin: 0 auto; border-radius: 42px; padding: 10px; background: var(--ink); box-shadow: 0 30px 60px -20px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.06) inset; }
+    .phone img { display: block; width: 100%; border-radius: 32px; }
+    .phone.sm { width: 230px; border-radius: 34px; padding: 8px; }
+    .phone.sm img { border-radius: 26px; }
+
+    section { padding: 72px 0; border-top: 1px solid var(--mist); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+    .step { background: var(--card); border: 2px solid var(--mist); border-bottom-width: 4px; border-radius: 20px; padding: 24px; }
+    .step .n { width: 40px; height: 40px; border-radius: 12px; background: var(--gold); color: #1a1400; display: grid; place-items: center; font-weight: 800; font-size: 18px; margin-bottom: 16px; }
+    .step p { color: var(--muted); font-size: 15.5px; }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .split > *, .hero > * { min-width: 0; }
+    .split.rev > :first-child { order: 2; }
+    @media (max-width: 860px) { .split { grid-template-columns: 1fr; } .split.rev > :first-child { order: 0; } }
+    .recipe { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 12px; }
+    .recipe li { display: flex; gap: 14px; align-items: flex-start; font-size: 16.5px; }
+    .recipe li::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 8px; background: var(--gold); }
+    .recipe li.mint::before { background: var(--mint); }
+    .recipe li.coral::before { background: var(--coral); }
+    .recipe b { font-weight: 700; }
+    .still { border-radius: 24px; border: 2px solid var(--mist); border-bottom-width: 4px; overflow: hidden; width: min(100%, 360px); margin: 0 auto; background: #000; }
+    .still img { display: block; width: 100%; }
+    .cap { text-align: center; color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+    pre { margin: 22px 0 0; padding: 18px 20px; border-radius: 16px; background: var(--ink); color: var(--paper); font: 14.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; }
+    pre b { color: var(--gold); font-weight: 600; }
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tools span { font: 13px ui-monospace, Menlo, monospace; padding: 6px 10px; border-radius: 9px; background: var(--paper-2); border: 1px solid var(--mist); color: var(--muted); }
+
+    .mark-row { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: center; }
+    .mark-row img { width: 220px; height: 220px; }
+    @media (max-width: 640px) { .mark-row { grid-template-columns: 1fr; } .mark-row img { width: 160px; height: 160px; } }
+    .swatches { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+    .sw { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+    .sw i { width: 22px; height: 22px; border-radius: 7px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; max-width: 460px; }
+    .stat { border-radius: 16px; border: 2px solid var(--c); background: var(--c); overflow: hidden; }
+    .stat .h { color: var(--paper); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; text-align: center; padding: 6px 4px; }
+    .stat .v { background: var(--card); border-radius: 13px; padding: 12px 6px; text-align: center; font-size: 22px; font-weight: 800; color: var(--c); }
+
+    .install { background: var(--gold-tint); border-top: 0; }
+    .install .wrap { text-align: center; }
+    .install pre { text-align: left; display: inline-block; min-width: min(100%, 560px); max-width: 100%; }
+    footer { padding: 36px 0; border-top: 1px solid var(--mist); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+    footer a { text-decoration: none; color: var(--muted); margin-left: 18px; }
+    footer a:hover { color: var(--text); }
+    @media (prefers-reduced-motion: no-preference) {
+      .rise { animation: rise .7s cubic-bezier(.2,.9,.2,1) both; }
+      @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+    }
+  </style>
+</head>
+<body>
+  <nav><div class="wrap">
+    <a class="brand" href="#"><img src="img/app.svg" alt="">Kairos</a>
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#edit">The edit</a></li>
+      <li><a href="#agents">For agents</a></li>
+      <li><a href="https://github.com/whoisjaso/VideoEdit">GitHub</a></li>
+    </ul>
+  </div></nav>
+
+  <header class="wrap hero">
+    <div class="rise">
+      <div class="eyebrow"><i></i>Open source · agent-native</div>
+      <h1>Every hour has <em>its moment.</em></h1>
+      <p class="lede">Drop a long video. Kairos finds the moments worth posting, cuts them into vertical clips in your style, and learns from every note you give it.</p>
+      <div class="cta">
+        <a class="btn" href="#install">Get started</a>
+        <a class="btn ghost" href="https://github.com/whoisjaso/VideoEdit">View on GitHub</a>
+      </div>
+      <div class="meta"><span><b>No upload limit.</b> An hour of 4K is fine.</span><span><b>MIT</b> licensed.</span><span>Works offline, <b>sharper with Claude</b>.</span></div>
+    </div>
+    <div class="phone rise" style="animation-delay:.12s"><img src="img/home.png" alt="Kairos home screen" width="390" height="844"></div>
+  </header>
+
+  <section id="how"><div class="wrap">
+    <div class="eyebrow"><i></i>Three taps</div>
+    <h2>Drop it. Pick a format. Go.</h2>
+    <p class="lede">Everything else is a default you can change, and Kairos remembers your last choice.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Drop your video</h3><p>Any length. It uploads in small resumable pieces while you answer the next question, or paste a link.</p></div>
+      <div class="step"><div class="n">2</div><h3>Pick a format</h3><p>Quick hits (15–30s), Standard (30–60s) or Stories (60–90s). Count and length come with the pick.</p></div>
+      <div class="step"><div class="n">3</div><h3>Watch them land</h3><p>A step bar while it listens, finds, cuts and renders. Then a wrap screen with your clips and their scores.</p></div>
+    </div>
+  </div></section>
+
+  <section id="edit"><div class="wrap split">
+    <div>
+      <div class="eyebrow"><i></i>The edit</div>
+      <h2>Cut like the best reels, every time.</h2>
+      <p class="lede">The recipe was decoded frame by frame from reference reels and written as code. Every sound cue carries the rule that placed it.</p>
+      <ul class="recipe">
+        <li><span>Dead air cut, <b>your pauses kept</b>. A cold open on the payoff line.</span></li>
+        <li><span>A hook title with a bass hit and a camera shake in the first second.</span></li>
+        <li><span><b>Raw, word-by-word captions.</b> Gold for the idea, mint for money and wins, coral for problems.</span></li>
+        <li><span>Punch zooms with a whoosh. Slow-mo on the curse punchlines.</span></li>
+        <li class="mint"><span>“seven thousand dollars” becomes a <b>$7,000</b> pop-up with the register sound.</span></li>
+        <li><span>A riser that ends exactly on the payoff, a follow card with the bell, a moody grade, -14 LUFS.</span></li>
+        <li class="coral"><span>Words the recognizer wasn't sure of are flagged, never guessed.</span></li>
+      </ul>
+    </div>
+    <div><div class="still"><img src="img/clip-still.png" alt="A Kairos clip with a hook title and a word-by-word caption"></div><p class="cap">An auto-edited clip from raw phone footage. No hand editing.</p></div>
+  </div></section>
+
+  <section id="agents"><div class="wrap split rev">
+    <div>
+      <div class="eyebrow"><i></i>For agents</div>
+      <h2>An editor Claude can drive.</h2>
+      <p class="lede">Premiere's sequence model stripped to the primitives an agent needs: one JSON timeline per clip, every edit addressed by spoken words, 28 MCP tools. The video never passes through a chat, so the 30 MB wall is gone.</p>
+      <pre><b>claude mcp add</b> kairos -- python -m kairos mcp
+
+<b>›</b> Import ~/Videos/ep12.mp4, find the 5 strongest moments,
+  cut them in my style, and show me a still of each hook.</pre>
+      <div class="tools"><span>find_moments</span><span>create_clip</span><span>cut</span><span>add_zoom</span><span>add_shake</span><span>add_sfx</span><span>add_graphic</span><span>set_caption_words</span><span>set_grade</span><span>render_clip</span><span>still</span><span>export_for_premiere</span><span>record_feedback</span><span>…</span></div>
+    </div>
+    <div class="phone sm"><img src="img/clips-dark.png" alt="A clip card in Kairos, dark mode" width="390" height="844"></div>
+  </div></section>
+
+  <section><div class="wrap split">
+    <div>
+      <div class="eyebrow"><i></i>It learns</div>
+      <h2>Score a clip. It learns your taste.</h2>
+      <p class="lede">A 1–10, a few quick fixes (“more zooms”, “keep more pauses”) or just a sentence. Each one tunes the style within safe limits and writes a lesson the next edit follows. Keep a streak and watch the average climb.</p>
+      <div class="stats">
+        <div class="stat" style="--c:#ff7a1a"><div class="h">Streak</div><div class="v">🔥 7</div></div>
+        <div class="stat" style="--c:var(--gold-deep)"><div class="h">Taste</div><div class="v">◆ 420</div></div>
+        <div class="stat" style="--c:var(--mint-deep)"><div class="h">Avg score</div><div class="v">★ 8.3</div></div>
+      </div>
+    </div>
+    <div class="phone sm"><img src="img/wrap.png" alt="The wrap screen after a render" width="390" height="844"></div>
+  </div></section>
+
+  <section><div class="wrap mark-row">
+    <picture><source srcset="img/mark-light.svg" media="(prefers-color-scheme: dark)"><img src="img/mark.svg" alt="The Kairos mark: a ring with one slice lifted out"></picture>
+    <div>
+      <div class="eyebrow"><i></i>The mark</div>
+      <h2>The hour, and the moment lifted out of it.</h2>
+      <p class="lede"><em>Kairos</em> is the Greek word for the right moment, as opposed to <em>chronos</em>, clock time. The ring is the hour of footage. The gold slice is the forty seconds worth posting. The app wears the same colours the clips do.</p>
+      <div class="swatches">
+        <span class="sw"><i style="background:#ffc21a"></i>Gold, the keyword</span>
+        <span class="sw"><i style="background:#2be37a"></i>Mint, the win</span>
+        <span class="sw"><i style="background:#ff3b3b"></i>Coral, the problem</span>
+        <span class="sw"><i style="background:#14131a"></i>Ink</span>
+        <span class="sw"><i style="background:#fffdf7"></i>Paper</span>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="install" id="install"><div class="wrap">
+    <div class="eyebrow"><i></i>Get started</div>
+    <h2>Up in two minutes.</h2>
+    <p class="lede" style="margin:0 auto">Python 3.10+ and ffmpeg. Add an Anthropic API key in Settings for sharper picks; it works without one.</p>
+    <pre><b>git clone</b> https://github.com/whoisjaso/VideoEdit && cd VideoEdit
+<b>pip install</b> -e ".[all]"       <span style="color:var(--fog)"># Whisper captions, face reframe, links</span>
+<b>python -m kairos</b> serve       <span style="color:var(--fog)"># http://localhost:8787</span></pre>
+    <div class="cta" style="margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn ink" href="https://github.com/whoisjaso/VideoEdit">Star on GitHub</a>
+      <a class="btn ghost" href="https://github.com/whoisjaso/VideoEdit/blob/main/docs/TEARDOWN.md">Read the teardown</a>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    <span>© 2026 Kairos contributors · MIT</span>
+    <span><a href="https://github.com/whoisjaso/VideoEdit/blob/main/docs/DESIGN.md">Design</a><a href="https://github.com/whoisjaso/VideoEdit/blob/main/docs/TEARDOWN.md">Teardown</a><a href="https://github.com/whoisjaso/VideoEdit">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

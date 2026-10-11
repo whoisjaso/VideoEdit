@@ -19,7 +19,7 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 from . import __version__, blender, brain, config, export, grade, learn, project, prompts, sfx, styles, transcribe
-from .config import LIBRARY, UPLOADS, WEB
+from .config import LIBRARY, ROOT, UPLOADS, WEB
 
 JOBS: dict[str, dict] = {}       # "pid/cid" -> {"state": "rendering"|"ready"|"error", ...}
 
@@ -157,6 +157,7 @@ def _project_view(pid: str) -> dict:
         r = project.latest_render(pid, cid)
         clips.append({**tl.summary(), "grade": tl.grade, "grade_intensity": tl.grade_intensity,
                       "video": f"/api/projects/{pid}/clips/{cid}/video?v={tl.version}" if r else None,
+                      "poster": f"/api/projects/{pid}/clips/{cid}/poster?v={tl.version}" if r else None,
                       "final": bool(r and not r.stem.endswith("_preview")),
                       "job": JOBS.get(f"{pid}/{cid}", {}).get("state")})
     p["clips_view"] = clips
@@ -224,6 +225,20 @@ async def clip(req: Request):
 async def clip_video(req: Request):
     r = project.latest_render(req.path_params["pid"], req.path_params["cid"])
     return FileResponse(r, media_type="video/mp4") if r else Response(status_code=404)
+
+
+async def clip_poster(req: Request):
+    """A still from the latest render, so the card shows the clip (and the hook title) before play."""
+    import asyncio
+    from . import media
+    pid, cid = req.path_params["pid"], req.path_params["cid"]
+    r = project.latest_render(pid, cid)
+    if not r:
+        return Response(status_code=404)
+    f = r.with_suffix(".poster.jpg")
+    if not f.exists() or f.stat().st_mtime < r.stat().st_mtime:
+        await asyncio.to_thread(media.thumbnail, r, f, 0.6, 540)
+    return FileResponse(f, media_type="image/jpeg")
 
 
 def _rebuild(pid: str, cid: str, style_name: str):
@@ -406,6 +421,7 @@ routes = [
     Route(P + "/look/{look}", look_still),
     Route(C, clip, methods=["GET", "PUT"]),
     Route(C + "/video", clip_video),
+    Route(C + "/poster", clip_poster),
     Route(C + "/feedback", clip_feedback, methods=["POST"]),
     Route(C + "/grade", clip_grade, methods=["POST"]),
     Route(C + "/export", clip_export, methods=["POST"]),
@@ -423,6 +439,7 @@ routes = [
     Route("/api/styles", style_list),
     Route("/api/journal", journal),
     Mount("/web", StaticFiles(directory=str(WEB)), name="web"),
+    Mount("/site", StaticFiles(directory=str(ROOT / "site"), html=True), name="site"),   # the landing page
 ]
 
 app = Starlette(routes=routes)

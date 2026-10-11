@@ -87,7 +87,8 @@ synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard masco
 | Path | What it is |
 |---|---|
 | `kairos/` | The engine: `timeline.py` (EditGraph), `autoedit.py` (the recipe), `render.py` + `ass.py` (ffmpeg/libass renderer), `grade.py`, `moments.py`, `learn.py`, `prompts.py`, `blender.py`, `export.py`, `server.py`, `mcp_server.py` |
-| `web/` | The app: plain HTML/CSS/JS, no build step |
+| `web/` | The app: plain HTML/CSS/JS, no build step. `web/icons/` is the icon set (`node tools/make_icons.mjs` regenerates it from the mark) |
+| `site/` | The landing page, standalone and GitHub Pages-ready. Served by the app at `/site/` |
 | `docs/TEARDOWN.md` | Premiere Pro, After Effects (via EffectCraft) and Blender mapped to agent primitives |
 | `tests/` | `python -m unittest discover -s tests` |
 | `.claude/skills/jason-video-editor/` | The editing SOP, the decoded playbook, the scored journal, the SFX packs, and the Remotion recipe for hand-built 8.3-level episodes |

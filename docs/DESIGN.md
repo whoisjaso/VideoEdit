@@ -12,6 +12,8 @@ brand says that one thing: the hour, and the moment lifted out of it.
 
 **The mark.** A ring (the hour of footage) with one slice lifted out (the clip you keep). Ink ring,
 gold slice. It is `logo()` in `web/fx.js`, the favicon, and the first thing on the welcome screen.
+The icon set in `web/icons/` (iOS, Android maskable, PWA, favicon, wordmarks) is rendered from one
+SVG master by `tools/make_icons.mjs`; the landing page in `site/` is built on it too.
 Kai, the mascot, is a clapperboard with a face in the same gold; Kai asks, the mark signs.
 
 **The palette is the edit's palette.** The app wears the same colours the clips do, so what you see

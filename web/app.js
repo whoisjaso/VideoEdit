@@ -422,7 +422,7 @@ function celebrate(page, p) {
 function clipCard(c) {
   return `<article class="clip" data-id="${c.id}" data-busy="${c.job === "working" ? 1 : 0}">
     <div class="vid">
-      ${c.video ? `<video src="${c.video}" playsinline controls preload="metadata"></video>` : ""}
+      ${c.video ? `<video src="${c.video}" poster="${c.poster || ""}" playsinline controls preload="metadata"></video>` : ""}
       <span class="badge">${I.star}${c.score.toFixed(1)}</span>
       ${c.job === "working" ? `<div class="busy"><div class="spinner"></div>${esc(c.busy || "Updating…")}</div>` : ""}
     </div>
