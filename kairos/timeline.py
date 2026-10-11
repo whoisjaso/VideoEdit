@@ -124,6 +124,7 @@ class Timeline(BaseModel):
     markers: list[Marker] = Field(default_factory=list)
     version: int = 1
     moment: dict = Field(default_factory=dict)      # the source moment, so a redo can rebuild it
+    check_words: list[dict] = Field(default_factory=list)   # low-confidence words to confirm before posting
     feedback: list[dict] = Field(default_factory=list)
 
     @property
@@ -153,4 +154,5 @@ class Timeline(BaseModel):
             "score": round(self.score, 1), "duration": round(self.duration, 2),
             "segments": len(self.segments), "captions": len(self.captions),
             "graphics": len(self.graphics), "sfx": len(self.sfx), "version": self.version,
+            "check_words": self.check_words,
         }

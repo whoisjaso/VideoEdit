@@ -3,21 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#131f24" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Kairos</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0B0F'/%3E%3Cpath d='M22 16v32M22 32l18-16M28 27l14 21' stroke='%23FFD24A' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2358cc02'/%3E%3Cpath d='M22 16v32M22 32l18-16M28 27l14 21' stroke='%23ffc800' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preload" href="/web/fonts/nunito-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/web/app.css">
 </head>
 <body>
-  <header class="bar">
-    <button class="back" id="back" hidden aria-label="Back">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back
-    </button>
-    <div class="mid" id="barTitle"></div>
-    <div class="right" id="barRight"></div>
-  </header>
+  <header class="bar"></header>
   <main id="stage"></main>
   <div class="toast" id="toast"></div>
   <script src="/web/app.js" type="module"></script>

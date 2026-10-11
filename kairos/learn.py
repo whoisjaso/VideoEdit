@@ -121,7 +121,16 @@ def journal(limit: int = 50) -> list[dict]:
 
 
 def scoreboard() -> dict:
-    j = journal(1000)
+    import datetime as dt
+    j = journal(100000)
     scores = [e["score"] for e in j if e.get("score") is not None]
+    days = {dt.date.fromtimestamp(e["t"]) for e in j}
+    streak, day = 0, dt.date.today()
+    if day not in days:                      # today not trained yet: the streak is still alive from yesterday
+        day -= dt.timedelta(days=1)
+    while day in days:
+        streak += 1
+        day -= dt.timedelta(days=1)
     return {"edits_scored": len(scores), "average": round(sum(scores) / len(scores), 2) if scores else None,
-            "best": max(scores) if scores else None, "last5": scores[:5]}
+            "best": max(scores) if scores else None, "last5": scores[:5],
+            "xp": 10 * len(j) + 5 * len(scores), "streak": streak, "trained_today": dt.date.today() in days}

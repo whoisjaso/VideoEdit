@@ -90,7 +90,7 @@ def _speech_keep(spans: list[tuple[float, float]], a: float, b: float, gap_max: 
 
 def _color_for(word: str, keywords: set[str]) -> str:
     n = norm(word)
-    if MONEY.search(n) or re.match(r"^\$?\d", n):
+    if MONEY.search(n) and not re.fullmatch(r"\d+", n):    # "$7,000", "50k", "dollars" (not "6 5" feet)
         return "green"
     if PROBLEM.search(n) and n in keywords:
         return "red"
@@ -141,13 +141,16 @@ def build(src: str, info: dict, words: list[dict], speech: list[tuple[float, flo
                     break
 
     keywords = {norm(k) for kw in moment.get("keywords", []) for k in kw.split()} - FILLER
-    if in_clip and not keywords:   # no Claude keywords: ration the rarest long words
+    want = max(3, int(len(in_clip) * style["caption"]["keyword_ratio"] / 2))
+    if in_clip and len(keywords) < want and moment.get("engine") != "claude":
+        # Offline: top up with idea words. Charged words first, then the long words he leans on.
+        from .moments import HOOK_WORDS, STOP
         freq: dict[str, int] = {}
         for w in in_clip:
             freq[norm(w["word"])] = freq.get(norm(w["word"]), 0) + 1
-        longest = sorted({norm(w["word"]) for w in in_clip if len(norm(w["word"])) > 5} - FILLER,
-                         key=lambda x: (freq[x], -len(x)))
-        keywords = set(longest[: max(2, int(len(in_clip) * style["caption"]["keyword_ratio"] / 2))])
+        pool = {n for n in freq if len(n) > 3 and n not in STOP and n not in FILLER and not n.startswith("nigg")}
+        ranked = sorted(pool, key=lambda x: (-(x in HOOK_WORDS or bool(PROBLEM.search(x))), -freq[x] * len(x)))
+        keywords |= set(ranked[: want - len(keywords)])
 
     # 4. Captions: every segment's words on the output clock, pages of <= max_words, keyword on its own page.
     budget = max(2, int(len(in_clip) * style["caption"]["keyword_ratio"]) + 1)
@@ -280,6 +283,14 @@ def build(src: str, info: dict, words: list[dict], speech: list[tuple[float, flo
                         s.shake.append(Shake(t=c.t - acc, dur=0.32, amp=12))
                         break
                     acc += s.out_dur
+
+    # Skill rule: never guess a caption. Surface every word the recognizer wasn't sure of, on the output clock.
+    for w in in_clip:
+        if w.get("conf", 1) < 0.5 and len(norm(w["word"])) > 2 and norm(w["word"]) not in FILLER:
+            t = tl.src_to_out(w["start"])
+            if t is not None:
+                ctx = [x["word"] for x in in_clip if abs(x["start"] - w["start"]) < 1.6]
+                tl.check_words.append({"t": round(t, 2), "word": w["word"], "context": " ".join(ctx)})
 
     tl.sfx.sort(key=lambda c: c.t)
     return tl

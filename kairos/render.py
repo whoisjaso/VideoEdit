@@ -63,6 +63,7 @@ def avatar_path() -> Path | None:
 def render(tl: Timeline, src: str, info: dict, style: dict, out: str | Path, preview: bool = False,
            workdir: str | Path | None = None) -> Path:
     out = Path(out)
+    part = out.with_name(out.stem + ".part.mp4")
     work = Path(workdir or out.parent)
     work.mkdir(parents=True, exist_ok=True)
     W, H, FPS = tl.width, tl.height, tl.fps
@@ -154,7 +155,8 @@ def render(tl: Timeline, src: str, info: dict, style: dict, out: str | Path, pre
              "-r", str(FPS), "-c:v", "libx264", "-pix_fmt", "yuv420p",
              "-preset", "veryfast" if preview else "medium", "-crf", "26" if preview else "18",
              "-c:a", "aac", "-b:a", "128k" if preview else "256k", "-movflags", "+faststart",
-             "-t", f"{total:.4f}", str(out)]
+             "-t", f"{total:.4f}", str(part)]
     media.run([media.FFMPEG, *args])
+    part.replace(out)            # atomic: a player never streams a half-written file
     (work / f"{tl.id}.render.json").write_text(json.dumps({"out": str(out), "preview": preview, "duration": total}))
     return out

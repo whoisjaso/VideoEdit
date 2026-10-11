@@ -42,12 +42,21 @@ def transcribe(wav16k: str | Path, engine: str = "auto", progress=None) -> list[
 
 def _whisper(path, progress) -> list[dict]:
     from faster_whisper import WhisperModel
+    import numpy as np
     model = WhisperModel(os.environ.get("KAIROS_WHISPER", "small.en"), compute_type="int8")
-    segments, info = model.transcribe(str(path), word_timestamps=True, vad_filter=True)
+    # Feed the 16 kHz mono WAV as samples: skips faster-whisper's PyAV loader, which breaks on newer av releases.
+    with wave.open(str(path), "rb") as wf:
+        audio = np.frombuffer(wf.readframes(wf.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
+    segments, info = model.transcribe(audio, word_timestamps=True, vad_filter=True, language="en",
+                                      condition_on_previous_text=False)
     words = []
     for seg in segments:
         for w in seg.words or []:
-            words.append({"word": w.word.strip(), "start": round(w.start, 3), "end": round(w.end, 3),
+            text = w.word.strip()
+            if words and text[:1] in ("'", "’") and not w.word.startswith(" "):   # "y" + "'all" -> "y'all"
+                words[-1].update(word=words[-1]["word"] + text, end=round(w.end, 3))
+                continue
+            words.append({"word": text, "start": round(w.start, 3), "end": round(w.end, 3),
                           "conf": round(w.probability, 3)})
         if progress and info.duration:
             progress(min(1.0, seg.end / info.duration))

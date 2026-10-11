@@ -13,43 +13,92 @@ from . import brain
 from .transcribe import sentences as to_sentences
 
 HOOK_WORDS = {
-    "you": 1.0, "your": 1.0, "nobody": 2.0, "never": 1.5, "stop": 2.0, "secret": 2.5, "truth": 2.0,
-    "why": 1.5, "how": 1.2, "money": 2.0, "rich": 2.0, "broke": 2.0, "mistake": 2.0, "wrong": 1.5,
-    "everyone": 1.5, "nobody's": 2.0, "biggest": 1.5, "real": 1.0, "god": 1.5, "million": 2.5,
-    "thousand": 1.5, "dollars": 2.0, "fail": 1.5, "win": 1.5, "discipline": 1.5, "purpose": 1.5,
-    "listen": 1.5, "here's": 1.5, "this": 0.5, "problem": 1.5, "fear": 1.5, "lie": 2.0,
+    "you": 0.6, "your": 0.6, "nobody": 2.0, "never": 1.5, "stop": 2.0, "secret": 2.5, "truth": 2.0,
+    "why": 1.2, "money": 2.0, "rich": 2.0, "broke": 2.0, "mistake": 2.0, "wrong": 1.5,
+    "everyone": 1.5, "nobody's": 2.0, "biggest": 1.5, "god": 1.5, "million": 2.5,
+    "dollars": 2.0, "fail": 1.5, "discipline": 1.5, "purpose": 1.5, "ego": 2.0, "problem": 1.5,
+    "listen": 1.5, "here's": 1.5, "fear": 1.5, "lie": 2.0, "successful": 1.5, "holding": 1.0, "belief": 1.2,
 }
+# Thesis openers: the lines a creator builds a video around (cold-open material).
+THESIS = [r"\ba lot of (people|y'?all|you)\b", r"\bmost people\b", r"\bthe (only|real|biggest) (thing|reason|problem)\b",
+          r"\bthe reason (why )?\b", r"\bnobody\b", r"\bevery single\b", r"\byou (have|need) to\b", r"\byour ego\b",
+          r"\bhere'?s (the|why|how)\b", r"\bstop\b", r"\bif you (want|stop)\b", r"\bthe truth\b", r"\bnever\b"]
+CONTINUATION = {"and", "but", "so", "because", "or", "then", "cuz", "like", "not", "which", "that", "yourself", "broke",
+                "actions", "oftentimes", "also", "too", "even", "you", "they"}
 CURSES = {"fuck", "fucking", "shit", "damn", "bitch", "ass", "hell", "motherfucker", "bullshit", "nigga", "niggas"}
-NUM = re.compile(r"^\$?\d|^(one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand|million|billion)$")
-PAYOFF = {"so", "that's", "because", "which", "means", "result", "therefore", "and"}
+MONEY_NUM = re.compile(r"^\$\d|^\d+k$|^(hundred|thousand|million|billion)$")
+STOP = {"the", "a", "an", "and", "to", "of", "it", "is", "that", "you", "i", "in", "on", "so", "like", "uh", "um", "just",
+        "for", "with", "be", "this", "my", "we", "they", "but", "was", "are", "at", "bro", "your", "if", "me", "do", "don't",
+        "i'm", "it's", "that's", "y'all", "nigga", "niggas", "gonna", "about", "because", "what", "when", "all", "really",
+        "literally", "can", "have", "not", "he", "she", "them", "said", "say", "get", "got", "know", "think", "there",
+        "their", "or", "as", "by", "from", "how", "who", "would", "could", "lot", "people", "fucking", "fuck", "shit",
+        "than", "then", "want", "way", "thing", "things", "going", "make", "need", "being", "into", "out", "up", "more"}
+DANGLING = {"a", "an", "the", "to", "of", "and", "in", "for", "is", "my", "your", "with", "on", "at", "that", "than",
+            "if", "so", "but", "or", "be", "like", "about", "because"}
+norm = lambda w: re.sub(r"[^a-z0-9$']", "", w.lower())
 
 
 def _hook_score(text: str) -> float:
-    ws = [re.sub(r"[^a-z0-9$']", "", w.lower()) for w in text.split()]
-    s = sum(HOOK_WORDS.get(w, 0) for w in ws[:14])
-    s += 1.5 * sum(1 for w in ws[:14] if NUM.match(w))
-    s += 1.0 * sum(1 for w in ws[:14] if w in CURSES)
-    if text.strip().endswith("?") or ws[:1] in (["why"], ["how"], ["what"]):
-        s += 1.5
+    low = text.lower()
+    ws = [norm(w) for w in text.split()]
+    s = sum(HOOK_WORDS.get(w, 0) for w in ws[:16])
+    s += 2.5 * sum(1 for pat in THESIS if re.search(pat, low))
+    s += 1.5 * sum(1 for w in ws[:16] if MONEY_NUM.match(w))
+    s += 0.6 * min(2, sum(1 for w in ws[:16] if w in CURSES))
+    if text.strip().endswith("?"):
+        s += 1.0
+    if len(ws) < 4:                        # "Think about it." is not a hook
+        s -= 2.0
     return s
+
+
+def _opens_thought(sents: list[dict], i: int) -> float:
+    """Penalty for starting a clip mid-thought."""
+    first = norm(sents[i]["text"].split()[0]) if sents[i]["text"] else ""
+    pen = 2.5 if first in CONTINUATION else 0.0
+    if i > 0:
+        prev = sents[i - 1]
+        if not prev["text"].rstrip().endswith((".", "?", "!")) and sents[i]["start"] - prev["end"] < 0.8:
+            pen += 2.0                     # the previous line runs straight into this one
+    return pen
+
+
+def _topic(text: str) -> str:
+    """The idea a clip keeps returning to: its most repeated 1-3 word content phrase."""
+    ws = [norm(w) for w in text.split()]
+    best, best_n = "", 1
+    for n in (3, 2, 1):
+        counts: dict[tuple, int] = {}
+        for k in range(len(ws) - n + 1):
+            g = tuple(ws[k:k + n])
+            if g[0] in STOP or g[-1] in STOP or all(x in STOP for x in g) or any(len(x) < 3 for x in g):
+                continue
+            counts[g] = counts.get(g, 0) + 1
+        for g, c in counts.items():
+            if c > best_n or (c == best_n and n > len(best.split())):
+                best, best_n = " ".join(g), c
+        if best_n >= 2 and len(best.split()) >= n:
+            break
+    return best
 
 
 def heuristic(words: list[dict], n: int, min_s: float, max_s: float) -> list[dict]:
     sents = to_sentences(words)
+    hooks = [_hook_score(s["text"]) for s in sents]
     cands = []
     for i, first in enumerate(sents):
-        dur, j = 0.0, i
+        j = i
         while j < len(sents) and sents[j]["end"] - first["start"] <= max_s:
             dur = sents[j]["end"] - first["start"]
             if dur >= min_s:
                 body = " ".join(s["text"] for s in sents[i:j + 1])
-                nwords = len(body.split())
-                density = nwords / max(dur, 1)                     # talking, not dead air
+                density = len(body.split()) / max(dur, 1)                    # talking, not dead air
                 tail_gap = (sents[j + 1]["start"] - sents[j]["end"]) if j + 1 < len(sents) else 2.0
-                score = (_hook_score(first["text"]) * 1.4 + min(density, 3.5) * 1.2 + min(tail_gap, 1.5) * 1.5
-                         + sum(1 for s in sents[i:j + 1] if NUM.search(s["text"].split()[0].lower())) * 0.3)
-                cands.append({"start": first["start"], "end": sents[j]["end"], "score": score,
-                              "first": i, "last": j, "hook": first["text"], "text": body})
+                ends_clean = sents[j]["text"].rstrip().endswith((".", "!", "?"))
+                inner = max(hooks[i:j + 1])
+                score = (hooks[i] * 1.5 + inner * 0.6 + min(density, 3.5) * 0.8 + min(tail_gap, 1.5) * 1.2
+                         + (1.0 if ends_clean else 0) - _opens_thought(sents, i))
+                cands.append({"start": first["start"], "end": sents[j]["end"], "score": score, "first": i, "last": j, "text": body})
             j += 1
     cands.sort(key=lambda c: -c["score"])
     picked: list[dict] = []
@@ -61,15 +110,26 @@ def heuristic(words: list[dict], n: int, min_s: float, max_s: float) -> list[dic
     top = max((p["score"] for p in picked), default=1) or 1
     out = []
     for p in picked:
-        words_in = p["hook"].split()[:6]
-        while len(words_in) > 2 and words_in[-1].lower() in {"in", "the", "a", "to", "of", "and", "for", "is", "my", "your", "with", "on", "at"}:
-            words_in.pop()
+        i, j = p["first"], p["last"]
+        best = max(range(i, j + 1), key=lambda k: hooks[k])
+        cold = None
+        if best != i and hooks[best] > hooks[i] + 2 and sents[best]["end"] - sents[best]["start"] <= 4.5:
+            cold = [sents[best]["start"], sents[best]["end"]]                # open loop: strongest line first
+        topic = _topic(p["text"])
+        if len(topic.split()) >= 2:
+            title = topic.upper()
+        else:   # one repeated word isn't a title: use the hook's opening, cut before a dangling word
+            ws = (sents[best]["text"] if cold else sents[i]["text"]).rstrip(".?!,").split()[:6]
+            while len(ws) > 2 and norm(ws[-1]) in DANGLING:
+                ws.pop()
+            title = " ".join(ws).upper()
+        kw = [w for w in topic.split()] if topic else []
         out.append({
-            "start": round(p["start"], 2), "end": round(p["end"], 2),
-            "title": " ".join(words_in).upper(),
-            "hook": p["hook"], "cold_open": None,
-            "why": "Strong opening words, steady talking, ends on a clean pause.",
-            "score": round(5 + 4.5 * p["score"] / top, 1), "keywords": [],
+            "start": round(p["start"], 2), "end": round(p["end"], 2), "title": title,
+            "hook": sents[best]["text"] if cold else sents[i]["text"], "cold_open": cold,
+            "why": ("Opens on its strongest line, then plays in order. " if cold else "Opens on a thesis line. ")
+                   + (f"Keeps returning to \u201c{topic}\u201d." if topic else "Ends on a clean pause."),
+            "score": round(max(0.0, 5 + 4.5 * p["score"] / top), 1), "keywords": kw,
         })
     return sorted(out, key=lambda m: -m["score"])
 
@@ -166,5 +226,7 @@ def mine(words: list[dict], n: int = 5, min_s: float = 20, max_s: float = 60, br
                 "why": m["why"], "score": max(0.0, min(10.0, float(m["score"]))), "keywords": m["keywords"],
             })
         if out:
+            for m in out:
+                m["engine"] = "claude"
             return sorted(out, key=lambda m: -m["score"])[:n], "claude"
     return heuristic(words, n, min_s, max_s), "heuristic"

@@ -27,7 +27,7 @@ caption, sound and grade, and explains why.
 
 ```bash
 pip install -e .            # Python 3.10+, plus ffmpeg on your PATH
-pip install -e ".[all]"     # optional: Whisper captions, face reframe, yt-dlp links
+pip install -e ".[all]"     # Whisper captions (recommended), face reframe, yt-dlp links
 python -m kairos serve      # open http://localhost:8787
 ```
 
@@ -46,6 +46,19 @@ Then ask: *"Import ~/Videos/episode12.mp4, find the 5 strongest moments, edit th
 show me stills of each hook."* The MCP server exposes 28 tools: import, analyze, transcript, find
 moments, create clip, ripple cut, zoom, shake, SFX, graphics, caption fixes, grade, render, stills,
 Premiere export, style rules, feedback learning, idea enhancement and Blender 3D titles.
+
+## How it looks and feels
+
+The front end uses Duolingo's design language, read from their public web app's own CSS and JS (see
+[docs/DESIGN.md](docs/DESIGN.md)):
+- Their animal-named palette (owl green, macaw blue, bee gold), in light and dark.
+- Chunky buttons that drop onto a 4px lip when pressed.
+- One question per screen with a progress bar and a bottom bar that turns green when you answer.
+- A step path while it works, and a celebration with stat cards when your clips are ready.
+- A training streak and Style XP for the feedback that teaches the editor.
+
+Sounds are synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard mascot,
+walks you through it.
 
 ## What the app does
 
@@ -85,8 +98,13 @@ Premiere export, style rules, feedback learning, idea enhancement and Blender 3D
 
 ## Honest limits (v0.1)
 
-- **Captions need a transcriber.** Install `faster-whisper` (best) or Vosk. Without one, clips are
-  picked by speech energy and have no captions.
+- **Captions need a transcriber.** `faster-whisper` is the default (`small.en` runs at roughly real
+  time on a CPU; set `KAIROS_WHISPER=base.en` for about 2x speed). Without one, clips are picked by
+  speech energy and have no captions. Words the recognizer isn't sure of are flagged on each clip
+  ("2 words to check") so you confirm them before posting.
+- **Offline vs Claude.** With no API key, moments come from a heuristic (thesis lines, clean
+  sentence starts, cold opens, topic titles). It found the "perceived as nice" core on real footage,
+  but Claude picks and titles far better.
 - **No text behind the speaker yet.** The fast renderer can't place text behind a person; that
   still needs the skill's Remotion and matte path. Lottie graphics are on the roadmap.
 - **Blender is optional.** The 3D templates are written and wired in, but haven't been rendered in
