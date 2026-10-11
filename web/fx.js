@@ -74,7 +74,7 @@ export const fx = {
 export function confetti(n = 90) {
   const box = document.createElement("div");
   box.className = "confetti";
-  const colors = ["#58cc02", "#1cb0f6", "#ffc800", "#ff4b4b", "#ce82ff", "#ff9600"];
+  const colors = ["#ffc21a", "#2be37a", "#ff3b3b", "#8b5cf6", "#ff7a1a", "#14131a"];
   for (let i = 0; i < n; i++) {
     const p = document.createElement("i");
     p.style.left = `${Math.random() * 100}%`;
@@ -90,28 +90,36 @@ export function confetti(n = 90) {
   setTimeout(() => box.remove(), 3000);
 }
 
+// The moment mark: a ring (the hour of footage) with one slice lifted out (the clip you keep).
+export function logo(size = 32, cls = "mark") {
+  return `<svg class="${cls}" width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">
+    <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="125.7 25.1" stroke-dashoffset="-16.76"/>
+    <path d="M54.55 23.79A24 24 0 0 1 50.39 47.43" fill="none" stroke="#ffc21a" stroke-width="7" transform="translate(5 .9)"/>
+  </svg>`;
+}
+
 // Kai, the Kairos mascot: a clapperboard with a face. Moods: happy, think, wow.
 export function kai(mood = "happy", cls = "") {
   const mouth = {
-    happy: '<path d="M40 66 Q50 76 60 66" stroke="#4b3a00" stroke-width="4" fill="none" stroke-linecap="round"/>',
-    think: '<path d="M43 69 H57" stroke="#4b3a00" stroke-width="4" stroke-linecap="round"/>',
-    wow: '<ellipse cx="50" cy="69" rx="6" ry="7" fill="#4b3a00"/>',
+    happy: '<path d="M40 66 Q50 76 60 66" stroke="#1a1400" stroke-width="4" fill="none" stroke-linecap="round"/>',
+    think: '<path d="M43 69 H57" stroke="#1a1400" stroke-width="4" stroke-linecap="round"/>',
+    wow: '<ellipse cx="50" cy="69" rx="6" ry="7" fill="#1a1400"/>',
   }[mood] || "";
   const look = mood === "think" ? 3 : 0;
   return `<svg class="kai ${cls}" viewBox="0 0 100 100" aria-hidden="true">
     <ellipse cx="50" cy="95" rx="28" ry="4" fill="rgba(0,0,0,.08)"/>
-    <rect x="16" y="30" width="68" height="60" rx="18" fill="#e7a601"/>
-    <rect x="16" y="26" width="68" height="58" rx="18" fill="#ffc800"/>
+    <rect x="16" y="30" width="68" height="60" rx="18" fill="#d99e00"/>
+    <rect x="16" y="26" width="68" height="58" rx="18" fill="#ffc21a"/>
     <g transform="rotate(-12 18 24)">
-      <rect x="14" y="10" width="72" height="16" rx="6" fill="#4b4b4b"/>
+      <rect x="14" y="10" width="72" height="16" rx="6" fill="#14131a"/>
       <path d="M24 10 l10 16 M42 10 l10 16 M60 10 l10 16" stroke="#fff" stroke-width="6"/>
     </g>
     <g class="blink">
       <ellipse cx="37" cy="51" rx="9" ry="10" fill="#fff"/><ellipse cx="63" cy="51" rx="9" ry="10" fill="#fff"/>
-      <circle cx="${39 + look}" cy="${53 - look}" r="5" fill="#3c3c3c"/><circle cx="${65 + look}" cy="${53 - look}" r="5" fill="#3c3c3c"/>
+      <circle cx="${39 + look}" cy="${53 - look}" r="5" fill="#14131a"/><circle cx="${65 + look}" cy="${53 - look}" r="5" fill="#14131a"/>
       <circle cx="${41 + look}" cy="${51 - look}" r="1.6" fill="#fff"/><circle cx="${67 + look}" cy="${51 - look}" r="1.6" fill="#fff"/>
     </g>
-    <circle cx="27" cy="64" r="4" fill="#ff9600" opacity=".45"/><circle cx="73" cy="64" r="4" fill="#ff9600" opacity=".45"/>
+    <circle cx="27" cy="64" r="4" fill="#ff7a1a" opacity=".4"/><circle cx="73" cy="64" r="4" fill="#ff7a1a" opacity=".4"/>
     ${mouth}
   </svg>`;
 }

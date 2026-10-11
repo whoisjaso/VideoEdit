@@ -1,5 +1,5 @@
 // Kairos web app. No build step. Three taps from a video to clips; everything else is optional.
-import { fx, kai } from "/web/fx.js";
+import { fx, kai, logo } from "/web/fx.js";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -11,7 +11,7 @@ const store = {
   del(k) { try { localStorage.removeItem(k); } catch { /* */ } },
 };
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
-const PRAISE = ["Nice!", "Great pick!", "Love it!", "Perfect!", "Locked in!"];
+const PRAISE = ["That's the moment.", "Clean take.", "Locked.", "Good eye.", "Cut."];
 
 async function api(path, opts = {}) {
   const init = { ...opts };
@@ -78,7 +78,7 @@ function header({ progress = null, title = "", back = true, close = false, brand
   const bar = $(".bar");
   bar.innerHTML = `
     <button class="back" id="back" ${back ? "" : "hidden"} aria-label="${close ? "Close" : "Back"}">${close ? I.x : I.back}</button>
-    ${brand ? `<div class="brand">Kairos</div>` : progress !== null ? `<div class="prog"><i style="width:${Math.max(6, progress * 100)}%"></i></div>` : `<div class="mid">${esc(title)}</div>`}
+    ${brand ? `<div class="brand">${logo(30)}Kairos</div>` : progress !== null ? `<div class="prog"><i style="width:${Math.max(6, progress * 100)}%"></i></div>` : `<div class="mid">${esc(title)}</div>`}
     <div class="right" id="barRight"></div>`;
   $("#back").onclick = () => (close ? go("#/") : history.length > 1 ? history.back() : go("#/"));
 }
@@ -350,7 +350,7 @@ function swatch(id) {
 
 // ---------- project: progress -> celebration -> clips ----------
 const STEPS = { probe: I.eye, listen: I.ear, moments: I.star, edit: I.scissors, render: I.film };
-const SAY = { probe: "Opening your video…", listen: "Listening to every word. Long videos take a few minutes.", moments: "Hunting for the moments that hit…", edit: "Cutting, captioning, adding sound…", render: "Almost there. Rendering your clips!" };
+const SAY = { probe: "Loading the reel…", listen: "Listening for the lines. An hour takes a few minutes.", moments: "Marking the moments…", edit: "Making the cut…", render: "Printing your clips…" };
 
 route(/^#\/p\/([\w]+)$/, async (page, pid) => {
   page.classList.add("wide");
@@ -407,13 +407,13 @@ function celebrate(page, p) {
   const best = Math.max(0, ...p.clips_view.map((c) => c.score));
   page.innerHTML = `<div style="max-width:460px;margin:0 auto;padding-top:14px" class="center">
     ${kai("wow", "bob").replace('class="kai', 'style="width:160px;height:160px;margin:0 auto" class="kai')}
-    <h1 style="color:var(--bee);margin-top:10px">Your clips are ready!</h1>
+    <h1 style="margin-top:10px">That's a wrap.</h1>
     <div class="stats">
-      <div class="stat" style="--c:var(--bee)"><div class="h">Clips</div><div class="v">${I.film}${p.clips_view.length}</div></div>
-      <div class="stat" style="--c:var(--macaw);animation-delay:.1s"><div class="h">Minutes</div><div class="v">${I.clock}${mins}</div></div>
-      <div class="stat" style="--c:var(--owl);animation-delay:.2s"><div class="h">Top score</div><div class="v">${I.star}${best.toFixed(1)}</div></div>
+      <div class="stat" style="--c:var(--ink)"><div class="h">Clips</div><div class="v">${I.film}${p.clips_view.length}</div></div>
+      <div class="stat" style="--c:var(--violet);animation-delay:.1s"><div class="h">Minutes</div><div class="v">${I.clock}${mins}</div></div>
+      <div class="stat" style="--c:var(--gold-deep);animation-delay:.2s"><div class="h">Top score</div><div class="v">${I.star}${best.toFixed(1)}</div></div>
     </div>
-    <div class="dock"><div class="inner"><button class="btn" id="see">See my clips</button></div></div>
+    <div class="dock"><div class="inner"><button class="btn" id="see">Watch them</button></div></div>
   </div>`;
   fx.celebrate();
   $("#see", page).onclick = () => drawClips(page, p);
@@ -454,7 +454,7 @@ function drawClips(page, p) {
     p.clips_view.forEach((c) => api(`/api/projects/${p.id}/clips/${c.id}/grade`, { json: { look } }));
     p.clips_view.forEach((c) => { c.job = "working"; c.busy = "Applying your look…"; });
   }
-  page.innerHTML = `<h1>Your clips</h1><p class="sub">Tap <b>Adjust</b> to tell me what to change. Every note trains your style.</p>
+  page.innerHTML = `<h1>Your clips</h1><p class="sub">Tap <b>Adjust</b> to tell me what to change. Every note trains my taste.</p>
     <div class="feed">${p.clips_view.map((c) => clipCard(c)).join("")}</div>`;
   $$(".clip", page).forEach((el, k) => { el.style.animationDelay = `${k * 80}ms`; wireClip(el, p.id, p.clips_view[k]); });
 }
@@ -504,7 +504,7 @@ function tweakSheet(pid, c, el) {
     if (!st.score && !st.chips.size && !note.trim()) { fx.error(); return toast("Tap a score or a quick fix first"); }
     close();
     const r = await api(`/api/projects/${pid}/clips/${c.id}/feedback`, { json: { score: st.score, chips: [...st.chips], note, redo } }).catch((e) => toast(e.message));
-    if (r) { fx.success(); toast(r.lesson ? `Learned: ${r.lesson}` : "Style trained"); }
+    if (r) { fx.success(); toast(r.lesson ? `Noted: ${r.lesson}` : "Noted. Taste trained."); }
     if (redo) replaceClip(el, pid, { ...c, job: "working", busy: "Re-editing with your notes…" });
   };
   $("#redo", sh).onclick = () => send(true);
@@ -572,12 +572,15 @@ route(/^#\/welcome$/, async (page) => {
   header({ back: false });
   page.innerHTML = `<div class="center" style="padding-top:30px">
     ${kai("happy", "bob").replace('class="kai', 'style="width:170px;height:170px;margin:0 auto" class="kai')}
-    <div class="bubble below" style="display:inline-block;margin:14px 0 30px;max-width:340px">Hi, I'm Kai. Drop a long video and I'll cut the best moments into short clips, in your style.</div>
+    <div style="color:var(--ink);margin:0 auto 6px">${logo(72, "mark")}</div>
+    <h1 style="margin-bottom:4px">Kairos</h1>
+    <p class="sub" style="margin-bottom:18px">Every hour has its moment.</p>
+    <div class="bubble below" style="display:inline-block;margin:0 0 30px;max-width:340px">I'm Kai. Give me the hour, I'll find the moment and cut it in your style.</div>
     <div class="stack">
       <button class="btn" id="start">Let's go</button>
       <button class="btn ghost" id="claude">Connect Claude (optional)</button>
     </div>
-    <p class="muted small" style="margin-top:22px">Connecting Claude makes the moment picks and titles much sharper. You can do it later in Settings.</p>
+    <p class="muted small" style="margin-top:22px">With Claude connected, the picks and titles get much sharper. You can do it later in Settings.</p>
   </div>`;
   const done = (to) => { store.set("seen", true); go(to, { replace: true }); };
   $("#start", page).onclick = () => done("#/new");
@@ -593,23 +596,23 @@ route(/^#\/$/, async (page) => {
   header({ back: false, brand: true });
   $("#barRight").innerHTML = `<button class="icon-btn" aria-label="Settings" id="gear">${I.gear}</button>`;
   $("#gear").onclick = () => go("#/settings");
-  const greet = sb.trained_today ? "You trained your style today. Keep it going!" : sb.streak ? `Your ${sb.streak}-day streak is waiting. Score a clip today!` : "Ready to find your best moments?";
+  const greet = sb.trained_today ? "Taste trained today. Keep the streak." : sb.streak ? `Day ${sb.streak}. Score a clip to keep it.` : "Every hour has its moment. Let's find yours.";
   const row = (go_, ic, color, t, d) => `<a class="item link" href="${go_}"><span class="ic" style="background:${color}">${ic}</span><div class="grow"><div class="t">${t}</div><div class="d">${d}</div></div><span class="chev">${I.chev}</span></a>`;
   page.innerHTML = `
     <div class="center">${kai("happy", "bob").replace('class="kai', 'style="margin:0 auto" class="kai')}
       <div class="bubble below" style="display:inline-block;margin:12px 0 26px">${greet}</div></div>
     <button class="btn" id="new">${I.plus} New clips</button>
-    ${sb.streak ? `<p class="center" style="margin:16px 0 0"><span class="streak">${I.fire}${sb.streak}-day streak · <span style="color:var(--bee)">${I.gem}${sb.xp} XP</span></span></p>` : ""}
+    ${sb.streak ? `<p class="center" style="margin:16px 0 0"><span class="streak">${I.fire}${sb.streak}-day streak · <span style="color:var(--gold-deep)">${I.gem}${sb.xp} taste</span></span></p>` : ""}
     ${projects.length ? `<div class="lbl">Recent</div><div class="list">${projects.slice(0, 3).map((p) => `
       <a class="item link" href="#/p/${p.id}"><img class="th" src="/api/projects/${p.id}/thumb" alt="" onerror="this.style.visibility='hidden'">
         <div class="grow"><div class="t">${esc(p.name)}</div><div class="d">${(p.clips || []).length} clips</div></div>
         <span class="pill ${p.status === "ready" ? "good" : p.status === "error" ? "" : "warn"}">${esc(p.status)}</span></a>`).join("")}
-      ${projects.length > 3 ? `<a class="item link" href="#/projects"><div class="grow"><div class="t" style="color:var(--macaw)">All projects</div></div><span class="chev">${I.chev}</span></a>` : ""}</div>` : ""}
+      ${projects.length > 3 ? `<a class="item link" href="#/projects"><div class="grow"><div class="t" style="color:var(--accent)">All projects</div></div><span class="chev">${I.chev}</span></a>` : ""}</div>` : ""}
     <div class="lbl">More</div>
     <div class="list">
-      ${row("#/idea", I.spark, "var(--beetle)", "Idea → Prompt", "Say it messy, get a clear plan")}
-      ${row("#/library", I.books, "var(--fox)", "Library", "Sounds, looks, references")}
-      ${row("#/learning", I.brain, "var(--owl)", "What I've learned", `${sb.edits_scored || 0} scored edits`)}
+      ${row("#/idea", I.spark, "var(--violet)", "Idea → Prompt", "Say it messy, get a clear plan")}
+      ${row("#/library", I.books, "var(--ember)", "Library", "Sounds, looks, references")}
+      ${row("#/learning", I.brain, "var(--mint-deep)", "What I've learned", `${sb.edits_scored || 0} scored edits`)}
     </div>`;
   $("#new", page).onclick = () => go("#/new");
 });
@@ -720,13 +723,13 @@ route(/^#\/learning$/, async (page) => {
   const sb = j.scoreboard;
   page.innerHTML = `<h1>What I've learned</h1>
     <div class="stats">
-      <div class="stat" style="--c:var(--fox)"><div class="h">Streak</div><div class="v">${I.fire}${sb.streak}</div></div>
-      <div class="stat" style="--c:var(--bee);animation-delay:.08s"><div class="h">Style XP</div><div class="v">${I.gem}${sb.xp}</div></div>
-      <div class="stat" style="--c:var(--owl);animation-delay:.16s"><div class="h">Avg score</div><div class="v">${I.star}${sb.average ?? "–"}</div></div>
+      <div class="stat" style="--c:var(--ember)"><div class="h">Streak</div><div class="v">${I.fire}${sb.streak}</div></div>
+      <div class="stat" style="--c:var(--gold);animation-delay:.08s"><div class="h">Taste</div><div class="v">${I.gem}${sb.xp}</div></div>
+      <div class="stat" style="--c:var(--gold-deep);animation-delay:.16s"><div class="h">Avg score</div><div class="v">${I.star}${sb.average ?? "–"}</div></div>
     </div>
     ${j.entries.length ? `<div class="list">${j.entries.map((e) => `<div class="item"><div class="grow"><div class="t">${e.lesson ? esc(e.lesson) : esc((e.chips || []).join(", ") || "Score saved")}</div>
       <div class="d">${e.changes.map((c) => `${esc(c.param)} ${c.from} → ${c.to}`).join(" · ") || esc(e.clip?.title || "")}</div></div>${e.score ? `<span class="pill ${e.score >= 8 ? "good" : ""}">${e.score}/10</span>` : ""}</div>`).join("")}</div>`
-      : `<div class="empty">${kai("think")}<div class="t">Nothing yet</div>Score a clip and I start learning your taste.</div>`}`;
+      : `<div class="empty">${kai("think")}<div class="t">Nothing yet</div>Score a clip and I start learning what you like.</div>`}`;
 });
 
 // ---------- settings ----------

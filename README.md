@@ -49,16 +49,14 @@ Premiere export, style rules, feedback learning, idea enhancement and Blender 3D
 
 ## How it looks and feels
 
-The front end uses Duolingo's design language, read from their public web app's own CSS and JS (see
-[docs/DESIGN.md](docs/DESIGN.md)):
-- Their animal-named palette (owl green, macaw blue, bee gold), in light and dark.
-- Chunky buttons that drop onto a 4px lip when pressed.
-- One question per screen with a progress bar and a bottom bar that turns green when you answer.
-- A step path while it works, and a celebration with stat cards when your clips are ready.
-- A training streak and Style XP for the feedback that teaches the editor.
+Three taps from a video to clips: drop it, pick a format, go. Everything else is a default you can
+change under "More options".
 
-Sounds are synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard mascot,
-walks you through it.
+The mechanics come from a teardown of Duolingo (chunky lip buttons, a feedback bar that turns green,
+a celebration with stat cards, streaks). The look is Kairos's own (see [docs/DESIGN.md](docs/DESIGN.md)):
+the moment mark (a ring with one slice lifted out), the palette the edits themselves use (gold, mint,
+coral) on warm paper by day and ink by night, Outfit type, and an editor's voice. Sounds are
+synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard mascot, walks you through it.
 
 ## What the app does
 
