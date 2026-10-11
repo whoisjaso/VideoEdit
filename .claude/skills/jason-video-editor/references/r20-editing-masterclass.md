@@ -135,3 +135,29 @@ The track rings out instead of stopping dead.
    - The "reverb end" on any music or hit that would otherwise stop dead.
 8. **Background voice as texture.** When he quotes someone (e.g. the insults in ep05), the quote can be EQ'd and pushed back like archival audio.
 9. **Dual type is industry standard** (Max McCoy uses the same sans + italic-serif pairing). Keep Inter + Instrument Serif italic.
+
+## 4. YouTube hGjuuoGmFm0: a creator's breakdown of an Instagram edit made entirely by a Claude Code "creator director" tool (sent 2026-10-11)
+Studied from the full auto-captions and storyboards (YouTube blocked the video itself). He admits he doesn't know editing; the system does it. His process:
+
+1. **Talk, don't type.** He explains what he wants by speech-to-text, with a selected **mood board** (inspiration image) as the reference for the type, background and layout.
+2. **Pre-viz before filming.** From the script, the tool makes the whole motion-graphics edit with an AI voice (ElevenLabs) standing in for him. He sees the video before he records it.
+3. **Several rough cuts first.** He recorded twice (on-script and off-script). It cut three versions (scripted, off-script, a blend). He picked one, then said "too long, keep it making sense": 3:00 → 1:30. Only then did the full build start.
+4. **Feedback by time range**, spoken while watching: "from 4 s to 15 s the phone is just floating, nothing is happening, we need more"; "show my face here instead". Fix, re-render, repeat.
+5. **Style "DNA" / signature.** Each finished look is saved as a named style ("Blender UI iPhone style DNA"). The next video just says "use that DNA". Every test and asset is saved locally automatically.
+6. **Real tools per job:**
+   - Blender for a realistic 3D iPhone (the 2D phone looked fake: "it didn't look like an iPhone");
+   - Reaper (a DAW) for sound design, where the agent was trained to stack sounds;
+   - a grade pass ("it was a little too dark, make it lighter").
+
+### What this changes for us
+- **DNA files.** Each approved look becomes a named preset file with its type pair, colours, motion constants, SFX palette and levels, and caption style. A new edit starts from "use DNA <name>". We already have Coop and Engraving; formalise them in `dna/`.
+- **Rough cut first, at a target length.** Before any graphics, deliver the cut (sections.json → cut.mp4) and its length, and offer a shorter variant. (Matches Max McCoy's dialogue-first spine.)
+- **Feedback by time range.** Ask Jason for notes as "0:04–0:15: …". The scorecard's bare-face check already finds those holes before he does.
+- **Sound in a real mix stage, not per-clip volumes.** Render the picture's cue list, then mix offline (numpy/ffmpeg, like `../jason-ad-film/tools/mix2.py`). That gives:
+  - dB levels relative to the voice;
+  - low/mid/high layers with pitch/speed variants;
+  - reverb tails;
+  - ducking under the voice;
+  - EQ on quoted voices.
+- **3D phone:** a real 3D iPhone model rendered with lighting, instead of a CSS rectangle, whenever a phone is the hero. Backlog: Blender isn't installed in this container yet.
+- **A grade pass** on the footage, checked against the stills (too dark → lift).
