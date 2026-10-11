@@ -15,7 +15,7 @@ N=$(python3 -c "print(int($LEN*30))"); C=$(( (N + 2) / 3 ))
 cd $D; rm -f seg_*.mp4
 lane() { A=$1; B=$2; for ((s=A; s<B; s+=600)); do e=$((s+600<B ? s+600 : B)); rm -rf smp_$A
   python3 -c "import json; json.dump([{'o':f'{f:05d}.png','t':f/30} for f in range($s,$e)],open('plan_$A.json','w'))"
-  VW=1920 VH=1080 HTML=film.html node render2.js plan_$A.json smp_$A 2 > /dev/null
+  VW=1920 VH=1080 HTML=$PWD/film.html node render2.js plan_$A.json smp_$A 2 > /dev/null
   ffmpeg -v error -y -framerate 30 -start_number $s -i smp_$A/%05d.png -c:v libx264 -crf 17 -preset medium -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 seg_$(printf %05d $s).mp4
   rm -rf smp_$A; echo "s$SI chunk $s-$e"; done; }
 lane 0 $C & lane $C $((2*C)) & lane $((2*C)) $N & wait
