@@ -1,255 +1,311 @@
-# Chapter 1: Alexander. Script v1 (for approval)
+# Chapter 1: Alexander. Script v2: immersive (for approval)
 
 **Voices**
 - **GEORGE** = the story (bm_george).
-- **FABLE** = the mirror: names the belief, gives a modern example, asks the viewer one question (bm_fable).
+- **FABLE** = the mirror: names the belief, gives a modern example, asks one question (bm_fable).
 
 **Pace:** speed 0.82, a breath between lines, a longer pause at every voice change.
 
 **Picture cues:** the `[▸ …]` lines are for me, not spoken.
 
-**Source:** Plutarch's *Life of Alexander*, retold in our own modern words. Where Plutarch reports a story he doubts, the narration says so.
+**Source:** Plutarch's *Life of Alexander*, retold in our own modern words. Doubtful stories are flagged as doubtful.
 
-**Length:** about 2,600 words ≈ 20–22 minutes at sleep pace.
+**Length:** about 2,900 words ≈ 25–28 minutes at sleep pace.
+
+## How v2 makes you the one living it (Jason: "so the people watching can visualise themselves as him")
+1. **IMMERSE beats.** At each turning point, George switches from "he" to **"you"**, in **present tense**: *You are twelve. The horse is in front of you.* The viewer stops watching Alexander and becomes him.
+2. **The senses first.** Each immersion opens with what you'd feel: the smell of the stable, the weight of the cup, the heat of the sand. The brain can't tell a vividly imagined moment from a remembered one, which is why it lands as a belief.
+3. **The pause before the choice.** Every immersion ends on the decision, then holds 3 seconds of silence (*What do you do?*) before we hear what he did. The viewer has to choose first.
+4. **Picture:**
+   - immersion scenes are shot **from his eyes** (point of view, his hands in frame) or **over his shoulder**, his face never fully shown, so anyone can be him;
+   - story scenes use the paintings and engravings, and his face appears only in the "story" voice;
+   - hero shots by Higgsfield with prompts that keep his face hidden: back of the head, silhouette against the sun, hands.
+5. **Sound:** in immersion beats the world gets close and intimate (breath, wind, the horse snorting near your ear). Story beats sit wider and softer.
 
 ---
 
 ### Cold open: the boy who read this book
-[▸ Corsica, 1780s: a candlelit room; a boy bent over an old book. Slow push. Napoleon portrait engravings.]
+[▸ Corsica, 1780s: candlelight; a boy's hands turning old pages (point of view); then wider, the room; a Napoleon engraving.]
 
-**GEORGE:** Long before he was an emperor, a quiet boy from Corsica spent his evenings with one book. It was full of the lives of ancient men: generals, lawgivers, kings. His name was Napoleon Bonaparte. The book was Plutarch's *Lives*.
+**GEORGE:** Long before he was an emperor, a quiet boy from Corsica spent his evenings with one book. It held the lives of ancient men: generals, lawgivers, kings. His name was Napoleon Bonaparte. The book was Plutarch's *Lives*.
 
-**FABLE:** Think about that for a moment. Before he ever commanded an army, he was being shaped by stories. He didn't know it, but every page was quietly answering a question for him: what does a great man do? Tonight, we read the same book. And we start with the life that marked him most.
+**FABLE:** Before he ever commanded an army, he was shaped by stories. Every page quietly answered a question for him: what does a great man do? Tonight, you're going to read the same book. Not as a spectator. As him.
 
-[▸ Title card. *Plutarch's Lives*, then *Alexander*. Inter + Instrument Serif, gold accent.]
+[▸ Title: *Plutarch's Lives*, then *Alexander*.]
 
 ---
 
 ### 1. A writer who cared about small things
-[▸ Plutarch's bust; a scroll unrolling; a lamp.]
+[▸ Plutarch's bust; a lamp; a scroll.]
 
-**GEORGE:** Plutarch was a Greek writer who lived about four hundred years after Alexander. And before he tells the story, he warns us. He is not writing history. He is writing lives. A famous battle, he says, often tells you less about a man than a small remark, or a joke, or the way he treats someone with no power over him.
+**GEORGE:** Plutarch lived about four hundred years after Alexander, and before he begins, he warns us. He isn't writing history. He's writing lives. A famous battle, he says, often tells you less about a man than a small remark, or how he treats someone who has no power over him.
 
-**FABLE:** Plutarch believed what you choose to say, and how you behave in small moments, shows who you really are. Not your résumé. The one word you pick when you're tired. Keep that in mind tonight. We are not just watching what Alexander did. We are watching who he was.
+**FABLE:** So tonight, don't just watch what happens. Watch the small choices. They're the ones the Observer remembers.
 
 ---
 
 ### 2. Born into a story
-[▸ Macedonia: mountains at dawn; the palace at Pella; a mosaic of a lion; the temple of Artemis in flames.]
+[▸ Mountains of Macedonia at dawn; the palace at Pella; a lion seal; the temple of Artemis burning far away.]
 
-**GEORGE:** Alexander was born in Macedonia, the son of King Philip and Queen Olympias. Plutarch passes on the strange stories told about his birth.
-- His mother dreamed that a thunderbolt struck her.
-- His father dreamed he sealed her womb with the image of a lion.
-- And on the very day the boy was born, it was said, the great temple of Artemis at Ephesus burned to the ground.
+**GEORGE:** Alexander was born in Macedonia, son of King Philip and Queen Olympias. People told strange stories about his birth.
+- His mother dreamed a thunderbolt struck her.
+- His father dreamed of a lion.
+- On the day he was born, it was said, the great temple at Ephesus burned.
 
-Plutarch doesn't swear these things are true. But the boy grew up hearing them.
+Plutarch doesn't swear any of it is true. But the boy grew up hearing it.
 
-**FABLE:** Notice that. Before Alexander had done a single thing, he was told he was special. Born under thunder. Marked by a lion. That's a belief, handed to a child before there was any evidence for it. It's the same thing that happens when a parent says to a kid every night, "you were made for something big." The belief arrives first. The question is whether the life will ever back it up.
+**FABLE:** Before he'd done a single thing, he was told he was special. That's a belief handed to a child before there's any evidence. Maybe someone said something like that to you. *You're the smart one.* *You're the strong one.* Or maybe they said the opposite. Either way, you've been carrying it longer than you remember.
 
 ---
 
 ### 3. A boy who asked the right questions
-[▸ A child in a palace hall; Persian envoys in rich robes; a map of roads east.]
+[▸ Point of view: a boy's view up at tall Persian envoys in silk; a map of roads unrolling on a table.]
 
-**GEORGE:** As a boy, Alexander was hungry for honour, but not for every kind.
-- When friends asked if he would race at the Olympic Games, since he was fast, he said he would, if the other runners were kings.
-- Once, while his father was away, ambassadors arrived from the king of Persia. The boy entertained them himself. He didn't ask about gold or gardens. He asked how long the roads were. How the Persian king behaved in battle. How strong his army was.
+**GEORGE:** As a boy he wanted honour, but only the real kind. Asked if he'd race at the Olympic Games, he said yes, if the other runners were kings. When envoys came from the king of Persia, he didn't ask them about gold. He asked how long the roads were. How their king fought. How big his army was.
 
-The envoys left amazed.
+**GEORGE:** And whenever news came of another of his father's victories, he'd complain to his friends: *My father will leave me nothing great to do.*
 
-**GEORGE:** And whenever news came that his father had won another city, the boy didn't celebrate. He complained to his friends. "My father will leave me nothing great to do."
-
-**FABLE:** There's the first mask. Psychologists who study human needs call it significance: the need to matter. It forms early, often in the shadow of someone bigger. A little brother trying to outrun the older one. A son who measures himself against his father's trophies. That need can make you great. It can also, as we'll see, become the thing that breaks you.
+**FABLE:** That's the need to matter: significance. It forms early, often in the shadow of someone bigger. A little brother racing the older one. A son measuring himself against his father's trophies. It can make you great. Keep watching. It can also break you.
 
 ---
 
-### 4. The horse no one could ride
-[▸ Hero scene (Higgsfield). A black stallion rearing in a field; men backing away; the boy approaching; the sun behind the horse; the shadow falling behind.]
+### 4. The horse (IMMERSE)
+[▸ Point of view. Dust in low gold light; a black stallion rearing close; men stepping back; your own small hands open in front of you; the sun ahead; the horse's shadow stretching across the ground. Close sound: hooves, snorting, breath.]
 
-**GEORGE:** One day a horse was brought to Philip, a magnificent black stallion named Bucephalus, offered for an enormous price. The king's men tried to ride him, one after another. He reared and kicked. No one could hold him. Philip told them to take the horse away.
+**GEORGE:** You are twelve years old. The air smells of dust and sweat and leather. In front of you, a black horse is screaming and rearing, higher than the men around him. They call him Bucephalus. Your father's best riders have tried him, one after another, and every one has been thrown or has backed away.
 
-**GEORGE:** But Alexander said, "What a horse they are losing, because they don't know how to handle him." His father thought the boy was showing off, so he made a bet. If Alexander could ride the horse, it was his.
+**GEORGE:** Your father is tired of it. He tells them to take the horse away. And the men nod, because that's what you do when the king has decided.
 
-**GEORGE:** Alexander walked up slowly. He had noticed what the grown men missed: the horse was afraid of its own shadow. So he turned Bucephalus toward the sun, so the shadow fell behind him. He calmed him with his voice and his hand. Then, in one smooth movement, he was on his back, and he let the horse run.
+**GEORGE:** But you've been watching. Not the horse's hooves. His eyes. Every time he lunges, he's jumping away from something on the ground. His own shadow, black and moving at his feet.
 
-**GEORGE:** When he rode back, the men cheered. And his father, Plutarch says, wept with joy and told him: "My son, find a kingdom big enough for you. Macedonia is too small."
+**GEORGE:** The men are laughing at you for speaking up. Your father is watching to see if you'll embarrass him. Your heart is pounding.
 
-[▸ Gold device lands on the boy's eye; then on the horse's shadow.]
+[▸ Silence. Three seconds. The horse breathing.]
 
-**FABLE:** Here's what's really happening. There's a part of you that watches everything you do. Call it the Observer. It doesn't believe what you say about yourself. It believes what it sees you do. That day, the Observer watched a boy see what grown men missed, and it wrote it down: *I see what others miss. I act when others give up.* It's the same quiet moment as a kid fixing the family wifi after the adults gave up. Nobody throws a party. But a belief is born.
+**GEORGE:** What do you do?
 
-**FABLE:** So here's a question to sit with. What's the last thing you did that gave your Observer real evidence? Not a post. Not a compliment. A thing you did.
+[▸ Beat. Then the move.]
+
+**GEORGE:** You walk forward, slowly. You take the reins and turn his head toward the sun, so the shadow falls behind him, where he can't see it. You speak low. You put your hand on his neck and feel him trembling under your palm. Then, in one motion, you're on his back. And you let him run.
+
+**GEORGE:** When you ride back, your father has tears in his eyes. *My son,* he says, *find a kingdom big enough for you. Macedonia is too small.*
+
+[▸ The gold dot lands on the shadow behind the horse.]
+
+**FABLE:** Feel what just happened inside you. Not the applause. Something quieter. A part of you watched you see what the grown men missed, and it wrote it down: *I see what others miss. I move when others give up.* That's the Observer. It doesn't believe what you say about yourself. It believes what it sees you do. You've had moments like this. Fixing what the adults gave up on. Finishing the rep when everyone else racked the weight. Nobody throws a party. But a belief is born.
+
+**FABLE:** What's the last thing you did that gave your Observer real evidence?
 
 ---
 
-### 5. The book under the pillow
-[▸ Mieza: a grove; stone benches; Aristotle with the boy; the *Iliad* in a small box; a dagger beside it under a pillow.]
+### 5. The book under the pillow (IMMERSE)
+[▸ Night in Mieza: the window glowing blue; a small wooden box; your hand sliding the *Iliad* under a pillow beside a dagger; candle smoke.]
 
-**GEORGE:** Philip wanted the best teacher in the world for his son, so he sent for the philosopher Aristotle. In a quiet grove at a place called Mieza, Aristotle taught the boy ethics, politics, medicine and literature.
+**GEORGE:** Your father sends for the wisest man in Greece to teach you: Aristotle. In a quiet grove you learn about the stars and the body and justice and poetry.
 
-**GEORGE:** Alexander loved books his whole life. His favourite was Homer's *Iliad*, the story of Achilles, the greatest warrior of the Greeks. He carried a copy Aristotle had corrected for him. And at night, Plutarch tells us, he kept it under his pillow, next to a dagger.
+**GEORGE:** And at night, alone in your room, you open the one book you love more than any other: the story of Achilles, the greatest warrior who ever lived. You read until the candle gutters. Then you slide the book under your pillow, next to your dagger, and you lie down on both of them.
 
-**FABLE:** Stop on that image: a book and a blade under the same pillow. This is the whole idea of tonight. The stories we fall asleep with become the person we try to be. Alexander's hero was Achilles. For a kid today, it might be the athlete on the poster above the bed, or the characters in the shows they grew up with. We don't choose those beliefs. We absorb them.
+**GEORGE:** In the dark, you can feel the edge of the book through the pillow. And you think, the way boys do: *one day, they'll tell stories about me.*
 
-**FABLE:** So ask yourself. What story did you fall asleep next to? And is it still the one you want to become?
+**FABLE:** A book and a blade under the same pillow. This is the whole idea of tonight. The stories you fall asleep with become the person you try to be. His was Achilles. For you, maybe it was a show, a poster above the bed, a voice in your earbuds. You didn't choose those beliefs. You absorbed them, night after night.
+
+**FABLE:** What did you fall asleep next to? And is it the person you want to become?
 
 ---
 
 ### 6. A king at twenty
-[▸ Philip at the theatre; a sudden blade; chaos; the young king standing alone; map of rebelling Greece.]
+[▸ The theatre; a sudden blade; your father falling; the crowd turning to look at *you*. Map: rebellions everywhere.]
 
-**GEORGE:** When Alexander was twenty, his father was murdered by one of his own bodyguards. Suddenly the young man was king, and everything seemed ready to fall apart. Conquered peoples rebelled. Greek cities rose against him. His advisers begged him to go carefully.
+**GEORGE:** You are twenty. Your father is murdered in front of a crowd by one of his own guards. And in that moment, every face turns toward you. Cities rebel. Advisers tell you to wait, to go carefully.
 
-**GEORGE:** He did the opposite. He moved so fast that his enemies had no time to organise. When the city of Thebes rebelled, he marched south and destroyed it. Plutarch says later in life he regretted that cruelty. But the message was understood. The new king was not a boy.
-
----
-
-### 7. The man in the barrel
-[▸ Corinth: crowds of nobles; a sun-drenched street; an old man lying in a large clay jar; a shadow falling across him.]
-
-**GEORGE:** In Corinth, the leaders of Greece gathered to honour the new king. Everyone came to congratulate him, except one man: the philosopher Diogenes, who owned almost nothing and lived in a large clay jar.
-
-**GEORGE:** So Alexander went to see him. He found the old man lying in the sun. The king stood over him and asked if there was anything he could do for him. Diogenes looked up and said, "Yes. Move a little. You're blocking my sun."
-
-**GEORGE:** The king's companions laughed at the old man. But Alexander said: "If I were not Alexander, I would be Diogenes."
-
-**FABLE:** Here's the difference between identity and ego. Ego needs the room to clap. It needs to be seen as the biggest man there. Alexander's identity, at this point, was secure enough to admire a man who wanted nothing from him: a man no one could flatter or impress. It's the CEO who looks at a guy fishing quietly at the pier and genuinely envies him. Only someone secure in who he is can do that.
-
-**FABLE:** Who in your life can't be impressed by you? And how do you feel around them?
+**GEORGE:** Alexander did the opposite. He moved so fast his enemies couldn't organise. When Thebes rebelled, he destroyed it, a cruelty Plutarch says he regretted for the rest of his life. But no one called him a boy again.
 
 ---
 
-### 8. Crossing into Asia
-[▸ Ships crossing the Hellespont; a spear thrown into the shore; the river Granicus; cavalry charge.]
+### 7. The man in the barrel (IMMERSE)
+[▸ Corinth, bright sun; over your shoulder, a crowd of nobles bowing; then the street; an old man lying beside a clay jar; your shadow falls across his face.]
 
-**GEORGE:** At twenty-two, Alexander crossed into Asia with an army, to make war on the vast empire of Persia. At the river Granicus, the Persian cavalry waited on the far bank. His generals said it was too late in the day, the river too deep. Alexander plunged in anyway.
+**GEORGE:** In Corinth, everyone who matters comes to congratulate you. Generals, statesmen, philosophers. They bow. They smile. They want something.
 
-**GEORGE:** In the fighting, a Persian commander raised his blade over the king's head. In that instant, one of Alexander's officers, a man named Cleitus, cut the attacker down. Cleitus saved the king's life. Remember his name.
+**GEORGE:** Except one man. Diogenes, who owns almost nothing and sleeps in a clay jar, didn't come. So you go to him.
 
----
+**GEORGE:** You find him stretched out in the sun. You stand over him, the most powerful young man in Greece, and you ask him: *Is there anything I can do for you?*
 
-### 9. The knot, and the cup of medicine
-[▸ The Gordian knot (engraving); then a tent at Tarsus; a sick king; a physician; a letter; a cup.]
+**GEORGE:** He squints up at you and says: *Yes. Move. You're blocking my sun.*
 
-**GEORGE:** At the town of Gordium, there was an ancient knot. Legend said whoever undid it would rule Asia. Most people say Alexander simply cut it with his sword. One writer says he pulled out the pin that held it. Either way, he didn't accept the problem the way it was handed to him.
+[▸ Silence. Your friends laughing behind you.]
 
-**GEORGE:** Not long after, he swam in an icy river and fell dangerously ill. His doctors were afraid to treat him. If the king died, they would be blamed. Only one, a physician named Philip, dared to prepare a strong medicine.
+**GEORGE:** Your friends laugh at him. You could too. Or you could feel insulted. Instead, you feel something you didn't expect: respect. And you say: *If I were not Alexander, I would be Diogenes.*
 
-**GEORGE:** Just then, a letter arrived from one of Alexander's generals, warning him: Philip has been bribed by the Persians to poison you. Alexander read it and put it under his pillow. When the physician brought the cup, the king handed him the letter. And while the doctor read the accusation, Alexander drank the medicine down, looking him in the eye. He recovered.
+**FABLE:** That's the difference between identity and ego. Ego needs the room to clap. Identity can stand in front of a man who wants nothing from it, and admire him. It's looking at someone quietly fishing at the pier, needing no one's approval, and realising you envy his peace. Only someone secure in who they are can feel that without feeling small.
 
-**FABLE:** That's trust, chosen from strength. When you know who you are, you don't need to suspect everyone to feel safe. Think of the founder who hands the keys to someone and actually lets them drive. A weak ego can't do that. It's too busy protecting the mask.
-
----
-
-### 10. When no one would ever have known
-[▸ Issus: Darius fleeing in his chariot; then a royal tent; the captured mother, wife and daughters of the Persian king; Alexander entering quietly.]
-
-**GEORGE:** At Issus, Alexander defeated the Persian king Darius, who fled the field, leaving behind his chariot, his bow, and his family. The mother, wife and daughters of the most powerful man in the world were now prisoners of a young conqueror.
-
-**GEORGE:** In that age, they could have been treated however the victor wished. No one would have stopped him. No one would even have blamed him. Instead, Alexander sent word that they were safe. They kept their titles, their servants and their dignity. Plutarch says he treated them with a restraint that astonished everyone: no one was allowed to dishonour them, and he would not even look on the queen in a way that would shame her.
-
-**FABLE:** This is the heart of it. Who are you when you could get away with anything? The Observer is always watching, even when nobody else is. Especially then. It's what you do with the password no one knows you have. The money no one would miss. The person who can't fight back. That's where identity is built. Not in front of the crowd. In front of God, and yourself.
-
-**FABLE:** When was the last time you did the right thing when no one would ever have found out?
+**FABLE:** Who in your life can't be impressed by you? How do you feel around them?
 
 ---
 
-### 11. The son of Zeus
-[▸ Egypt: the desert; the oasis of Siwa; the temple; a priest at the gate.]
+### 8. The river
+[▸ Over your shoulder: the river Granicus; Persian cavalry on the far bank; then underwater roar; a blade above you; a hand cutting it down.]
 
-**GEORGE:** Alexander took the great island city of Tyre after a long siege, and then he marched into Egypt, where he was welcomed. He crossed the desert to the oracle of Ammon at Siwa. There, the priest greeted him as "son of Zeus."
+**GEORGE:** You're twenty-two, and you've crossed into Asia with an army. At the river Granicus, the enemy waits on the far bank. Your generals say it's too late in the day, the water too deep. You ride in anyway.
 
-**GEORGE:** Plutarch adds a curious detail. Some said the priest, speaking Greek badly, meant to say "my son", and a slip of one letter made it "son of Zeus". Alexander, it seems, liked the second version better.
-
-**FABLE:** One letter. And a whole new identity. That's how powerful words are. Someone says the right thing about you at the right moment, and you carry it for the rest of your life. Sometimes it lifts you. Sometimes it's a mask you'll spend years trying to live up to.
+**GEORGE:** In the chaos, a Persian rider raises his blade over your head, and you don't see it. A hand cuts him down. It belongs to Cleitus, one of your officers. He just saved your life. Remember his face.
 
 ---
 
-### 12. The battle he would not steal
-[▸ Gaugamela: the night before, endless Persian campfires; the general Parmenio at the tent; the king asleep.]
+### 9. The cup (IMMERSE)
+[▸ A tent at Tarsus; fever-light; your hand holding a folded letter; then a cup of medicine, close; the physician's face as he reads.]
 
-**GEORGE:** At Gaugamela, the decisive battle, Darius gathered an enormous army. The night before, Alexander's senior general, Parmenio, saw the countless Persian fires and urged him to attack in the dark. Alexander refused. "I will not steal my victory," he said.
+**GEORGE:** You swam in an icy river, and now you're burning with fever. Your doctors are afraid to treat you; if you die, they'll be blamed. Only one, Philip, offers to prepare a strong medicine.
 
-**GEORGE:** And then, Plutarch says, the king slept so deeply that in the morning his generals had to wake him. When they asked how he could sleep before such a battle, he said they had already won. Darius had stopped running. Now they could finally meet him face to face. That day, the Persian army broke.
+**GEORGE:** Then a letter arrives from one of your generals. You unfold it. It says: *Philip has been paid by the Persians to poison you.*
 
-**GEORGE:** Darius fled again, and was later murdered by his own men. When Alexander found the body, he took off his own cloak and laid it over the dead king.
+**GEORGE:** The tent flap opens. Philip walks in with the cup.
 
-**FABLE:** Fear makes you cut corners. Identity lets you sleep. When you know who you are, you don't need to win in a way you'd be ashamed of. You'd rather win in the open than wake up next to a victory you stole.
+[▸ Silence. The cup, close.]
 
----
+**GEORGE:** What do you do?
 
-### 13. The mask begins to grow
-[▸ Babylon and Persepolis: gold, silk, incense; courtiers bowing to the ground; the king in Persian robes; a philosopher standing upright among them.]
+**GEORGE:** You hand him the letter. And while his eyes move across the accusation, you lift the cup and drink it all, looking straight at him.
 
-**GEORGE:** Now Alexander was master of the Persian empire, and something began to change. He started wearing Persian robes. He began to expect people to bow before him, as the Persians bowed before their kings. And he surrounded himself with men who told him what he wanted to hear: that he was more than a man, that whatever a king did was right.
+**GEORGE:** You get well.
 
-**GEORGE:** Some of his old Macedonian companions were disgusted. The philosopher Callisthenes refused to bow at all. He was not forgiven for it.
-
----
-
-### 14. The night of Cleitus
-[▸ A banquet; torches; wine; old soldiers and young flatterers; a raised voice; a spear on the wall; then silence.]
-
-**GEORGE:** At a banquet, deep in wine, the flatterers began to praise Alexander above everyone, even above his own father and the old soldiers who had bled beside him. Cleitus could not stand it. The same Cleitus who had saved the king's life at the Granicus.
-
-**GEORGE:** He stood up and shouted that Alexander owed his glory to Macedonian blood. Then he held up his hand and said: "This is the hand that saved you."
-
-**GEORGE:** Alexander, furious and drunk, seized a spear and killed him.
-
-**GEORGE:** When he understood what he had done, he collapsed. For days he lay in his tent, refusing food, calling his friend's name. Philosophers were sent to comfort him. One told him that whatever a king does must be just, and the king, Plutarch says, was soothed by it. And that was the worst part.
-
-[▸ Long hold on the empty tent. Silence in the sound. Only wind.]
-
-**FABLE:** This is what happens when ego takes over. The flatterers became his mirror. They didn't show him what he did. They showed him what they wanted him to believe. And the one man who still told him the truth, he killed.
-
-**FABLE:** It happens in quieter ways today. When the likes and the comments start deciding who you are. When everyone around you agrees with you because they need something from you. The Observer stops seeing evidence, and starts hearing applause.
-
-**FABLE:** Who in your life tells you the truth? And when was the last time you thanked them for it?
+**FABLE:** That's trust chosen from strength. When you know who you are, you don't have to suspect everyone to feel safe. It's handing someone the keys and actually letting them drive. A fragile ego can't do that. It's too busy guarding the mask.
 
 ---
 
-### 15. India, and the cup of water
-[▸ Mountains of the Hindu Kush; the river Hydaspes in a storm; war elephants; King Porus; then a burning desert.]
+### 10. The tent (IMMERSE)
+[▸ Issus: the abandoned chariot of Darius; then your hand pulling back a tent curtain; inside, a mother, a wife, daughters, kneeling in fear; candlelight.]
 
-**GEORGE:** Alexander pushed on, across mountains, into India. At the river Hydaspes he fought the king Porus, a giant of a man who fought on even when wounded. When Porus was captured, Alexander asked him how he wished to be treated.
+**GEORGE:** You've beaten Darius, the king of Persia. He fled the battlefield and left everything behind: his chariot, his bow, his family.
 
-**GEORGE:** "Like a king," Porus said. Alexander gave him back his kingdom, and more.
+**GEORGE:** Now you stand outside a tent. Inside are his mother, his wife and his daughters. You can hear them weeping. They think they belong to you now. In this age, they do. Whatever you decide, no one will stop you. No one will even judge you.
 
-**GEORGE:** Near there, old Bucephalus died, the horse from his boyhood. Alexander founded a city and named it after him.
+[▸ Silence. Your hand on the curtain.]
 
-**GEORGE:** But his men were exhausted. At the river Hyphasis, they refused to go any farther. Alexander shut himself in his tent in anger. But in the end, he turned the army around.
+**GEORGE:** What do you do?
 
-**GEORGE:** On the way home, crossing a terrible desert, the army was dying of thirst. A few soldiers found a little water and brought it to the king in a helmet. Alexander thanked them. Then, in front of his thirsty men, he poured it out on the sand. Plutarch says it was as if every man had drunk.
+**GEORGE:** You send word that they are safe. They keep their titles, their servants, their honour. No one is allowed to dishonour them. And you don't even allow yourself to look at the queen in a way that would shame her.
 
-**FABLE:** Even after everything, the old identity was still there underneath the mask. The boy who wanted to be worthy. That's the thing about identity built by action. It can be buried, but it doesn't disappear. It's waiting for you to act like yourself again.
+**FABLE:** This is the centre of everything. Who are you when you could get away with anything? The Observer is always watching, even when no one else is. Especially then. It's the password no one knows you have. The money no one would miss. The person who can't fight back. That's where identity is really built. Not in front of the crowd. In front of God, and yourself.
+
+**FABLE:** When was the last time you did the right thing knowing no one would ever find out?
+
+---
+
+### 11. One letter
+[▸ The desert to Siwa; heat shimmer; a temple gate; a priest's mouth forming a word.]
+
+**GEORGE:** Alexander took the island city of Tyre, entered Egypt, and crossed the desert to the oracle at Siwa. The priest greeted him as *son of Zeus*. Some said the priest, struggling with Greek, only meant *my son*, and a slip of one letter changed it. Alexander liked the second version better.
+
+**FABLE:** One letter, and a new identity. Someone says the right thing about you at the right moment, and you carry it for life. Sometimes it lifts you. Sometimes it's a mask you'll spend years trying to live up to.
+
+---
+
+### 12. The night before (IMMERSE)
+[▸ Gaugamela at night: a hill; your view over a valley of endless Persian campfires; Parmenio's voice behind you; then your tent; your eyes closing.]
+
+**GEORGE:** It's the night before the battle that will decide everything. You stand on a hill and look down at the plain. Persian campfires, more than you can count, all the way to the horizon.
+
+**GEORGE:** Your oldest general, Parmenio, comes to you. *Attack them now, in the dark,* he says. *They'll never see us coming.*
+
+**GEORGE:** It would work. It might save thousands of your men.
+
+[▸ Silence. Wind. Distant fires crackling.]
+
+**GEORGE:** What do you do?
+
+**GEORGE:** You say: *I will not steal my victory.* And you go to sleep. So deeply that at dawn your generals have to shake you awake. When they ask how you could sleep, you tell them: *We've already won. He's finally stopped running.*
+
+**GEORGE:** That day, the Persian army broke. Darius was later murdered by his own men. When Alexander found the body, he took off his cloak and laid it over him.
+
+**FABLE:** Fear cuts corners. Identity sleeps. When you know who you are, you'd rather win in the open than wake up next to a victory you'd be ashamed of.
+
+---
+
+### 13. The mask grows
+[▸ Babylon: gold, silk, incense; courtiers dropping to the floor before you; your sleeves now Persian silk; one philosopher standing upright, the only head not bowed.]
+
+**GEORGE:** Now the whole Persian empire is yours. The rooms are gold. The air smells of incense. Everywhere you go, people drop to the floor. They tell you you're more than a man. That whatever you do is right. It feels good. Then it feels normal.
+
+**GEORGE:** You begin to wear Persian robes. You expect people to bow. A philosopher named Callisthenes refuses. You don't forgive him.
+
+**FABLE:** Notice how slowly it happens. Nobody wakes up one morning arrogant. The applause just gets a little louder than the evidence, day after day, until you can't hear anything else.
+
+---
+
+### 14. The banquet (IMMERSE)
+[▸ Torchlight; wine; laughter; the faces of flatterers close and warm; one face hard: Cleitus. A spear on the wall behind you. Then silence and darkness.]
+
+**GEORGE:** You're at a banquet, deep in wine. The room is warm, loud and golden. Your new friends are praising you, above your father, above the old soldiers who bled beside you.
+
+**GEORGE:** Then one voice cuts through. Cleitus. The man who saved your life at the river. He stands, red-faced, and tells the room you owe everything to Macedonian blood. Then he holds up his right hand and says: *This is the hand that saved you.*
+
+**GEORGE:** Everyone is looking at you. The wine is loud in your head. There's a spear on the wall behind you.
+
+[▸ The gold dot fades out. Silence.]
+
+**GEORGE:** And this time, you don't pause to choose.
+
+**GEORGE:** You kill him.
+
+[▸ Long silence. Only wind.]
+
+**GEORGE:** When you understand what you've done, you collapse. For three days you lie in your tent, refusing food, calling his name. A philosopher comes and tells you that whatever a king does must be just. And you let yourself believe him.
+
+**FABLE:** This is what it looks like when ego takes over. The flatterers became the mirror. They didn't show you what you did. They showed you what they needed you to believe. And the one man who still told you the truth, you destroyed.
+
+**FABLE:** It happens quietly today, too. When the likes start deciding who you are. When everyone around you agrees because they need something from you. The Observer stops seeing evidence, and starts hearing applause.
+
+**FABLE:** Who in your life tells you the truth? When did you last thank them?
+
+---
+
+### 15. The water (IMMERSE)
+[▸ India: elephants in a storm; King Porus, huge and wounded; then a white-hot desert; your cracked hands; a helmet held up to you, water catching the sun; your men's faces watching. The gold dot returns.]
+
+**GEORGE:** You push on to India. At the river Hydaspes, you defeat King Porus, a giant who fights on even with his wounds. You ask him how he wishes to be treated. *Like a king,* he says. And you give him back his kingdom, and more.
+
+**GEORGE:** Old Bucephalus dies there, the horse from your boyhood. You build a city and give it his name.
+
+**GEORGE:** Your men are exhausted. At the next river, they refuse to go on. You shut yourself in your tent in fury. But in the end, you turn the army home.
+
+**GEORGE:** The way back crosses a desert that kills men by the hundred. Your lips are split. Your tongue feels like leather. A few soldiers have found a little water and bring it to you in a helmet. It's cold. It shines. Everyone is watching you. Every one of them is just as thirsty.
+
+[▸ Silence. The helmet, close.]
+
+**GEORGE:** What do you do?
+
+**GEORGE:** You thank them. And in front of your whole army, you pour it out onto the sand. Plutarch says it was as if every man had drunk.
+
+**FABLE:** Even after everything, the old identity was still there under the mask. The boy who turned the horse toward the sun. That's the thing about identity built by action: it can be buried, but it doesn't disappear. It waits for you to act like yourself again.
 
 ---
 
 ### 16. Babylon
-[▸ Babylon at dusk; a feast; a fever; a long line of soldiers filing past the bed; the king raising his hand.]
+[▸ Dusk over Babylon; a fever; a long line of soldiers filing past a bed; a raised hand. Slow, quiet.]
 
-**GEORGE:** Alexander returned to Babylon. There were drinking parties, and omens that frightened him. Then a fever. It grew worse each day. When his soldiers heard their king was dying, they demanded to see him, and they filed past his bed one by one. He could no longer speak, but he lifted his hand to each of them.
+**GEORGE:** Back in Babylon, there are feasts, and omens, and then a fever that grows worse every day. When your soldiers hear you're dying, they demand to see you. They walk past your bed one by one. You can't speak anymore. You lift your hand to each of them.
 
-**GEORGE:** He died at thirty-two. Some said later he had been poisoned. Plutarch believed most of those stories were invented.
+**GEORGE:** Alexander died at thirty-two. Some said he was poisoned. Plutarch thought most of those stories were invented.
 
 ---
 
-### 17. What his life leaves us
-[▸ Slow montage of the gold device across every engraving from the chapter; the boy, the horse, the book, the cloak, the water; then darkness and a single candle.]
+### 17. Your turn
+[▸ The gold dot travels back through every moment: the shadow, the book, the cup, the tent, the fires, the water. Then darkness and a single candle.]
 
-**GEORGE:** In twelve years, a man barely past his twenties had crossed the known world. But Plutarch didn't write his life to tell us how far he travelled. He wrote it so we could see who he was.
+**GEORGE:** In twelve years, a young man crossed the known world. But Plutarch didn't write his life to show how far he went. He wrote it so you could see who he was. And maybe see yourself.
 
-**FABLE:** So here's what Alexander teaches us, through the lens of the Observer.
-- **Your beliefs were handed to you before you could choose them.** Thunder at his birth. The *Iliad* under his pillow. For you, maybe a show, a parent, a feed. You can't choose what you absorbed. But you can choose what you feed yourself from now on.
-- **Identity is built from evidence, and the evidence that counts most is private.** The horse, the medicine, the captured family. Things he did when the applause didn't matter.
-- **Ego is borrowed, and the lender always wants something back.** When Alexander let flatterers tell him who he was, he lost the man who saved his life. And he lost a part of himself.
+**FABLE:** So here's what you lived tonight.
+- **Your beliefs were handed to you before you could choose them.** Thunder at his birth, a book under his pillow. For you, a show, a parent, a feed. You can't change what you absorbed. You can choose what you feed yourself from now on.
+- **Identity is built from evidence, and the evidence that counts most is private.** The horse. The cup. The tent. Choices made where applause didn't matter.
+- **Ego is borrowed, and the lender always wants something back.** When the flatterers told him who he was, he lost the man who saved his life.
 
-**FABLE:** Tonight, as you drift off, ask the Observer one quiet question. What did it see me do today? Not what did people say about me. What did I do? Tomorrow, give it one more piece of evidence.
+**FABLE:** So, as you drift off, ask the Observer one quiet question. *What did you see me do today?* Not what people said about you. What you did. And tomorrow, give it one more piece of evidence.
 
 **GEORGE:** That was the life of Alexander. Sleep well.
 
 ---
-*Notes for the build:*
-- **Higgsfield (credits approved) for:** Bucephalus and the boy; the Cleitus banquet; the cup of water in the desert; the Napoleon cold open.
-- **Public-domain art for everything else:** Alexander portraits and the Alexander Mosaic, Lebrun's battle paintings, the Diogenes paintings, engravings of Aristotle, Darius's family, and maps.
-- **Gold device:** it lands on each moment of evidence (the eye, the shadow, the book, the cup, the cloak, the water). In the Cleitus chapter it is absent: the device goes dark when ego takes over, and returns at the cup of water.
+*Build notes:*
+- **Higgsfield (approved), face-hidden prompts:** point of view, over the shoulder, silhouette, hands. Hero scenes: the horse; the pillow; the Diogenes shadow; the cup; the tent curtain; the hill of campfires; the banquet; the helmet of water; the Napoleon cold open.
+- **Public-domain art for story beats:** Alexander Mosaic, Lebrun, Diogenes paintings, Aristotle engravings, maps.
+- **The gold device:** lands on each moment of evidence. It goes dark in the banquet (ego takes over) and returns at the water.
