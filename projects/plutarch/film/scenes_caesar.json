@@ -1,0 +1,1375 @@
+[
+ {
+  "title": "Cold open: the man who wept over Alexander",
+  "cues": [
+   "Spain, a summer evening; a man's hands (point of view) turning the pages of a scroll; lamplight; the scroll shows a portrait of Alexander; then the man's face in shadow, a tear catching the light.",
+   "Title: *Plutarch's Lives*, then *Caesar*."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Last time, you lived the life of Alexander. Tonight, you'll live the life of a man who read about him and wept.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "He was already a governor, already famous in Rome, already older than Alexander had been when he conquered the world.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "One quiet evening in Spain, he sat reading the story of Alexander.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He read for a long time. Then he put it down, and he cried.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "His friends were confused. They asked him what was wrong.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Don't you think it's worth crying over?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "At my age, Alexander was already king of so many nations, and I have done nothing great.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Notice what happened. A story about another man reached into him and rewrote how he saw himself.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's the power of the stories we let in. It can light a fire.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "It can also put you on a scoreboard you can never win.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "His name was Gaius Julius Caesar. Tonight, you won't watch him. You'll be him.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "1. A writer who noticed the hair",
+  "cues": [
+   "Plutarch's bust; a lamp; then a Roman street; a young man touching his hair with one finger."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Plutarch wrote about Caesar about a hundred and fifty years after his death.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "As always, he cared about small things. He tells us that the great speaker Cicero suspected Caesar wanted to rule Rome alone.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_lewis",
+    "text": "When I see his hair, so carefully arranged, and watch him scratch his head with one finger, I can't believe this man would ever plan something so terrible.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The mask works. A careful haircut. A light gesture.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "People stopped looking at what he was building and looked at how he seemed.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Tonight, look past the hair. Watch the choices.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "2. The death list (IMMERSE)",
+  "cues": [
+   "Rome at night; a list of names nailed to a wall; then the Sabine hills; you, feverish, moving from house to house by lamplight; soldiers' torches on the road.",
+   "Silence. A door, a candle, your wife's hand."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "You are eighteen. Rome is ruled by Sulla, a dictator who posts lists of names.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "If your name is on the list, anyone can kill you.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Sulla gives you an order: divorce your wife, Cornelia, because her father was his enemy.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Older, more powerful men have already obeyed orders like this.",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "What do you do?",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "You refuse. Sulla takes her dowry. He takes your position. And you have to run.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You're sick with fever, and every night you sleep in a different house.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "One night soldiers find you on the road. You don't fight. You talk, and you pay their captain to let you go.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_daniel",
+    "text": "There are many Mariuses in this boy.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Marius was Sulla's greatest enemy.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "So the most dangerous man in Rome looked at a sick eighteen-year-old in hiding and saw a threat.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The Observer saw it too. A boy who says no to a dictator files a note that never leaves him:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "I don't bend. Most of us bend for much less. A boss, a group chat, a friend's opinion of our girlfriend.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What's one thing you've refused to give up, even when it cost you?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "3. The pirates (IMMERSE)",
+  "cues": [
+   "A sunlit sea; a pirate ship, close; rough hands, ropes; then the pirates' island camp; you lying on a blanket, a wax tablet in your hand, men around a fire.",
+   "Silence. The camp at night; waves; the fire."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "You're twenty-five, sailing across the Aegean, when pirates take your ship. They are the most violent men on the sea.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "They tell you your ransom: twenty talents of silver.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You laugh at them. You don't know who you've caught, you say.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Ask for fifty.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You send your companions to raise the money, and you stay behind with one friend and two servants, among men who kill for a living.",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "Now listen to how you live for the next thirty-eight days.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "When you want to sleep, you send word telling them to be quiet.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "You join their games and exercises, as if they were your guards, not your captors.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "You write poems and speeches, and read them aloud to them.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "If they don't admire them, you call them uneducated barbarians to their faces.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "And again and again, laughing, you tell them that one day you'll hang them all.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "They think it's charming. They laugh along.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "The ransom arrives, and you're freed. You go straight to the nearest port, hire ships, sail back, and capture them.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "And you keep your promise.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Stop on this one. Every room asks the Observer: who are we, here?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That camp gave a loud answer: you are a prisoner. Chains, knives, and men who decide whether you live.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "And Caesar's Observer simply refused it. No. We are Caesar. These men work for us; they just don't know it yet.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "This is the job interview, turned inside out.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The room tells you to sit small, and you decide who you are before the room does.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's not acting. It's evidence, built over years, strong enough to overrule a room full of knives.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Where in your life does the room decide who you are?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What would happen if you decided first?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "4. First in a village",
+  "cues": [
+   "The Alps; a poor mountain village, smoke from a few roofs; Caesar's companions laughing on horseback; then Spain and the scroll from the cold open."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Years later, crossing the Alps, Caesar passes a tiny village of a few poor huts.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "His friends joke: Do you think, even here, they fight over who's in charge?",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Caesar answers seriously: I would rather be first here than second in Rome.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And it was on that same posting, in Spain, that he read the life of Alexander and wept.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Put those two moments side by side. First here, or nothing. And Alexander did more.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's significance, the same need that drove Alexander: my father will leave me nothing great to do.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "But Caesar's version has a twist. He didn't just compete with the men around him.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He competed with a story.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "We do this every night. You scroll, you see someone younger with more, and something in you sinks.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Comparison borrows another person's evidence and holds it up against your own.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The Observer can't win that game, because the scoreboard belongs to someone else.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Whose story do you measure yourself against?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Did you choose them, or did your feed?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "5. War as medicine",
+  "cues": [
+   "Gaul: forests, rain, a long marching column; a thin man on a horse dictating to two scribes riding beside him; then a carriage at night, the man asleep inside, the road moving."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Then came Gaul. For nearly ten years Caesar fought there.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Plutarch counts more than eight hundred towns taken and three hundred peoples conquered.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "But Plutarch is more interested in the man than the numbers. Caesar was thin, with soft pale skin.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He suffered headaches, and he had seizures. He could have used his body as his excuse.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "He did the opposite. He made war his medicine. Long marches. Plain food.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Sleeping outdoors. He slept in carriages while travelling, so no hour was wasted.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "On horseback, he dictated letters to two writers at once.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And his soldiers loved him for it, because whatever he asked of them, they watched him do first.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Identity is built in exactly these hours. Nobody claps for the march in the rain.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Nobody films you eating plain food when you could have had anything.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "But the Observer is there for every step, writing: we don't use excuses.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "And soldiers, like children, don't follow what you say. They follow what they see you do.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What weakness of yours could become your training, instead of your excuse?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "6. The surrender",
+  "cues": [
+   "Alesia: the double ring of Roman walls; a gate opening; a rider in shining armour on a decorated horse, circling a seated Roman; then the rider kneeling, armour on the ground."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "At Alesia, the greatest Gallic leader, Vercingetorix, finally loses. And Plutarch describes his surrender like a scene from a play.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "He puts on his most beautiful armour. He decorates his horse.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He rides out through the gate, and circles once around Caesar, who is sitting in judgment.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Then he jumps down, throws off his armour, and sits at Caesar's feet.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He doesn't say a word.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Even in defeat, he chose who he would be. He arrived as a king and laid the king down himself.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "No one could take that from him, because he gave it. There's dignity in deciding your own ending.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "7. The river (IMMERSE)",
+  "cues": [
+   "Night, a small river; the bridge; torches on the water; you on horseback at the edge, the army stopped behind you; your friends' faces; then hooves on the bridge.",
+   "Silence. The river, running in the dark."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "You're fifty years old. Rome has ordered you to give up your army and come home alone.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Your enemies are waiting there to put you on trial and end your career.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Ahead of you is a small river called the Rubicon. It marks the border.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "If you cross it with soldiers, it's war. Roman against Roman. There's no going back.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You stop at the edge. You don't speak. You think about everything this will cost:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "the suffering for all of Italy, and what people will say about you a thousand years from now.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "You change your mind. Then you change it back. You talk it through with your friends.",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "What do you do?",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "Plutarch says that finally, with a kind of passion, as if throwing yourself out of your calculations and into the future, you say the words men say before a desperate venture:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Let the die be cast.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And you cross.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Look at the two halves of that moment. First, the calculating: all the futures, all the opinions, all the judgment to come.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's where anxiety lives. Then, a single act, in the present, and the whole future changed.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Most of us live on the bank of the river. We think it over again, and again, and call it being careful.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "But nothing becomes real until you cross. The Observer doesn't record what you considered.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "It records what you did.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What's your Rubicon?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What are you still standing beside, thinking about?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "8. The storm (IMMERSE)",
+  "cues": [
+   "A dark harbour; you in a slave's cloak, climbing into a small boat; the sea rising; waves over the bow; the frightened captain at the steering oar; your hand on his."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Now the civil war is real. You need your army across the sea, and it's late.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "So one night, you disguise yourself as a slave and climb into a small boat to go and fetch them yourself.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "At the mouth of the river, a storm hits. Waves crash over the bow.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "The captain shouts to turn back.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You stand up, pull off your hood, and take his hand. Don't be afraid, you tell him.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "You're carrying Caesar, and Caesar's luck.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "The sailors forget the storm. They row as hard as men can row.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And still the sea is too strong. In the end, you have to turn back.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Both halves of this matter. Identity moves people. One sentence turned frightened sailors into heroes.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's what happens when you truly know who you are: other people borrow your belief.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "But the sea doesn't care who you are. This is the first crack, where identity can start becoming ego:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "when you begin to believe the world itself has to obey your story.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Confidence moves men. It doesn't move oceans.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "9. The ring",
+  "cues": [
+   "Egypt: a palace by the sea; a man holding out a basket covered with cloth; Caesar turning away; then a ring on an open palm: a lion holding a sword; tears."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Caesar defeats his great rival, Pompey, at Pharsalus.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Pompey flees to Egypt, where the young king's advisers murder him, hoping to please the winner.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "When Caesar arrives, they bring him Pompey's head. Caesar turns away from the man who holds it, as if he were cursed.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Then they hand him Pompey's ring, carved with a lion holding a sword.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And Caesar weeps.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "He pardons many of Pompey's friends, including a young man named Brutus.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Remember his name.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He could have celebrated. His enemy was gone, and he didn't even have to do it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Instead, he wept for a man he'd fought for years. Power with restraint:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "like Alexander at the tent of Darius. When you're secure in who you are, your enemy's fall doesn't feel like your victory.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "It feels like a loss of something human.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "10. Three words",
+  "cues": [
+   "A wax tablet; a stylus writing three words; a messenger riding; a Roman crowd hearing them read aloud."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "In Asia, Caesar wins a war so quickly that he reports it to a friend in Rome in three words:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Veni, vidi, vici. I came, I saw, I conquered.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And in Africa, his most stubborn enemy, Cato, chooses to take his own life rather than be pardoned.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "When Caesar hears, he says: Cato, I begrudge you your death, because you begrudged me the chance to save your life.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Listen to that carefully. Even his mercy had a little ego in it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He wanted to be the man who forgave. Cato refused to give him that.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Who in your life can't be impressed by you, not even by your kindness?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Notice how you feel about them.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "11. Remember who you are",
+  "cues": [
+   "Rome: the Forum; gold statues; a man seated on a high chair; senators approaching in a long line; one man leaning close to his ear."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Back in Rome, the honours pour in. Statues. Titles. Then, dictator for life.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Plutarch calls it what it was: a tyranny.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "One day the whole Senate comes to give Caesar new honours. And he stays in his seat.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_lewis",
+    "text": "Remember that you are Caesar.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "There it is. Not remember what you've done. Remember what you are.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's how the flatterers work. They don't lie to you about your actions.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "They talk to your mask. They make the title feel like the person.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "It happens in small rooms too. The friend who says you're always right.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The followers who agree before you finish. The Observer used to ask, what did we do today?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Now it hears, remember who you are, and stops checking.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "12. The crown",
+  "cues": [
+   "The Lupercalia festival: runners in the street; Antony with a gold diadem wrapped in laurel; the crowd, half silent; Caesar's hand pushing it away; the roar."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "At a festival, Mark Antony runs up to Caesar and holds out a crown, a king's diadem, wrapped in laurel.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "A few people clap. Not many. Caesar pushes it away, and the whole crowd roars.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Antony offers it again. Again a few. Caesar refuses it again, and again the whole crowd cheers.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Caesar stands and orders the crown taken to the temple of Jupiter.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Soon after, crowns appear on his statues. When two officials pull them down, Caesar removes them from office.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The people told him clearly what they wanted: not a king.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He heard the cheer, put the crown down, and then punished the men who took the crowns off his statues.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "When the ego wants something the people won't give, it doesn't stop wanting it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "It just stops listening to them.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "13. A sudden one",
+  "cues": [
+   "A dinner by lamplight; Caesar signing letters at the table while the others talk; a cup raised; his eyes not leaving the page."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "His friends warn him to keep a bodyguard. He dismisses it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "It's better, he says, to die once than to live always expecting it.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "A seer has warned him of great danger on a day in March, the Ides.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "The night before the Ides, he's at dinner, signing letters while the others talk.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Someone asks: what's the best kind of death?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Before anyone can answer, Caesar looks up and says: A sudden one.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Fearless, yes. But listen to what's underneath. I'm too big to be careful.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Courage and arrogance can sound exactly the same. The difference is whether you're still listening.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "14. The note (IMMERSE)",
+  "cues": [
+   "Dawn; a bedroom; a woman waking in terror; doors swinging open by themselves; then the street, a crowd pressing in; a hand pushing a small folded note into yours; the steps of the Senate; your fingers closed around the paper.",
+   "Silence. The folded paper in your fingers."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "The night before, your wife Calpurnia wakes up crying. She dreamed she was holding you in her arms, murdered.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "In the morning she begs you not to go to the Senate today.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "You've never seen her like this.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You almost listen. You decide to send someone to postpone the meeting.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Then a friend arrives, laughing. Will you wait for your wife to have better dreams?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He takes your hand and leads you out the door.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "The streets are crowded. A Greek teacher named Artemidorus pushes through the crowd.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "He knows about the plot. He's written it all down. He presses the note into your hand.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_daniel",
+    "text": "Read this, Caesar. Alone, and quickly. It concerns you.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "You take it. You try to read it, again and again, but people keep stopping you.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Greeting you. Asking for things. You walk on, holding it in your hand.",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "What do you do?",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "On the way, you pass the seer who warned you. You smile and say:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "The Ides of March have come.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_lewis",
+    "text": "Yes, Caesar. They have come. But they have not yet gone.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And you walk inside, the note still in your hand. Unread.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Everything he needed was in his own hand. His wife's warning. The seer's warning.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "A message that would have saved him. He was too busy being Caesar to read it.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That's the deepest cost of ego. Not that it makes you cruel.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "That it makes you deaf. The crowd, the greetings, the requests: that's the applause.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "And the truth is a small folded note you never open.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "What warning are you holding in your hand right now, unread?",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "15. The statue",
+  "cues": [
+   "The Senate house; a marble statue of Pompey; men gathering close; a toga pulled; the flash of a blade; then a face (Brutus) and a hand drawing a toga over a head. Slow, then still.",
+   "Long silence."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Inside, the conspirators gather close, pretending to plead with him. One pulls his toga down from his neck.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "That's the signal. The first blade strikes.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Caesar fights back. He turns this way and that, but everywhere he turns, there's another blade.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "Then he sees Brutus, the young man he pardoned, with his dagger drawn.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "And Plutarch says Caesar stopped fighting. He pulled his toga over his face, and sank down at the foot of a statue.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "The statue of Pompey.",
+    "pause": 3.2
+   },
+   {
+    "voice": "bm_george",
+    "text": "He had twenty-three wounds. It was as if Pompey himself were presiding over his revenge.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He covered his face. When the man he had spared raised a blade against him, the fight left him.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Not the blade. The betrayal.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "16. Only the name",
+  "cues": [
+   "The Forum at night; a funeral fire; the crowd; then a comet over Rome; then quiet: an empty seat."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Rome erupted.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "At his funeral the crowd built his pyre in the Forum and ran through the streets with torches, hunting his killers.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Within a few years, not one of his murderers was left.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "Plutarch tells of a great comet that blazed for seven nights, and of a ghost that visited Brutus before his final battle.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "And then Plutarch gives his verdict. Caesar had chased power all his life, through enormous danger.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "And when he finally had it, all he got from it was the name, and the envy that came with it.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "17. Your turn",
+  "cues": [
+   "The gold dot travels back through every moment: the list on the wall, the pirates' fire, the scroll of Alexander, the river, the storm, the ring, the crown, the unread note. Then darkness and a single candle."
+  ],
+  "lines": [
+   {
+    "voice": "bm_george",
+    "text": "Alexander and Caesar. Plutarch set their lives side by side so you would read them together.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "One built himself in private and lost himself to flattery.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "The other was so certain of who he was that pirates couldn't shake it, a dictator couldn't bend it, and a storm couldn't scare it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_george",
+    "text": "And still, at the very end, he stopped listening.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "So here's what you lived tonight.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Decide who you are before the room does. In the pirates' camp, the room said prisoner.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "He said Caesar. Your identity can overrule your environment, if you've built the evidence.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Don't let someone else's story become your scoreboard. He wept over Alexander's life instead of living his own.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The feed will always show you someone further ahead.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Cross your river. Calculation lives in the future. Change only happens in the present, in one act.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Keep reading the notes. Ego doesn't always make you cruel. Sometimes it just makes you deaf.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "The day you're too important to listen is the day you're most in danger.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_fable",
+    "text": "So, as you drift off, ask the Observer one quiet question. Is there a warning I'm holding that I haven't read?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bm_fable",
+    "text": "Then sleep. Tomorrow, open it.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bm_george",
+    "text": "That was the life of Caesar. Sleep well.",
+    "pause": 2.4
+   }
+  ]
+ },
+ {
+  "title": "Prologue",
+  "cues": [
+   "Darkness. One candle. Slow plates: a sleeper by candlelight; an eye; Napoleon; Alexander; the book under the pillow."
+  ],
+  "lines": [
+   {
+    "voice": "bf_emma",
+    "text": "Before we begin, you should know why this was made. It isn't entertainment.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It's an investment. In you.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Everything you do comes from what you believe about yourself. Not what you say you believe.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "What a quieter part of you believes. Call it the Observer. It watches everything you do, and it keeps the record.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It doesn't listen to your words. It believes your actions.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "From that record, it answers one question, in every room you walk into:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "who are we, here?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Whatever it answers, you become. Your voice, your posture, your decisions follow.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "There's a second voice: the ego. It's the identity you borrow from other people, from the way you think they see you.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "It feels real, but it's rented. It changes with the room. Walk out, and it's gone.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Identity is different. It's built from evidence. And the strongest evidence is gathered where no one is watching.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Only in front of God, and yourself.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So why stories?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Why Alexander, and Napoleon?",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Because before Napoleon ever led an army, he spent his nights reading about men like Alexander.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "And Alexander slept with the story of Achilles under his pillow.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "The greatest people who ever lived were shaped by the stories they let in.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "And when you let them in matters. As you drift toward sleep, your brain slows down.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "The guarded, busy waking mind gives way to slower waves. First alpha.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Then theta, the borderland of dreams. Here, pictures come easily, and the mind is open.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "Your brain uses much of the same machinery to imagine an action as it does to perform it.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So tonight, you won't just hear what they did. You'll stand where they stood.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "You'll make their choices. And somewhere in the night, the Observer files a quiet note:",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "we have been here before. We know how this is done.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "That isn't the whole work. A belief becomes who you are only when you act on it, again and again.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "But this is the first step. The picture. The spark. The first impulse to move.",
+    "pause": 1.4
+   },
+   {
+    "voice": "bf_emma",
+    "text": "So get comfortable. Let your breathing slow. And listen. Not as a spectator.",
+    "pause": 0.9
+   },
+   {
+    "voice": "bf_emma",
+    "text": "As them.",
+    "pause": 2.4
+   }
+  ]
+ }
+]

@@ -1,9 +1,12 @@
 """01-alexander.md -> scenes.json: per scene, the spoken lines (voice, text, pause after) and the picture cues.
 Pauses: sentence 0.9 s, paragraph 1.4 s, voice change +1.0 s, a [▸ Silence…] cue = 3.2 s, after "What do you do?" 3.2 s."""
 import re, json, sys
-src = open(sys.argv[1] if len(sys.argv) > 1 else "../scripts/01-alexander.md").read()
+import importlib as _il, os as _os
+_CH = _os.environ.get("CH"); C = _il.import_module("ch_" + _CH) if _CH else None
+src = open(sys.argv[1] if len(sys.argv) > 1 else (C.SCRIPT if C else "../scripts/01-alexander.md")).read()
 pro = open("../scripts/00-prologue.md").read().split("\n---\n", 1)[1]
-VOICE = {"GEORGE": "bm_george", "FABLE": "bm_fable", "GUIDE": "bf_emma", "DIOGENES": "bm_daniel", "LETTER": "bm_lewis", "PARMENIO": "bm_daniel", "CLEITUS": "bm_lewis", "PORUS": "bm_daniel"}
+VOICE = {"GEORGE": "bm_george", "FABLE": "bm_fable", "GUIDE": "bf_emma", "DIOGENES": "bm_daniel", "LETTER": "bm_lewis", "PARMENIO": "bm_daniel", "CLEITUS": "bm_lewis", "PORUS": "bm_daniel",
+         "SULLA": "bm_daniel", "CICERO": "bm_lewis", "BALBUS": "bm_lewis", "ARTEMIDORUS": "bm_daniel", "SEER": "bm_lewis"}
 body = src.split("\n---\n", 1)[1].split("\n---\n*Build notes", 1)[0]
 scenes = []
 for blk in re.split(r"\n### ", "\n" + body)[1:] + re.split(r"\n### ", "\n" + pro)[1:]:
@@ -36,7 +39,7 @@ for blk in re.split(r"\n### ", "\n" + body)[1:] + re.split(r"\n### ", "\n" + pro
         if l["text"].startswith("What do you do"): l["pause"] = 3.2; sc["lines"][i - 1]["pause"] = max(sc["lines"][i - 1]["pause"], 3.0)
     if sc["lines"]: sc["lines"][-1]["pause"] = 2.4
     scenes.append(sc)
-json.dump(scenes, open("scenes.json", "w"), indent=1)
+json.dump(scenes, open(C.SCENES if C else "scenes.json", "w"), indent=1)
 W = 0
 for i, s in enumerate(scenes):
     w = sum(len(l["text"].split()) for l in s["lines"]); W += w

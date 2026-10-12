@@ -1,10 +1,12 @@
 """Narrate every scene of scenes.json -> OUT/sNN/vo.wav + lines.json (Kokoro, George/Fable, speed 0.82, sleep pace).
 usage: python3 voice.py OUT [scene ...]   (scene 4 = the Bucephalus proof, reused)"""
 import sys, os, json, numpy as np, soundfile as sf
+import importlib as _il, os as _os
+_CH = _os.environ.get("CH"); C = _il.import_module("ch_" + _CH) if _CH else None
 from kokoro import KPipeline
 SR = 24000; pipe = KPipeline(lang_code="b")
-OUT = sys.argv[1]; S = json.load(open(os.path.join(os.path.dirname(__file__), "scenes.json")))
-want = [int(x) for x in sys.argv[2:]] or [i for i in range(len(S)) if i != 4]
+OUT = sys.argv[1]; S = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), C.SCENES if C else "scenes.json")))
+want = [int(x) for x in sys.argv[2:]] or [i for i in range(len(S)) if C or i != 4]
 for si in want:
     d = f"{OUT}/s{si:02d}"; os.makedirs(d, exist_ok=True)
     if os.path.exists(d + "/lines.json"): print("skip", si); continue

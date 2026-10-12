@@ -1,6 +1,8 @@
 """Find public-domain Met images per scene and build labelled contact sheets for picking.
 usage: metfind.py OUTDIR  (queries below) -> OUTDIR/sNN.jpg sheets + OUTDIR/cands.json"""
 import json, subprocess, sys, os, urllib.parse
+import importlib as _il, os as _os
+_CH = _os.environ.get("CH"); C = _il.import_module("ch_" + _CH) if _CH else None
 from PIL import Image, ImageDraw
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
 out = sys.argv[1]; os.makedirs(out + "/img", exist_ok=True)
@@ -24,6 +26,7 @@ Q = {
  16: ["death of Alexander", "Alexander deathbed", "Babylon ruins"],
  17: ["Alexander the Great portrait", "candle", "Alexander head coin"],
 }
+if C: Q = C.Q
 cands = {}
 for sc, qs in Q.items():
     seen = set(); items = []

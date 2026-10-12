@@ -7,7 +7,7 @@ L = json.load(open(D + "/lines.json")); a, sr = sf.read(D + "/vo.wav", dtype="fl
 if a.ndim > 1: a = a.mean(1)
 if sr != 16000:
     import scipy.signal as ss; a = ss.resample_poly(a, 16000, sr); sr = 16000
-m = WhisperModel("medium.en", device="cpu", compute_type="int8")
+m = WhisperModel(os.environ.get("WT_MODEL", "medium.en"), device="cpu", compute_type="int8")
 norm = lambda s: re.sub(r"[^a-z0-9']", "", s.lower())
 out = []
 for ln in L:

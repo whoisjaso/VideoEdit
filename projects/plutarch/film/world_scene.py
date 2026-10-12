@@ -1,6 +1,8 @@
 """Scene sound world: public-domain score + CC0 field recordings, placed on words, ducked under the voice.
 usage: world_scene.py SCENE WORKDIR PD_DIR -> WORKDIR/sNN/{music.wav,amb.wav}"""
 import subprocess, json, sys, re, numpy as np
+import importlib as _il, os as _os
+_CH = _os.environ.get("CH"); C = _il.import_module("ch_" + _CH) if _CH else None
 si = int(sys.argv[1]); WD = sys.argv[2]; PD = sys.argv[3].rstrip("/") + "/"; D = f"{WD}/s{si:02d}"
 SR = 48000
 W = json.load(open(D + "/words.json"))
@@ -8,7 +10,7 @@ LEN = float(re.search(r"const LEN=([\d.]+)", open(D + "/scene.js").read()).group
 HOLD = json.loads(re.search(r"const HOLD=(.*);", open(D + "/scene.js").read()).group(1))
 L = int((LEN + 0.5) * SR)
 # music: (file, offset s, level vs voice, start-anchor word or None) ; beds: (file, level, pan, from-word|None, to-word|None) ; hits: (file, ss, dur, word, level, pan)
-S = {
+S_ALL = {
  0: dict(music=[("dvorak_lento.ogg", 0, -15, None)], beds=[("fire_rumble.wav", -38, 0, None, None)]),
  1: dict(music=[("haydn_lark_adagio.ogg", 0, -15, None)], beds=[("birds_wings.wav", -40, 0.3, None, None)]),
  2: dict(music=[("mendel_scottish_i.ogg", 0, -15, None)], beds=[("wind_prairie.wav", -40, 0, None, None)],
@@ -33,7 +35,8 @@ S = {
  16: dict(music=[("eroica_funebre.ogg", 0, -15, None)], beds=[("court_murmur.wav", -40, 0, None, None)]),
  17: dict(music=[("brahms3_iii.ogg", 0, -15, None)], beds=[]),
  18: dict(music=[("mendel_scottish_iii.ogg", 0, -15, None)], beds=[("fire_rumble.wav", -42, 0, None, None)]),
-}[si]
+}
+S = (C.WORLD if C else S_ALL)[si]
 def load(f, ss=0, dur=None):
     cmd = ["ffmpeg", "-v", "error", "-ss", str(ss), "-i", PD + f] + (["-t", str(dur)] if dur else []) + ["-ac", "2", "-ar", str(SR), "-f", "f32le", "-"]
     return np.frombuffer(subprocess.run(cmd, capture_output=True).stdout, np.float32).reshape(-1, 2).copy()

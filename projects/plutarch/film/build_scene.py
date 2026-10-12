@@ -1,12 +1,14 @@
 """One scene -> scene.js for film.html.  usage: build_scene.py SCENE_INDEX WORKDIR
 Needs WORKDIR/sNN/{lines.json,words.json,vo.wav}, WORKDIR/picks.json, WORKDIR/plates/<id>.jpg (+ ar in plates.json)."""
 import json, re, sys, os, subprocess
+import importlib as _il, os as _os
+_CH = _os.environ.get("CH"); C = _il.import_module("ch_" + _CH) if _CH else None
 si = int(sys.argv[1]); WD = sys.argv[2]; D = f"{WD}/s{si:02d}"
 W = json.load(open(D + "/words.json")); picks = json.load(open(WD + "/picks.json"))[str(si)]
 AR = json.load(open(WD + "/plates.json"))
 LEN = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", D + "/vo.wav"], capture_output=True, text=True).stdout) + 1.2
 ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII"]
-TITLE = json.load(open(os.path.join(os.path.dirname(__file__), "scenes.json")))[si]["title"]
+TITLE = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), C.SCENES if C else "scenes.json")))[si]["title"]
 PLACE = {0: "Corsica  ·  1780s", 1: "Chaeronea  ·  c. AD 100", 2: "Pella, Macedonia  ·  356 BC", 3: "Pella  ·  c. 345 BC", 5: "Mieza  ·  c. 343 BC",
  6: "Aegae  ·  336 BC", 7: "Corinth  ·  336 BC", 8: "The Granicus  ·  334 BC", 9: "Tarsus  ·  333 BC", 10: "Issus  ·  333 BC", 11: "Siwa, the Libyan desert  ·  331 BC",
  12: "Gaugamela  ·  331 BC", 13: "Babylon  ·  330 BC", 14: "Maracanda  ·  328 BC", 15: "India  ·  326 BC", 16: "Babylon  ·  323 BC", 17: "", 18: "Plutarch's Lives"}
@@ -19,6 +21,7 @@ HEROES = {0: ["Plutarch's Lives.", "As him."], 1: ["He's writing lives."], 2: ["
  16: ["Alexander died at thirty-two."], 17: ["What did you see me do today?", "Sleep well."],
  18: ["It's an investment.", "who are we, here?", "it's rented.", "Only in front of God, and yourself.", "We know how this is done.", "As them."]}
 DUSTS = {7, 11, 15}
+if C: PLACE, HEROES, DUSTS = C.PLACE, C.HEROES, C.DUSTS
 norm = lambda s: re.sub(r"[^a-z0-9']", "", s.lower())
 # ── heroes: locate phrase in the word stream
 HERO = []
@@ -34,6 +37,7 @@ for ph in HEROES.get(si, []):
 # ── captions (same rules as the locked proof)
 KEY = {"observer", "evidence", "belief", "identity", "ego", "mask", "god", "achilles", "diogenes", "lives", "lion", "thunderbolt", "king", "sun", "cup", "letter", "truth",
        "applause", "trust", "honour", "shadow", "water", "helmet", "fever", "dagger", "pillow", "candle", "zeus", "cleitus", "porus", "bucephalus", "victory", "significance"}
+if C: KEY = KEY | C.KEY
 hmap = {(h[0], i) for h in HERO for i in range(h[1], h[2] + 1)}
 PH, HE = [], []
 for ln in W:
@@ -83,6 +87,7 @@ ICON_RX = [("crown", r"^(king|kings|kingdom|emperor|crown|throne)$"), ("scales",
  ("scroll", r"^(letter|letters|wrote|write|writing)$"), ("flame", r"^(fire|fires|campfires|candle|burned|burning|fever)$"), ("heart", r"^(heart)$"),
  ("drop", r"^(water|river|thirsty)$"), ("mask", r"^(ego|mask|masks)$"), ("bolt", r"^(thunderbolt|zeus|thunder)$"), ("q", r"^(question|questions)$"),
  ("eyex", r"^(spectator|spectators)$")]
+if C: ICON_RX = ICON_RX + C.ICON_EXTRA
 def _icok(tok, prevw, fable):
     if tok in ("you", "you're") and prevw.startswith("tonight") and fable: return True
     return any(re.match(r, tok) for _, r in ICON_RX)
@@ -125,6 +130,7 @@ for p in PH:
         if any(x[1] == ic and w[1] - x[0] < 9 for x in ICONS_AT): continue      # the same symbol doesn't repeat within 9 s
         ICONS_AT.append([w[1], ic]); last = w[1]; lastline = lineof.get(round(w[1], 3))
 HICON = {"as him.": "laurel", "as them.": "laurel", "we are the king.": "crown", "son of zeus.": "bolt", "like a king.": "crown"}
+if C: HICON.update(C.HICON)
 for h in HE:
     if h["txt"].lower() in HICON: h["icon"] = HICON[h["txt"].lower()]
 # ── holds / heartbeat for "What do you do?", the ball goes dark in the banquet
@@ -132,11 +138,14 @@ HOLD, BEATS, DARK = [], [], []
 for ln in W:
     if ln["w"] and norm(ln["w"][0][0]) == "what" and " ".join(x[0] for x in ln["w"]).startswith("What do you do"):
         HOLD.append([ln["start"] - 2.8, ln["end"] + 3.0]); BEATS.append([ln["start"] - 2.8, ln["start"] - 0.2])
-if si == 14:
-    t0 = next(ln["start"] for ln in W if "pause to choose" in " ".join(x[0] for x in ln["w"])); DARK.append([t0 - 0.5, LEN + 5])
+DARKR = C.DARK if C else {14: "pause to choose"}
+if si in DARKR:
+    ph = DARKR[si]
+    t0 = 0.0 if ph is None else next(ln["start"] for ln in W if ph in " ".join(x[0] for x in ln["w"])); DARK.append([max(0.0, t0 - 0.5), LEN + 5])
 MICRO = []
 if ROMAN[si] if si < len(ROMAN) else "": pass
-lab = ("Prologue  ·  Before you sleep" if si == 18 else "Plutarch's Lives  ·  Alexander" if si == 0 else f"{ROMAN[si]}  ·  " + re.sub(r"^\d+\.\s*|\s*\(IMMERSE\)", "", TITLE)) if si else "Plutarch's Lives  ·  Alexander"
+LABEL = C.LABEL if C else "Plutarch's Lives  ·  Alexander"
+lab = ("Prologue  ·  Before you sleep" if si == 18 else LABEL if si == 0 else f"{ROMAN[si]}  ·  " + re.sub(r"^\d+\.\s*|\s*\(IMMERSE\)", "", TITLE)) if si else LABEL
 MICRO.append(["A", lab, 0.8, 9.5])
 if PLACE.get(si): MICRO.append(["B", PLACE[si], 1.4, 9.5])
 fl = [ln for ln in W if ln["voice"] == "bm_fable"]
