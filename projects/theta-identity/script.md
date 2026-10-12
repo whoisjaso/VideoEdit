@@ -58,11 +58,11 @@ The rules for every identity line:
 [1.5]
 ~ So tonight we're going to show it. Your brain uses the same machinery to imagine something as it does to remember it. When you see a scene clearly, in first person, with your body in it, the hot coffee, the cold air, the feeling in your chest, the brain files it right next to your real memories. Do it enough times, and it stops being a hope. It becomes evidence.
 [2.5]
-~ Here's how it works. We'll do six rounds of Wim Hof breathing. Thirty deep breaths each. While you breathe, you'll hear who you are. Just let the words ride the breath.
+~ Here's how it works. We'll do six rounds of Wim Hof breathing. Thirty deep breaths each. Breathe in fully, deep into the belly and up into the chest. Then let go. Letting go means you just relax, and the air falls out on its own. Don't push it out, and don't stop. Breathe straight back in. While you breathe, you'll hear who you are. Just let the words ride the breath.
 [1.5]
-~ Then you breathe out and hold, with empty lungs. That's when the mind gets very quiet. That's when a memory plays. See it through your own eyes, like it already happened.
+~ After the thirtieth breath, breathe out and stop breathing. Hold, with empty lungs. That's when the mind gets very quiet. That's when a memory plays. See it through your own eyes, like it already happened.
 [1.5]
-~ When you need air, breathe in all the way and hold for fifteen seconds. Then we go again.
+~ When you need air, breathe in all the way and hold for fifteen seconds. Then breathe out, and we go again. Before every breath and every hold ends, you'll hear three soft ticks. Three, two, one. Then a chime. That's your cue.
 [2]
 ~ The music is here on purpose. It's tuned to four thirty two hertz, soft and warm, so it never pulls at your attention. And underneath it is a slow pulse at the speed of theta, about six beats a second, slowing down to four as we go. With headphones on, each ear gets a slightly different tone, and your brain hears a third, slow beat that isn't really there. It's a path for your mind to follow down.
 [2]

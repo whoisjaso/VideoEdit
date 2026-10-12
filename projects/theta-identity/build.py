@@ -322,6 +322,27 @@ def bells(total, seed=5):
     return np.stack([L, R], axis=1)
 
 
+def tick(go=False):
+    """Countdown cue: a dry wood-block tick for 3, 2, 1 and a bright two-tone chime for 'now'."""
+    dur = 1.6 if go else 0.18
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    if go:
+        x = (np.sin(2 * np.pi * 1046.5 * t) * np.exp(-t / 0.5)
+             + 0.7 * np.sin(2 * np.pi * 1568 * t) * np.exp(-np.maximum(0, t - 0.09) / 0.45) * (t > 0.09))
+    else:
+        x = (np.sin(2 * np.pi * 1320 * t) * np.exp(-t / 0.025) + 0.5 * np.sin(2 * np.pi * 2650 * t) * np.exp(-t / 0.012))
+    x *= np.minimum(1, t / 0.002)
+    return (x / np.max(np.abs(x))).astype(np.float32)
+
+
+def countdown(fx, end):
+    """3, 2, 1 ticks ending at `end`, then the chime on the beat."""
+    for k in (3, 2, 1):
+        fx.append((end - k, TICK, 0.32))
+    fx.append((end, GO, 0.30))
+
+
 def bell_hit(freq, dur=6.0):
     n = int(dur * SR)
     t = np.arange(n) / SR
@@ -399,6 +420,8 @@ class Builder:
             at = start + b * per + T_IN + 0.1
             d = self.say(s, at, speed=0.86)
             cues.append((at, at + max(d + 1.6, 5.5), s))
+        for b in (BREATHS - 3, BREATHS - 2, BREATHS - 1):   # three ticks: the last three breaths
+            self.fx.append((start + b * per, TICK, 0.22))
         self.seg("breath", BREATHS * per, rnd=r, rounds=n, cues=cues)
         # out-breath and hold: the scene plays in the stillness
         self.fx.append((self.t, bell_hit(note_hz(62)), 0.16))
@@ -416,6 +439,7 @@ class Builder:
         if self.beds and self.beds[-1][2] is None:
             self.beds[-1][2] = self.t + hold - 2
         self.fx.append((self.t + hold - 9, bell_hit(note_hz(69), 4), 0.08))
+        countdown(self.fx, self.t + hold)
         self.seg("hold", hold, rnd=r, rounds=n, total=hold)
         # recovery: the in-breath starts on the word "in", and the 15 s count starts on "hold"
         d = self.say("Breathe in. All the way.", self.t)
@@ -425,13 +449,16 @@ class Builder:
         hold_rel = fill + max(0.6, d2 - ROOM_TAIL)   # the count starts on the word, not the reverb tail
         self.say(anchor, self.t + hold_rel + 2.5, speed=0.82)
         total = hold_rel + RECOVER_HOLD
+        countdown(self.fx, self.t + total)
         self.seg("recover", total, rnd=r, rounds=n, total=total, fill=fill, hold_rel=hold_rel, anchor=anchor)
-        # release on "Let go"
-        self.say("Let go.", self.t)
-        self.fx.append((self.t + 0.25, breath(2.6, False, 950 + r, 1.0), 0.5))
+        # release: breathe out
+        self.say("Breathe out.", self.t + 0.3)
+        self.fx.append((self.t + 0.55, breath(2.6, False, 950 + r, 1.0), 0.5))
         self.seg("release", 4.0)
 
 
+TICK = tick()
+GO = tick(go=True)
 NUMBERS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 INHALE_AT = 0.35   # seconds into "Breathe in" when the word "in" lands
 ROOM_TAIL = 1.4    # every voice clip carries this much reverb tail after the last word
@@ -617,7 +644,7 @@ def breath_state(s, t):
     if k == "recover":
         return 0.15 + 0.85 * ease((lt - INHALE_AT) / (s["fill"] - INHALE_AT)), 0.9, 0.35
     if k == "release":
-        return 1 - 0.8 * ease((lt - 0.25) / 2.6), 0.85, 0.6
+        return 1 - 0.8 * ease((lt - 0.55) / 2.6), 0.85, 0.6
     if k == "vision":
         return 0.2 + 0.35 * (0.5 - 0.5 * np.cos(2 * np.pi * t / 10)), 0.55, 0.45
     if k == "bridge":
@@ -725,6 +752,19 @@ WARM = (240, 228, 210)
 GOLD = (226, 170, 96)
 
 
+F_COUNT = ImageFont.truetype(str(FONT_DIR / "InterDisplay-Medium.otf"), 300)
+
+
+def final_count(d, secs, left):
+    """3, 2, 1 in big gold, each number popping in on its tick."""
+    if secs <= 0:
+        return
+    frac = secs - left                      # 0 at the tick, rising to 1
+    a = 1.0 - 0.5 * frac
+    d.text((W / 2 + 5, CY + 7), str(secs), font=F_COUNT, fill=(40, 18, 6, int(200 * a)), anchor="mm")
+    d.text((W / 2, CY), str(secs), font=F_COUNT, fill=GOLD + (int(255 * a),), anchor="mm")
+
+
 def overlay(img, s, t, lungs):
     k = s["kind"]
     lt = t - s["start"]
@@ -748,7 +788,9 @@ def overlay(img, s, t, lungs):
         d.text((W / 2, CY), str(min(n, BREATHS)), font=F_NUM, fill=WARM + (int(255 * (0.55 + 0.35 * lungs)),), anchor="mm")
         spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
         ph = lt % per
-        spaced(d, TOP2, "BREATHE IN" if ph < T_IN else "LET GO", F_LABEL, GOLD, 0.75)
+        spaced(d, TOP2, "BREATHE IN" if ph < T_IN else "LET GO · RELAX IT OUT", F_LABEL, GOLD, 0.75)
+        if n >= BREATHS - 2:
+            spaced(d, TOP2 + 50, "LAST BREATHS", F_LABEL, WARM, 0.55)
         for a0, a1, txt in s["cues"]:
             a = fade_alpha(t, a0, a1, 0.4, 0.6)
             if a > 0:
@@ -756,10 +798,13 @@ def overlay(img, s, t, lungs):
     elif k == "hold":
         left = max(0.0, s["total"] - lt)
         secs = int(np.ceil(left))
-        lab = f"{secs // 60}:{secs % 60:02d}"
-        d.text((W / 2, CY), lab, font=F_NUM, fill=WARM + (150,), anchor="mm")
+        if secs <= 3:
+            final_count(d, secs, left)
+        else:
+            lab = f"{secs // 60}:{secs % 60:02d}"
+            d.text((W / 2, CY), lab, font=F_NUM, fill=WARM + (150,), anchor="mm")
         spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
-        spaced(d, TOP2, "HOLD · LUNGS EMPTY", F_LABEL, GOLD, 0.75)
+        spaced(d, TOP2, "BREATHE OUT · STOP · HOLD" if lt < 6 else "HOLD · LUNGS EMPTY", F_LABEL, GOLD, 0.75)
         a = fade_alpha(lt, 3, s["total"] - 1, 2, 1)
         spaced(d, BOT, "SEE IT THROUGH YOUR OWN EYES", F_LABEL, WARM, 0.45 * a, 6)
         d.text((W / 2, BOT2), "breathe in when you need to", font=F_SMALL, fill=WARM + (int(80 * a),), anchor="mm")
@@ -767,14 +812,17 @@ def overlay(img, s, t, lungs):
         hr = s["hold_rel"]
         left = max(0.0, s["total"] - lt)
         if lt > hr:
-            d.text((W / 2, CY), str(int(np.ceil(left))), font=F_NUM, fill=WARM + (170,), anchor="mm")
+            if left <= 3:
+                final_count(d, int(np.ceil(left)), left)
+            else:
+                d.text((W / 2, CY), str(int(np.ceil(left))), font=F_NUM, fill=WARM + (170,), anchor="mm")
         spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
         spaced(d, TOP2, "HOLD · LUNGS FULL" if lt > hr else "BREATHE IN", F_LABEL, GOLD, 0.8)
         a = fade_alpha(lt, hr + 2.5, s["total"] - 0.5, 0.6, 0.8)
         if a > 0:
             text_block(d, s["anchor"], F_TEXT, BOT, GOLD, a * 0.92)
     elif k == "release":
-        spaced(d, TOP2, "LET GO", F_LABEL, GOLD, 0.7 * fade_alpha(lt, 0, s["end"] - s["start"], 0.3, 0.8))
+        spaced(d, TOP2, "BREATHE OUT", F_LABEL, GOLD, 0.7 * fade_alpha(lt, 0, s["end"] - s["start"], 0.3, 0.8))
 
 
 _FIELD = None
