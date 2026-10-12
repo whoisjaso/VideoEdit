@@ -13,7 +13,7 @@ for f in film.html kit.js inter.woff2 is-italic.woff2 render2.js node_modules; d
 ln -sfn $WD/plates $D/plates
 N=$(python3 -c "print(int($LEN*30))"); C=$(( (N + 2) / 3 ))
 cd $D; rm -f seg_*.mp4
-lane() { A=$1; B=$2; for ((s=A; s<B; s+=600)); do e=$((s+600<B ? s+600 : B)); rm -rf smp_$A
+lane() { A=$1; B=$2; for ((s=A; s<B; s+=300)); do e=$((s+300<B ? s+300 : B)); rm -rf smp_$A
   python3 -c "import json; json.dump([{'o':f'{f:05d}.png','t':f/30} for f in range($s,$e)],open('plan_$A.json','w'))"
   for try in 1 2 3 4 5; do VW=1920 VH=1080 HTML=$PWD/film.html node render2.js plan_$A.json smp_$A 2 > /dev/null 2>&1 && break; echo "s$SI lane $A retry $try"; sleep 3; done
   ffmpeg -v error -y -framerate 30 -start_number $s -i smp_$A/%05d.png -c:v libx264 -crf 17 -preset medium -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 seg_$(printf %05d $s).mp4
