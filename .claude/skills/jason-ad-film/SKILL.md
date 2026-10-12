@@ -25,6 +25,15 @@ description: "Jason's system for premium fast-paced brand ads and launch films b
 > **STYLE LIBRARY (Jason, 2026-10-12: "label as such so we know the standard and references"):** every approved look has a label: see `../jason-motion-graphics/STYLES.md`. Always on: **EASING** (r22: entrances ease-out, exits ease-in, moves ease-in-out; **pops, buttons, icons and morph landings get a single ~10% overshoot**, which replaces "no bounce" for pops only; linear only for machines). **HOOK PSYCHOLOGY** (r24: hook → delay → rehook ~midpoint → delay → payoff → end immediately; never answer the hook straight away). **BRAND ASSETS** (r25: any brand named directly or clearly implied gets its real logo, colours and animated UI flow, in the BRAND STORY style; never a generic icon or a fake brand). **VOICE CHAIN** (r26: every voice gets high-pass → expander → de-esser → EQ +3.5 kHz → compressor → limiter, in that order; `voice_enhance.py`). **COLOR TRIAD** (r27: thumbnails, covers and hook frames use one 120°-apart pair picked by emotion). Named looks: NETFLIX/CONTINUOUS, BRAND STORY, DOC-PAPER 3D, ENGRAVING, READING BALL, COOP, iOS, BLUEPRINT.
 >
 > **10/10 MOTION GRAPHIC: CLEAN KINETIC (r28, Jason 2026-10-12: "the perfect example of a motion graphic, especially for ads, this is a 10/10"):** the default for ads and motion pieces with no footage. Near-white stage, black SF-style sans, one cool-blue accent; every VO word on screen as spoken (pale blue + blur → black); real brand UI driven by a cursor (type, click, drag); continuous camera with circle wipes, blob→card morphs, mosaic dissolves and scale-to-speck exits; a new visual every 0.3–0.6 s; hook → proof → 3 benefit words → one CTA keyword in ~15 s. Full decode: `references/r28-clean-kinetic-ad.md`.
+>
+> **TEXT MASKING = THE MOAT (Jason, 2026-10-12: "text masking is the MOAT and pinnacle of real life video, alongside edits and motion graphics, it's a creative mix"):** every footage edit mixes three layers (the cut, motion graphics, and text that lives *inside* the shot), and text masking is the signature. Use at least 3 per video, on the hook and the biggest lines:
+> - **behind-subject:** the hero word sits behind his head or body (`matte.py` person cutout);
+> - **pass-through reveal:** the word is hidden, then revealed as he or an object moves across it (the matte as a wipe);
+> - **object wipe:** a door, car, hand or pole crossing frame masks the word in or out (rotoscope the object with SAM/rembg per frame);
+> - **surface-tracked:** the word pinned onto a wall, screen, shirt or road with perspective and the scene's grain and light;
+> - **inside-letters:** the footage plays *inside* giant letters (type as a window) on the hook or title.
+>
+> Masked text follows the r22 easing, the meaning colours and the font combos. Check stills: the edge must be clean (no halo, no flicker; feather 1–2 px and temporal-smooth the matte).
 
 ## Non-negotiables (Jason + measured craft)
 - **Smooth, never laggy** (Jason).
