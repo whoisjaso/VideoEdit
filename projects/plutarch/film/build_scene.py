@@ -12,7 +12,7 @@ PLACE = {0: "Corsica  ·  1780s", 1: "Chaeronea  ·  c. AD 100", 2: "Pella, Mace
  12: "Gaugamela  ·  331 BC", 13: "Babylon  ·  330 BC", 14: "Maracanda  ·  328 BC", 15: "India  ·  326 BC", 16: "Babylon  ·  323 BC", 17: "", 18: "Plutarch's Lives"}
 HEROES = {0: ["Plutarch's Lives.", "As him."], 1: ["He's writing lives."], 2: ["You're the smart one.", "You're the strong one."],
  3: ["My father will leave me nothing great to do."], 5: ["one day, they'll tell stories about me.", "What did you fall asleep next to?"],
- 6: ["who are we, here?", "we are the king.", "Who are you when no one has told you?"], 7: ["You're blocking my sun.", "If I were not Alexander, I would be Diogenes."],
+ 6: ["who are we, here?", "we are the king.", "Who are you when no one has told you?"], 7: ["You're blocking my sun.", "If I were not Alexander, I would be Diogenes.", "conquered wanting."],
  8: ["Remember his face."], 9: ["What do you do?", "You get well."], 10: ["What do you do?", "In front of God, and yourself."],
  11: ["son of Zeus.", "One letter, and a new identity."], 12: ["What do you do?", "I will not steal my victory.", "Identity sleeps."],
  13: ["Then it feels normal."], 14: ["This is the hand that saved you.", "You kill him."], 15: ["What do you do?", "as if every man had drunk."],

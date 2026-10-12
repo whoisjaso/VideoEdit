@@ -29,6 +29,12 @@ Source: Jason's verbatim brain dump (Claude Doc "Brain Dump: Psychological AI, E
    - **Placed in the script:** ch. 6 "A king at twenty" (Fable beat).
    - **Proof line, if wanted:** in the Bucephalus mirror, "the Observer asked who are we, here? and answered: the one who sees."
 
+8. **The Present** (Jason, 2026-10-12). The present is the only place you can act. What you do now becomes your future, and then your past (Matthew 6:34).
+   - Living in the past is where regret grows into depression; living in the future is where worry grows into anxiety. These are tendencies, not the only causes; phrase it as "where they grow".
+   - **Diogenes:** offered anything, he reached neither back (exile, poverty) nor forward (security). He asked only for what was blocking his present moment: the sun.
+   - **Alexander:** future-driven by nature ("nothing great left to do"; Plutarch records him weeping over the infinite worlds, *On Tranquillity of Mind*). He was at his best only when fully present (the horse, the cup). The man who wanted everything recognised the man who wanted nothing: Diogenes had conquered *wanting*.
+   - **Placed in:** ch. 1, scene 7 (Fable). Use it wherever a life turns on presence versus ambition or regret.
+
 **The thesis of the film:** what we watched as children quietly installed beliefs (good-looking people = confident people). This film installs better ones, through the lives of the greatest people who ever lived.
 
 ## How it maps onto Alexander (all events are in Plutarch's *Alexander*, retold in our words)

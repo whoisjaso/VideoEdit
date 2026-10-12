@@ -151,6 +151,12 @@ The Observer looks at all of it and answers: *we are the king.* And from that an
 
 **GEORGE:** Your friends laugh at him. You could too. Or you could feel insulted. Instead, you feel something you didn't expect: respect. And you say: *If I were not Alexander, I would be Diogenes.*
 
+**FABLE:** Look at what he asked for. The most powerful man alive offers him anything. He doesn't reach back to his past, the home he lost, the wealth he never had. He doesn't reach forward to what he might need next year. He asks for the one thing standing between him and this moment. The sun.
+
+**FABLE:** Live in the past, and regret grows into depression. Live in the future, and worry grows into anxiety. The present is the only place you can act. What you do in it becomes your future, and then your past. Even scripture says it: don't worry about tomorrow; today has enough of its own.
+
+**FABLE:** Alexander wanted the whole world. Diogenes wanted nothing he didn't already have. And Alexander saw it: a man who had conquered wanting.
+
 **FABLE:** That's the difference between identity and ego. Ego needs the room to clap. Identity can stand in front of a man who wants nothing from it, and admire him. It's looking at someone quietly fishing at the pier, needing no one's approval, and realising you envy his peace. Only someone secure in who they are can feel that without feeling small.
 
 **FABLE:** Who in your life can't be impressed by you? How do you feel around them?
