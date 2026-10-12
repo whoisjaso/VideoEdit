@@ -22,6 +22,7 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
 const { E, clamp } = K;
 const P = new URLSearchParams(location.search);
 const CH = P.get("ch") || "Chapter II", NM = P.get("nm") || "Caesar", LEN = 9.0;
+document.getElementById("bimg").src = P.get("img") || "bust.png";
 const bg = document.getElementById("bg").getContext("2d"), fx = document.getElementById("fx").getContext("2d"), gr = document.getElementById("gr").getContext("2d");
 const bimg = document.getElementById("bimg"), bc = document.getElementById("bc").getContext("2d");
 const motes = Array.from({ length: 70 }, (_, i) => ({ x: 900 + (i * 977) % 1020, y: (i * 613) % 1080, s: 0.5 + ((i * 37) % 10) / 7, v: 3 + ((i * 53) % 8), ph: i * 1.7 }));
@@ -75,5 +76,13 @@ function seek(t) {
   gr.clearRect(0, 0, 1920, 1080); const ox = (Math.floor(t * 24) * 73) % 256, oy = (Math.floor(t * 24) * 151) % 256;
   gr.save(); gr.translate(-ox, -oy); gr.fillStyle = gr.createPattern(gt, "repeat"); gr.fillRect(0, 0, 1920 + 256, 1080 + 256); gr.restore();
 }
-window.seek = seek; window.ready = () => seek(0);
+window.seek = seek;
+window.ready = () => { // long names shrink so the name never runs into the portrait (max 700 px wide)
+  const nm = document.getElementById("nm"); nm.textContent = NM; const w = nm.scrollWidth;
+  let f = 232; if (w > 700) { f = 232 * 700 / w; nm.style.fontSize = f + "px"; nm.style.top = (380 + (232 - f) * 0.62) + "px"; }
+  // the mask edge sits exactly on the baseline, so letters rise out of a clean line
+  const m = document.createElement("canvas").getContext("2d"); m.font = `300 ${f}px CG`; const mt = m.measureText("H");
+  const asc = mt.fontBoundingBoxAscent, des = mt.fontBoundingBoxDescent, base = (250 - (asc + des)) / 2 + asc;
+  nm.style.height = Math.round(base + 4) + "px";
+  seek(0); };
 </script></body></html>

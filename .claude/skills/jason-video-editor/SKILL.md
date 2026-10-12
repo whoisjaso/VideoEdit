@@ -53,6 +53,8 @@ description: Jason's default short-form video edit. Use EVERY time Jason drops r
 > - **inside-letters:** the footage plays *inside* giant letters (type as a window) on the hook or title.
 >
 > Masked text follows the r22 easing, the meaning colours and the font combos. Check stills: the edge must be clean (no halo, no flicker; feather 1–2 px and temporal-smooth the matte).
+>
+> **CHAPTER / TITLE CARD STANDARD (Jason, 2026-10-12: "way better, this is the standard", after rejecting a laurel clip-art title as "ass"):** the subject's real portrait (public-domain bust or engraving, rembg cutout, warm-toned) rising from near-black under one warm pool of light with a slow push; a raking light clipped to the subject only (never a beam on the background); a left type stack: tracked gold small caps → the NAME as the hero in a classic book serif (Cormorant Garamond Light), letters rising through a mask → the film's own device draws a thin rule → the series title in italic → a micro source line; grain over everything. Hierarchy: the chapter name leads, the series title frames it. Banned: clip-art ornaments over type, glowing yellow italics, tiny subtitles. Template: `projects/plutarch/film/title2/title2.html`.
 
 > **SCORECARD (Jason, 2026-10-10: "break the video into categories, psychology included, so we know where to revise"):** before delivery, score the final render on `references/scorecard.md` (10 weighted categories, measured from the 1 fps sheet). Fix any category under 7, and send the scorecard with the video.
 >

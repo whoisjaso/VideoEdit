@@ -486,3 +486,4 @@ Jason sent six references to label as standards. All are now in `jason-motion-gr
 - **r27 COLOR TRIAD**
 - **r28 CLEAN KINETIC: 10/10** (Jason: "the perfect example of a motion graphic, especially for ads"). The SFX-pack promo is now the ad and motion benchmark. Decode: `jason-ad-film/references/r28-clean-kinetic-ad.md`.
 - **TEXT MASKING = the moat** (Jason): every footage edit = cut + motion graphics + masked text. At least 3 masks per video (behind-subject, pass-through, object wipe, surface-tracked, inside-letters).
+- **CHAPTER CARD standard** (Jason: laurel title "looks so ass" → rebuilt with a marble bust, Cormorant serif, and the gold ball drawing the rule: "way better, this is the standard"). Template: `projects/plutarch/film/title2/title2.html`.
