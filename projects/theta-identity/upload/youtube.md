@@ -38,6 +38,7 @@ Right as you fall asleep, your brain slows into theta, the state where the mind 
 
 What's inside:
 • 6 rounds of guided Wim Hof breathing, with a breath count, hold timers and paced breath sounds
+• "Get ready, 3, 2, 1" before every round, and ticks plus a chime before every hold ends, so you never lose your place
 • Identity statements on every out-breath: saying no, quiet kindness, the long game, calm under pressure, ownership, discipline
 • First-person memory scenes during every breath hold
 • A future-self vision: your house, your gym, your car, the coast road, the beach
@@ -100,6 +101,7 @@ Right as you fall asleep, your brain slows into theta, the state where the mind 
 
 What's inside:
 • 6 rounds of guided Wim Hof breathing, with a breath count, hold timers and paced breath sounds
+• "Get ready, 3, 2, 1" before every round, and ticks plus a chime before every hold ends, so you never lose your place
 • Identity statements on every out-breath: saying no without guilt, giving from a full cup, the long game, calm confidence, ownership, strength
 • First-person memory scenes during every breath hold
 • A future-self vision: your house, your gym, your car, the coast road, the beach
