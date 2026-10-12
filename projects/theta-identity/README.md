@@ -9,7 +9,10 @@ asleep with the words still playing.
 | --- | --- |
 | `script.md` | Every word that gets spoken. Edit this, re-run, and the video rebuilds. |
 | `build.py` | Generates the voice, breath, music, theta bed and frames, then renders. |
-| `renders/theta-identity-v2-16x9.mp4` | The session (~34 min, 1920x1080). `THETA_ASPECT=9x16` builds the vertical `renders/theta-identity-v2.mp4`. |
+| `renders/theta-identity-v3-16x9.mp4` | Men's session (44 min, 1920x1080). |
+| `script-women.md` | The women's script: own voice (`af_heart`), statements and scenes. |
+| `renders/theta-identity-women-v1-16x9.mp4` | Women's session (43 min, 1920x1080). |
+| `sounds.py` | Synthesized scene sounds: beds (house, gym, drive, beach, lot) and one-shots (door, engine, keys, plates, steps, phone, waves). |
 
 ## Running order
 
@@ -28,6 +31,13 @@ asleep with the words still playing.
    | 5 | Owner, wealth already done | My name on the building at sunrise |
 3. **Bridge.** Slow breathing (4 in, 6 out) to switch the body off after the rounds.
 4. **Descent.** The anchor lines loop three times, quieter and slower each pass, then the music fades.
+
+## Timing
+
+`audit()` runs before every render and fails the build if two voice lines overlap, if a
+statement doesn't start on an out-breath, or if a statement lands within 3 s of the hold. In the
+recovery, the inhale starts on the word "in", the 15-second count starts on "hold", and the exhale
+lands on "Let go".
 
 ## Sound design
 
