@@ -4,8 +4,8 @@ Files to upload:
 
 | Video | File | Thumbnail |
 | --- | --- | --- |
-| Men's | `renders/theta-identity-v3-16x9.mp4` | `upload/thumbnail-men.jpg` |
-| Women's | `renders/theta-identity-women-v1-16x9.mp4` | `upload/thumbnail-women.jpg` |
+| Men's | `renders/theta-identity-v4-16x9.mp4` | `upload/thumbnail-men.jpg` |
+| Women's | `renders/theta-identity-women-v2-16x9.mp4` | `upload/thumbnail-women.jpg` |
 
 Settings for both:
 - **Category:** Education (or People & Blogs)
@@ -46,15 +46,15 @@ What's inside:
 Chapters
 0:00 Theta Identity
 0:07 Ego vs identity: what we're doing and why
-7:28 Round 1: The man who says no
-11:00 Round 2: Kind, not looking kind
-14:20 Round 3: Build now, carry them later
-17:55 Round 4: Calm. Decisive.
-21:30 Round 5: Already done
-25:20 Round 6: The man who lifts
-29:10 Slow down
-30:35 Your future self: the house, the car, the beach
-36:14 Drift into sleep
+8:09 Round 1: The man who says no
+11:42 Round 2: Kind, not looking kind
+15:02 Round 3: Build now, carry them later
+18:37 Round 4: Calm. Decisive.
+22:12 Round 5: Already done
+26:02 Round 6: The man who lifts
+29:52 Slow down
+31:16 Your future self: the house, the car, the beach
+36:56 Drift into sleep
 
 How to use it:
 Every night for 30 days. Lie on your back with headphones in and low brightness. Follow the breath count, close your eyes in the holds, and let yourself fall asleep anywhere after the slow-down. The binaural pulse only works with headphones.
@@ -108,15 +108,15 @@ What's inside:
 Chapters
 0:00 Theta Identity
 0:07 Ego vs identity: what we're doing and why
-7:04 Round 1: The woman who says no
-10:32 Round 2: Kind, not looking kind
-13:51 Round 3: Build now, carry them later
-17:26 Round 4: Calm. Decisive.
-21:01 Round 5: Already done
-24:51 Round 6: The woman who lifts
-28:40 Slow down
-30:02 Your future self: the house, the car, the beach
-35:23 Drift into sleep
+7:43 Round 1: The woman who says no
+11:11 Round 2: Kind, not looking kind
+14:30 Round 3: Build now, carry them later
+18:05 Round 4: Calm. Decisive.
+21:40 Round 5: Already done
+25:29 Round 6: The woman who lifts
+29:19 Slow down
+30:41 Your future self: the house, the car, the beach
+36:02 Drift into sleep
 
 How to use it:
 Every night for 30 days. Lie on your back with headphones in and low brightness. Follow the breath count, close your eyes in the holds, and let yourself fall asleep anywhere after the slow-down. The binaural pulse only works with headphones.
