@@ -9,7 +9,7 @@ asleep with the words still playing.
 | --- | --- |
 | `script.md` | Every word that gets spoken. Edit this, re-run, and the video rebuilds. |
 | `build.py` | Generates the voice, breath, music, theta bed and frames, then renders. |
-| `renders/theta-identity-v2.mp4` | The session (~34 min, 1080x1920). |
+| `renders/theta-identity-v2-16x9.mp4` | The session (~34 min, 1920x1080). `THETA_ASPECT=9x16` builds the vertical `renders/theta-identity-v2.mp4`. |
 
 ## Running order
 

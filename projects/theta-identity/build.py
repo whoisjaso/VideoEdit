@@ -30,9 +30,15 @@ VOICE = os.environ.get("THETA_VOICE", "am_michael")
 
 SR = 48000
 FPS = 24
-W, H = 1080, 1920
-LW, LH = 270, 480          # the breathing field is computed at quarter size, then upscaled
-CX, CY = W / 2, 880
+ASPECT = os.environ.get("THETA_ASPECT", "16x9")   # "16x9" (1920x1080) or "9x16" (1080x1920)
+if ASPECT == "9x16":
+    W, H, CY = 1080, 1920, 880
+    TOP1, TOP2, BOT, BOT2, READY1, READY2, TEXTW, SUBW = 260, 320, 1600, 1660, 1330, 1390, 900, 940
+else:
+    W, H, CY = 1920, 1080, 500
+    TOP1, TOP2, BOT, BOT2, READY1, READY2, TEXTW, SUBW = 90, 140, 905, 965, 770, 820, 1500, 1500
+LW, LH = W // 4, H // 4    # the breathing field is computed at quarter size, then upscaled
+CX = W / 2
 
 T_IN, T_OUT = 1.8, 1.5     # Wim Hof pace: ~3.3 s a breath
 BREATHS = 30
@@ -601,7 +607,8 @@ def wrap(text, font, width):
     return lines
 
 
-def text_block(d, text, font, y, fill, alpha, width=900, lh=None):
+def text_block(d, text, font, y, fill, alpha, width=None, lh=None):
+    width = width or TEXTW
     lines = wrap(text, font, width)
     lh = lh or int(font.size * 1.32)
     y0 = y - (len(lines) - 1) * lh / 2
@@ -642,45 +649,45 @@ def overlay(img, s, t, lungs):
     elif k in ("intro", "bridge", "descent") and s.get("text"):
         a = fade_alpha(lt, 0, s["end"] - s["start"], 0.35, 0.45)
         if s.get("stmt"):
-            text_block(d, s["text"], F_TEXT, 1600, GOLD, a * 0.85)
+            text_block(d, s["text"], F_TEXT, BOT, GOLD, a * 0.85)
         elif k == "intro":
-            text_block(d, s["text"], F_SUB, 1600, WARM, a * 0.82, width=940)
+            text_block(d, s["text"], F_SUB, BOT, WARM, a * 0.82, width=SUBW)
     elif k == "ready":
-        spaced(d, 1330, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, GOLD, 0.9)
-        spaced(d, 1390, "GET READY", F_LABEL, WARM, 0.55)
+        spaced(d, READY1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, GOLD, 0.9)
+        spaced(d, READY2, "GET READY", F_LABEL, WARM, 0.55)
     elif k == "breath":
         per = T_IN + T_OUT
         n = int(lt // per) + 1
         d.text((W / 2, CY), str(min(n, BREATHS)), font=F_NUM, fill=WARM + (int(255 * (0.55 + 0.35 * lungs)),), anchor="mm")
-        spaced(d, 260, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
+        spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
         ph = lt % per
-        spaced(d, 320, "BREATHE IN" if ph < T_IN else "LET GO", F_LABEL, GOLD, 0.75)
+        spaced(d, TOP2, "BREATHE IN" if ph < T_IN else "LET GO", F_LABEL, GOLD, 0.75)
         for a0, a1, txt in s["cues"]:
             a = fade_alpha(t, a0, a1, 0.4, 0.6)
             if a > 0:
-                text_block(d, txt, F_TEXT, 1600, GOLD, a * 0.92)
+                text_block(d, txt, F_TEXT, BOT, GOLD, a * 0.92)
     elif k == "hold":
         left = max(0.0, s["total"] - lt)
         secs = int(np.ceil(left))
         lab = f"{secs // 60}:{secs % 60:02d}"
         d.text((W / 2, CY), lab, font=F_NUM, fill=WARM + (150,), anchor="mm")
-        spaced(d, 260, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
-        spaced(d, 320, "HOLD · LUNGS EMPTY", F_LABEL, GOLD, 0.75)
+        spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
+        spaced(d, TOP2, "HOLD · LUNGS EMPTY", F_LABEL, GOLD, 0.75)
         a = fade_alpha(lt, 3, s["total"] - 1, 2, 1)
-        spaced(d, 1600, "SEE IT THROUGH YOUR OWN EYES", F_LABEL, WARM, 0.45 * a, 6)
-        d.text((W / 2, 1660), "breathe in when you need to", font=F_SMALL, fill=WARM + (int(80 * a),), anchor="mm")
+        spaced(d, BOT, "SEE IT THROUGH YOUR OWN EYES", F_LABEL, WARM, 0.45 * a, 6)
+        d.text((W / 2, BOT2), "breathe in when you need to", font=F_SMALL, fill=WARM + (int(80 * a),), anchor="mm")
     elif k == "recover":
         dl = s["delay"]
         left = max(0.0, s["total"] - lt)
         if lt > dl:
             d.text((W / 2, CY), str(int(np.ceil(left))), font=F_NUM, fill=WARM + (170,), anchor="mm")
-        spaced(d, 260, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
-        spaced(d, 320, "BREATHE IN · HOLD", F_LABEL, GOLD, 0.8)
+        spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
+        spaced(d, TOP2, "BREATHE IN · HOLD", F_LABEL, GOLD, 0.8)
         a = fade_alpha(lt, dl + 3.0, s["total"] - 0.5, 0.6, 0.8)
         if a > 0:
-            text_block(d, s["anchor"], F_TEXT, 1600, GOLD, a * 0.92)
+            text_block(d, s["anchor"], F_TEXT, BOT, GOLD, a * 0.92)
     elif k == "release":
-        spaced(d, 320, "LET GO", F_LABEL, GOLD, 0.7 * fade_alpha(lt, 0, s["end"] - s["start"], 0.3, 0.8))
+        spaced(d, TOP2, "LET GO", F_LABEL, GOLD, 0.7 * fade_alpha(lt, 0, s["end"] - s["start"], 0.3, 0.8))
 
 
 _FIELD = None
@@ -728,7 +735,7 @@ def main():
     print("audio done", flush=True)
 
     t0, t1 = preview if preview else (0.0, total)
-    out = (CACHE / "preview.mp4") if preview else (ROOT / "renders" / "theta-identity-v2.mp4")
+    out = (CACHE / "preview.mp4") if preview else (ROOT / "renders" / f"theta-identity-v2{'' if ASPECT == '9x16' else '-16x9'}.mp4")
     workers = os.cpu_count() or 4
     bounds = np.linspace(t0, t1, workers + 1)
     bounds = [round(x * FPS) / FPS for x in bounds]
