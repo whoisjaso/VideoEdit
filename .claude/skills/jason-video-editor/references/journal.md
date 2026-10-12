@@ -484,3 +484,4 @@ Jason sent six references to label as standards. All are now in `jason-motion-gr
   - Tested on ep05 raw: −13.8 LUFS, peak −0.5 dB.
   - A/B: `renders/voice-chain-ab-v1.mp4`.
 - **r27 COLOR TRIAD**
+- **r28 CLEAN KINETIC: 10/10** (Jason: "the perfect example of a motion graphic, especially for ads"). The SFX-pack promo is now the ad and motion benchmark. Decode: `jason-ad-film/references/r28-clean-kinetic-ad.md`.

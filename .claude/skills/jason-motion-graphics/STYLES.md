@@ -6,6 +6,7 @@ Paths are relative to `.claude/skills/`.
 | Label | What it is | Reference / rules |
 |---|---|---|
 | **NETFLIX / CONTINUOUS** | THE editing standard: one continuous camera, every scene morphs into the next, a signature brand-colour transition, callback ending | `jason-ad-film/references/r21-netflix-standard.md` |
+| **CLEAN KINETIC** ⭐ 10/10 | THE motion-graphics benchmark, especially for ads: near-white stage, every VO word on screen (blue→black), a cursor acting in real brand UI, scale-to-speck exits, no hard cuts | `jason-ad-film/references/r28-clean-kinetic-ad.md` |
 | **BRAND STORY** | Real brand assets told as one travelling UI morph (iMessage → app icon → search → tiles → status → map → wordmark) | `jason-motion-graphics/references/r25-brand-story.md` |
 | **DOC-PAPER 3D** | Documentary paper explainer: B&W photo cutouts in 2.5D parallax, case files on a lit desk, red highlighter, timeline scrub | `jason-motion-graphics/references/r23-doc-paper-3d.md` |
 | **ENGRAVING** | Antique public-domain engravings on paper, one orange accent device, bold serif lines (Claude ad, *The Ego of the Greats*) | `jason-ad-film/references/decode-engraving-claude-ad.md` |
