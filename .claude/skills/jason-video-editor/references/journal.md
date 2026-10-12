@@ -488,3 +488,4 @@ Jason sent six references to label as standards. All are now in `jason-motion-gr
 - **TEXT MASKING = the moat** (Jason): every footage edit = cut + motion graphics + masked text. At least 3 masks per video (behind-subject, pass-through, object wipe, surface-tracked, inside-letters).
 - **CHAPTER CARD standard** (Jason: laurel title "looks so ass" → rebuilt with a marble bust, Cormorant serif, and the gold ball drawing the rule: "way better, this is the standard"). Template: `projects/plutarch/film/title2/title2.html`.
 - **r29 KENYSET TEXT** (Jason shared the @kenyset AE preset Drive folder): 42 .ffx decoded → `kit/textfx.js` + `kit/kenyset-presets.json`, reel `renders/kenyset-text-presets-reel-v1.mp4`. Awaiting his picks.
+- Jason: "we need all this and need to utilize it too" → KENYSET rule in all 3 skills (roles + rotation), Remotion `Kenyset.tsx` added. Rotation log starts here: none used yet.

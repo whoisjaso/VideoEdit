@@ -21,6 +21,22 @@ description: Jason's standalone motion-graphics pieces. NO raw footage of him. U
 > Masked text follows the r22 easing, the meaning colours and the font combos. Check stills: the edge must be clean (no halo, no flicker; feather 1–2 px and temporal-smooth the matte).
 >
 > **CHAPTER / TITLE CARD STANDARD (Jason, 2026-10-12: "way better, this is the standard", after rejecting a laurel clip-art title as "ass"):** the subject's real portrait (public-domain bust or engraving, rembg cutout, warm-toned) rising from near-black under one warm pool of light with a slow push; a raking light clipped to the subject only (never a beam on the background); a left type stack: tracked gold small caps → the NAME as the hero in a classic book serif (Cormorant Garamond Light), letters rising through a mask → the film's own device draws a thin rule → the series title in italic → a micro source line; grain over everything. Hierarchy: the chapter name leads, the series title frames it. Banned: clip-art ornaments over type, glowing yellow italics, tiny subtitles. Template: `projects/plutarch/film/title2/title2.html`.
+>
+> **KENYSET TEXT: USE THE WHOLE PACK (Jason, 2026-10-12: "we need all this and need to utilize it too"):** every edit and motion piece uses the 41 decoded @kenyset reveals (r29) for its designed text beats. Pick a preset by ROLE, never at random:
+> - `hook`: 1, 2, 3, 35, 36, 37, 13, 14;
+> - `reveal`: 11, 12, 17, 20, 21, 18, 19;
+> - `money`: 22, 23, 24, 28, 29;
+> - `list`: 38, 39, 40, 41, 42;
+> - `move`: 4–10;
+> - `calm`: 25, 26, 27, 30–34.
+>
+> **Rotation:** the k-th time a role fires, use the next number in its list (`pickKenyset(role, k)`). Log the numbers used in the journal, so the next video continues the rotation and the whole pack gets used.
+>
+> **Code:**
+> - Remotion: `<KenysetText text preset at size accent/>` (`../jason-video-editor/template/src/lib/Kenyset.tsx`);
+> - HTML engine: `TextFX.make` (`../jason-ad-film/kit/textfx.js`).
+>
+> **What it doesn't replace:** the locked caption systems (Coop lowercase captions, the READING BALL film captions). It drives hooks, hero words, titles, numbers, lists and section changes. Sound: a pop or whoosh on the first unit, and a soft tick per word for typewriters.
 
 > **SKILL UPKEEP (Jason, 2026-10-09):** Jason's claude.ai account copy of this skill is the MASTER; it is what loads in Claude chat, the Claude app and every Claude Code session. Editing the repo (or `~/.claude/skills/synced/`, a read-only download) does NOT update his account. After every approved change: edit the repo skill → run `bash skills-sync.sh <outdir>` at the repo root → send Jason every zip it marks "NEEDS RE-UPLOAD" and tell him to replace that skill at claude.ai (Settings → Capabilities → Skills). Never report a skill as updated until he has re-uploaded it.
 >
