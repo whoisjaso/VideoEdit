@@ -453,3 +453,15 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - A Chromium screenshot can fail or hang: retry, and check frame counts before concatenating.
 
 **Gaps for Higgsfield credits:** the cup, the killing of Cleitus, the helmet of water, the deathbed.
+
+## 2026-10-12 · Ego of the Greats ch.1 v2: Diogenes + the Present (Jason)
+- Jason watched it on YouTube: "extremely intriguing". His note: the Diogenes scene had to show *why* Alexander said it.
+- **Added a Fable beat:**
+  - Diogenes reached neither to the past nor to the future; he asked only for what blocked his present moment, the sun.
+  - Past → depression, future → anxiety, phrased as tendencies.
+  - The present is where you act (Matthew 6:34).
+  - "A man who had conquered wanting."
+- New framework principle 8: The Present.
+- **Decision:** the YouTube upload stays live as is; the v2 cut goes into the compiled film.
+- **Master v2:** 31:21, `renders/ego-of-the-greats-ch1-alexander.mp4`.
+- **YouTube package:** plain thumbnail (no text, per Jason); the text version is kept as an option.
