@@ -1,3 +1,8 @@
+# The Ego of the Greats
+_Title locked by Jason, 2026-10-12. A sleep-pace film series after Plutarch's Lives; Chapter I = Alexander._
+
+**Every chapter runs:** the Prologue ("Before you sleep") → the title card ("The Ego of the Greats · Chapter N · Name") → the cold open → the scenes. The final film strings all the chapters together.
+
 # Plutarch's Lives: a 2-hour 16:9 belief film (sleep-pace)
 Jason, 2026-10-11. A visual retelling of Plutarch's Lives in modern English. The lens: beliefs formed unconsciously → identity → action ("who you are when no one is looking"). It's made to watch while drifting to sleep; short-form hooks get cut from it afterwards.
 

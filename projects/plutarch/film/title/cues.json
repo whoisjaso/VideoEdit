@@ -1,0 +1,6 @@
+[{"f": 6, "id": "pack3.riser", "role": "riser", "db": -2},
+ {"f": 56, "id": "deep_bass", "role": "sub", "pre": 3, "db": 2},
+ {"f": 56, "id": "whoosh", "role": "whoosh", "speed": 0.55, "db": 2},
+ {"f": 70, "id": "pack3.shine", "role": "accent", "db": 2, "tail": true},
+ {"f": 104, "id": "pack5.sparkle", "role": "accent", "db": 0, "tail": true},
+ {"f": 104, "id": "pack4.ripple_textures", "role": "texture", "db": 2}]
