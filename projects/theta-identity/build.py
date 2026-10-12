@@ -160,15 +160,39 @@ _kokoro = None
 _ROOM = None
 
 
+# Words spelled one way and said two ways, which the voice engine gets wrong in these lines.
+# (pattern in the sentence, phonemes it produces, phonemes it should say)
+PRONOUNCE = [
+    (r"\b(Ego|Identity|it|she|he) lives\b", "lˈaɪvz", "lˈɪvz"),     # the verb: rhymes with "gives"
+    (r"\b[Cc]lose (your|my) eyes\b", "klˈoʊs", "klˈoʊz"),          # the verb: "cloze"
+    (r"\bMercedes\b", "mɜːsˈeɪdiːz", "mɚsˈeɪdiːz"),                  # American "mer-SAY-deez"
+]
+_tok = None
+
+
+def phonemes(text):
+    """The engine's phonemes for a line, with the PRONOUNCE corrections applied."""
+    global _tok
+    if _tok is None:
+        from kokoro_onnx.tokenizer import Tokenizer
+        _tok = Tokenizer()
+    ph = _tok.phonemize(text, "en-us")
+    for pattern, wrong, right in PRONOUNCE:
+        if re.search(pattern, text):
+            ph = ph.replace(wrong, right)
+    return ph
+
+
 def tts(text, speed):
     global _kokoro, _ROOM
-    key = hashlib.sha1(f"{VOICE}|{speed}|{text}".encode()).hexdigest()[:16]
-    path = CACHE / "tts" / f"{key}.wav"
+    ph = phonemes(text)
+    key = hashlib.sha1(f"{VOICE}|{speed}|{ph}".encode()).hexdigest()[:16]
+    path = CACHE / "tts" / f"ph-{key}.wav"
     if not path.exists():
         if _kokoro is None:
             from kokoro_onnx import Kokoro
             _kokoro = Kokoro(str(MODELS / "kokoro.onnx"), str(MODELS / "voices.bin"))
-        samples, sr = _kokoro.create(text, voice=VOICE, speed=speed, lang="en-us")
+        samples, sr = _kokoro.create(ph, voice=VOICE, speed=speed, lang="en-us", is_phonemes=True)
         path.parent.mkdir(parents=True, exist_ok=True)
         sf.write(path, samples, sr)
     x, sr = sf.read(path, dtype="float32")
