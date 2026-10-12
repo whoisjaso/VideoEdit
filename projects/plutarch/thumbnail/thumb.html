@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Ego of the Greats thumbnail</title>
+<style>
+@font-face { font-family: "IS"; src: url("is-italic.woff2") format("woff2"); font-style: italic; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #060504; }
+#c { position: absolute; left: 0; top: 0; }
+.t { position: absolute; left: 96px; white-space: nowrap; }
+#the { top: 208px; font-family: InterV; font-weight: 600; font-size: 50px; letter-spacing: .5em; color: rgba(240,232,214,.88); }
+#ego { top: 248px; left: 70px; font-family: IS; font-style: italic; font-size: 360px; line-height: 1; letter-spacing: -.01em;
+  background: linear-gradient(180deg, #FFF0C2 0%, #FFD266 38%, #E2A532 70%, #9C6A16 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 40px rgba(255,190,80,.45)) drop-shadow(0 10px 30px rgba(0,0,0,.9)); }
+#greats { top: 640px; font-family: InterV; font-weight: 800; font-size: 92px; letter-spacing: .06em; color: #F4EEE2; text-shadow: 0 6px 30px rgba(0,0,0,.9); }
+#rule { position: absolute; left: 100px; top: 772px; width: 620px; height: 3px; background: linear-gradient(90deg, #FFC94A, rgba(255,201,74,0)); }
+#names { top: 800px; font-family: InterV; font-weight: 600; font-size: 26px; letter-spacing: .42em; color: rgba(255,214,140,.85); }
+</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div class="t" id="the">THE</div><div class="t" id="ego">Ego</div><div class="t" id="greats">OF THE GREATS</div><div id="rule"></div><div class="t" id="names">ALEXANDER · CAESAR · NAPOLEON</div>
+<script>
+const ld = (s) => new Promise((r) => { const i = new Image(); i.onload = () => r(i); i.src = s; });
+(async () => { try {
+  const [A, N, C] = await Promise.all([ld("cut_188488.png"), ld("cut_239576.png"), ld("cut_192717.png")]);
+  const x = document.getElementById("c").getContext("2d");
+  // stage: warm light from the upper left, deep umber falloff
+  let g = x.createRadialGradient(1250, 380, 50, 1250, 420, 1250); g.addColorStop(0, "#3a2810"); g.addColorStop(0.45, "#160f07"); g.addColorStop(1, "#040303");
+  x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  // helper: draw a cutout tinted & lit (warm key from the left, shadow on the right)
+  function bust(img, cx, top, h, bright, key = 0.55) {
+    const w = img.width * h / img.height, l = cx - w / 2;
+    const o = document.createElement("canvas"); o.width = w; o.height = h; const q = o.getContext("2d");
+    q.drawImage(img, 0, 0, w, h);
+    q.globalCompositeOperation = "source-atop";
+    let lg = q.createLinearGradient(0, 0, w, 0); lg.addColorStop(0, `rgba(255,190,110,${0.35 * key})`); lg.addColorStop(0.55, "rgba(120,80,40,0.05)"); lg.addColorStop(1, `rgba(0,0,0,${0.62})`);
+    q.fillStyle = lg; q.fillRect(0, 0, w, h);
+    let vg = q.createLinearGradient(0, 0, 0, h); vg.addColorStop(0.55, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.85)"); q.fillStyle = vg; q.fillRect(0, 0, w, h);
+    x.save(); x.filter = `brightness(${bright}) contrast(1.12) sepia(.22)`; x.drawImage(o, l, top); x.restore();
+    return { l, top, w, h };
+  }
+  // the greats in the dark, behind
+  bust(N, 905, 300, 760, 0.42, 0.4);
+  bust(C, 1790, 250, 860, 0.38, 0.3);
+  // Alexander, foreground
+  const a = bust(A, 1330, 215, 1240, 1.0, 1.0);
+  // the crack: gold light breaking through the marble face
+  const P = (fx, fy) => [a.l + fx * a.w, a.top + fy * a.h];
+  const main = [[0.50, 0.035], [0.47, 0.09], [0.505, 0.135], [0.455, 0.19], [0.49, 0.235], [0.455, 0.285], [0.50, 0.34], [0.475, 0.40]];
+  const br1 = [[0.505, 0.135], [0.56, 0.155], [0.585, 0.20]], br2 = [[0.455, 0.19], [0.405, 0.205]], br3 = [[0.455, 0.285], [0.40, 0.30], [0.38, 0.34]];
+  const stroke = (pts, w, col, blur) => { x.save(); x.beginPath(); pts.forEach((p, i) => { const [px, py] = P(...p); i ? x.lineTo(px, py) : x.moveTo(px, py); });
+    x.strokeStyle = col; x.lineWidth = w; x.lineJoin = "miter"; x.lineCap = "round"; x.shadowColor = "rgba(255,170,60,1)"; x.shadowBlur = blur; x.stroke(); x.restore(); };
+  x.save(); x.globalCompositeOperation = "screen";
+  for (const pts of [main, br1, br2, br3]) { const k = pts === main ? 1 : 0.6; stroke(pts, 16 * k, "rgba(255,150,40,0.35)", 50); stroke(pts, 6 * k, "rgba(255,200,90,0.9)", 22); stroke(pts, 2 * k, "#FFF6DA", 6); }
+  x.restore();
+
+  // THE EGO: a gold crown hovering over the marble head, tilted, glowing: the identity he started wearing
+  { const [hx, hy] = P(0.505, -0.005);
+    const halo = x.createRadialGradient(hx, hy, 10, hx, hy, 330); halo.addColorStop(0, "rgba(255,190,90,0.32)"); halo.addColorStop(1, "rgba(255,190,90,0)");
+    x.save(); x.globalCompositeOperation = "screen"; x.fillStyle = halo; x.fillRect(hx - 340, hy - 340, 680, 680); x.restore();
+    x.save(); x.translate(hx + 6, hy - 64); x.rotate(-0.12); x.scale(3.3, 3.3); x.translate(-40, -36);
+    // five-point open crown: band with jewels, curved points tipped with pearls
+    const cr = new Path2D("M10 50 C10 44 9 34 6 22 L18 34 L24 14 L33 32 L40 8 L47 32 L56 14 L62 34 L74 22 C71 34 70 44 70 50 Z");
+    const band = new Path2D("M9 50 C30 46 50 46 71 50 L71 58 C50 54 30 54 9 58 Z");
+    const gg = x.createLinearGradient(0, 8, 0, 58); gg.addColorStop(0, "#FFF4D2"); gg.addColorStop(0.35, "#FFD266"); gg.addColorStop(0.7, "#C98A22"); gg.addColorStop(1, "#7A4E0E");
+    x.shadowColor = "rgba(255,170,60,0.9)"; x.shadowBlur = 10; x.fillStyle = gg; x.fill(cr);
+    const bg = x.createLinearGradient(0, 46, 0, 58); bg.addColorStop(0, "#FFE7A6"); bg.addColorStop(1, "#9A6514"); x.fillStyle = bg; x.fill(band);
+    x.shadowBlur = 0; x.strokeStyle = "rgba(70,40,6,0.7)"; x.lineWidth = 0.45; x.stroke(cr); x.stroke(band);
+    // inner sheen lines down each point
+    x.strokeStyle = "rgba(255,248,220,0.55)"; x.lineWidth = 0.5;
+    for (const [px, py] of [[24, 16], [40, 10], [56, 16]]) { x.beginPath(); x.moveTo(px, py + 4); x.lineTo(px, 44); x.stroke(); }
+    for (const [px, py] of [[6, 21], [24, 13], [40, 7], [56, 13], [74, 21]]) { x.beginPath(); x.arc(px, py, 2.4, 0, 6.283); const pg = x.createRadialGradient(px - 0.8, py - 0.8, 0.2, px, py, 2.4); pg.addColorStop(0, "#FFFFFF"); pg.addColorStop(1, "#D9C9A8"); x.fillStyle = pg; x.shadowColor = "rgba(255,220,150,1)"; x.shadowBlur = 5; x.fill(); }
+    x.shadowBlur = 0;
+    for (const [px, c] of [[22, "#8E1B12"], [40, "#14406E"], [58, "#8E1B12"]]) { x.beginPath(); x.ellipse(px, 52, 2.6, 2.0, 0, 0, 6.283); x.fillStyle = c; x.fill(); x.beginPath(); x.arc(px - 0.8, 51.3, 0.7, 0, 6.283); x.fillStyle = "rgba(255,255,255,.7)"; x.fill(); }
+    x.restore(); }
+  // dust in the light
+  for (let i = 0; i < 260; i++) { const px = (i * 977) % 1920, py = (i * 613) % 1080, r = 0.6 + (i * 37 % 10) / 7;
+    const d = Math.hypot(px - 1250, py - 380) / 1100; x.fillStyle = `rgba(255,214,150,${Math.max(0, 0.35 - d * 0.35)})`; x.beginPath(); x.arc(px, py, r, 0, 6.283); x.fill(); }
+  // text scrim on the left + vignette + grain
+  g = x.createLinearGradient(0, 0, 900, 0); g.addColorStop(0, "rgba(4,3,2,0.92)"); g.addColorStop(0.65, "rgba(4,3,2,0.55)"); g.addColorStop(1, "rgba(4,3,2,0)"); x.fillStyle = g; x.fillRect(0, 0, 900, 1080);
+  g = x.createRadialGradient(1100, 520, 500, 1000, 540, 1250); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,0.85)"); x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  let sd = 7; for (let i = 0; i < 90000; i++) { sd = (sd * 16807) % 2147483647; const px = sd % 1920; sd = (sd * 16807) % 2147483647; const py = sd % 1080; sd = (sd * 16807) % 2147483647;
+    x.fillStyle = (sd & 1) ? "rgba(255,255,255,0.035)" : "rgba(0,0,0,0.06)"; x.fillRect(px, py, 1.4, 1.4); }
+  } catch (e) { document.title = 'ERR ' + e.message; } window.ready_ = true;
+})();
+window.seek = () => {}; window.ready = async () => { while (!window.ready_) await new Promise((r) => setTimeout(r, 50)); };
+</script></body></html>
