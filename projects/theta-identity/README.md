@@ -1,46 +1,61 @@
 # Theta Identity
 
-A self-programming session for the two windows when the mind is most open: falling asleep
-(hypnagogic) and waking up (hypnopompic). It pairs Wim Hof breathing with first-person identity
-statements and memory-style scenes, all in my own words.
+One video for the window when the mind is most open: falling asleep. It explains the method,
+then runs five rounds of Wim Hof breathing with identity statements riding the breath and a
+first-person memory scene playing in every hold. Then it slows the body down and lets you fall
+asleep with the words still playing.
 
 | File | What it is |
 | --- | --- |
 | `script.md` | Every word that gets spoken. Edit this, re-run, and the video rebuilds. |
-| `build.py` | Generates the voice, breath pacing, bells, drone, binaural bed and frames, then renders. |
-| `renders/theta-identity-night-v1.mp4` | Night: 4 Wim Hof rounds, slow-breath bridge, identity, scenes, fade to sleep (~40 min). |
-| `renders/theta-identity-morning-v1.mp4` | Morning: identity and two scenes on waking, then 3 Wim Hof rounds, then get up. |
+| `build.py` | Generates the voice, breath, music, theta bed and frames, then renders. |
+| `renders/theta-identity-v2.mp4` | The session (~34 min, 1080x1920). |
 
-## Why it's built this way
+## Running order
 
-- **Wim Hof first, then a bridge.** Wim Hof breathing switches the body on (adrenaline, alkaline
-  blood). That's perfect in the morning and the wrong state for sleep. So the night version follows the
-  rounds with a slow countdown and long out-breaths to tip the nervous system into rest before a single
-  identity line plays. In the morning, the breathing comes last, so it launches me out of bed.
-- **Identity, not ego.** Every line is about what I do when nobody is watching. The Observer believes
-  actions, not words. Ego is an identity rented from other people's eyes.
-- **Scenes are filed as memories.** Each opens with "I remember this," plays in first person in the
-  present tense with sensory detail (cold air, hot coffee, a dry handshake), and closes with "That
-  happened. I was there." Vivid, sensory, first-person, emotional, repeated: those are what make the
-  brain treat an imagined event like a lived one.
-- **Silence after every statement.** 7 seconds at night (5 in the morning) so I can say it back
-  in my head and see it. The repetition I do myself is what installs it.
-- **Theta bed.** A binaural beat (150 Hz carrier) slides from 10 Hz down to 3.5 Hz across the night
-  session. It only works with headphones. Treat it as atmosphere: the evidence that it drives brain
-  waves is thin. The breathing and the repetition do the real work.
-- **Dim, warm screen.** Amber on near-black so the screen doesn't fight sleep.
+1. **Introduction (~7 min).** What theta is and why the door opens at sleep. Ego vs identity, with the
+   family example. The observer that believes actions, not words. Why scenes are filed as memories.
+   How the rounds work, why the music is there, and safety.
+2. **Five rounds.** 30 breaths at ~3.3 s each, with 7–8 identity statements spoken on the out-breaths.
+   Then a breath out and a hold, with the memory scene playing in the stillness. The hold
+   stretches to fit the scene. Then a recovery breath held for 15 seconds, with one anchor line.
+   | Round | Identity | Scene in the hold |
+   | --- | --- | --- |
+   | 1 | God as the only audience; saying no | Saying "not right now" to family, with no guilt |
+   | 2 | Kind, not looking kind | Paying a stranger's bill in secret |
+   | 3 | The long game: build now, carry them later | Handing my mother the paid-off house |
+   | 4 | Calm, decisive, first mover | Holding the silence until they say yes |
+   | 5 | Owner, wealth already done | My name on the building at sunrise |
+3. **Bridge.** Slow breathing (4 in, 6 out) to switch the body off after the rounds.
+4. **Descent.** The anchor lines loop three times, quieter and slower each pass, then the music fades.
+
+## Sound design
+
+- **Breath.** Turbulent air shaped the way a throat and mouth shape it, with no tones. The inhale
+  brightens as the lungs fill; the exhale is an open-mouth "haah" that pushes, then releases.
+  Every breath varies a little, and the stereo is wide.
+- **Music.** Composed in code and tuned to A = 432 Hz. Slow, open D-major pad chords
+  (Dmaj9, Bm11, Gmaj7, Asus2) cross-fade every 24 s in a large reverb, with sparse soft piano
+  notes from the pentatonic scale. Nothing repeats in a way you'd notice. It ducks under the voice.
+- **Theta bed.** A binaural pair (216 Hz, half of 432, in the left ear; 216 + beat in the right)
+  starts at 8 Hz in the intro, sits at 6 Hz through the rounds and slows to 4 Hz for sleep.
+  It needs headphones. The evidence that binaural beats change brain waves is mixed, so treat it as a
+  cue to slow down, not a switch. The breathing and the repetition do the heavy lifting.
+
+## Visuals
+
+There's no container. A soft field of warm light fills most of the screen on the inhale and shrinks
+to an ember on the exhale, with drifting particles and a slowly flowing surface. It goes nearly dark
+in the hold and dims away during the descent. The breath count, countdowns and statements sit on top.
 
 ## Protocol
 
-1. Night: lie in bed with headphones in, phone on low brightness. Watch the screen for the breathing
-   rounds, then close your eyes when the bridge starts. Let yourself fall asleep anywhere after that.
-2. Morning: start it before you sit up. Eyes closed for the identity part, eyes open for the rounds.
-3. Every night for 30 days. Change the script as the identity grows, but keep it stable for at least
-   a week at a time. Repetition beats novelty.
-4. Upgrade: record `script.md` in **your own voice** and swap it in. Your own voice saying "I" is
-   the strongest version of this.
+- Lie down in bed, headphones in, phone on low brightness. Watch the intro and the breath count;
+  close your eyes in the holds and once the bridge starts.
+- Every night for 30 days. Keep the script stable for at least a week at a time.
+- Upgrade: record `script.md` in **your own voice** and swap it in.
 
-**Safety:** do the breathing lying down. Never in water, never driving or standing. Tingling and
+**Safety:** breathe lying down. Never in water, never driving or standing. Tingling and
 light-headedness are normal. Stop if anything feels wrong. Talk to a doctor first if you're pregnant
 or have epilepsy, heart problems or high blood pressure.
 
@@ -50,8 +65,8 @@ or have epilepsy, heart problems or high blood pressure.
 pip install numpy pillow soundfile kokoro-onnx
 # model files -> $KOKORO_MODELS (default /tmp/theta-identity/models): kokoro.onnx + voices.bin from
 # https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
-python projects/theta-identity/build.py night
-python projects/theta-identity/build.py morning
+python projects/theta-identity/build.py                    # full render
+python projects/theta-identity/build.py --preview 420 520  # just 7:00-8:40, for a quick check
 ```
 
 `THETA_VOICE` picks the Kokoro voice (default `am_michael`).
