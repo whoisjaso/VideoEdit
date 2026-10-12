@@ -430,3 +430,26 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   - Voice: GUIDE = bf_emma.
   - Character voices: Diogenes, Parmenio and Porus = bm_daniel; the letter and Cleitus = bm_lewis.
 - **Correction given:** the pre-sleep window is alpha → theta, not beta.
+
+## 2026-10-12 · **The Ego of the Greats, Chapter I: Alexander** (30:16, 16:9) · score pending
+**Title:** set by Jason. **Running order:** Prologue (3:05) → title card (0:09) → cold open → scenes 1–17 (Bucephalus = v3).
+
+**Sound**
+- 3 narrators: George (story), Fable (mirror), Emma (Guide).
+- 5 character lines: Diogenes, the letter, Parmenio, Cleitus, Porus.
+- Score: 15 Musopen public-domain recordings.
+- World sound: CC0 field recordings placed on the words.
+
+**Picture:** 74 Met CC0 plates. The shape-shifting reading ball goes dark in the banquet and returns at the water.
+
+**Delivery**
+- Every scene was sent to chat as it finished.
+- Master: `renders/ego-of-the-greats-ch1-alexander.mp4` (1.06 GB, CRF 21, LFS).
+
+**Ops lessons**
+- 1080p PNG chunks fill the disk. Use 300-frame chunks and clean finished scenes' intermediates.
+- Never edit a bash script while it runs.
+- Run long loops detached (`setsid nohup`), not as harness background jobs, which have a 2 h limit.
+- A Chromium screenshot can fail or hang: retry, and check frame counts before concatenating.
+
+**Gaps for Higgsfield credits:** the cup, the killing of Cleitus, the helmet of water, the deathbed.
