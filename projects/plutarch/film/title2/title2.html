@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Chapter Card</title>
+<style>
+@font-face { font-family: "CG"; src: url("cg.ttf"); font-weight: 300 700; }
+@font-face { font-family: "CGI"; src: url("cgi.ttf"); font-style: italic; font-weight: 300 700; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #070708; }
+.L { position: absolute; left: 0; top: 0; }
+#txt { position: absolute; left: 210px; top: 0; width: 1000px; height: 1080px; }
+#ch { position: absolute; top: 352px; font-family: InterV; font-weight: 600; font-size: 19px; letter-spacing: .52em; color: #B8955A; white-space: nowrap; }
+#nm { position: absolute; top: 380px; height: 250px; overflow: hidden; font-family: CG; font-weight: 300; font-size: 232px; line-height: 250px; color: #EEE6D4; white-space: nowrap; }
+#nm span { display: inline-block; }
+#ser { position: absolute; top: 676px; font-family: CGI; font-style: italic; font-weight: 400; font-size: 50px; color: #D9CBAA; white-space: nowrap; }
+#src { position: absolute; top: 756px; font-family: InterV; font-weight: 500; font-size: 14px; letter-spacing: .38em; color: rgba(236,228,210,.42); text-transform: uppercase; white-space: nowrap; }
+</style><script src="kit.js"></script></head><body>
+<canvas id="bg" class="L" width="1920" height="1080"></canvas>
+<img id="bimg" src="bust.png" style="display:none"><canvas id="bc" class="L" width="1920" height="1080"></canvas>
+<canvas id="fx" class="L" width="1920" height="1080"></canvas>
+<div id="txt"><div id="ch"></div><div id="nm"></div><div id="ser"></div><div id="src"></div></div>
+<canvas id="gr" class="L" width="1920" height="1080"></canvas>
+<script>
+const { E, clamp } = K;
+const P = new URLSearchParams(location.search);
+const CH = P.get("ch") || "Chapter II", NM = P.get("nm") || "Caesar", LEN = 9.0;
+const bg = document.getElementById("bg").getContext("2d"), fx = document.getElementById("fx").getContext("2d"), gr = document.getElementById("gr").getContext("2d");
+const bimg = document.getElementById("bimg"), bc = document.getElementById("bc").getContext("2d");
+const motes = Array.from({ length: 70 }, (_, i) => ({ x: 900 + (i * 977) % 1020, y: (i * 613) % 1080, s: 0.5 + ((i * 37) % 10) / 7, v: 3 + ((i * 53) % 8), ph: i * 1.7 }));
+// fixed grain tile
+const gt = document.createElement("canvas"); gt.width = gt.height = 256; { const g = gt.getContext("2d"); for (let i = 0; i < 9000; i++) { const v = (i * 2654435761 % 255); g.fillStyle = `rgba(${v},${v},${v},0.05)`; g.fillRect((i * 7919) % 256, (i * 104729) % 256, 1, 1); } }
+function seek(t) {
+  const out = 1 - E.inOut(clamp((t - (LEN - 1.15)) / 1.1));
+  // stage: near-black with one warm pool of light behind the bust
+  bg.fillStyle = "#070708"; bg.fillRect(0, 0, 1920, 1080);
+  const li = E.out(clamp((t - 0.2) / 2.2)) * out;
+  const g = bg.createRadialGradient(1390, 430, 0, 1390, 430, 760); g.addColorStop(0, `rgba(92,64,30,${0.55 * li})`); g.addColorStop(0.55, `rgba(40,28,14,${0.35 * li})`); g.addColorStop(1, "rgba(7,7,8,0)");
+  bg.fillStyle = g; bg.fillRect(0, 0, 1920, 1080);
+  // the bust: emerges from darkness, slow push-in and drift (one continuous camera)
+  const b = E.out(clamp((t - 0.15) / 2.6)), push = 1.0 + 0.055 * E.dolly(clamp(t / LEN));
+  // the bust drawn on its own layer; the raking light is clipped to the marble (source-atop), never the background
+  bc.clearRect(0, 0, 1920, 1080);
+  const bw = 980, bh = bw * bimg.naturalHeight / bimg.naturalWidth, cx = 1395 - 16 * E.dolly(clamp(t / LEN)), cy = 92 + 10 * (1 - b) + bh * 0.4;
+  bc.save(); bc.globalAlpha = b * out; bc.filter = `brightness(${0.55 + 0.45 * b}) contrast(1.05)`;
+  bc.translate(cx, cy); bc.scale(push, push); bc.drawImage(bimg, -bw / 2, -bh * 0.4, bw, bh); bc.restore();
+  fx.clearRect(0, 0, 1920, 1080);
+  const sw = (t - 1.9) / 2.6;
+  if (sw > 0 && sw < 1) { const x = 880 + sw * 1040, gg = bc.createLinearGradient(x - 170, 0, x + 170, 0);
+    gg.addColorStop(0, "rgba(255,230,190,0)"); gg.addColorStop(0.5, `rgba(255,230,190,${0.32 * Math.sin(sw * Math.PI) * out})`); gg.addColorStop(1, "rgba(255,230,190,0)");
+    bc.save(); bc.globalCompositeOperation = "source-atop"; bc.fillStyle = gg; bc.fillRect(880, 0, 1040, 1080); bc.restore(); }
+  const fl = fx.createLinearGradient(0, 640, 0, 1080); fl.addColorStop(0, "rgba(7,7,8,0)"); fl.addColorStop(0.75, "rgba(7,7,8,.92)"); fl.addColorStop(1, "rgba(7,7,8,1)");
+  fx.fillStyle = fl; fx.fillRect(880, 640, 1040, 440);
+  const sl = fx.createLinearGradient(880, 0, 1060, 0); sl.addColorStop(0, "rgba(7,7,8,1)"); sl.addColorStop(1, "rgba(7,7,8,0)"); fx.fillStyle = sl; fx.fillRect(880, 0, 180, 1080);
+  for (const m of motes) { const x = (m.x + t * m.v) % 1960 - 20, y = (m.y - t * m.v * 0.4 + 4320) % 1080;
+    fx.fillStyle = `rgba(255,214,150,${0.22 * li * (0.5 + 0.5 * Math.sin(t * 0.9 + m.ph))})`; fx.beginPath(); fx.arc(x, y, m.s, 0, 6.283); fx.fill(); }
+  // type. CHAPTER: masked rise. NAME: letters rise through a mask with a soft blur (ease-out), then a slow tracking open
+  const c = E.out(clamp((t - 1.2) / 1.0)); const ch = document.getElementById("ch");
+  ch.textContent = CH.toUpperCase(); ch.style.opacity = c * out; ch.style.clipPath = `inset(0 ${100 - 100 * c}% 0 0)`;
+  const nm = document.getElementById("nm"); nm.style.letterSpacing = (0.005 + 0.025 * E.dolly(clamp((t - 1.8) / (LEN - 1.8)))) + "em";
+  const shine = (t - 2.3) / 1.3 * (NM.length + 4) - 2;
+  nm.innerHTML = [...NM].map((ch_, i) => { const p = E.out(clamp((t - 1.85 - i * 0.075) / 1.05)), sh = Math.exp(-((i - shine) ** 2) / 2.2);
+    const col = `rgb(${Math.round(238 + 17 * sh)},${Math.round(230 + 10 * sh)},${Math.round(212 - 40 * sh)})`;
+    return `<span style="transform:translateY(${(1 - p) * 250}px);opacity:${out};color:${col};filter:blur(${(1 - p) * 6}px)">${ch_}</span>`; }).join("");
+  // the gold reading ball (the film's device) arrives and draws the rule under the name, then rests at its end
+  const r = E.inOut(clamp((t - 3.35) / 1.05)), rw = 420;
+  fx.save(); fx.globalAlpha = out;
+  if (t > 3.1) { const ap = E.out(clamp((t - 3.1) / 0.35)), x0 = 214, y0 = 650, bx = x0 + rw * r;
+    fx.strokeStyle = "rgba(214,176,98,.85)"; fx.lineWidth = 1.5; fx.beginPath(); fx.moveTo(x0, y0); fx.lineTo(bx, y0); fx.stroke();
+    const glow = fx.createRadialGradient(bx, y0, 0, bx, y0, 26); glow.addColorStop(0, `rgba(255,214,130,${0.55 * ap})`); glow.addColorStop(1, "rgba(255,214,130,0)");
+    fx.fillStyle = glow; fx.beginPath(); fx.arc(bx, y0, 26, 0, 6.283); fx.fill();
+    fx.fillStyle = `rgba(255,222,150,${ap})`; fx.beginPath(); fx.arc(bx, y0, 5 * (0.6 + 0.4 * ap), 0, 6.283); fx.fill(); }
+  fx.restore();
+  const s = E.out(clamp((t - 3.9) / 1.2)), s2 = E.out(clamp((t - 4.5) / 1.2));
+  const ser = document.getElementById("ser"); ser.textContent = "The Ego of the Greats"; ser.style.opacity = s * out; ser.style.transform = `translateY(${(1 - s) * 16}px)`;
+  const src = document.getElementById("src"); src.textContent = "After Plutarch's Lives"; src.style.opacity = s2 * out;
+  // grain over everything
+  gr.clearRect(0, 0, 1920, 1080); const ox = (Math.floor(t * 24) * 73) % 256, oy = (Math.floor(t * 24) * 151) % 256;
+  gr.save(); gr.translate(-ox, -oy); gr.fillStyle = gr.createPattern(gt, "repeat"); gr.fillRect(0, 0, 1920 + 256, 1080 + 256); gr.restore();
+}
+window.seek = seek; window.ready = () => seek(0);
+</script></body></html>
