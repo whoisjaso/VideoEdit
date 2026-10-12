@@ -465,3 +465,11 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - **Decision:** the YouTube upload stays live as is; the v2 cut goes into the compiled film.
 - **Master v2:** 31:21, `renders/ego-of-the-greats-ch1-alexander.mp4`.
 - **YouTube package:** plain thumbnail (no text, per Jason); the text version is kept as an option.
+
+## 2026-10-12 · Reference r21: Netflix brand film by riccardo bosso, built with Claude · **Jason: "this is the video editing standard"**
+- Decoded in `../jason-ad-film/references/r21-netflix-standard.md`. Rule THE EDITING STANDARD has been added to the ad-film, motion-graphics and video-editor skills.
+- **Key gaps vs our work:**
+  - We still dissolve between plates; r21 never cuts, and every scene morphs into the next.
+  - No signature transition yet.
+  - No callback ending.
+  - No silence before the final drop.

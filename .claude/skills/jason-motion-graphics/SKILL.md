@@ -5,6 +5,8 @@ description: Jason's standalone motion-graphics pieces. NO raw footage of him. U
 
 # Jason Motion Graphics — SOP
 
+> **THE EDITING STANDARD: r21 Netflix film (Jason, 2026-10-12: "this is the video editing standard"):** one continuous camera where every scene morphs into the next (shared elements, push-through blur, slit-scan; no hard cuts, no plain crossfades); one signature transition in the brand colour, used repeatedly; open and close on the same build (callback); ~300 ms of silence before the final drop; real UI, cinematically lit; rack-focus depth; VO of 8 short second-person lines on visual beats; two-line kinetic type with a brand-colour accent word, shimmer and an underline draw; a new idea every 1–1.5 s with one breath before the payoff; exit dot → line → credit. Full decode: `../jason-ad-film/references/r21-netflix-standard.md`.
+
 > **SKILL UPKEEP (Jason, 2026-10-09):** Jason's claude.ai account copy of this skill is the MASTER; it is what loads in Claude chat, the Claude app and every Claude Code session. Editing the repo (or `~/.claude/skills/synced/`, a read-only download) does NOT update his account. After every approved change: edit the repo skill → run `bash skills-sync.sh <outdir>` at the repo root → send Jason every zip it marks "NEEDS RE-UPLOAD" and tell him to replace that skill at claude.ai (Settings → Capabilities → Skills). Never report a skill as updated until he has re-uploaded it.
 >
 **Which skill?** (Jason, 2026-10-09: "we need 2 skills for distinguishing the type of edits")

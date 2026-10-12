@@ -20,6 +20,8 @@ description: "Jason's system for premium fast-paced brand ads and launch films b
 | Edit Jason's raw footage | `jason-video-editor` |
 | A single UI-morph loop or a quick motion piece from a brief | `jason-motion-graphics` |
 
+> **THE EDITING STANDARD: r21 Netflix film (Jason, 2026-10-12: "this is the video editing standard"):** one continuous camera where every scene morphs into the next (shared elements, push-through blur, slit-scan; no hard cuts, no plain crossfades); one signature transition in the brand colour, used repeatedly; open and close on the same build (callback); ~300 ms of silence before the final drop; real UI, cinematically lit; rack-focus depth; VO of 8 short second-person lines on visual beats; two-line kinetic type with a brand-colour accent word, shimmer and an underline draw; a new idea every 1–1.5 s with one breath before the payoff; exit dot → line → credit. Full decode: `references/r21-netflix-standard.md`.
+
 ## Non-negotiables (Jason + measured craft)
 - **Smooth, never laggy** (Jason).
   - Adaptive motion blur: a sharp pass, then optical-flow speed per frame, then 1–32 samples at a 240° shutter, blended in float.
