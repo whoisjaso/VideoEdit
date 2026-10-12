@@ -74,13 +74,16 @@ for f, off, lvl, anc in S.get("music", []):
     put(music, fade(m, 2.5 if t0 == 0 else 4.0, 3.5), t0)
 music *= (db(-7) + (1 - db(-7)) * (1 - act))[:, None]
 for f, lvl, pan, a, b in S.get("beds", []):
+    if len(load(f, 0, 1)) == 0: print("unreadable bed, skipped:", f); continue
     t0 = (word_t(a) - 0.6) if a else 0.0; t1 = (word_t(b) - 0.3) if b else LEN
     if t0 is None or t1 is None or t1 - t0 < 2: continue
     put(amb, fade(loop(f, t1 - t0) / max(1e-6, rms(load(f)[: 30 * SR])) * db(VR + lvl), 2.5, 2.5), t0, pan)
 for f, ss, dur, w, lvl, pan in S.get("hits", []):
     t = word_t(w)
     if t is None: continue
-    a = fade(load(f, ss, dur), 0.03, min(1.0, dur / 3)); pk = np.max(np.abs(a)) + 1e-9
+    a = load(f, ss, dur)
+    if len(a) == 0: print("unreadable hit, skipped:", f); continue
+    a = fade(a, 0.03, min(1.0, dur / 3)); pk = np.max(np.abs(a)) + 1e-9
     put(amb, a / pk * db(VR + 8 + lvl), t - 0.05, pan)
 amb *= (db(-3) + (1 - db(-3)) * (1 - act))[:, None]
 g = np.ones(L)
