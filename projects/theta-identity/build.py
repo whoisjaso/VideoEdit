@@ -42,7 +42,7 @@ CX = W / 2
 
 T_IN, T_OUT = 1.8, 1.5     # Wim Hof pace: ~3.3 s a breath
 BREATHS = 30
-HOLDS = [60, 75, 90, 90, 105]
+HOLDS = [60, 75, 90, 90, 105, 105]
 RECOVER_HOLD = 15
 A4 = 432.0
 
@@ -57,9 +57,9 @@ F_SMALL = ImageFont.truetype(str(FONT_DIR / "Inter-Light.otf"), 34)
 
 # ================================================================ script
 
-def parse_script():
+def parse_script(path):
     blocks, cur = {}, None
-    for raw in (HERE / "script.md").read_text().splitlines():
+    for raw in Path(path).read_text().splitlines():
         line = raw.strip()
         if line.startswith("# "):
             name = line[2:].strip()
@@ -73,6 +73,12 @@ def parse_script():
             cur.append(("narr", line[2:].strip()))
         elif m := re.fullmatch(r"\[(\d+(?:\.\d+)?)\]", line):
             cur.append(("gap", float(m.group(1))))
+        elif m := re.fullmatch(r"\[sfx (\w+)\]", line):
+            cur.append(("bed", m.group(1)))
+        elif m := re.fullmatch(r"\[fx (\w+)\]", line):
+            cur.append(("fx", m.group(1)))
+        elif cur is blocks.get("VOICE"):
+            cur.append(("voice", line))
     return blocks
 
 
@@ -328,12 +334,20 @@ def bell_hit(freq, dur=6.0):
 
 # ================================================================ timeline
 
+import sounds  # noqa: E402  (scene beds and one-shots)
+
+BED_GAIN = {"morning": 0.4, "house": 0.4, "gym": 0.35, "drive": 0.35, "beach": 0.45, "lot": 0.35}
+FX_GAIN = {"door": 0.5, "engine": 0.55, "keys": 0.35, "clank": 0.4, "rack": 0.45, "steps": 0.4,
+           "phone": 0.35, "wave": 0.5}
+
 class Builder:
     def __init__(self):
         self.t = 0.0
         self.segs = []
         self.voice = []    # (start, mono)
         self.fx = []       # (start, stereo or mono, gain)
+        self.beds = []     # [name, start, end]
+        self.sfx = []      # (start, name)
         self.inhales = [breath(T_IN, True, s) for s in range(4)]
         self.exhales = [breath(T_OUT, False, 50 + s) for s in range(4)]
 
@@ -346,8 +360,21 @@ class Builder:
         self.voice.append((at, x))
         return len(x) / SR
 
+    def cue(self, it, at):
+        """Sound cues from the script: [sfx name] starts or stops a bed, [fx name] fires a one-shot."""
+        if it[0] == "bed":
+            if self.beds and self.beds[-1][2] is None:
+                self.beds[-1][2] = at
+            if it[1] != "off":
+                self.beds.append([it[1], at, None])
+        elif it[0] == "fx":
+            self.sfx.append((at, it[1]))
+
     def narrate(self, items, kind, caption=False, speed=0.9):
         for it in items:
+            if it[0] in ("bed", "fx"):
+                self.cue(it, self.t)
+                continue
             if it[0] == "gap":
                 self.seg(kind, it[1], text="")
                 continue
@@ -356,16 +383,15 @@ class Builder:
                 self.seg(kind, d + (0.45 if it[0] == "narr" else 4.5), text=s if caption or it[0] == "say" else "",
                          stmt=it[0] == "say")
 
-    def round(self, r, statements, scene, anchor, hold):
-        n = len(HOLDS)
+    def round(self, r, n, statements, scene, anchor, hold):
         self.seg("ready", 2.5, rnd=r, rounds=n)
-        self.say(f"Round {['one', 'two', 'three', 'four', 'five'][r]}.", self.t - 2.3)
+        self.say(f"Round {NUMBERS[r]}.", self.t - 2.3)
         start = self.t
         per = T_IN + T_OUT
         for b in range(BREATHS):
             self.fx.append((start + b * per, self.inhales[b % 4], 0.55))
             self.fx.append((start + b * per + T_IN, self.exhales[b % 4], 0.55))
-        # statements ride the breath: spread evenly, each starting on an out-breath
+        # statements ride the breath: spread evenly, each starting just after an out-breath begins
         stmts = [s for k, s in statements if k == "say"]
         slots = np.linspace(1, BREATHS - 4, len(stmts)).round().astype(int)
         cues = []
@@ -374,40 +400,55 @@ class Builder:
             d = self.say(s, at, speed=0.86)
             cues.append((at, at + max(d + 1.6, 5.5), s))
         self.seg("breath", BREATHS * per, rnd=r, rounds=n, cues=cues)
-        # out-breath and hold, the scene plays in the stillness
+        # out-breath and hold: the scene plays in the stillness
         self.fx.append((self.t, bell_hit(note_hz(62)), 0.16))
         d = self.say("Let it all out. And hold.", self.t + 0.2)
         at = self.t + d + 2.5
         for it in scene:
-            if it[0] == "gap":
+            if it[0] in ("bed", "fx"):
+                self.cue(it, at)
+            elif it[0] == "gap":
                 at += it[1]
-                continue
-            for s in sentences(it[1]):
-                at += self.say(s, at, speed=0.86) + 0.7
+            else:
+                for s in sentences(it[1]):
+                    at += self.say(s, at, speed=0.86) + 0.7
         hold = max(hold, at - self.t + 4)
+        if self.beds and self.beds[-1][2] is None:
+            self.beds[-1][2] = self.t + hold - 2
         self.fx.append((self.t + hold - 9, bell_hit(note_hz(69), 4), 0.08))
         self.seg("hold", hold, rnd=r, rounds=n, total=hold)
-        # recovery breath with an anchor line
-        d = self.say("Breathe in. All the way. And hold.", self.t)
-        self.fx.append((self.t + 0.3, breath(2.2, True, 900 + r, 1.1), 0.55))
-        self.say(anchor, self.t + d + 3.0, speed=0.82)
-        self.seg("recover", RECOVER_HOLD + d, rnd=r, rounds=n, total=RECOVER_HOLD + d, delay=d, anchor=anchor)
-        self.fx.append((self.t, breath(2.6, False, 950 + r, 1.0), 0.5))
-        d = self.say("Let go.", self.t)
-        self.seg("release", d + 3.0)
+        # recovery: the in-breath starts on the word "in", and the 15 s count starts on "hold"
+        d = self.say("Breathe in. All the way.", self.t)
+        fill = max(2.6, d + 0.4)
+        self.fx.append((self.t + INHALE_AT, breath(fill - INHALE_AT, True, 900 + r, 1.1), 0.55))
+        d2 = self.say("And hold.", self.t + fill)
+        hold_rel = fill + max(0.6, d2 - ROOM_TAIL)   # the count starts on the word, not the reverb tail
+        self.say(anchor, self.t + hold_rel + 2.5, speed=0.82)
+        total = hold_rel + RECOVER_HOLD
+        self.seg("recover", total, rnd=r, rounds=n, total=total, fill=fill, hold_rel=hold_rel, anchor=anchor)
+        # release on "Let go"
+        self.say("Let go.", self.t)
+        self.fx.append((self.t + 0.25, breath(2.6, False, 950 + r, 1.0), 0.5))
+        self.seg("release", 4.0)
 
 
-def build():
-    blocks = parse_script()
+NUMBERS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+INHALE_AT = 0.35   # seconds into "Breathe in" when the word "in" lands
+ROOM_TAIL = 1.4    # every voice clip carries this much reverb tail after the last word
+
+
+def build(blocks):
     b = Builder()
     marks = {}
     b.seg("title", 7)
     marks["intro"] = b.t
     b.narrate(blocks["INTRO"], "intro", caption=True)
     marks["rounds"] = b.t
-    for r, hold in enumerate(HOLDS):
+    rounds = sorted(int(k.split("_")[1]) for k in blocks if k.startswith("ROUND_"))
+    for r in range(len(rounds)):
         anchor = [s for k, s in blocks[f"RECOVER_{r + 1}"] if k == "say"][0]
-        b.round(r, blocks[f"ROUND_{r + 1}"], blocks[f"HOLD_{r + 1}"], anchor, hold)
+        b.round(r, len(rounds), blocks[f"ROUND_{r + 1}"], blocks[f"HOLD_{r + 1}"], anchor,
+                HOLDS[min(r, len(HOLDS) - 1)])
     marks["bridge"] = b.t
     # slow breathing bridge: 4 in, 6 out, natural breath under the voice
     bstart = b.t
@@ -415,6 +456,11 @@ def build():
     for k in range(int((b.t - bstart) / 10)):
         b.fx.append((bstart + k * 10, breath(4.0, True, 300 + k, 0.7), 0.3))
         b.fx.append((bstart + k * 10 + 4.0, breath(6.0, False, 400 + k, 0.7), 0.3))
+    marks["vision"] = b.t
+    if "VISION" in blocks:
+        b.narrate(blocks["VISION"], "vision", speed=0.86)
+    if b.beds and b.beds[-1][2] is None:
+        b.beds[-1][2] = b.t
     marks["descent"] = b.t
     for loop in range(3):
         b.narrate(blocks["DESCENT"], "descent", speed=0.82)
@@ -427,6 +473,28 @@ def build():
     marks["fade"] = b.t
     b.seg("fade", 150)
     return b, marks
+
+
+def audit(b):
+    """Timing check: no two voice lines may overlap, and every round's cues must land in order."""
+    problems = []
+    spans = sorted((st, st + len(x) / SR) for st, x in b.voice)
+    for (a0, a1), (b0, b1) in zip(spans, spans[1:]):
+        if b0 < a1 - 0.02:
+            problems.append(f"voice overlap at {a0:.1f}s-{a1:.1f}s and {b0:.1f}s")
+    per = T_IN + T_OUT
+    for s in b.segs:
+        if s["kind"] == "breath":
+            for at, _, txt in s["cues"]:
+                ph = (at - s["start"]) % per
+                if not (T_IN <= ph < T_IN + 0.3):
+                    problems.append(f"statement not on an out-breath at {at:.1f}s: {txt}")
+                if at > s["end"] - 3:
+                    problems.append(f"statement too close to the hold at {at:.1f}s")
+    for name, t0, t1 in b.beds:
+        if t1 is None or t1 <= t0:
+            problems.append(f"sound bed {name} never ends")
+    return problems
 
 
 def mix(b, marks, total):
@@ -449,6 +517,25 @@ def mix(b, marks, total):
     for ch in range(2):
         fx[:, ch] = fx[:, ch] * 0.85 + ola_convolve(fx[:, ch], ir) * 0.25
 
+    # scene sounds: beds fade in over 4 s and out over 5 s, one-shots on their line
+    scene = np.zeros((n, 2), dtype=np.float32)
+    for k, (name, t0, t1) in enumerate(b.beds):
+        dur = t1 - t0 + 5
+        x = sounds.bed(name, dur, seed=k)
+        tt = np.arange(len(x)) / SR
+        env = np.minimum(1, np.minimum(tt / 4.0, np.maximum(0, dur - tt) / 5.0))
+        i = int(t0 * SR)
+        j = min(n, i + len(x))
+        scene[i:j] += (x * env[:, None])[: j - i] * BED_GAIN.get(name, 0.5)
+    for at, name in b.sfx:
+        x = sounds.ONESHOTS[name]()
+        i = int(at * SR)
+        j = min(n, i + len(x))
+        scene[i:j] += x[: j - i] * FX_GAIN.get(name, 0.45)
+    ir = reverb_ir(1.2, 0.3, 44, bright=6000)
+    for ch in range(2):
+        scene[:, ch] = scene[:, ch] * 0.85 + ola_convolve(scene[:, ch], ir) * 0.2
+
     music = np.zeros((n, 2), dtype=np.float32)
     pad = pad_cycle()
     for i in range(0, n, len(pad)):
@@ -456,8 +543,9 @@ def mix(b, marks, total):
         music[i:j] += pad[: j - i]
     music += bells(total) * 0.32
     # music level: up in the intro, steady under the rounds, slowly settling then out at the end
-    lvl = np.interp(t, [0, 4, marks["intro"], marks["rounds"], marks["bridge"], marks["fade"], total - 20, total],
-                    [0, 0.30, 0.30, 0.24, 0.26, 0.26, 0.0, 0.0])
+    lvl = np.interp(t, [0, 4, marks["intro"], marks["rounds"], marks["bridge"], marks["vision"] + 5,
+                        marks["descent"] - 5, marks["descent"], marks["fade"], total - 20, total],
+                    [0, 0.30, 0.30, 0.24, 0.26, 0.20, 0.20, 0.26, 0.26, 0.0, 0.0])
     # duck gently under the voice
     env = np.abs(voice)
     k = int(0.25 * SR)
@@ -476,7 +564,7 @@ def mix(b, marks, total):
     left = np.sin(2 * np.pi * 216 * t).astype(np.float32) * bl
     right = np.sin(2 * np.pi * np.cumsum(216 + beat) / SR).astype(np.float32) * bl
 
-    out = music + fx
+    out = music + fx + scene
     out[:, 0] += voice * 0.62 + left
     out[:, 1] += voice * 0.62 + right
     out /= np.max(np.abs(out)) / 0.89
@@ -527,12 +615,11 @@ def breath_state(s, t):
     if k == "hold":
         return 0.12 + 0.03 * slow, 0.62, 0.25
     if k == "recover":
-        d = s["delay"]
-        if lt < d:
-            return 0.15, 0.7, 0.4
-        return 0.15 + 0.85 * ease((lt - d) / 2.2), 0.9, 0.35
+        return 0.15 + 0.85 * ease((lt - INHALE_AT) / (s["fill"] - INHALE_AT)), 0.9, 0.35
     if k == "release":
-        return 1 - 0.8 * ease(lt / 2.6), 0.85, 0.6
+        return 1 - 0.8 * ease((lt - 0.25) / 2.6), 0.85, 0.6
+    if k == "vision":
+        return 0.2 + 0.35 * (0.5 - 0.5 * np.cos(2 * np.pi * t / 10)), 0.55, 0.45
     if k == "bridge":
         ph = lt % 10
         x = ease(ph / 4) if ph < 4 else 1 - ease((ph - 4) / 6)
@@ -677,13 +764,13 @@ def overlay(img, s, t, lungs):
         spaced(d, BOT, "SEE IT THROUGH YOUR OWN EYES", F_LABEL, WARM, 0.45 * a, 6)
         d.text((W / 2, BOT2), "breathe in when you need to", font=F_SMALL, fill=WARM + (int(80 * a),), anchor="mm")
     elif k == "recover":
-        dl = s["delay"]
+        hr = s["hold_rel"]
         left = max(0.0, s["total"] - lt)
-        if lt > dl:
+        if lt > hr:
             d.text((W / 2, CY), str(int(np.ceil(left))), font=F_NUM, fill=WARM + (170,), anchor="mm")
         spaced(d, TOP1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, WARM, 0.5)
-        spaced(d, TOP2, "BREATHE IN · HOLD", F_LABEL, GOLD, 0.8)
-        a = fade_alpha(lt, dl + 3.0, s["total"] - 0.5, 0.6, 0.8)
+        spaced(d, TOP2, "HOLD · LUNGS FULL" if lt > hr else "BREATHE IN", F_LABEL, GOLD, 0.8)
+        a = fade_alpha(lt, hr + 2.5, s["total"] - 0.5, 0.6, 0.8)
         if a > 0:
             text_block(d, s["anchor"], F_TEXT, BOT, GOLD, a * 0.92)
     elif k == "release":
@@ -721,28 +808,44 @@ def render_chunk(args):
 
 
 def main():
+    global VOICE
     args = sys.argv[1:]
+    opt = {"--script": "script.md", "--name": "theta-identity-v3"}
     preview = None
-    if args and args[0] == "--preview":
-        preview = (float(args[1]), float(args[2]))
+    while args:
+        a = args.pop(0)
+        if a == "--preview":
+            preview = (float(args.pop(0)), float(args.pop(0)))
+        elif a in opt:
+            opt[a] = args.pop(0)
+    blocks = parse_script(HERE / opt["--script"])
+    if "VOICE" in blocks:
+        VOICE = blocks["VOICE"][0][1]
+    name = opt["--name"] + ("" if ASPECT == "9x16" else "-16x9")
     CACHE.mkdir(parents=True, exist_ok=True)
-    b, marks = build()
+    b, marks = build(blocks)
     total = b.t
-    print(f"total {total / 60:.1f} min", {k: f"{v / 60:.2f}" for k, v in marks.items()}, flush=True)
-    wav = CACHE / "session.wav"
+    print(f"{name}: {total / 60:.1f} min", {k: f"{v / 60:.2f}" for k, v in marks.items()}, flush=True)
+    problems = audit(b)
+    for p in problems:
+        print("TIMING:", p, flush=True)
+    if problems:
+        sys.exit(1)
+    print("timing audit: clean", flush=True)
+    wav = CACHE / f"{name}.wav"
     if not (preview and wav.exists()):
         sf.write(wav, mix(b, marks, total), SR, subtype="PCM_16")
     print("audio done", flush=True)
 
     t0, t1 = preview if preview else (0.0, total)
-    out = (CACHE / "preview.mp4") if preview else (ROOT / "renders" / f"theta-identity-v2{'' if ASPECT == '9x16' else '-16x9'}.mp4")
+    out = (CACHE / "preview.mp4") if preview else (ROOT / "renders" / f"{name}.mp4")
     workers = os.cpu_count() or 4
     bounds = np.linspace(t0, t1, workers + 1)
     bounds = [round(x * FPS) / FPS for x in bounds]
-    jobs = [(b.segs, bounds[i], bounds[i + 1], CACHE / f"chunk{i}.mp4") for i in range(workers)]
+    jobs = [(b.segs, bounds[i], bounds[i + 1], CACHE / f"{name}-chunk{i}.mp4") for i in range(workers)]
     with ProcessPoolExecutor(workers) as ex:
         parts = list(ex.map(render_chunk, jobs))
-    lst = CACHE / "chunks.txt"
+    lst = CACHE / f"{name}-chunks.txt"
     lst.write_text("".join(f"file '{p}'\n" for p in parts))
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst),
                     "-ss", str(t0), "-t", str(t1 - t0), "-i", str(wav), "-map", "0:v", "-map", "1:a",

@@ -1,17 +1,20 @@
 # Theta Identity: the script
 
-One video, start to finish: an introduction, then five rounds of Wim Hof breathing with identity
-statements spoken over the breath and a memory scene played during each hold, then a slow
-descent into sleep.
+One video, start to finish: an introduction, then six rounds of Wim Hof breathing with identity
+statements spoken over the breath and a memory scene played during each hold. Then the body slows
+down, a long future-self vision plays with its own sounds, and you descend into sleep.
 
 How build.py reads this file:
 
 - `# NAME` starts a block. `INTRO`, `ROUND_1`…`ROUND_5`, `HOLD_1`…`HOLD_5`, `RECOVER_1`…`RECOVER_5`,
-  `BRIDGE`, `DESCENT`.
+  `BRIDGE`, `VISION`, `DESCENT`. Optional: `VOICE` (one line naming the Kokoro voice).
 - `> line` is an **identity statement**. It is spoken and shown on screen. In a round, the statements
   are spread across the 30 breaths, one every three breaths.
 - `~ line` is **narration**: spoken only.
 - `[N]` is **N seconds of silence**.
+- `[sfx name]` fades a background sound in under what follows (`morning`, `house`, `gym`, `drive`,
+  `beach`, `lot`), and `[sfx off]` fades it out. `[fx name]` plays one sound right there
+  (`door`, `engine`, `keys`, `clank`, `rack`, `steps`, `phone`, `wave`).
 
 The rules for every identity line:
 
@@ -55,7 +58,7 @@ The rules for every identity line:
 [1.5]
 ~ So tonight we're going to show it. Your brain uses the same machinery to imagine something as it does to remember it. When you see a scene clearly, in first person, with your body in it, the hot coffee, the cold air, the feeling in your chest, the brain files it right next to your real memories. Do it enough times, and it stops being a hope. It becomes evidence.
 [2.5]
-~ Here's how it works. We'll do five rounds of Wim Hof breathing. Thirty deep breaths each. While you breathe, you'll hear who you are. Just let the words ride the breath.
+~ Here's how it works. We'll do six rounds of Wim Hof breathing. Thirty deep breaths each. While you breathe, you'll hear who you are. Just let the words ride the breath.
 [1.5]
 ~ Then you breathe out and hold, with empty lungs. That's when the mind gets very quiet. That's when a memory plays. See it through your own eyes, like it already happened.
 [1.5]
@@ -63,7 +66,7 @@ The rules for every identity line:
 [2]
 ~ The music is here on purpose. It's tuned to four thirty two hertz, soft and warm, so it never pulls at your attention. And underneath it is a slow pulse at the speed of theta, about six beats a second, slowing down to four as we go. With headphones on, each ear gets a slightly different tone, and your brain hears a third, slow beat that isn't really there. It's a path for your mind to follow down.
 [2]
-~ After the last round, we slow everything down, and you'll drift off with the words still playing.
+~ After the last round, we slow everything down. Then we go into the future. You'll wake up in your house, train in your gym, drive your car down the coast, and stand on the beach. You'll hear it all around you. Then you'll drift off with the words still playing.
 [2]
 ~ Lie on your back. Headphones in. Never do this in water, or driving, or standing up. Tingling and light-headedness are normal. If anything feels wrong, just stop and breathe normally.
 [2]
@@ -85,6 +88,7 @@ The rules for every identity line:
 
 ~ I remember this day.
 [2]
+[fx phone]
 ~ My phone is buzzing. Someone in my family needs something from me. Right now.
 ~ I feel the old pull in my chest. The pull to drop everything and fix it.
 [2]
@@ -190,6 +194,7 @@ The rules for every identity line:
 
 # HOLD_5
 
+[sfx lot]
 ~ I remember this day.
 [2]
 ~ Early morning. The air is cold. I'm standing on my lot.
@@ -200,10 +205,43 @@ The rules for every identity line:
 ~ And it was worth every single one.
 [3]
 ~ That happened. I was there. I remember it.
+[sfx off]
 
 # RECOVER_5
 
 > It is already done.
+
+# ROUND_6
+
+> I am the type of man who lifts.
+> I train when I don't feel like it.
+> My body is strong because I am disciplined.
+> I don't negotiate with myself.
+> I eat like a man who respects his body.
+> Strong body. Strong mind. Strong spirit.
+> I take care of the temple God gave me.
+
+# HOLD_6
+
+[sfx gym]
+~ I remember this.
+[2]
+~ Five in the morning. The gym is quiet. Just me and the iron.
+~ I chalk my hands. I can feel the knurling of the bar bite into my palms.
+[fx clank]
+~ I get under the bar, and I lift it off the rack. It's heavy. I like that it's heavy.
+~ I go down slow, and I drive it up. Again. And again.
+~ My legs are burning. My heart is pounding. I don't stop.
+[fx rack]
+~ I rack it. I stand there breathing, sweat dripping down my face.
+~ I look in the mirror and I see a strong man looking back. Because I earned it.
+[3]
+~ That happened. I was there. That's who I am.
+[sfx off]
+
+# RECOVER_6
+
+> I am the man who lifts.
 
 # BRIDGE
 
@@ -219,6 +257,61 @@ The rules for every identity line:
 [10]
 ~ Nothing to fix. Nobody to please. Just who you are.
 [12]
+
+# VISION
+
+~ Now go forward in time. A few years from now. Everything you're building is built.
+[4]
+[sfx house]
+~ I wake up before my alarm. The room is quiet and cool.
+~ Soft light is coming through tall windows. White curtains moving in the breeze.
+~ I can hear the ocean, far off. Birds outside.
+[3]
+~ I swing my feet out of bed. The floor is warm, wide planks of light wood.
+[fx steps]
+~ I walk down a long hallway. Glass on one side. The ocean on the other, bright blue.
+~ This is my house. I paid for it. Every inch of it.
+~ The kitchen is open and bright. White stone counters. I can smell fresh coffee.
+~ I stand at the window with the cup in my hands, and I just look. Calm. Grateful. At home.
+[4]
+[sfx gym]
+~ Downstairs is my gym. Black rubber floors. A full rack. Plates stacked in order.
+~ I train like I always do. Heavy. Focused. No phone. Just the work.
+[fx clank]
+~ My body is lean and strong. My shoulders are wide. I move easy.
+~ I'm not training to be seen. I train because that's who I am.
+[4]
+[sfx off]
+[fx keys]
+~ I pick up my keys from the counter. They're heavy in my hand.
+[fx steps]
+~ I walk out to the garage, and there it is.
+~ A black Mercedes G Wagon. Gloss black, black wheels, red stitching inside.
+~ I run my hand along the cold metal of the door. I pull the handle.
+[fx door]
+~ The door closes with that heavy, solid sound. It shuts out the whole world.
+~ It smells like new leather. The seat holds me. The wheel is smooth and thick in my hands.
+~ I press the start button.
+[fx engine]
+~ The engine wakes up. A deep, low rumble I can feel in my chest.
+[3]
+[sfx drive]
+~ I pull out onto the coast road. Windows down. The ocean on my right, going on forever.
+~ The sun is warm on my arm. The air smells like salt.
+~ I'm not in a hurry. I'm not trying to impress anyone. I'm just driving my car, on my road, in my life.
+~ I built this. I said no a thousand times to build this.
+[5]
+[sfx off]
+[sfx beach]
+~ I park and I walk down to the beach. The sand is warm and soft under my feet.
+~ The sun is going down. The whole sky is gold and orange and pink.
+~ The waves roll in and pull back. Roll in and pull back. Slow. Like breathing.
+~ The people I love are down by the water, laughing. They're safe. They're taken care of. Because I built it.
+~ I stand there with my feet in the sand, and I say thank you. Thank you, God.
+[6]
+~ This is my life. I remember it. I've been here before. I'm just walking back into it.
+[10]
+[sfx off]
 
 # DESCENT
 
