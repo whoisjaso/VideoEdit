@@ -473,3 +473,14 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
   - No signature transition yet.
   - No callback ending.
   - No silence before the final drop.
+
+## 2026-10-12: Standards batch r22–r27 + STYLE LIBRARY
+Jason sent six references to label as standards. All are now in `jason-motion-graphics/STYLES.md`, with a rule line in all 3 skills.
+- **r22 EASING:** overshoot added to the kit (`back`, `backSoft`, `backIn`).
+- **r23 DOC-PAPER 3D**
+- **r24 HOOK PSYCHOLOGY**
+- **r25 BRAND STORY + brand-assets rule**
+- **r26 VOICE CHAIN:** `voice_enhance.py` is now the 6-stage radio chain (HPF 100 → gentle expander → de-esser → +4 dB @ 3.5 kHz → compressor → limiter).
+  - Tested on ep05 raw: −13.8 LUFS, peak −0.5 dB.
+  - A/B: `renders/voice-chain-ab-v1.mp4`.
+- **r27 COLOR TRIAD**

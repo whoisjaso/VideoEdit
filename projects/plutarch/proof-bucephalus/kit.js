@@ -36,6 +36,10 @@ K.E = {
   cam: K.bez(0.48, 0.1, 0, 0.9),      // camera
   dolly: K.bez(0.35, 0, 0.65, 1),     // slow push through a hold
   contact: K.bez(0.55, 0, 0.9, 0.55), // accelerating into an impact
+  // OVERSHOOT (Jason r22: "ease in/out & overshoot, always"): pop-ups, buttons, icons, badges, morph landings
+  back: K.bez(0.34, 1.56, 0.64, 1),        // ~10% overshoot, one settle, no wobble
+  backSoft: K.bez(0.25, 1.32, 0.5, 1),     // ~5%: big objects, cards, hero type
+  backIn: K.bez(0.36, 0, 0.66, -0.56),     // anticipation exit: a small pull-back, then gone
 };
 K.ease = (f, start, dur, e = K.E.out) => e(K.prog(f, start, dur));
 
