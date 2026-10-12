@@ -553,6 +553,27 @@ def build(blocks):
     return b, marks
 
 
+def pronunciation_problems(script_path):
+    """The voiceover-pronunciation gate: no render while a known heteronym is said wrong."""
+    import importlib.util
+    checker = ROOT / ".claude/skills/voiceover-pronunciation/scripts/check_pronunciation.py"
+    if not checker.exists():
+        return []
+    spec = importlib.util.spec_from_file_location("check_pronunciation", checker)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    problems = []
+    for s in mod.sentences(script_path):
+        ph = phonemes(s)
+        flat = ph.replace("ˈ", "").replace("ˌ", "")
+        for word, rules in mod.HETERONYMS.items():
+            if re.search(rf"\b{word}\b", s, re.I):
+                for ctx, need, meaning in rules:
+                    if re.search(ctx, s) and need.replace("ˈ", "").replace("ˌ", "") not in flat:
+                        problems.append(f"pronunciation: '{word}' ({meaning}) said wrong in: {s}")
+    return problems
+
+
 def audit(b):
     """Timing check: no two voice lines may overlap, and every round's cues must land in order."""
     problems = []
@@ -928,7 +949,7 @@ def main():
     b, marks = build(blocks)
     total = b.t
     print(f"{name}: {total / 60:.1f} min", {k: f"{v / 60:.2f}" for k, v in marks.items()}, flush=True)
-    problems = audit(b)
+    problems = audit(b) + pronunciation_problems(HERE / opt["--script"])
     for p in problems:
         print("TIMING:", p, flush=True)
     if problems:
