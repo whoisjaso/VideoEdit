@@ -336,8 +336,29 @@ def tick(go=False):
     return (x / np.max(np.abs(x))).astype(np.float32)
 
 
+def riser(dur=3.2):
+    """The 'something is coming' swell under a 3-2-1: air that brightens and a tone that climbs, peaking on go."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    u = t / dur
+    noise = np.random.default_rng(77).standard_normal(n).astype(np.float32)
+    spec = np.fft.rfft(noise)
+    f = np.fft.rfftfreq(n, 1 / SR)
+    lo = np.fft.irfft(spec * (1 / (1 + (f / 600) ** 2)), n)
+    hi = np.fft.irfft(spec * (f > 900) / (1 + (f / 5000) ** 2), n)
+    air = lo * (1 - u) + hi * u                       # the air gets brighter as it builds
+    air /= np.max(np.abs(air)) + 1e-9
+    freq = 220 * 2 ** (u * 1.0)                        # the tone climbs an octave
+    ph = 2 * np.pi * np.cumsum(freq) / SR
+    tone = np.sin(ph) + 0.4 * np.sin(2 * ph) + 0.2 * np.sin(3 * ph)
+    env = u ** 2.2 * np.minimum(1, (dur - t) / 0.03)
+    x = (air * 0.55 + tone * 0.35) * env
+    return (x / np.max(np.abs(x))).astype(np.float32)
+
+
 def countdown(fx, end):
-    """3, 2, 1 ticks ending at `end`, then the chime on the beat."""
+    """3, 2, 1 ticks ending at `end` with a swell building underneath, then the chime on the beat."""
+    fx.append((end - 3.2, RISER, 0.22))
     for k in (3, 2, 1):
         fx.append((end - k, TICK, 0.32))
     fx.append((end, GO, 0.30))
@@ -405,8 +426,13 @@ class Builder:
                          stmt=it[0] == "say")
 
     def round(self, r, n, statements, scene, anchor, hold):
-        self.seg("ready", 2.5, rnd=r, rounds=n)
-        self.say(f"Round {NUMBERS[r]}.", self.t - 2.3)
+        d = self.say(f"Round {NUMBERS[r]}. Get ready.", self.t + 0.2) - ROOM_TAIL
+        total = 0.2 + d + 0.8 + 3.0
+        go = self.t + total
+        for k, word in ((3, "Three."), (2, "Two."), (1, "One.")):
+            self.say(word, go - k + 0.05, speed=0.95)
+        countdown(self.fx, go)
+        self.seg("ready", total, rnd=r, rounds=n, total=total)
         start = self.t
         per = T_IN + T_OUT
         for b in range(BREATHS):
@@ -459,6 +485,7 @@ class Builder:
 
 TICK = tick()
 GO = tick(go=True)
+RISER = riser()
 NUMBERS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 INHALE_AT = 0.35   # seconds into "Breathe in" when the word "in" lands
 ROOM_TAIL = 1.4    # every voice clip carries this much reverb tail after the last word
@@ -505,7 +532,7 @@ def build(blocks):
 def audit(b):
     """Timing check: no two voice lines may overlap, and every round's cues must land in order."""
     problems = []
-    spans = sorted((st, st + len(x) / SR) for st, x in b.voice)
+    spans = sorted((st, st + len(x) / SR - ROOM_TAIL) for st, x in b.voice)
     for (a0, a1), (b0, b1) in zip(spans, spans[1:]):
         if b0 < a1 - 0.02:
             problems.append(f"voice overlap at {a0:.1f}s-{a1:.1f}s and {b0:.1f}s")
@@ -780,8 +807,11 @@ def overlay(img, s, t, lungs):
         elif k == "intro":
             text_block(d, s["text"], F_SUB, BOT, WARM, a * 0.82, width=SUBW)
     elif k == "ready":
+        left = s["total"] - lt
+        if left <= 3:
+            final_count(d, int(np.ceil(left)), left)
         spaced(d, READY1, f"ROUND {s['rnd'] + 1} OF {s['rounds']}", F_LABEL, GOLD, 0.9)
-        spaced(d, READY2, "GET READY", F_LABEL, WARM, 0.55)
+        spaced(d, READY2, "GET READY · BREATHING STARTS ON THE CHIME", F_LABEL, WARM, 0.6)
     elif k == "breath":
         per = T_IN + T_OUT
         n = int(lt // per) + 1

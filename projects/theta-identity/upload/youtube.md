@@ -47,14 +47,14 @@ Chapters
 0:00 Theta Identity
 0:07 Ego vs identity: what we're doing and why
 8:09 Round 1: The man who says no
-11:42 Round 2: Kind, not looking kind
-15:02 Round 3: Build now, carry them later
-18:37 Round 4: Calm. Decisive.
-22:12 Round 5: Already done
-26:02 Round 6: The man who lifts
-29:52 Slow down
-31:16 Your future self: the house, the car, the beach
-36:56 Drift into sleep
+11:45 Round 2: Kind, not looking kind
+15:08 Round 3: Build now, carry them later
+18:47 Round 4: Calm. Decisive.
+22:25 Round 5: Already done
+26:18 Round 6: The man who lifts
+30:11 Slow down
+31:35 Your future self: the house, the car, the beach
+37:15 Drift into sleep
 
 How to use it:
 Every night for 30 days. Lie on your back with headphones in and low brightness. Follow the breath count, close your eyes in the holds, and let yourself fall asleep anywhere after the slow-down. The binaural pulse only works with headphones.
@@ -109,14 +109,14 @@ Chapters
 0:00 Theta Identity
 0:07 Ego vs identity: what we're doing and why
 7:43 Round 1: The woman who says no
-11:11 Round 2: Kind, not looking kind
-14:30 Round 3: Build now, carry them later
-18:05 Round 4: Calm. Decisive.
-21:40 Round 5: Already done
-25:29 Round 6: The woman who lifts
-29:19 Slow down
-30:41 Your future self: the house, the car, the beach
-36:02 Drift into sleep
+11:14 Round 2: Kind, not looking kind
+14:37 Round 3: Build now, carry them later
+18:14 Round 4: Calm. Decisive.
+21:52 Round 5: Already done
+25:45 Round 6: The woman who lifts
+29:38 Slow down
+31:00 Your future self: the house, the car, the beach
+36:21 Drift into sleep
 
 How to use it:
 Every night for 30 days. Lie on your back with headphones in and low brightness. Follow the breath count, close your eyes in the holds, and let yourself fall asleep anywhere after the slow-down. The binaural pulse only works with headphones.
