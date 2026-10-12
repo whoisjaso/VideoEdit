@@ -1,0 +1,38 @@
+[project]
+name = "kairos-editor"
+version = "0.1.0"
+description = "Agent-native video editor: long videos in, short-form clips out, edited to a style that learns."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+  "starlette>=0.40",
+  "uvicorn>=0.30",
+  "pydantic>=2.6",
+  "python-multipart",
+  "httpx",
+  "numpy",
+  "mcp>=2",
+  "anthropic",
+]
+
+[project.optional-dependencies]
+# Word-level captions. faster-whisper is the best; vosk is the light offline option.
+whisper = ["faster-whisper"]
+vosk = ["vosk"]
+# Face-aware auto-reframe for wide footage.
+reframe = ["opencv-python-headless"]
+all = ["faster-whisper", "opencv-python-headless", "yt-dlp"]
+
+[project.scripts]
+kairos = "kairos.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["kairos"]
+
+[tool.setuptools.package-data]
+kairos = ["assets/fonts/*"]
