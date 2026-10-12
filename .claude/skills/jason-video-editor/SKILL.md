@@ -1,13 +1,45 @@
 ---
 name: jason-video-editor
-description: Jason's default short-form video edit. Use EVERY time Jason drops raw footage (talking head, car/selfie vlogs, motivational, teaching "game", business/AI content, screen recordings) to edit, cut, caption, add SFX/motion graphics, or "make it hit". Turns raw vertical footage into a finished 9:16 reel. It opens with a hook, cuts dead air and stutters, uses raw uncensored captions with gold keywords, and puts slow-mo on curse words. It pairs every event with the right SFX, adds font-combo titles with text behind the speaker, pops up graphics, and ends on an animated follow CTA. Everything follows the decoded creator playbook in references/playbook.md. Also use when Jason sends more "use this for that" reference videos to study; decode them and extend the playbook.
+description: Jason's default short-form video edit. Use EVERY time Jason drops raw footage (talking head, car/selfie vlogs, motivational, teaching "game", business/AI content, screen recordings) to edit, cut, caption, add SFX/motion graphics, or "make it hit". Turns raw vertical footage into a finished 9:16 reel. It opens with a hook, cuts dead air and stutters, uses raw uncensored captions with gold keywords, and puts slow-mo on curse words. It pairs every event with the right SFX, adds font-combo titles with text behind the speaker, pops up graphics, and ends on an animated follow CTA. Everything follows the decoded creator playbook in references/playbook.md. Also use when Jason sends more "use this for that" reference videos to study; decode them and extend the playbook. NOT for standalone motion-graphics pieces with no footage of him (UI morph loops, kinetic type, animated UI from a brief): use jason-motion-graphics for those.
 ---
 
 # Jason Video Editor — SOP
 
+> **SKILL UPKEEP (Jason, 2026-10-09):** Jason's claude.ai account copy of this skill is the MASTER; it is what loads in Claude chat, the Claude app and every Claude Code session. Editing the repo (or `~/.claude/skills/synced/`, a read-only download) does NOT update his account. After every approved change: edit the repo skill → run `bash skills-sync.sh <outdir>` at the repo root → send Jason every zip it marks "NEEDS RE-UPLOAD" and tell him to replace that skill at claude.ai (Settings → Capabilities → Skills). Never report a skill as updated until he has re-uploaded it.
+>
+> **TWO SKILLS (Jason, 2026-10-09):** this skill = edits of his raw footage (cut, captions, SFX, graphic cutaways). Standalone motion pieces with no footage (UI morph loops, kinetic type, animated UI from a brief) → `../jason-motion-graphics/SKILL.md`.
+
 > **THE BAR:** playbook §18 ("My work vs Original"): every sentence gets a designed visual beat, nouns become full-screen editorial cards, giant hero words go behind the speaker, numbers roll, one accent color sits on a moody grade, and there's editorial micro-type. Jason called it the standard he expects. Plan every edit against it.
 >
 > **Visuals:** for every edit, output an image prompt pack (see `references/image-prompts.md`: style lock + one prompt per picturable noun). Jason generates the images (ChatGPT, or the Higgsfield connector when he approves credits) and they fill the §18 cards.
+>
+> **MOTION-GRAPHICS LANGUAGE = iOS (Jason, 2026-10-08: "iOS-like UX, soft borderless animations"):** r05 sets the *quality* (bloom, smoothness, depth, micro-detail); iOS sets the *look*: frosted borderless cards, big continuous corner radii, soft layered shadows, no hard outlines, critically-damped springs (no bounce), fade+scale 0.96→1+blur entrances, shared-element morphs (pill → card → full screen, Dynamic-Island style). Hard-lined HUD boxes are out; detail comes from iOS-native micro-UI (status bar, captions, SF-symbol-style glyphs, progress rings, segmented controls).
+>
+> **MOTION-GRAPHICS QUALITY BAR (Jason, 2026-10-08: "this is the quality I expect"):** reel r05, decoded in `../jason-motion-graphics/references/mg-quality-bar.md`: one navy-blueprint world with bloom and micro-labels, every sentence turned into a literal diagram, spoken-word orange sweep, comets along lines, line-draw everything, full-screen word slams. Every motion graphic is judged against it.
+>
+> **THE METHODOLOGY (Jason, 2026-10-08):** `references/methodology.md`, decoded from his 12 reference reels (psychology, hook shapes, typography, color, motion, SFX↔animation timing, audio craft, CTA). Plan every edit against it; locked rules below still win where they conflict (the conflicts are listed at the end of that file).
+>
+> **COOP PRESET (r13, Jason Cooperson, sent 2026-10-09):** `references/cooperson-decode.md`. Lessons: (1) **presets = saved values**: every look is a kit file of fixed constants; beats reuse kit components, never hand-animate from scratch; after every edit, "bake it in" (rule + journal + kit commit). (2) The look kit `template/src/lib/Coop.tsx`: motion graphics on a **12 fps grid** (`useStep`), **glow on every graphic + grain on everything**, near-black stage with a blue→violet light band, full-screen **hard cutaways alternating with his face**, lowercase captions with one **italic-serif accent word** (`CoopCaptions`, Instrument Serif), real assets only. (3) Warm grade on camera footage only. (4) Master speech at **−17 LUFS, SFX ≤ −1 dBTP**. (5) Proof-first psychology: show the claim, exact numbers, objections answered early. Sample: `examples/mg-quality-sample/CoopSample5.tsx` → `renders/mg-coop-sample-v5.mp4`. **LOCKED (Jason, 2026-10-09: v5 "I like this", 7.7/10, best motion-graphics score so far):** the Coop look is the default for motion graphics: **smooth 30 fps motion + motion blur (Jason, same day: the 12 fps stepping "felt laggy"; never step frames)**, no-wobble springs, glow + grain, hard cutaways alternating with his face, a warm camera grade, −17 LUFS. Lowercase captions with the italic-serif accent word come with it (accent colour = our meaning colours). Start every MG beat from `Coop.tsx` + `CoopSample5.tsx`; the iOS components (IosNotify, Glass cards) stay as content *inside* the Coop stage.
+>
+> **ENGRAVING CUTAWAYS (Jason, 2026-10-09: "I would love this type of motion graphics on my talking heads, for certain portions, with the iOS sound effects"):** the antique-engraving look from `../jason-ad-film` is an approved cutaway style for talking heads. Use it on 2–4 portions per video: the big idea, a definition, a "think about it" turn, or the payoff. Pick public-domain engravings that literally match his words (`../jason-ad-film/tools/metengr.py` → `engrave.py`) on a white stage. One orange accent device travels between them and lands on the key point of each engraving. Bold serif words, one line at a time, are his own words. Cut in and out on his sentence boundaries; his face carries the rest. **Sound for these portions stays iOS** (tink on each accent landing, tri-tone or received for a notification beat, success on the payoff), placed by measured peak. Never music.
+>
+> **SOUND SPEC + GEARS (Jason, 2026-10-11: "our SFX is decent but not pinpoint; we only use a little portion of the library"):** read `references/r20-editing-masterclass.md` (Inside The Edit pacing, Netflix-style doc sound design, Max McCoy story-first). The short version:
+> - **SFX levels sit under his voice:** ticks −30 to −40 dB, textures −28 to −35, whooshes about −24, iOS −16 to −20, bass about −20 across 3 layers. Nothing hotter than −14 except a planned drop.
+> - **Layering:** hero sounds use low/mid/high (one whoosh at 60% speed −5 st + texture + 120%). Bass starts 2–4 frames early.
+> - **Variety:** alternate variants; the last hit of a sequence is the biggest. Use at least 6 of the 13 jobs, texture and tech included.
+> - **Silence and holds:** 0.3–0.8 s of silence before the biggest line. Reverb-end instead of hard stops. Hold 0.5–1.5 s at complex and emotional moments (tag `hold`).
+> - **Build order:** sound bed first, graphics placed onto it.
+> - **Mix stage (the tool):** never set SFX volumes by guess in Remotion. Write a cue list (`examples/chosen-episode/ep05_cues.py` is the template: `whoosh3`, `bass3`, alternating ticks), render the picture, then `python3 scripts/mix_talk.py work/cut.mp4 cues.json assets/sfx/library.json assets/sfx mix.wav --len_s <total s>` and mux the result over the picture. It levels each sound by role relative to his voice, aligns by the measured peak, layers, adds reverb tails, ducks under him, and masters to −14 LUFS. Check: the SFX stem is about 14–17 dB under the voice.
+>
+> **DUAL TYPE (Jason, 2026-10-10: "do v2 on that plan, dual fonting"):** every edit uses exactly two families: **Inter** (sans, 700–900, for everything plain) and **Instrument Serif italic** (the accent word, gold). One accent colour: gold (red only for hard "no" words). No Nunito, Bebas, Anton or Montserrat. Captions = `CoopCaptions` (lowercase Inter + serif accent). Hero words, cards and engraving lines use the same pair.
+>
+> **ENGRAVING CUTAWAYS v2 (2026-10-10):** the plates are dimmed positive prints on a dark stage with a vignette (no white page: v1's white flashes broke the world). Engraving `ins.html` uses Inter + Instrument Serif and a gold device. Every insert gets a 5-frame blur-dissolve in and a 4-frame one out (`Insert` in `examples/chosen-episode/Episode.v2.tsx`), plus a swoosh on the bridge.
+>
+> **HOOK CARD + CALLBACK (2026-10-10, psychology):** open on a full-screen kinetic-type card of his boldest line over the dimmed footage (open loop). Bring back the SAME card when he says the line at the payoff (closes the loop).
+>
+> **READING BALL + KINETIC TEXT (LOCKED, Jason 2026-10-11: "the motion graphic ball moving around with these captions and pointing at specific things... beautiful... probably one of the best type of work you've done so far"):** narrated and long-form pieces get word-timed kinetic captions plus ONE gold reading ball. The ball hops word to word as each word is spoken, with a motion-blur streak, then springs off the text in a high arc to whatever the story points at, lands with a squash and a drawn ring, and returns to the words. Hero lines arrive letter by letter with a light sweep and lift away. Every text entrance gets sound. Spec, timings and code: `kinetic/README.md` (reference build `kinetic/proof.html`). The world sound is real public-domain/CC0 recordings (`kinetic/world.py`) placed on the words, and score cues follow the story's emotional turns.
+
+> **SCORECARD (Jason, 2026-10-10: "break the video into categories, psychology included, so we know where to revise"):** before delivery, score the final render on `references/scorecard.md` (10 weighted categories, measured from the 1 fps sheet). Fix any category under 7, and send the scorecard with the video.
 >
 > **Start here:** read `references/journal.md`. It holds the scored history (current best **8.3/10**, episode #3), what Jason loved (locked), his corrections, and the backlog. Every new edit should beat the best score. After delivery, ask for his score and log it.
 
@@ -39,6 +71,7 @@ PYTHONPATH=/tmp/stub python3 scripts/transcribe.py p1_voice.wav p1c/
 # 3. WRITE sections.json BY HAND (see examples/purpose-episode/sections.json): his sections, in his order, exact words
 # 4. CUT: keeps his pauses, shortens only dead air > 1.4s (to 0.75s)
 python3 scripts/cut_sections.py sections.json work/      # -> work/cut.mp4, edl.json, captions.json
+python3 scripts/check_voice.py work/                     # AUDIO GATE: must pass (0 words over silence) before anything else
 # 5. PERSON CUTOUT for hero words behind his head
 python3 scripts/matte.py work/cut.mp4 work/fg.webm work/edl.json
 # 6. PROJECT: the 8.3 build, every asset in place
@@ -47,7 +80,7 @@ bash scripts/new_episode.sh proj && cp work/{cut.mp4,fg.webm} proj/public/ep/ &&
 # 8. STILLS at every beat -> QA against the reference reels -> fix -> full render
 # 9. DELIVER: send the MP4 to Jason -> copy to renders/epNN-title-v1.mp4 -> push -> journal entry -> ask for his score
 ```
-Remotion needs `--browser-executable=/opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell` in the cloud container. Delete `/tmp/remotion-webpack-bundle-*` after each stills run, or the disk fills.
+Remotion needs `--browser-executable=/opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell` in the cloud container. Delete `/tmp/remotion-webpack-bundle-*` after each stills run, or the disk fills. **Never delete bundles while a render is running** (it reads assets from its bundle; deleting it killed the iOS v3 render at frame 565). Delete only the bundle a finished still/render made, or clean up after all renders end.
 Never `pkill -f` a pattern that matches your own shell command. It kills the tool call; kill by PID instead.
 
 **Step 3, sections.json (where the score is won or lost):**
@@ -55,6 +88,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - Cut only stutters, restarts, unclear asides, and dead air. His pauses are delivery; the script handles dead air.
 - The text is his **exact** words. Mark keywords `^gold` (default), `+green` (money/wins), `!red` (problems). Wrap words a graphic will show in `{…}` so captions don't repeat them.
 - Add every recognizer mis-hear to `alias` (heard → said) so caption timing still locks to his voice.
+- **Word splices only on Jason's explicit request** (see "Never reorder his words"). Cut points still get a 40ms energy check (`snap`), and every changed stretch gets re-transcribed alone to confirm it says what the captions say.
 - **Before rendering, send Jason a list of every word you're unsure of** (faith lines especially: a garbled word that could be "God" is asked, never guessed).
 
 **Step 7, the beat sheet (template/src/ep/Episode.tsx):**
@@ -76,6 +110,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 | Captions always move | #2 (7/10) | Static captions felt dead |
 | Real iOS sounds, real logos | #2 (7/10) | Synth chimes sounded fake |
 | QA against the references before sending | #3 (8.3) | Weak beats shipped that would have been caught |
+| Audio gate (`check_voice.py`) + capped denoise | #4 v1 | Denoise erased his quiet opening; a splice said "Nigerian elephant". Jason heard it before I did |
 
 ## Editorial pass (the thinking, done before any code)
 1. **Read the whole transcript and name the video's one idea.** Example: "Label people → they commit → they buy."
@@ -91,6 +126,13 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
    **But never "correct" a word the model heard clearly** (high confidence, real word) just because another word seems more likely. Example: the model heard "ego archetype", which is Jason's term; it was wrongly changed to "architect". Jason's own terms: see "Jason's vocabulary" below.
 6. **Gold keywords are rationed.** Pick about 1 per idea, and only concept words (the words that, read in sequence, *are* the lesson). Don't gold a word every time it repeats, or viewers stop reading gold. Roughly 8% of words. Specify by `[WORD, occurrence]`.
 7. **Beat sheet:** map every section to what fires. Use the table below, and derive every frame from a spoken word with `w("WORD", n)`, never from hard-coded numbers.
+
+## SFX library (Jason: "make SFX library", 2026-10-08)
+- **77 sounds sorted by job** in `references/sfx-library.md` (built from `assets/sfx/library.json` by `scripts/build_sfx_library.py`). Jobs: hook · impact · whoosh · shutter · click · typing · ios · win · reveal · build · negative · tech · texture. Every sound has a "use for", default volume and origin (real / lifted from a reference reel / synth stand-in).
+- **Sound lands ON the frame.** Use `<Hit at={frame} id="pack6.impact_1" />` (`template/src/lib/sfx.tsx`). It starts the file early by its measured `lead`, so the **peak** (impact, whoosh, reveal, build) or the **onset** (iOS, click, typing, win) lands exactly on the motion. The references hit within 3-45 ms. Starting the file on the frame made CineStrike land ~16 frames late in eps #3/#4.
+- **Pick by job, then rotate within the job** (button_1 → button_2 → combo) so repeats don't sound identical; keep the *same job* for the same event every time (conditioned reward).
+- New packs: drop the wavs in `assets/sfx/packN/` with a manifest, add each to `CAT` in the build script, run it. The audition reel (`examples/sfx-demo/SfxDemo.tsx`) re-renders from the library.
+- **Replace first:** the 6 `synth` stand-ins (pop, click, typing, kaching, ding, riser). The 18 `lifted` sounds are reference-grade; the clean packs come from commenting "SFX" on reels r10/r11.
 
 ## What fires when (the rules, with their source)
 | Moment | Visual | SFX (his CapCut name → our stand-in) | Why |
@@ -124,6 +166,11 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - **Music-led recap** (travel, lifestyle, cars, team): §15. Beat-synced kinetic lyric type, film burns, a grade, editorial corner labels. Grades and light leaks are allowed **only** in this mode.
 
 ## Visual system
+- **Color psychology system (Jason, 2026-10-08; reference r02, "colors 120° apart"):** two jobs, never mixed up.
+  1. **Congruence = meaning** (the locked rule below): a color always means the same thing (green = money/win, red = problem, yellow/orange = the key idea), so viewers read it without thinking. Never use a color just to decorate.
+  2. **Contrast = attention** (r02): when two things must pop *against each other*, use a **triadic pair** (~120° apart on the wheel: red + blue, yellow + blue, orange + green, purple + green, yellow + red). Uses: the two sides of a comparison (perceived vs actually), the hero word against its background, thumbnails/first frame, CTA vs scene. Our base is navy/indigo, so the triadic accents that pop hardest on it are **orange/amber** (key idea) and **green** (win); red stays for problems.
+  - One dominant accent per scene; a second only to set up a contrast. Check: squint at the still. The accent must be the first thing you see.
+- **Font = Inter 4 Variable with optical size** (`@fontsource-variable/inter/opsz.css`, `font-optical-sizing: auto`): the legal SF Pro stand-in. SF Pro's license (developer.apple.com/fonts) only allows UI mock-ups by a registered Apple Developer and forbids artwork/"any other work product" and transfer, so it's never used in renders.
 - **Keyword color = meaning (LOCKED, Jason approved 2026-09-27):** yellow `#FFD24A` is the default keyword; **green `#2BE37A` = money, wins, gains, solutions, yes** ($7,000, won, confirmed, fast); **red `#FF3B3B` = problems, pain, threats, no** (against, complaining, problems). Tag each key in edit.json: `["WORD", n, "green"]`. Numbers about money are always green. Never color a word just to decorate it; if it's neither a win nor a problem, it stays yellow.
 - **Captions** (reels 2/3/5/7): Montserrat. Two-tier: small white lowercase setup words, then the gold (#FFD24A) UPPERCASE keyword on its own line. Glow on all text, no heavy stroke. 1–3 words per page, word-by-word, placed on the chest (~y 1070 of 1920).
 - **Font combos** (reel 8): Mozart = luxury/cinematic, Sugary = elegant, Tempting = lifestyle, Modern = business/tech.
@@ -156,7 +203,7 @@ Never `pkill -f` a pattern that matches your own shell command. It kills the too
 - [ ] No duplicated text: captions hidden under combos, and caption pages repeating a pop-up hidden
 - [ ] Nothing from the "Do not add" list; no invented text
 - [ ] Stills checked at every beat; the final encode checked (duration, 1080x1920, loudness peak ≤ 0 dB)
-- [ ] Deliver: MP4 (<30MB for chat), music recommendation from the playbook, list of any uncertain caption words
+- [ ] Deliver: MP4 in chat (hard limit **30 MB**: two-pass x264 at 1080×1920, video bitrate = 28MB×8 ÷ seconds − 96k audio; ep #4 3:05 → `-b:v 1150k`, text stays crisp), full-quality copy (CRF 23) to `renders/`, music recommendation from the playbook, list of any uncertain caption words
 
 ## Extending the playbook
 When Jason sends more reference videos: md5-check for duplicates first. Then contact sheet at 2fps, transcript, spectrogram, and zoomed crops to read on-screen labels verbatim. Frame-step any animation at 15fps to measure it. Cross-reference with existing rules (count ×N appearances) and add to `references/playbook.md` with the reel number. Rules seen in 3+ reels are defaults.
@@ -174,6 +221,20 @@ When Jason sends more reference videos: md5-check for duplicates first. Then con
 - **Captions always move:** word pop with overshoot and rotation, active-word lift, keyword slam with shake and glow, line float, blur exit.
 - **Real iOS sounds only (1:1):** use `assets/sfx/ios/`, never a synthesized chime.
 - **Hook:** open on his cleanest, boldest line, untouched.
+
+## Rules Jason approved (episode #4)
+- **Cold open on the boldest quotable line when his first line is soft (Jason: "I like the hook", 2026-10-01).** Pull his single most quotable sentence (episode #4: "A lot of people prioritize being perceived as nice rather than actually being nice.") as a 3–5s cold open, then start the video from his real first line in his order. The line plays again in place later; that repeat is the payoff of the open loop. When his first line is already the boldest line, open on it as-is (episode #3).
+
+- **LOCKED: iOS-coded motion graphics instead of B-roll (Jason, 2026-10-01: "I really appreciated… iOS coded, which I loved, with the iOS sound effects and the animations").** Every explainer beat is an iOS/app UI: Messages, Notes, Calendar, Wallet/Apple Pay, Settings toggles, Activity rings, app notifications, real brand logos. Use real iOS system sounds 1:1 and iOS-style motion (no-bounce springs, blur-in, frosted glass). No stock or AI B-roll unless Jason asks.
+- **Never reorder his words on your own (Jason, ep #4 v2: "why would you change that order in a way that doesn't logically make sense").** A self-correction stays where he said it, and "get the female part" means *caption it correctly*. **Only when Jason explicitly asks to replace a word** ("I said a guy on accident… cut that out and make it say a female") do you splice: cut the exact word from a 40ms energy map, set `{"snap": 0}`, and re-transcribe the spliced stretch alone to confirm it's clean. If a stretch is unclear, keep the audio and let a graphic carry the unclear words.
+- **The on-screen text must read logically, start to finish (Jason, ep #4).** Before rendering, print the full caption transcript in order (hidden words in [brackets]) and read it as a viewer would. Hidden words must never leave a sentence that doesn't make sense: show the words that carry the logic, and hide only what a graphic shows instead.
+
+## Rules Jason approved (methodology decisions, 2026-10-08)
+- **No music in the render. LOCKED, reconfirmed** after seeing every reference carry a music bed ("keep my rule"). Deliver voice + SFX; recommend a track.
+- **End on a comment-keyword CTA (default from now on).** Big glowing keyword in quotes ("Comment "EGO""), plus what they get in DM, shown at the end (in offer videos, from the middle onward as a persistent element). The keyword comes from the episode's one idea. **The promise must be real:** ask Jason what he's giving away (guide, course link, list…) before rendering; never invent an offer. The follow card can still play after it.
+- **Karaoke captions on screen-led teaching segments** (when a mockup/screen/UI is the star): small white bold, low-center, the phrase builds word by word and clears at the phrase end [r02]. Talking-head segments keep the locked two-tier yellow-keyword captions.
+
+- **iPhone notifications must look exactly real (Jason, 2026-10-08).** Use `template/src/lib/IosNotify.tsx` (`Notification`, `NotificationStack`, `AppIcon`), built to iOS 17/18 metrics (1pt = 2.748px: 8pt margins, radius 23pt, padding 14pt, 38pt superellipse icon, 15pt semibold title, 15pt body, 13pt "now", dark/light system material, iOS drop-in spring). Brand apps use real logos on brand colors (`assets/logos`, from simple-icons); Apple apps (Messages, Phone, Mail, Calendar, Reminders, Wallet, Notes, Photos) are drawn originals in Apple's colors. People texting use the contact-avatar style (initials + app badge). Stacks show blank plates peeking, never text through. Pair with the real iOS sounds. Font: Inter stands in for SF Pro (Apple licenses SF for Apple-platform app UI only). Test sheet: `references/ref-sheets/ios-notifications-test.png`.
 
 ## Rules from episode #3 brief
 - **Motion graphics > AI images** for explaining ideas (animated UI, counters, diagrams, kinetic type).

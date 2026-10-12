@@ -1,0 +1,375 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Claude — every masterpiece</title>
+<style>
+@font-face { font-family: "SS4"; src: url("serif.woff2") format("woff2"); font-weight: 200 900; font-style: normal; }
+@font-face { font-family: "SS4"; src: url("serif-italic.woff2") format("woff2"); font-weight: 200 900; font-style: italic; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #fff; }
+#stage { position: absolute; inset: 0; background: #fff; overflow: hidden; }
+#cam { position: absolute; inset: 0; transform-origin: 540px 960px; }
+.L { position: absolute; left: 0; top: 0; }
+.card { position: absolute; overflow: hidden; background: #ECEAE6; }
+.card img { position: absolute; left: 0; top: 0; max-width: none; }
+.word { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; font-family: "SS4"; color: #141413; white-space: pre; }
+.slot { display: inline-block; position: relative; height: 1.15em; }
+.slot span { position: absolute; left: 0; top: 0; }
+svg { overflow: visible; }
+</style>
+<script src="spark.js"></script><script src="dims.js"></script>
+</head><body><div id="stage"><div id="cam">
+
+  <!-- S1/S2/S3: the hook image, revealed through the spark -->
+  <svg class="L" width="0" height="0"><defs><clipPath id="sparkClip" clipPathUnits="userSpaceOnUse"><path id="clipPath"/></clipPath></defs></svg>
+  <div class="card" id="hook" style="clip-path:url(#sparkClip)"><img id="hookImg" src="img/goddess.jpg"></div>
+  <svg class="L" id="sparkSvg" width="1080" height="1920"><path id="sparkStroke" fill="none" stroke="#D97757" stroke-width="0.6" stroke-linejoin="round" pathLength="1" stroke-dasharray="1"/><path id="sparkFill" fill="#D97757"/></svg>
+
+  <!-- collage / carousel / match-cut cards -->
+  <div id="cards" class="L"></div>
+  <div id="caro" class="L" style="width:1080px;height:1920px;perspective:2200px;perspective-origin:540px 820px"><div id="caroIn" style="position:absolute;left:540px;top:820px;transform-style:preserve-3d"></div></div>
+
+  <!-- paint layer (orange marks drawn on top of the art) -->
+  <svg class="L" id="paint" width="1080" height="1920"></svg>
+
+  <!-- words -->
+  <div id="w1" class="word"></div>
+  <div id="w2" class="word"></div>
+
+  <!-- ring of thumbnails → rays → spark -->
+  <div id="ring" class="L"></div>
+
+  <!-- logo -->
+  <div id="logo" class="L" style="width:1080px;height:1920px">
+    <div id="logo3d" style="position:absolute;perspective:1200px"><div id="logoIn" style="position:absolute;inset:0;transform-style:preserve-3d"></div></div>
+    <div id="wordmark" class="word" style="width:auto;left:0"></div>
+  </div>
+</div>
+<div id="cover" class="L" style="width:1080px;height:1920px;background:#D97757;display:none"></div>
+</div>
+
+<script>
+// ═════════ time helpers (pure functions of t) ═════════
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lin = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const oExpo = (x) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+const ioCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const oCubic = (x) => 1 - Math.pow(1 - x, 3);
+const ioQuint = (x) => (x < 0.5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2);
+function step(tau, w = 26, z = 0.9) {
+  if (tau <= 0) return 0;
+  if (z >= 1) return 1 - Math.exp(-w * tau) * (1 + w * tau);
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * tau) * (Math.cos(wd * tau) + (z * w / wd) * Math.sin(wd * tau));
+}
+const track = (keys, w0 = 26, z0 = 0.9) => (t) => { let v = keys[0][1]; for (let i = 1; i < keys.length; i++) v += (keys[i][1] - keys[i - 1][1]) * step(t - keys[i][0], keys[i][2] ?? w0, keys[i][3] ?? z0); return v; };
+const rect = (keys, w0, z0) => ["x", "y", "w", "h", "r"].map((_, i) => track(keys.map((k) => [k[0], k[1][i], k[2], k[3]]), w0, z0));
+const at = (fs, t) => fs.map((f) => f(t));
+
+const ORANGE = "#D97757", INK = "#141413";
+const $ = (id) => document.getElementById(id);
+const show = (el, on) => { el.style.display = on ? "" : "none"; return on; };
+
+// image focal points (fractions of the image)
+const FOC = { goddess: [0.48, 0.32], athlete: [0.47, 0.52], vermeer: [0.37, 0.39], rembrandt: [0.47, 0.33], aristotle: [0.57, 0.17], madamex: [0.655, 0.105], klimt: [0.48, 0.085], dancer: [0.46, 0.14], pareja: [0.47, 0.4], jatte: [0.5, 0.5], cards: [0.5, 0.5], vangogh: [0.78, 0.38], hokusai: [0.3, 0.32], sibyl: [0.56, 0.3], socrates: [0.52, 0.45], apples: [0.5, 0.6], harvest: [0.5, 0.5], degas: [0.38, 0.5] };
+/** place an <img> inside a frame (w,h) so the image's focal point lands at (px,py) of the frame, always covering it */
+function place(img, name, w, h, px = w / 2, py = h / 2, zoom = 1) {
+  const [iw, ih] = DIMS[name], [fx, fy] = FOC[name];
+  let s = Math.max(w / iw, h / ih);
+  // grow just enough that the focal point can sit exactly at (px,py) while still covering the frame
+  s = Math.max(s, px / (fx * iw), (w - px) / ((1 - fx) * iw), py / (fy * ih), (h - py) / ((1 - fy) * ih)) * zoom;
+  let left = px - fx * iw * s, top = py - fy * ih * s;
+  left = clamp(left, w - iw * s, 0); top = clamp(top, h - ih * s, 0);
+  img.style.width = iw * s + "px"; img.style.height = ih * s + "px";
+  img.style.transform = `translate(${left}px, ${top}px)`;
+}
+function makeCard(id, name) {
+  const d = document.createElement("div"); d.className = "card"; d.id = id;
+  const i = document.createElement("img"); i.src = `img/${name}.jpg`; d.appendChild(i); d._img = i; d._name = name;
+  return d;
+}
+function setCard(d, x, y, w, h, r, { name = d._name, px, py, zoom = 1, rot = 0, op = 1, sc = 1 } = {}) {
+  if (name !== d._name) { d._img.src = `img/${name}.jpg`; d._name = name; }
+  Object.assign(d.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px", borderRadius: r + "px", opacity: op, transform: `rotate(${rot}deg) scale(${sc})` });
+  place(d._img, name, w, h, px ?? w / 2, py ?? h / 2, zoom);
+}
+
+// ═════════ morphing words: letters that stay, stay; the rest blur out / rise in ═════════
+const ctx = document.createElement("canvas").getContext("2d");
+const widthOf = (ch, size, wt, italic) => { ctx.font = `${italic ? "italic " : ""}${wt} ${size}px SS4`; return ctx.measureText(ch).width; };
+function word(el, seq, t, { y, size, wt = 500, italic = false, color = INK, track: ls = -0.03, out = 99 } = {}) {
+  let k = -1; for (let i = 0; i < seq.length; i++) if (t >= seq[i][0]) k = i;
+  if (k < 0 || t > out + 0.3) { el.style.display = "none"; return; }
+  el.style.display = "";
+  const tk = seq[k][0], cur = seq[k][1], prev = k > 0 ? seq[k - 1][1] : "";
+  const n = Math.max(cur.length, prev.length);
+  const exitAll = t > out ? lin(t, out, out + 0.18) : 0;
+  let html = "";
+  for (let i = 0; i < n; i++) {
+    const a = prev[i] || "", b = cur[i] || "";
+    const same = a === b;
+    const d = i * 0.02;
+    const pin = same ? 1 : oExpo(lin(t, tk + 0.04 + d, tk + 0.24 + d));
+    const pout = same ? 1 : oCubic(lin(t, tk + d * 0.6, tk + 0.12 + d * 0.6));
+    const wA = a ? widthOf(a, size, wt, italic) : 0, wB = b ? widthOf(b, size, wt, italic) : 0;
+    const w = same || !a ? wB : !b ? lerp(wA, 0, ioCubic(lin(t, tk, tk + 0.2 + d))) : lerp(wA, wB, ioCubic(lin(t, tk, tk + 0.22 + d)));
+    const gone = oCubic(lin(t, out + d * 0.5, out + 0.16 + d * 0.5));
+    let s = `<span class="slot" style="width:${w + size * ls}px">`;
+    if (!same && a && pout < 1) s += `<span style="opacity:${1 - pout};transform:translateY(${-pout * 0.35}em);filter:blur(${pout * 10}px)">${a}</span>`;
+    if (b) s += `<span style="opacity:${pin * (1 - gone)};transform:translateY(${(1 - pin) * 0.42 - gone * 0.3}em);filter:blur(${(1 - pin) * 12 + gone * 10}px)">${b}</span>`;
+    html += s + "</span>";
+  }
+  el.innerHTML = html;
+  Object.assign(el.style, { top: y + "px", fontSize: size + "px", fontWeight: wt, fontStyle: italic ? "italic" : "normal", color, fontVariationSettings: `"opsz" 60`, opacity: 1 - exitAll * 0 });
+}
+
+// ═════════ paint strokes (orange, drawn on, then lifted off) ═════════
+const paint = $("paint");
+const STROKES = [];
+function stroke(d, t0, dur, out, { w = 13, color = ORANGE, fill = "none" } = {}) {
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  p.setAttribute("d", d); p.setAttribute("fill", fill); p.setAttribute("stroke", color); p.setAttribute("stroke-width", w);
+  p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round"); p.setAttribute("pathLength", "1"); p.setAttribute("stroke-dasharray", "1");
+  paint.appendChild(p); STROKES.push({ p, t0, dur, out });
+}
+function strokes(t) {
+  for (const s of STROKES) {
+    const on = t >= s.t0 - 0.01 && t < s.out + 0.2;
+    s.p.style.display = on ? "" : "none"; if (!on) continue;
+    const draw = ioCubic(lin(t, s.t0, s.t0 + s.dur));
+    const erase = oCubic(lin(t, s.out, s.out + 0.16));      // lifts off from its start, like the pen pulls it away
+    s.p.style.strokeDasharray = `${Math.max(0.0001, draw - erase)} 2`;
+    s.p.style.strokeDashoffset = -erase;
+  }
+}
+// hand-drawn ellipse that overshoots its start (a real pen loop)
+const loop = (cx, cy, rx, ry, rot = -8, over = 0.18) => {
+  const pts = []; const N = 48;
+  for (let i = 0; i <= N * (1 + over); i++) { const a = (i / N) * Math.PI * 2 - 2.2; const wob = 1 + 0.035 * Math.sin(i * 0.9); const x = rx * wob * Math.cos(a), y = ry * wob * Math.sin(a); const r = (rot * Math.PI) / 180; pts.push([cx + x * Math.cos(r) - y * Math.sin(r), cy + x * Math.sin(r) + y * Math.cos(r)]); }
+  return "M" + pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join(" L");
+};
+const star = (cx, cy, r) => `M${cx} ${cy - r} Q${cx} ${cy} ${cx + r} ${cy} Q${cx} ${cy} ${cx} ${cy + r} Q${cx} ${cy} ${cx - r} ${cy} Q${cx} ${cy} ${cx} ${cy - r} Z`;
+
+// ═════════ the spark ═════════
+const sparkT = (cx, cy, size, rot = 0) => { const s = size / 24; return `translate(${cx - 12 * s} ${cy - 12 * s}) scale(${s}) rotate(${rot} 12 12)`; };
+["sparkStroke", "sparkFill", "clipPath"].forEach((id) => $(id).setAttribute("d", SPARK));
+
+// ═════════ SCENE TIMES (120 BPM: beat = 0.5 s; the drop lands at 4.0) ═════════
+const T = { hook: 0, reveal: 0.5, every: 1.0, master: 1.5, shrink: 2.0, thought: 3.0, dive: 3.5, drop: 4.0, wave: 6.0, caro: 6.7, cuts: 8.0, yours: 10.0, ring: 12.0, rays: 12.75, logo: 13.5, end: 15.0 };
+
+// ═════════ build scene elements ═════════
+const cards = $("cards");
+// collage (S5)
+const COL = [["vermeer"], ["rembrandt"], ["aristotle"], ["hokusai"]].map(([n], i) => { const c = makeCard("col" + i, n); cards.appendChild(c); return c; });
+// match-cut card (S7)
+const cut = makeCard("cut", "vangogh"); cards.appendChild(cut);
+const cut2 = makeCard("cut2", "athlete"); cards.appendChild(cut2);
+// sibyl (S8)
+const sib = makeCard("sib", "sibyl"); cards.appendChild(sib);
+// carousel (S6)
+const CARO = ["hokusai", "klimt", "degas", "vangogh", "madamex", "apples", "socrates", "pareja"];
+const CW = 400, CH = 540, CR = 600, CP = 2200, CS = CP / (CP - CR);
+const FRONT = [540 - (CW * CS) / 2, 820 - (CH * CS) / 2, CW * CS, CH * CS, 26 * CS];   // the front card, as it appears on screen
+const caroCards = CARO.map((n, i) => { const c = makeCard("caro" + i, n); c.style.backfaceVisibility = "hidden"; $("caroIn").appendChild(c); return c; });
+// ring (S9)
+const RING = ["goddess", "vermeer", "hokusai", "klimt", "rembrandt", "vangogh", "madamex", "athlete", "sibyl", "degas", "pareja", "aristotle"];
+const ringEls = RING.map((n, i) => { const c = makeCard("ring" + i, n); $("ring").appendChild(c); return c; });
+// logo extrusion layers
+const LAYERS = 22;
+for (let i = LAYERS - 1; i >= 0; i--) {
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("width", "100%"); s.setAttribute("height", "100%");
+  s.style.position = "absolute"; s.style.inset = "0"; s.style.transform = `translateZ(${-i * 1.6}px)`;
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", SPARK);
+  const k = i / LAYERS; p.setAttribute("fill", i === 0 || i === LAYERS - 1 ? ORANGE : `rgb(${Math.round(lerp(196, 150, k))},${Math.round(lerp(98, 70, k))},${Math.round(lerp(70, 48, k))})`);
+  s.appendChild(p); $("logoIn").appendChild(s);
+}
+
+// ── paint marks (in frame coordinates) ──
+// S3: halo around the head-in-a-circle, a thought trail to the spark
+stroke(loop(540, 740, 360, 330, -6, 0.14), 2.18, 0.42, 3.42, { w: 12 });
+stroke("M690 470 Q715 455 735 440", 3.02, 0.08, 3.42, { w: 14 });
+stroke("M752 428 Q770 414 786 402", 3.08, 0.08, 3.42, { w: 14 });
+// S5: circle the Vermeer gaze, an arrow to the word, an underline
+stroke(loop(300, 560, 150, 92, -10), 4.22, 0.3, 5.9, { w: 11 });
+stroke("M930 905 C 960 1030, 900 1170, 790 1300 M790 1300 L 812 1222 M790 1300 L 868 1280", 4.5, 0.32, 5.9, { w: 11 });
+stroke("M290 1790 C 460 1768, 640 1808, 800 1778", 4.78, 0.26, 5.9, { w: 12 });
+// S6: trace the crest of the wave
+stroke("M40 1260 C 120 980, 250 700, 470 610 C 640 540, 720 640, 650 720 C 600 770, 540 720, 590 690", 6.2, 0.26, 6.42, { w: 12 });
+// S7: one ring that stays put while the art changes under it (match cuts)
+stroke(loop(540, 760, 250, 250, 0, 0.12), 8.02, 0.22, 9.92, { w: 12 });
+stroke(star(822, 470, 46), 8.5, 0.16, 9.92, { w: 8, fill: "none" });
+stroke(star(262, 1080, 30), 9.0, 0.14, 9.92, { w: 8 });
+// S8: finish Michelangelo's study: a loop round the head, the line of the spine, a spark
+stroke(loop(600, 372, 96, 84, -18, 0.16), 10.12, 0.3, 11.78, { w: 10 });
+stroke("M676 448 C 760 560, 790 700, 742 850 C 712 940, 660 1000, 600 1040", 10.36, 0.5, 11.78, { w: 10 });
+stroke(star(860, 290, 40), 10.9, 0.14, 11.78, { w: 8 });
+
+// ═════════ render one frame ═════════
+function seek(tIn) {
+  const t = clamp(tIn, 0, T.end - 1e-6);
+  strokes(t);
+
+  // ── S1 spark draws itself, fills, then opens into the first artwork ──
+  const sOn = show($("sparkSvg"), t < T.reveal + 0.12);
+  const spin = lerp(-70, 0, oExpo(lin(t, 0, 0.5)));
+  const sSize = lerp(140, 320, oExpo(lin(t, 0, 0.45)));
+  if (sOn) {
+    $("sparkStroke").setAttribute("transform", sparkT(540, 860, sSize, spin));
+    $("sparkStroke").style.strokeDashoffset = 1 - ioCubic(lin(t, 0.0, 0.34));
+    $("sparkStroke").style.opacity = 1 - lin(t, 0.3, 0.42);
+    $("sparkFill").setAttribute("transform", sparkT(540, 860, sSize, spin));
+    $("sparkFill").style.opacity = oCubic(lin(t, 0.24, 0.4)) * (1 - lin(t, T.reveal, T.reveal + 0.06));
+  }
+  // the hook image: inside the spark mask, then a full frame, then a circle
+  const hook = $("hook");
+  if (show(hook, t >= T.reveal - 0.02 && t < T.dive + 0.3)) {
+    // mask grows from the spark size to far beyond the frame (the spark's rays open into the picture)
+    const g = oExpo(lin(t, T.reveal, T.reveal + 0.5));
+    const maskSize = 320 * Math.pow(60, g);
+    const maskOn = t < T.reveal + 0.5;
+    hook.style.clipPath = maskOn ? "url(#sparkClip)" : "none";
+    $("clipPath").setAttribute("transform", sparkT(540, 860, maskSize, 0));
+    // full → circle (FLIP-style rect spring), push-in while full
+    const [X, Y, W, H, R] = rect([[0, [0, 0, 1080, 1920, 0]], [T.every - 0.06, [0, 0, 1080, 1220, 0], 26, 0.95], [T.shrink, [230, 430, 620, 620, 310], 15, 0.92]]).map((f) => f(t));
+    const push = 1.12 - 0.12 * oCubic(lin(t, T.reveal, T.shrink)) + 0.05 * oCubic(lin(t, T.shrink + 0.3, T.dive));
+    hook.style.left = X + "px"; hook.style.top = Y + "px"; hook.style.width = W + "px"; hook.style.height = H + "px"; hook.style.borderRadius = R + "px";
+    place($("hookImg"), "goddess", W, H, W / 2, H * lerp(0.36, 0.5, lin(t, T.shrink, T.shrink + 0.4)), push);
+  }
+  // spark sticker = the "thought" (pops above the head), then the camera dives into it
+  const stickOn = t >= T.thought && t < T.drop + 0.05;
+  const cam = $("cam");
+  if (stickOn) {
+    show($("sparkSvg"), true);
+    const pop = step(t - T.thought, 30, 0.72);
+    const dive = Math.pow(lin(t, T.dive, T.drop - 0.04), 2.6);
+    $("sparkFill").setAttribute("transform", sparkT(830, 380, 150 * pop, lerp(-40, 0, pop) + dive * 90));
+    $("sparkFill").style.opacity = 1; $("sparkStroke").style.opacity = 0;
+    cam.style.transformOrigin = "830px 380px";
+    cam.style.transform = `scale(${1 + dive * 60})`;
+  } else { cam.style.transform = "none"; }
+  // orange cover = we are inside the spark; at the drop it collapses into the first collage tile
+  const cover = $("cover");
+  const cv = show(cover, t >= T.dive + 0.36 && t < T.drop + 0.28);
+  if (cv) {
+    const k = ioQuint(lin(t, T.drop, T.drop + 0.24));
+    Object.assign(cover.style, { left: lerp(0, 90, k) + "px", top: lerp(0, 300, k) + "px", width: lerp(1080, 560, k) + "px", height: lerp(1920, 720, k) + "px", borderRadius: lerp(0, 36, k) + "px", opacity: 1 - lin(t, T.drop + 0.2, T.drop + 0.28) });
+  }
+
+  // ── words S2–S3 ──
+
+  // ── S5 collage: three works, resized on the beat; the word morphs through what you make ──
+  const colOn = t >= T.drop && t < T.caro + 0.5;
+  const L1 = [[90, 300, 560, 720, 36], [690, 430, 300, 420, 30], [330, 1080, 470, 380, 30]];
+  const L2 = [[90, 520, 330, 440, 30], [460, 260, 530, 720, 36], [150, 1030, 430, 330, 30]];
+  const L3 = [[620, 250, 370, 470, 30], [90, 300, 490, 640, 36], [610, 760, 380, 500, 30]];
+  COL.forEach((c, i) => {
+    if (!show(c, colOn && i < 3)) return;
+    const R = rect([[0, L1[i]], [T.drop + 1.0, L2[i], 22, 0.88], [T.drop + 1.5, L3[i], 22, 0.88]]).map((f) => f(t));
+    const enter = i === 0 ? 1 : step(t - (T.drop + 0.04 + i * 0.09), 24, 0.8);   // tile 0 is uncovered by the orange, already in place
+    const leave = step(t - (T.wave - 0.02 + i * 0.03), 20, 1);
+    setCard(c, R[0], R[1] + leave * 2200 * (i === 1 ? 0 : 1), R[2], R[3], R[4], { sc: 0.62 + 0.38 * enter, rot: (1 - enter) * (i - 1) * 6, op: (i === 0 ? lin(t, T.drop + 0.1, T.drop + 0.2) : Math.min(1, enter * 1.6)) * (i === 1 ? 1 - lin(t, T.wave, T.wave + 0.05) : 1) });
+  });
+
+  // ── S6 Hokusai: the middle tile grows to full frame, the pen traces the crest, then it becomes a card in a 3D carousel ──
+  const hk = COL[3];
+  if (show(hk, t >= T.wave - 0.02 && t < T.caro + 0.1)) {
+    const from = [690, 430, 300, 420, 30];
+    const R = rect([[0, from], [T.wave, [0, 0, 1080, 1920, 0], 16, 0.95], [T.caro - 0.25, FRONT, 18, 0.95]]).map((f) => f(t));
+    setCard(hk, R[0], R[1], R[2], R[3], R[4], { name: "hokusai", px: R[2] * 0.42, py: R[3] * 0.4, zoom: 1 + 0.06 * lin(t, T.wave, T.caro) });
+  }
+  const caOn = show($("caro"), t >= T.caro && t < T.cuts + 0.3);
+  if (caOn) {
+    const spinP = ioCubic(lin(t, T.caro + 0.08, T.cuts - 0.1));
+    const R = CR, ang = 360 / CARO.length;
+    const rot = lerp(3 * ang + 360, 0, spinP);            // starts with Hokusai in front, one full turn, lands on Van Gogh
+    caroCards.forEach((c, i) => {
+      const a = i * ang + rot - 3 * ang;                  // index 3 (Van Gogh) lands in front
+      const appear = i === 0 ? 1 : step(t - (T.caro + 0.04 + i * 0.025), 26, 1);
+      setCard(c, -CW / 2, -CH / 2, CW, CH, 26, { op: appear });
+      c.style.transform = `rotateY(${a}deg) translateZ(${R}px) scale(${0.85 + 0.15 * appear})`;
+      const facing = Math.cos(((a % 360) * Math.PI) / 180);
+      c.style.filter = `brightness(${0.75 + 0.25 * Math.max(0, facing)})`;
+    });
+    $("caroIn").style.transform = `rotateX(${-7 * Math.sin(Math.PI * spinP)}deg)`;
+  }
+
+  // ── S7 match cuts: the front card grows to full frame; the art changes every half-beat, faces land inside the same orange ring ──
+  const CUTS = [["vangogh", 0], ["athlete", 0.25], ["rembrandt", 0.5], ["pareja", 0.75], ["cards", 1.0], ["socrates", 1.25], ["vermeer", 1.5], ["goddess", 1.75]];
+  if (show(cut, t >= T.cuts && t < T.yours + 0.3)) {
+    const R = rect([[0, FRONT], [T.cuts, [0, 0, 1080, 1920, 0], 20, 0.95], [T.yours - 0.02, [300, 420, 480, 640, 40], 20, 0.95]]).map((f) => f(t));
+    let k = 0; CUTS.forEach((c, i) => { if (t >= T.cuts + c[1]) k = i; });
+    const tc = t - (T.cuts + CUTS[k][1]);
+    const punch = 1.07 - 0.07 * oExpo(lin(tc, 0, 0.2));
+    const full = t < T.yours - 0.02;
+    // every face sits at the ring's centre (540, 760)
+    setCard(cut, R[0], R[1], R[2], R[3], R[4], { name: CUTS[k][0], px: full ? 540 - R[0] : R[2] / 2, py: full ? 760 - R[1] : R[3] * 0.4, zoom: (CUTS[k][0] === "vangogh" ? 1.0 : 1.18) * punch, op: 1 - lin(t, T.yours + 0.1, T.yours + 0.25) });
+  }
+  // two-up burst on beat 9.0–9.5: a second frame slides in beside the first ("several at once")
+  if (show(cut2, t >= T.cuts + 1.0 && t < T.cuts + 1.5)) {
+    const k = oExpo(lin(t, T.cuts + 1.0, T.cuts + 1.2)), o = 1 - oExpo(lin(t, T.cuts + 1.38, T.cuts + 1.5));
+    setCard(cut2, lerp(1080, 560, k * o), 1100, 440, 620, 34, { name: "klimt" });
+  }
+
+  // ── S8 "What's yours?" over Michelangelo's red-chalk study, the pen finishing it ──
+  if (show(sib, t >= T.yours - 0.05 && t < T.ring + 0.35)) {
+    const R = rect([[0, [300, 420, 480, 640, 40]], [T.yours, [120, 180, 840, 1100, 40], 18, 0.95], [T.ring, [470, 870, 140, 140, 70], 20, 0.95]]).map((f) => f(t));
+    setCard(sib, R[0], R[1], R[2], R[3], R[4], { name: "sibyl", zoom: 1.02 + 0.06 * lin(t, T.yours, T.ring), op: 1 - lin(t, T.ring + 0.15, T.ring + 0.3) });
+  }
+
+
+  // ── all words, one owner per time window ──
+  const w1 = $("w1"), w2 = $("w2");
+  if (t < T.drop) {
+    // S2–S3: the line is written across the hook
+    word(w1, [[T.every, "Every"], [T.shrink, "started"], [T.thought, "a thought."]], t, { y: t < T.shrink ? 1290 : lerp(1290, 1180, step(t - T.shrink, 18, 1)), size: 210, wt: 560, out: T.dive + 0.05 });
+    word(w2, [[T.master, "masterpiece"], [T.shrink, "as"]], t, { y: t < T.shrink ? 1520 : lerp(1520, 1420, step(t - T.shrink, 18, 1)), size: 170, wt: 400, italic: true, out: T.thought - 0.06 });
+  } else if (t < T.yours) {
+    // S5–S6: one word that keeps turning into what people make
+    // the word steps aside while the wave owns the frame, then comes back with the carousel
+    if (t < T.wave + 0.3) word(w1, [[T.drop, "think"], [T.drop + 0.5, "write"], [T.drop + 1.0, "paint"], [T.drop + 1.5, "build"]], t, { y: 1500, size: 230, wt: 600, out: T.wave - 0.04 });
+    else word(w1, [[T.caro + 0.25, "code"], [T.caro + 0.8, "learn"]], t, { y: 1500, size: 230, wt: 600, out: T.cuts - 0.1 });
+    w2.style.display = "none";
+  } else {
+    // S8: the question
+    word(w2, [[T.yours, "What’s"]], t, { y: 1330, size: 190, wt: 560, out: T.ring - 0.12 });
+    word(w1, [[T.yours + 0.5, "yours?"]], t, { y: 1540, size: 220, wt: 500, italic: true, color: ORANGE, out: T.ring - 0.1 });
+  }
+
+  // ── S9 ring of works → rays → the spark ──
+  const ringOn = show($("ring"), t >= T.ring - 0.02 && t < T.logo + 0.15);
+  if (ringOn) {
+    const spinR = lerp(-40, 0, oExpo(lin(t, T.ring, T.rays + 0.4)));
+    ringEls.forEach((c, i) => {
+      const a0 = (i / RING.length) * 360 + spinR - 90;
+      const app = step(t - (T.ring + i * 0.025), 28, 0.85);
+      const toRay = ioCubic(lin(t, T.rays, T.rays + 0.4));
+      const implode = Math.pow(lin(t, T.rays + 0.42, T.logo + 0.04), 2);       // rays fall into the centre
+      const rad = lerp(390, 150, toRay) * (0.6 + 0.4 * app) * (1 - implode);
+      const w = lerp(150, 34, toRay) * (1 - 0.5 * implode), h = lerp(150, 230 - (i % 3) * 30, toRay) * (1 - implode);
+      const cx = 540 + rad * Math.cos((a0 * Math.PI) / 180), cy = 960 + rad * Math.sin((a0 * Math.PI) / 180);
+      setCard(c, cx - w / 2, cy - h / 2, w, Math.max(h, 1), Math.min(w, h) / 2, { sc: app, op: 1 - lin(t, T.logo - 0.02, T.logo + 0.04) });
+      c.style.transform = `rotate(${a0 + 90}deg) scale(${app})`;
+      c.style.background = ORANGE;
+      c._img.style.opacity = 1 - lin(t, T.rays + 0.05, T.rays + 0.3);
+    });
+  }
+
+  // ── S10 the logo: the rays resolve into the Claude spark, it turns once in 3D, the wordmark writes in ──
+  const lgOn = show($("logo"), t >= T.logo - 0.08);
+  if (lgOn) {
+    const settle = ioQuint(lin(t, T.logo + 0.18, T.logo + 0.85));
+    const grow = step(t - (T.logo - 0.06), 22, 0.86);                       // the spark grows out of the point the rays fell into
+    const TW = widthOf("Claude", 236, 560, false) - 236 * 0.035 * 6, SZ = 216, GAP = 34;
+    const left0 = 540 - (SZ + GAP + TW) / 2;
+    const size = lerp(520 * grow, SZ, ioQuint(lin(t, T.logo + 0.3, T.logo + 0.85)));
+    const cx = lerp(540, left0 + SZ / 2, ioQuint(lin(t, T.logo + 0.35, T.logo + 0.85)));
+    const l3 = $("logo3d");
+    Object.assign(l3.style, { left: cx - size / 2 + "px", top: 960 - size / 2 + "px", width: size + "px", height: size + "px", opacity: lin(t, T.logo - 0.06, T.logo) });
+    $("logoIn").style.transform = `rotateZ(${lerp(-60, 0, grow)}deg) rotateY(${-360 * (1 - settle)}deg) rotateX(${14 * Math.sin(Math.PI * settle)}deg)`;
+    word($("wordmark"), [[T.logo + 0.55, "Claude"]], t, { y: 960 - 236 * 0.62, size: 236, wt: 560, track: -0.035 });
+    $("wordmark").style.left = left0 + SZ + GAP + "px"; $("wordmark").style.justifyContent = "flex-start";
+  }
+}
+window.seek = seek;
+window.ready = () => seek(0);
+</script></body></html>

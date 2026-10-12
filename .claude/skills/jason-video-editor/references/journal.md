@@ -167,3 +167,266 @@ Every delivered video gets an entry: Jason's score, what he called out, what's l
 - Every graphic rendered: Notes hook, grade ticks, $1,000,000 counter, sell tiles, PROBLEM/CHANGE/EXECUTE hero words, Chess streak, the black-and-white freeze on "STILL", the PURPOSE CTA and the follow card with Jason's avatar.
 - Text-behind-you works: the cutout layer clips the bottom of the hero word.
 - Not yet proven on real footage: the person cutout's edges, and caption timing on a real transcript. Episode #4 is the first real check.
+
+## Episode #4: "Perceived as nice" (car, white durag + polo) · 2026-10-01 · v1 · score: pending Jason
+**Raw → final:** 3 parts (3:30 raw) → 3:01 cut + 4s outro. Part order was confirmed by the words: part 2 ends "not because you're nice but because…" and part 3 continues "…they don't know that you're a nice person."
+
+**The one idea:** you care what broke people think because your ego wants to be *perceived* as nice. Let it go and just post.
+
+**What I did (the 8.3 recipe, step by step):**
+1. **Raw saved first** to `raw/ep04/`. The push is still blocked: the environment needs `lfs.github.com` allowed.
+2. **Voice cleaned** (DeepFilterNet3 chain), then re-transcribed. The cleaned part 1 lost its first 5 seconds of words, so part 1's timings come from the raw transcript. Lesson: always check that the clean transcript starts where the raw one does.
+3. **Asked before cutting.** I sent Jason 9 unclear spots. He answered 6:
+   - "see you guys as, like, you can be influential"
+   - "why are you giving a fuck"
+   - "if a **female**…" (he corrected himself on camera; keep only the female version)
+   - "**stop** giving a fuck"
+   - his boy "**Khamani**"
+   - the closer: "Just fucking post. Fuck everybody that talks shit. They're broke. They're broke, nigga."
+   The 3 he didn't answer were short unclear bits, and I cut them instead of guessing.
+4. **Hook (Jason approved: "I like the hook"):** cold open on "A lot of people prioritize being perceived as nice rather than actually being nice." Then the video starts at his real first line. Now a rule in SKILL.md.
+5. **Word-level splice:** the female line joins four moments ("If" + "a female" + "came up to me… your dick small" + "I'ma laugh"). To keep a word from being clipped, `cut_sections.py` now **snaps every cut to the quietest spot within ±80ms** (new `snap` setting).
+   - The middle phrase couldn't be transcribed exactly, so its caption is hidden and an iMessage from "Her: your dick small 😂" carries it. **Never guess a caption; let a graphic say it.**
+6. **One designed beat per sentence** (13 graphics). 8 new components were added to the library (`template/src/lib/Mg.tsx`) for future episodes:
+   - **NiceSplit** (🎭 perceived vs 💛 actually): used in the cold open and again as a **callback** when he says the line in place. That callback is new; §18 asked for callbacks, and episode #3 had none.
+   - **Meter** (potential bar → "✓ Influential")
+   - **CommentRain** (opinions pour in → freeze → "0 people actually care"). It dissolves before reaching his face.
+   - **SettingToggle** ("Care what others think" flips OFF on "rewire")
+   - **BrokeHater** (hater comment → their Chase balance drops to $4.12)
+   - **HeightTag** (6'5" with a ruler)
+   - **Tiles** (Influential / Know how to speak / Funny as fuck)
+   - **NewCity** (route to a new-city pin)
+   - **PostUpload** ("Posting…" → "Shared ✓")
+   - **LetGo** (the words float up and dissolve)
+   Existing components reused: Notes, Banner, BannerStack, SameWeek.
+7. **Hero words behind his head:** BROKE (red), BELIEF (yellow), SCRIPT (yellow), EGO (red).
+   - **Placement rule for this framing** (head top ≈ y 735–865): word top ≈ 615–690.
+   - The first try put them fully *above* the head (top 545). The stills check caught it, and they were moved down until the durag clips ~25%.
+   - BELIEF needed 50px less overlap than the others, because the head was higher in that shot. Check each hero still, not just one.
+8. **Captions** sit on the chest (y 1440) all video. At the default 1070 they'd cover his mouth on this framing.
+9. **Motion in the first 15 frames:** a zoom punch + hit on frame 3. The split only lands at 2s, so without it the open would be still.
+
+**Mistakes I made and caught (so the next session doesn't repeat them):**
+- A wait loop used `pgrep -f matte.py` while its own command contained "matte.py", so it waited forever. The SKILL.md warning is about `pkill`; it applies to `pgrep` too. Wait on the output file instead.
+- `setup.sh` was missing vosk's runtime packages (tqdm etc.). Fixed in setup.sh.
+- `download.pytorch.org` is blocked here; installing torch from PyPI works (slower). Then `pip install --ignore-installed packaging deepfilternet`.
+
+**Guesses to confirm** (captions I couldn't verify 100%): "you short ass nigga" (the 6'5" joke), "oh, he just, he be yapping", "telling your sister…", "Hey, can you do this for me?"
+
+### Episode #4 v1 → v2: Jason: "the audio comes out so fucked up. 'Nigerian elephant' is misplaced, some places stop talking"
+**What was wrong (both my fault, both now caught by tools):**
+1. **"Some places stop talking":** the voice cleanup (DeepFilterNet) decided his quieter first 5 seconds were background noise and **erased them**. "It's really a shame, because a lot of y'all…" played silent under the captions. 14 captioned words had no voice under them.
+2. **"Nigerian elephant":** to splice "a female" I used the recognizer's word times. That piece really held "a [nigga] [female]" run together, so it sounded like "a Nigerian elephant".
+
+**Fixes:**
+- `voice_enhance.py` now **caps how much it can remove (15 dB)** and adds a **leveler** that lifts quiet stretches before compression. His opening went from silent (−90 to 15 dB) to 70–77 dB, the same as the rest of the video.
+- New **`check_voice.py` audio gate**: it fails if any captioned word plays over silence, and lists every pause over 1s. v1 would have failed it with 14 words. v2 passes with 0 words and no pause over 1s.
+- The splice was rebuilt from a 40ms energy map: "If a" + **"female" (62.10–62.64s exactly, before he says "nigga" again)** + "came up to me…". Snapping is off for those pieces, and the spliced stretch was re-transcribed alone to check it.
+- Both are now rules in SKILL.md (the recipe's audio-gate step + the word-splice rule).
+
+**Craft lesson:** sound problems are the fastest way to lose a viewer and the hardest for me to notice, because I can't hear. So every audio decision now gets a measurement: levels per half-second, words-over-silence, and re-transcribing every splice.
+
+### Episode #4 v2 → v3: Jason: "the 'Nigerian elephant' part should come after the dick small part… why would you change that order?"
+**What I did wrong:** he said "make sure you get the female part". I read that as *splice "a female" to the front of the line*. He meant *make sure the caption says "female"* (the transcriber heard "elephant"). So in v1 and v2 I moved his words out of the order he said them. That broke his logic: in the original, he says the "dick small" line first and *then* corrects himself with "a female, nigga".
+**Fix (v3):** the whole line plays exactly as recorded (55.85–70.1s, no splice). Captions: "If a nigga came up to me and said… a female, nigga, I'ma laugh, because I know who I am." Visual: a text from "Some guy: your dick small 😂", then when he says "a female", a second text from "Her" says the same. That shows his point (man or woman, he laughs) instead of hiding it.
+**Also asked by Jason this round, now locked rules in SKILL.md:**
+1. iOS-coded motion graphics over B-roll, with iOS sounds and iOS animation (what he loved in the 8.3).
+2. The on-screen text must read logically start to finish. I now print and read the full caption transcript before every render.
+**Craft lesson:** when an instruction could mean "fix the caption" or "change the edit", it almost always means the caption. The order of his words is his argument; touching it is never a small change.
+
+### Episode #4 v3: Jason: "I said a guy on accident. I'd rather it be a female… cut that out and make it say a female. Let the female text me with a girl emoji"
+- Now **his** explicit request, so the splice is right this time: "If a" + "female" (62.10–62.64s exact) + "came up to me and said…" + "I'ma laugh, because I know who I am". "Nigga", "never" and the trailing "a female, nigga" are gone. Re-transcribed alone: the spliced audio has no stray words.
+- One text only: **"Her 👩🏾": "your dick small 😂"**. The "Some guy" text is removed.
+- Rule refined: never reorder his words *on my own*; splice only when he explicitly asks to replace a word.
+- **Lesson:** I should have asked one question at v2 ("keep both, or female only?") instead of guessing twice. When two readings change the edit, ask.
+
+## 2026-10-08 · SFX library built (Jason: "make SFX library")
+- **What:** every sound we own (60) plus 17 new ones, cut from Jason's new reference reels r10 (Zenix: Button 1-3, Combo, Sparkle, Deep Whoosh, Typing) and r11 (vishu: Hook 1-2, Impact 1-2, Blade, Camera action, Tension, UI+SFX, Shutter, Click+SFX). That's **77 sounds sorted into 13 jobs**, each with when to use it, a default volume and where it came from. Sounds were cut per on-screen label window (label changes detected at 30fps). r11 has no music bed under the effects (silence between them), so the cuts are clean.
+- **The big finding:** I measured where each sound actually *hits*. CineStrike peaks 0.53s in, the camera click 0.54s, Digital Text 1.34s, Tension 3.7s. In episodes #3-#4 I started files a frame before the word, so heavy hits landed up to ~16 frames late. The reference reels land the sound within 3-45 ms of the motion. New `<Hit>` helper: it lines up the peak (impacts, whooshes) or the onset (iOS/UI/clicks) with the frame automatically.
+- **Audition reel** (reference style, playhead over waveforms, job-colored): every sound plays with its name and job. The source is in `examples/sfx-demo/`.
+- **Honest limits:** 6 sounds are still my synthesized stand-ins (pop, click, typing, kaching, ding, riser), and 18 are lifted from reels (reference-grade). Biggest upgrade available: Jason comments "SFX" on reels r01/r10/r11 and sends the clean packs.
+
+## 2026-10-08 · Methodology from 12 reference reels (Jason: "this must be our methodology… understand the psychology, hooks, typography, SFX timing, everything")
+- **All 12 analyzed** (r07 was a photo carousel; only its cover was reachable without login): frame-stepped, transcribed, plus a new audio-vs-visual sync analyzer. Written up as `references/methodology.md`. SKILL.md now points to it first.
+- **Key findings in plain English:**
+  1. **Sound leads the picture by up to 2 frames, never trails it.** Measured on 7 reels (−83 to +28 ms). Our old habit landed heavy hits up to 16 frames late; `<Hit>` fixes that.
+  2. **Five hook shapes:** a question they can't answer yet, a contrast (okay vs scroll-stopping), "what if I told you", calling out their pain, want + offer.
+  3. **Typography:** a sandwich title (small / BIG glowing word / small), one word at a time synced to speech, words growing on the key phrase, a highlight box on the keyword, karaoke captions when the screen is the star.
+  4. **Color:** one accent per video; triadic pairs (120° apart) for maximum contrast; flip the background light↔dark when a new idea starts; one full-screen color slam on the punchline.
+  5. **Psychology:** value first; show the result before the method; prove by pattern (3 examples); name the concept; "the answer is simple" before the payoff; a comment-keyword CTA.
+  6. **Audio craft:** add an echo/reverb tail where the voice is cut, so nothing stops dead.
+- **Duplicate spotted:** r04 is the same reel as our `pack3` source (sound names and timings match).
+- **Conflicts with Jason's locked rules** (music bed, comment-CTA vs follow card, karaoke vs two-tier captions) are flagged in the file, not applied. Waiting on Jason.
+- **Jason's decisions (same day):** keep no-music · comment-keyword CTA becomes the default close (the offer must be real, so ask him) · karaoke captions yes, on screen-led teaching segments. All three are written as rules in SKILL.md.
+
+## 2026-10-08 · Motion-graphics quality bar set (Jason: r05 "this is the quality I expect for motion graphics")
+- Decoded r05 frame by frame (4 × 24-frame screen crops). Spec in `references/mg-quality-bar.md`; SKILL.md points to it at the top.
+- **Honest gap vs our 8.3 graphics:** ours are good iOS cards on top of footage. r05 builds a **whole technical world** (navy blueprint grid, bloom, micro-labels) and turns **every sentence into a literal diagram** that animates on the spoken words (strike-through timelines, node chains with travelling sparks, typing prompt boxes, code + live artboard, paper forms with hand-drawn strikes, dictionary entries, full-screen word slams). That's the level to reach.
+- **Built the r05 kit** (`template/src/lib/Blueprint.tsx`): Stage (navy blueprint world, grid, bloom, vignette, grain, optional 3D floor or light paper), Micro labels, KLine (spoken-word orange sweep, ghost words), Node (line-drawn box, hot/dead states), Wire (line-draw + travelling comet), Strike (corner-to-corner strike with sparks), Prompt (mono typewriter + underline marks), WireCube, Slam (full-screen orange one-word-per-beat), Finale, Form (paper form + hand-drawn strike + stamp).
+- **Quality sample v1** (18s, over ep #4's cold open + first lines; `examples/mg-quality-sample/BpSample.tsx`, `renders/mg-quality-sample-v1.mp4`): perceived-vs-actually node diagram with a strike, a crowd of dots lighting into POTENTIAL, a paper FORM 4-A with "NOT ONLY" stamped, a slam "YOU / CAN BE / INFLUENTIAL." The first stills failed my own check (Title Case, diagrams too small, empty lower half, the finale clipping) and were fixed before the render. Waiting on Jason's verdict vs r05.
+
+### MG quality sample v1 score: **6.8 / 10** (Jason): "the glows, smooth animations, graphics etc, you're nowhere near yet. The backgrounds. The infinitesimal details."
+**Why it fell short of r05 (my own diagnosis, frame vs frame):**
+1. **Glow:** mine is a thin text-shadow. r05 has real **bloom**: light spills from every bright thing into the air around it, sparks have cross/anamorphic flares, hot elements tint the background around them.
+2. **Smoothness:** mine pops elements in with short springs and a flat scale-dolly. r05 has **motion blur** on everything that moves, eased camera moves with parallax depth, RGB-split smears on transitions, nothing ever static.
+3. **Backgrounds:** mine is one flat grid. r05 is **layered depth**: a far blurred grid + a sharp near grid, light pools, drifting dust, scanlines, animated grain, a vignette, a perspective floor.
+4. **Infinitesimal details:** mine has a handful of labels. r05 has a **HUD layer** everywhere: corner brackets, rulers with ticks, coordinates on anchors, crosshairs, dashed construction lines, live readouts, tiny tables, reference numbers.
+**Rule from this:** a motion-graphics beat isn't done until it has all four layers: bloom, motion blur/parallax, layered background, HUD micro-detail. Check stills side by side with an r05 frame before rendering.
+- **Jason (same day): "iOS-like UX, soft borderless animations etc."** Direction: keep the r05 quality layers, swap the look to iOS (frosted borderless cards, soft shadows, no-bounce springs, morphs). The v2 render with hard outlined HUD boxes was stopped; the iOS kit (`Glass.tsx`) gets built instead.
+
+## 2026-10-08 · Font research + color psychology rule
+- **SF Pro (Jason: "find a way to actually use these fonts"):** researched Apple's own license page. It allows SF only for UI mock-ups by a registered Apple Developer, and forbids "artwork… or any other work product" and transfer. So it can't be used in captions or titles, and it can't be installed in this cloud container. **Best legal move:** Inter 4 Variable with the optical-size axis, which works like SF's Text/Display split and is the top-ranked free match to SF Pro Display. Swapped into the notifications + iOS kit; comparison sheet in `ref-sheets/font-inter-opsz-vs-static.png`.
+- **Color psychology** from r02 (Jason re-raised it) is now a SKILL rule: congruence = meaning (locked), contrast = attention (triadic 120° pairs for comparisons, hero words, first frame).
+- **MG sample v3 (iOS language) delivered** (`renders/mg-ios-sample-v3.mp4`): frosted borderless cards on a mesh wallpaper; swipe-to-delete on "perceived as nice"; island → avatar grid lighting up on "potential"; a Reminders list with a "Not only." capsule and a 1-of-2 ring; a soft orange word moment; bloom + parallax + motion blur kept. Rendered before the Inter-variable font swap. Waiting on Jason's score (v1 was 6.8).
+### MG sample v3 score: **6.9 / 10** (Jason). Only +0.1 over v1. Rebuilding the look (blueprint → iOS) didn't move the score, so the gap isn't the style; it's execution quality.
+**Diagnosis (side-by-side, 1 second at 15fps vs r05):** the gap is not style:
+1. **Motion density:** v3's first second = words fading on an empty wallpaper; r05's first second = the whole set swinging in 3D with motion blur + several elements reacting.
+2. **Scale/composition:** v3 = small headline top-left, ~2/3 of the frame empty; r05 = a big focal object always in frame.
+3. **Camera:** v3 = flat 2D drift; r05 = a real 3D camera (tilt, dolly, whip).
+4. **Transitions:** v3 = soft fades; r05 = whip pans with heavy blur smears.
+**Rule:** frame 1 must already move; a big focal object in the center third at all times; a new element every ~0.5s; a 3D camera move on every scene; whip transitions between scenes.
+- **MG v4 delivered** (`renders/mg-ios-sample-v4.mp4`): 3D camera fly-in on every scene, Z-depth layers, whip transitions, motion blur ×8, the "You" orb as the focal object from frame 4. Self-check of its first second: much more motion than v3, but the lower third is still emptier than r05. Waiting on Jason's score.
+
+### MG v4 verdict (Jason, 2026-10-09): "honestly not the best", no number given. The 3D camera, whips and motion blur still didn't close the gap.
+
+## 2026-10-09 · r13 decoded: Jason Cooperson, "I Finally Solved AI Video Editing" (Jason: "watch it, listen, understand the premise and the angle… implement it")
+- **Couldn't download it:** YouTube blocks this cloud box with a "confirm you're not a bot" wall. Read it from his full word-timed transcript (4,815 words), YouTube's 150 storyboard frames, the chapters, and his free blueprint page. Full write-up: `references/cooperson-decode.md`.
+- **The premise:** "This entire video was edited by Claude." The video is its own proof. Hook stack in 110s: meta-proof → "I mean *fully*" → lifestyle payoff (sleep, games) → "the last video you'll ever need" → real proof (named customers) → exact effort numbers (86,000 lines, 335 commits) → "I'm giving it all away" → everyone named.
+- **The biggest lesson for us is his "presets" idea:** Claude has tools but no taste. He dialed animations by hand, then had Claude **save the values**, so every edit follows the recipe instead of improvising. After every session: "bake what we learned into the preset". That's our loop. The upgrade: looks live as kit files of fixed numbers, and beats reuse kit pieces instead of being animated fresh each time.
+- **His look:** motion graphics at **12 fps** (deliberately steppy, "cinematic"); a glow layer on everything; grain; lowercase captions with ONE italic-serif accent word ("the *last* video"); full-screen hard cutaways to graphics on a near-black stage with a blue-violet light band, then back to the face; real assets only (real comment cards, real icons, real thumbnails); warm "autumn" grade on camera footage only; speech at −17 LUFS.
+- **Built:** `Coop.tsx` kit (useStep 12fps grid, Glow, Grain, Stage, Cutaway, CoopCaptions, Segmented, PixelMeter, Equation, Comments, BigX, Toggle) + MG v5 = ep #4's first 27s rebuilt in this look on Jason's real footage.
+- **Stills QA caught (fixed before render):** graphics too small for vertical (scaled 1.24×), empty centre (added a light pool behind the focal point), no motion on held graphics (slow 12fps push), segmented control + toggle clipping at the edges.
+
+### MG v5 score: **7.7 / 10** (Jason: "I like this"). Best motion-graphics score: v1 6.8 → v3 6.9 → v5 7.7.
+**What moved it (my read):** real proof-style UI (comment card, toggle, pixel meter) on one dark stage; hard cutaways that alternate with his face instead of graphics floating over him; 12 fps steppy motion + glow + grain giving a "designed" texture; caption accent words in serif; every graphic on his exact word with a sound.
+**Locked as a rule:** the Coop look is the motion-graphics default (SKILL.md top).
+**To get from 7.7 to 8.5+:** more graphic density per sentence (a new element every ~0.5s inside a cutaway); real logos/thumbnails fetched from the web when a brand is named; a light→dark flip or colour slam on the punchline; text behind his head on one hero word per section (the 8.3 trick) combined with this look.
+
+### Jason on v5: "I just wish the animations felt a lot smoother and non-laggy."
+- The cause was Cooperson's 12 fps stepping (held frames). Jason's taste beats the reference: **rule: motion is always smooth 30 fps, never stepped.**
+- v6: STEP = 1, motion blur (6 samples, 180°) on every cutaway, springs forced to no-wobble (critical damping), captions ease in over 7 frames with ease-out instead of a 4-frame snap. `renders/mg-coop-sample-v6-smooth.mp4`.
+
+## 2026-10-09 · One-shape UI morph "Just Post" v1 (Jason's Dribbble-style brief, "in relation to our context")
+- Jason on v6 (smooth): "this was a lot better". Approved the beat grid with "let's do it". Defaults I picked because he didn't: his story as the state list, black/white + gold accent, Mixkit track #802 (free commercial license).
+- **His premise as UI:** Post → loader → Posted ✓ → Dynamic Island "3" → "3 new comments" → hater comment swiped away → Apple Pay "Payment received" → "Care what others think" toggle dragged past max (rubber stretch) and flipped off on the beat → the knob becomes the liquid tab indicator (Views / Followers / Money) → chart draws itself, tooltip "+212%" then "all-time high" → ⌘K "who's talking" → the 3 haters filter to one row "every single person that talks · broke" → toast "They're broke." → back to Post. 120 BPM, 28 beats, 14 s, loops seamlessly.
+- **Built as an engine** (`examples/ui-morph/`): pure `seek(t)`, closed-form springs summed per change, two-edge springs on knob/indicator, direct-manipulation drags, 60 fps from 4 blended subframes (motion blur), 40 UI sounds placed by measured peak, beat grid measured with numpy (120.0 BPM exactly).
+- **QA caught before delivery:**
+  - the tooltip collided with the Money tab;
+  - the cursor covered "Post";
+  - the label swapped before the tooltip arrived at the peak;
+  - the loop seam was off by 0.6% camera zoom (last spring too slow; fixed to mean pixel difference 0.002);
+  - the chart fill appeared ahead of the line (now grows with the tip).
+- Two files: with music (to judge timing) and SFX-only (for posting; our no-music rule).
+
+## 2026-10-09 · Split into two skills (Jason: "the prompt I gave was more motion graphics; we need 2 skills for distinguishing the type of edits")
+- **jason-video-editor** (this one) = edits of his raw footage: cut, captions, SFX, graphic cutaways (Coop look).
+- **jason-motion-graphics** (new) = standalone motion pieces from a brief, no footage: the one-shape morph engine, the r05 quality bar, a brief template, its own score journal.
+- Shared between both: the Remotion kits (`template/src/lib/`) and the SFX library (`assets/sfx/`).
+
+## 2026-10-09 · Episode #5 "Chosen" v1, the first talking head with engraving cutaways (score pending)
+- **Raw:** 2 clips (90 s + 12.8 s, car selfie). The second clip continues the first mid-word ("be- / -lieves"). Saved to `raw/ep05/`.
+- **One idea:** you can't beat someone who believes he's chosen by God.
+  - Cold open = the payoff line ("How can you beat a nigga that literally believes he is chosen by God himself"), then his opening in his order.
+  - Cut: 1:43. 3 curse slow-mos: "shit", "fuck", the last "bitch". His hat-tip smile is kept as a beat.
+- **Transcription:**
+  - Whisper (faster-whisper medium.en in its own venv) was far more accurate than Vosk on this clip. Vosk garbled about a third of it.
+  - The multilingual model found his Spanish and Mandarin lines and one more language it couldn't name.
+  - Vosk timings + alias map + Whisper text = captions. **New tool rule:** run Whisper as the text check on every clip.
+- **Engraving cutaways** (the new rule, first use), rendered by `engraving/` (new reusable engine):
+  - "I'm so perspicacious": Galileo. The dot falls from the sun to his eye. Definition line.
+  - "I'm so indefatigable": Goltzius' Great Hercules. The dot lands on his heart.
+  - "because my belief on who I am is so fucking high": Napoleon crossing the Alps. The dot climbs knee → heart → hat.
+  - "chosen by God himself, like handpicked from God himself, Yahweh Yeshua HaMashiach":
+    - Polidoro's Creation of Adam: God's fingertip → Adam's hand → God's face;
+    - match cut on God's head into Preti's Moses: the three names, one at a time;
+    - iOS success on HaMashiach.
+  - iOS tink on every landing. Never music.
+- **Face beats:** CHOSEN / GIFTED / CANNOT / 1,000 / EGO / ARROGANT behind his head; 6'5" height tag; AMAZING ✓ HANDSOME ✓; iOS Translate cards for Spanish and Mandarin; a "Confidence on who I am · 100% · so fucking high" meter; the insults as iMessage notifications; follow card.
+- **QA fixes before render:** hero words moved above the hat (his head was covering more than 30% of them); notifications scaled 1.55× to be readable; God's face kept in frame; the plates' top edge faded to white.
+- **Tools improved:** `cut_sections.py` has curse slow-mo windows (`"slow"`); `metengr.py` takes queries and is crash-safe.
+- **Asked Jason** (word check, after v1 because the render is cheap to redo): the third language at 0:15–0:19; the Spanish translation; his Chinese name "Ou Jie"; "I say Jason" vs "they say Jason"; the quoted hard-r (written "nigga" per the vocabulary rule); the last line "Or don't, have a ___, bitch".
+- `renders/ep05-chosen-v1.mp4` (master, −14 LUFS, −1.5 dBTP).
+
+### Ep #5 v1 on the new scorecard (2026-10-10, Jason: "the result regressed"): **5.6 / 10**, measured from the 1 fps sheet
+| Category | Score | Why |
+|---|---|---|
+| Hook | 6 | Strong line, but 4 s of bare face before CHOSEN; no designed frame by frame 15 |
+| Psychology | 5 | Pure flex: no viewer want, no "you" turn, no lesson; the open loop is only the cold open |
+| Story | 6 | One idea, but repeats ("better than you" ×4) and no callback |
+| Retention | 4 | **~48 s of 103 (46%) bare face**; worst stretch 69–85 s (14 s with one word card) |
+| MG coverage | 5 | Translate cards sat static for 10 s; most sentences had no beat |
+| Motion craft | 8 | Smooth, blurred, timed to words |
+| Visual language | 5 | 4 type families (Nunito, Inter, Bebas, serif); 4 hard dark→white flashes into the engravings |
+| Captions | 6 | Small, mid-face |
+| Sound | 6 | Mostly tinks; few impacts; long silent stretches |
+| Accuracy/ending | 6 | 6 words unconfirmed; 5 s blurred outro, follow-only CTA |
+
+## 2026-10-10 · Episode #5 "Chosen" v2: rebuilt on the scorecard (Jason: "do v2 on that plan, dual fonting") · score pending
+- **Changes vs v1 (5.6):**
+  - **Two fonts only:** Inter + Instrument Serif italic, gold accent.
+  - **Engravings:** dark prints with a 5-frame blur-dissolve bridge in and out.
+  - **Hook card:** full-screen kinetic type, the open loop. The SAME card returns at the payoff (callback).
+  - **Viewer turn:** "YOU" staged at the viewer.
+  - **Repeats cut:** the second Tate shout-out, the first "you can't tell me shit", "I just view myself as better than you, or". Word splices were re-transcribed clean. The unnamed third language was cut too.
+  - **New beats:** an iOS Notes "if you want to be like me" checklist (two visits); one-at-a-time Translate cards; a sent iMessage shout-out; a confidence meter; a sorry → not-sorry toggle; me-vs-you bars (up, level, snap on "even though I am"); closer lines; more impacts.
+  - **Captions:** CoopCaptions at y 1460. **Outro:** 96 frames.
+- **Length:** 1:33.
+- **Scorecard (self, from the 1 fps sheet): 7.6.** Bare face ~15% (v1 46%).
+
+| Category | Score |
+|---|---|
+| Hook | 8 |
+| Psychology | 7 |
+| Story | 7 |
+| Retention | 8 |
+| MG coverage | 8 |
+| Craft | 8 |
+| Visual language | 8 |
+| Captions | 7 |
+| Sound | 7 |
+| Accuracy/ending | 6 |
+
+- **Still open:** the 5 words; the CTA (follow only).
+- `renders/ep05-chosen-v2.mp4`
+
+## 2026-10-11 · Ep #5 v3: sound-only remix through the new mix stage (`scripts/mix_talk.py`) · score pending
+- Same picture as v2. Audio rebuilt from the r20 sound spec:
+  - 102 cues, 39 distinct sounds, 12 of 13 jobs (v2: 24 sounds, no layers, all at −17 to −1.4 dB);
+  - low/mid/high whoosh layers;
+  - 3-bass stacks starting 2–3 frames early (CHOSEN, YOU, 1,000, EGO, BITCH);
+  - old-flash texture on every engraving bridge;
+  - digital-text typing under the Translate cards;
+  - silence through his look;
+  - reverb tails on the sparkle and success sounds and the follow ding;
+  - ducking under his voice.
+- Measured: voice −13.6 LUFS, SFX stem −29.2 LUFS (15.6 dB under), master −14.2 LUFS, −1.5 dBTP.
+- `renders/ep05-chosen-v3-soundmix.mp4`
+
+## 2026-10-11 · Plutarch, Alexander, Bucephalus proof v2 (16:9, 3:01) · Jason: "probably one of the best type of work you've done so far"
+- **New and LOCKED:** the word-timed kinetic captions and the gold reading ball (hops word to word, streak blur, leaps off the text to point at the eye, the shadow, the hand and the mirror). Became the skill rule READING BALL + KINETIC TEXT and `kinetic/`.
+- **Sound world:**
+  - CC0 field recordings: horses on the words (screaming, snorts, stamping, breathing, gallop on "run"); men murmuring, laughing on "laughing at you", cheering on the ride back; courtyard; wind.
+  - Public-domain score: Brahms 1 opening as tension, silence for "What do you do?", Grieg *Morning* peaking on "let him run", Brahms 3/III for the mirror.
+  - Everything ducked under the voice; master −18 LUFS.
+- **Jason's notes during the build:**
+  - "make the text dynamic, flowing, cinematic, sfx and animation coated";
+  - "background noises… horse sounds… music that matches the theme";
+  - "the dot should be motion-graphic heavy, motion blur, trail, bounce across the letters, then go point";
+  - wants to watch pieces while it renders, not just screenshots (send 20 s chunks with sound as they finish).
+- **Framework addition:** the Observer's question "who are we, here?" (role → belief → aligned action; the environment can contradict identity; the room's identity is rented). Placed in ch. 6.
+
+## 2026-10-11 · Plutarch Bucephalus proof v2 · **Jason: 9/10**
+- **The one miss:** the sun-and-shadow moment. "The animations looked a little bit shitty": a hard black SVG ellipse and an outlined sun circle.
+  - **Fix (v3):** a soft cast shadow pooled under the hooves, swaying with him, with the ball pointing at it. The sun is an amber light cast (multiply) washing in from the right, plus a bloom and slow god-rays (screen). No drawn shapes.
+- **New direction, built during ch.1 (pending his reaction):**
+  - **Shape-shifting ball.** It morphs into a symbol on the word that names it: crown (king), scales (lawgivers), book, sword (generals), eye (Observer, watching), sun, goblet, scroll (letter), flame, a beating heart, water drop, theatre mask (ego), thunderbolt (Zeus), and "?" (question).
+    - On "Tonight, you" it swells toward the viewer. On "spectator" it becomes a struck-through eye. On "As him." it draws a laurel around the hero line.
+    - Spoken lists morph word by word ("generals, lawgivers, kings").
+    - The same symbol never repeats within 9 s.
+    - Each morph gets whoosh + shine.
+  - **Pointing.** It no longer parks on a plate: it lands, rings, and returns to the words within about 3 s.
+- **Ch.1 structure (Jason):**
+  - The **Prologue** (his philosophy: an investment, the Observer, "who are we, here?", rented ego, identity built in private, why bedtime stories) opens EVERY chapter. The final film strings all the chapters together.
+  - Voice: GUIDE = bf_emma.
+  - Character voices: Diogenes, Parmenio and Porus = bm_daniel; the letter and Cleitus = bm_lewis.
+- **Correction given:** the pre-sleep window is alpha → theta, not beta.

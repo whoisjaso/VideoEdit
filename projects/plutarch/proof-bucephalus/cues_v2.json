@@ -1,0 +1,679 @@
+[
+{
+"f": 38,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 152,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 214,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 318,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 367,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 454,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 547,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 587,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 587,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 587,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 603,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 668,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 774,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 821,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 869,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 980,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1064,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1093,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1171,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1226,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1268,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1398,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1453,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1509,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1518,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": -2
+},
+{
+"f": 1577,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1648,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1688,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1778,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1834,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 1848,
+"id": "pack4.ripple_textures_2",
+"role": "texture"
+},
+{
+"f": 1960,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2013,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2066,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2103,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2210,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2385,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 2385,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 2385,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 2401,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 2537,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2540,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.6,
+"db": -4
+},
+{
+"f": 2648,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2658,
+"id": "pack5.sparkle",
+"role": "accent",
+"tail": true
+},
+{
+"f": 2658,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": -2
+},
+{
+"f": 2696,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2764,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2840,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2931,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 2987,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3033,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3166,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3172,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 3237,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3308,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3314,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.6
+},
+{
+"f": 3314,
+"id": "pack4.ripple_textures",
+"role": "texture"
+},
+{
+"f": 3314,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 1.25,
+"db": -6
+},
+{
+"f": 3456,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3511,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3621,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3685,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 3753,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 3753,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 3753,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 3769,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 3930,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4012,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4048,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4138,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4184,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4215,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": -3
+},
+{
+"f": 4235,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4327,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 4327,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 4327,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 4343,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 4387,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 4387,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 4387,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 4403,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 4496,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 4496,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 4496,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 4512,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 4548,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4576,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4624,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4734,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4807,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4870,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 4896,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 5001,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 5073,
+"id": "whoosh",
+"role": "whoosh",
+"speed": 0.55,
+"db": -3
+},
+{
+"f": 5073,
+"id": "pack4.ripple_textures",
+"role": "texture",
+"db": -4
+},
+{
+"f": 5073,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -8
+},
+{
+"f": 5089,
+"id": "pack3.shine",
+"role": "accent",
+"db": -4,
+"tail": true
+},
+{
+"f": 5190,
+"id": "swoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+},
+{
+"f": 5247,
+"id": "whoosh",
+"role": "texture",
+"speed": 0.5,
+"db": -9
+}
+]

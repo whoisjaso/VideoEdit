@@ -1,0 +1,374 @@
+[
+ {
+  "id": 336228,
+  "name": "melencolia",
+  "title": "Melencolia I",
+  "artist": "Albrecht D\u00fcrer",
+  "date": "1514",
+  "cut": false,
+  "size": [
+   1584,
+   2000
+  ]
+ },
+ {
+  "id": 336231,
+  "name": "erasmus",
+  "title": "Erasmus of Rotterdam",
+  "artist": "Albrecht D\u00fcrer",
+  "date": "1526",
+  "cut": false,
+  "size": [
+   1591,
+   2000
+  ]
+ },
+ {
+  "id": 336223,
+  "name": "knight",
+  "title": "Knight, Death, and the Devil",
+  "artist": "Albrecht D\u00fcrer",
+  "date": "1513",
+  "cut": false,
+  "size": [
+   1561,
+   2000
+  ]
+ },
+ {
+  "id": 393543,
+  "name": "moon_engr",
+  "title": "Full Moon",
+  "artist": "Claude Mellan",
+  "date": "1635",
+  "cut": false,
+  "size": [
+   1762,
+   2000
+  ]
+ },
+ {
+  "id": 262301,
+  "name": "moon_photo",
+  "title": "The Moon",
+  "artist": "John Adams Whipple",
+  "date": "1857\u201360",
+  "cut": false,
+  "size": [
+   1501,
+   2000
+  ]
+ },
+ {
+  "id": 263157,
+  "name": "moon_photo2",
+  "title": "The Moon",
+  "artist": "John Adams Whipple",
+  "date": "1857\u201360",
+  "cut": false,
+  "size": [
+   1554,
+   2000
+  ]
+ },
+ {
+  "id": 266429,
+  "name": "muy_a",
+  "title": "Animal Locomotion.  An Electro-Photographic Investigation of Consecutive Phases of Animal Movements.  Commenced 1872 - Completed 1885.  Volume I, Men (Nude)",
+  "artist": "Eadweard Muybridge",
+  "date": "1880s",
+  "cut": false,
+  "size": [
+   2000,
+   1396
+  ]
+ },
+ {
+  "id": 266431,
+  "name": "muy_elephant",
+  "title": "Animal Locomotion.  An Electro-Photographic Investigation of Consecutive Phases of Animal Movements.  Commenced 1872 - Completed 1885.  Volume XI, Wild Animals and Birds",
+  "artist": "Eadweard Muybridge",
+  "date": "1880s",
+  "cut": false,
+  "size": [
+   2000,
+   1500
+  ]
+ },
+ {
+  "id": 266441,
+  "name": "muy_horse",
+  "title": "[Horse and Rider Galloping]",
+  "artist": "Eadweard Muybridge",
+  "date": "1883\u201386, printed 1887",
+  "cut": false,
+  "size": [
+   2000,
+   1412
+  ]
+ },
+ {
+  "id": 700109,
+  "name": "muy_grid",
+  "title": "Attitudes of Animals in Motion",
+  "artist": "Eadweard Muybridge",
+  "date": "1879, printed 1881",
+  "cut": false,
+  "size": [
+   2000,
+   1575
+  ]
+ },
+ {
+  "id": 191853,
+  "name": "hand_a",
+  "title": "Study of the left hand and arm of Meditation",
+  "artist": "Auguste Rodin",
+  "date": "modeled ca. 1894, cast before 1912",
+  "cut": true,
+  "size": [
+   1514,
+   1480
+  ]
+ },
+ {
+  "id": 191854,
+  "name": "hand_b",
+  "title": "Study of a hand",
+  "artist": "Auguste Rodin",
+  "date": "original model late 19th\u2014early 20th century",
+  "cut": true,
+  "size": [
+   890,
+   1575
+  ]
+ },
+ {
+  "id": 191860,
+  "name": "hand_c",
+  "title": "Study of a hand",
+  "artist": "Auguste Rodin",
+  "date": "original model late 19th\u2014early 20th century",
+  "cut": true,
+  "size": [
+   1016,
+   1530
+  ]
+ },
+ {
+  "id": 191861,
+  "name": "hand_d",
+  "title": "Study of a hand",
+  "artist": "Auguste Rodin",
+  "date": "last quarter 19th\u2013early 20th century",
+  "cut": true,
+  "size": [
+   1944,
+   1097
+  ]
+ },
+ {
+  "id": 191862,
+  "name": "hand_e",
+  "title": "Study of a hand",
+  "artist": "Auguste Rodin",
+  "date": "20th century",
+  "cut": true,
+  "size": [
+   2000,
+   1500
+  ]
+ },
+ {
+  "id": 4022,
+  "name": "sphere",
+  "title": "Globe",
+  "artist": "",
+  "date": "1860\u201380",
+  "cut": true,
+  "size": [
+   1646,
+   2000
+  ]
+ },
+ {
+  "id": 199675,
+  "name": "globe",
+  "title": "Celestial globe",
+  "artist": "",
+  "date": "1695",
+  "cut": true,
+  "size": [
+   583,
+   700
+  ]
+ },
+ {
+  "id": 8487,
+  "name": "globe2",
+  "title": "Terrestrial Globe",
+  "artist": "James Wilson",
+  "date": "1828",
+  "cut": true,
+  "size": [
+   1249,
+   1914
+  ]
+ },
+ {
+  "id": 8029,
+  "name": "compass",
+  "title": "Surveyor's Compass",
+  "artist": "John Heilig",
+  "date": "ca. 1800",
+  "cut": true,
+  "size": [
+   2000,
+   1511
+  ]
+ },
+ {
+  "id": 188858,
+  "name": "dial",
+  "title": "Portable compass dial",
+  "artist": "E.C. Stockert",
+  "date": "18th century",
+  "cut": true,
+  "size": [
+   1988,
+   1988
+  ]
+ },
+ {
+  "id": 687392,
+  "name": "anatomy",
+  "title": "A System of Anatomical Plates of the Human Body, vol. 2",
+  "artist": "John Lizars",
+  "date": "1822\u201326",
+  "cut": false,
+  "size": [
+   1204,
+   2000
+  ]
+ },
+ {
+  "id": 425881,
+  "name": "roundel",
+  "title": "Design for a Plate with Thetis on a Shell in a Medallion Bordered by Sea Monsters",
+  "artist": "Adriaen Collaert",
+  "date": "ca. 1600",
+  "cut": false,
+  "size": [
+   1977,
+   2000
+  ]
+ },
+ {
+  "id": 701239,
+  "name": "init_I",
+  "title": "Roman Alphabet letter I with Louis XIV decoration",
+  "artist": "Bernard Picart",
+  "date": "18th century",
+  "cut": false,
+  "size": [
+   1998,
+   2000
+  ]
+ },
+ {
+  "id": 701240,
+  "name": "init_N",
+  "title": "Roman Alphabet letter N with Louis XIV decoration",
+  "artist": "Bernard Picart",
+  "date": "18th century",
+  "cut": false,
+  "size": [
+   1983,
+   2000
+  ]
+ },
+ {
+  "id": 701241,
+  "name": "init_O",
+  "title": "Roman Alphabet letter O with Louis XIV decoration",
+  "artist": "Bernard Picart",
+  "date": "18th century",
+  "cut": false,
+  "size": [
+   1972,
+   2000
+  ]
+ },
+ {
+  "id": 701242,
+  "name": "init_P",
+  "title": "Roman Alphabet letter P with Louis XIV decoration",
+  "artist": "Bernard Picart",
+  "date": "18th century",
+  "cut": false,
+  "size": [
+   2000,
+   1999
+  ]
+ },
+ {
+  "id": 701243,
+  "name": "init_T",
+  "title": "Roman Alphabet letter T with Louis XIV decoration",
+  "artist": "Bernard Picart",
+  "date": "18th century",
+  "cut": false,
+  "size": [
+   1981,
+   2000
+  ]
+ },
+ {
+  "id": 711542,
+  "name": "arcade",
+  "title": "Perspective view of the Illuminations on the Pont Notre Dame, in celebration of the recovery of the health of Louis XIV, January 30, 1687",
+  "artist": "Anonymous",
+  "date": "1750 (?)",
+  "cut": false,
+  "size": [
+   2000,
+   1405
+  ]
+ },
+ {
+  "id": 266044,
+  "name": "bust_photo",
+  "title": "Bust of Patroclus",
+  "artist": "William Henry Fox Talbot",
+  "date": "August 9, 1843",
+  "cut": false,
+  "size": [
+   1530,
+   2000
+  ]
+ },
+ {
+  "id": 359769,
+  "name": "moon_half",
+  "title": "The Moon in its Final Quarter",
+  "artist": "Claude Mellan",
+  "date": "1635",
+  "cut": false,
+  "size": [
+   1220,
+   2000
+  ]
+ },
+ {
+  "id": 196497,
+  "name": "horse_bronze",
+  "title": "Horse Trotting, the Feet Not Touching the Ground",
+  "artist": "Edgar Degas",
+  "date": "modeled after 1878, cast 1920",
+  "cut": true,
+  "size": [
+   1298,
+   1170
+  ]
+ }
+]

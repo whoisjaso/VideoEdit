@@ -1,0 +1,524 @@
+{
+ "0": [
+  {
+   "id": 388918,
+   "role": "boy reading a book by low light (stand-in for young Napoleon, POV pages)",
+   "fx": 0.42,
+   "fy": 0.34
+  },
+  {
+   "id": 391694,
+   "role": "wider: the room, a reader at a table by a single candle",
+   "fx": 0.6,
+   "fy": 0.38
+  },
+  {
+   "id": 436408,
+   "role": "young General Bonaparte, face",
+   "fx": 0.5,
+   "fy": 0.3
+  },
+  {
+   "id": 190660,
+   "role": "'Le General Bonaparte' medal, the engraving-style reveal",
+   "fx": 0.47,
+   "fy": 0.45
+  },
+  {
+   "id": 401357,
+   "role": "title card: ALEXANDRI MAGNI frontispiece (Tempesta 1608)",
+   "fx": 0.5,
+   "fy": 0.3
+  }
+ ],
+ "1": [
+  {
+   "id": 252887,
+   "role": "philosopher's marble head (stand-in for Plutarch's bust)",
+   "fx": 0.5,
+   "fy": 0.4
+  },
+  {
+   "id": 248466,
+   "role": "bronze philosopher on a lamp stand: the lamp",
+   "fx": 0.5,
+   "fy": 0.3
+  },
+  {
+   "id": 459181,
+   "role": "seated writer with book and unrolling scroll",
+   "fx": 0.5,
+   "fy": 0.35
+  },
+  {
+   "id": 681388,
+   "role": "an 18th-c. Plutarch volume, gilt binding",
+   "fx": 0.5,
+   "fy": 0.45
+  }
+ ],
+ "2": [
+  {
+   "id": 355390,
+   "role": "wide establishing: Mount Olympus from Thessaly, mountains at dawn",
+   "fx": 0.55,
+   "fy": 0.3
+  },
+  {
+   "id": 330165,
+   "role": "King Philip II on his silver coin",
+   "fx": 0.45,
+   "fy": 0.45
+  },
+  {
+   "id": 342964,
+   "role": "mother's dream: Jupiter hurling a thunderbolt",
+   "fx": 0.5,
+   "fy": 0.4
+  },
+  {
+   "id": 401383,
+   "role": "father's dream: the lion (Tempesta, Alexander's lion hunt)",
+   "fx": 0.48,
+   "fy": 0.57
+  },
+  {
+   "id": 397925,
+   "role": "Artemis of Ephesus herm (the temple that burned)",
+   "fx": 0.65,
+   "fy": 0.5
+  }
+ ],
+ "3": [
+  {
+   "id": 323723,
+   "role": "POV up at a tall Persian figure in robes (Persepolis relief)",
+   "fx": 0.5,
+   "fy": 0.22
+  },
+  {
+   "id": 360065,
+   "role": "Persian envoy in silk turban, face",
+   "fx": 0.5,
+   "fy": 0.33
+  },
+  {
+   "id": 429810,
+   "role": "how their king fought: King of Persia on horseback",
+   "fx": 0.55,
+   "fy": 0.25
+  },
+  {
+   "id": 403169,
+   "role": "map of Greece and the Aegean unrolling",
+   "fx": 0.55,
+   "fy": 0.45
+  }
+ ],
+ "5": [
+  {
+   "id": 370768,
+   "role": "Aristotle, engraved portrait",
+   "fx": 0.62,
+   "fy": 0.3
+  },
+  {
+   "id": 437394,
+   "role": "Aristotle's hand on the bust of Homer (Rembrandt)",
+   "fx": 0.56,
+   "fy": 0.23
+  },
+  {
+   "id": 385243,
+   "role": "a scene from the Iliad: Achilles' world",
+   "fx": 0.55,
+   "fy": 0.4
+  },
+  {
+   "id": 342676,
+   "role": "Alexander has Homer's book laid in the precious casket",
+   "fx": 0.42,
+   "fy": 0.4
+  },
+  {
+   "id": 816510,
+   "role": "Alexander at the tomb of Achilles",
+   "fx": 0.35,
+   "fy": 0.62
+  }
+ ],
+ "6": [
+  {
+   "id": 401177,
+   "role": "a sudden blade (stand-in: Tempesta's murder of Caesar)",
+   "fx": 0.38,
+   "fy": 0.35
+  },
+  {
+   "id": 338349,
+   "role": "crowd turning in a columned hall (stand-in for the theatre)",
+   "fx": 0.5,
+   "fy": 0.55
+  },
+  {
+   "id": 188488,
+   "role": "'we are the king': bust of Alexander",
+   "fx": 0.52,
+   "fy": 0.16
+  },
+  {
+   "id": 403169,
+   "role": "map: rebellions across Greece",
+   "fx": 0.4,
+   "fy": 0.5
+  },
+  {
+   "id": 337385,
+   "role": "Thebes: Timoclea brought before Alexander",
+   "fx": 0.45,
+   "fy": 0.35
+  }
+ ],
+ "7": [
+  {
+   "id": 436048,
+   "role": "wide: Alexander and his retinue arrive in Corinth",
+   "fx": 0.45,
+   "fy": 0.35
+  },
+  {
+   "id": 342845,
+   "role": "Diogenes stretched out in the sun beside his jar",
+   "fx": 0.66,
+   "fy": 0.56
+  },
+  {
+   "id": 812706,
+   "role": "nobles standing over the reclining Diogenes",
+   "fx": 0.2,
+   "fy": 0.78
+  },
+  {
+   "id": 771306,
+   "role": "Alexander standing over Diogenes in his barrel (dot on Diogenes' face)",
+   "fx": 0.78,
+   "fy": 0.5
+  },
+  {
+   "id": 354611,
+   "role": "close: Diogenes, the man who wants nothing",
+   "fx": 0.36,
+   "fy": 0.18
+  }
+ ],
+ "8": [
+  {
+   "id": 401384,
+   "role": "Alexander directing his army; generals advising",
+   "fx": 0.42,
+   "fy": 0.22
+  },
+  {
+   "id": 401517,
+   "role": "horse plunging into the river (stand-in for the Granicus crossing)",
+   "fx": 0.47,
+   "fy": 0.48
+  },
+  {
+   "id": 401519,
+   "role": "cavalry clash at the riverbank",
+   "fx": 0.4,
+   "fy": 0.4
+  },
+  {
+   "id": 401389,
+   "role": "a blade raised above you in the melee (Tempesta, Alexander battling the Persians)",
+   "fx": 0.2,
+   "fy": 0.18
+  }
+ ],
+ "9": [
+  {
+   "id": 437784,
+   "role": "fever after the icy river: Alexander pulled from the Cydnus (Testa)",
+   "fx": 0.47,
+   "fy": 0.62
+  },
+  {
+   "id": 446288,
+   "role": "a physician preparing the strong medicine",
+   "fx": 0.6,
+   "fy": 0.4
+  },
+  {
+   "id": 373051,
+   "role": "the physician's face as he reads (Rembrandt's physician, stand-in)",
+   "fx": 0.55,
+   "fy": 0.22
+  }
+ ],
+ "10": [
+  {
+   "id": 401373,
+   "role": "Darius flees the battlefield, leaving everything",
+   "fx": 0.33,
+   "fy": 0.22
+  },
+  {
+   "id": 338607,
+   "role": "tent curtain drawn back; the mother, wife and daughters kneel",
+   "fx": 0.7,
+   "fy": 0.58
+  },
+  {
+   "id": 219754,
+   "role": "Le Brun: Alexander before the family of Darius",
+   "fx": 0.45,
+   "fy": 0.5
+  }
+ ],
+ "11": [
+  {
+   "id": 401385,
+   "role": "the siege of Tyre from the sea",
+   "fx": 0.45,
+   "fy": 0.3
+  },
+  {
+   "id": 587682,
+   "role": "map of Egypt: the desert road west to Siwa",
+   "fx": 0.35,
+   "fy": 0.5
+  },
+  {
+   "id": 726473,
+   "role": "a temple gate in the heat (Edfu, 1844)",
+   "fx": 0.48,
+   "fy": 0.4
+  },
+  {
+   "id": 257864,
+   "role": "Zeus Ammon, the god of the oracle",
+   "fx": 0.5,
+   "fy": 0.38
+  },
+  {
+   "id": 551074,
+   "role": "the new identity: Alexander as pharaoh, son of the god",
+   "fx": 0.5,
+   "fy": 0.4
+  }
+ ],
+ "12": [
+  {
+   "id": 337344,
+   "role": "soldiers resting on a hill over a wide plain",
+   "fx": 0.6,
+   "fy": 0.5
+  },
+  {
+   "id": 401381,
+   "role": "fires across the distant hills",
+   "fx": 0.42,
+   "fy": 0.18
+  },
+  {
+   "id": 401497,
+   "role": "the night attack he refused (stand-in: Tempesta's moonlit camp raid)",
+   "fx": 0.55,
+   "fy": 0.25
+  },
+  {
+   "id": 219753,
+   "role": "Le Brun: the battle of Arbela (Gaugamela)",
+   "fx": 0.45,
+   "fy": 0.45
+  },
+  {
+   "id": 401386,
+   "role": "Alexander lays his cloak over the body of Darius",
+   "fx": 0.48,
+   "fy": 0.33
+  }
+ ],
+ "13": [
+  {
+   "id": 656034,
+   "role": "wide: entry into Babylon, gold and crowds",
+   "fx": 0.5,
+   "fy": 0.55
+  },
+  {
+   "id": 401382,
+   "role": "Alexander in his triumphal chariot",
+   "fx": 0.52,
+   "fy": 0.22
+  },
+  {
+   "id": 449027,
+   "role": "court bowing to the floor before a conqueror (Timur court, stand-in)",
+   "fx": 0.33,
+   "fy": 0.62
+  },
+  {
+   "id": 209266,
+   "role": "the mask grows: the Triumph of Alexander",
+   "fx": 0.55,
+   "fy": 0.35
+  }
+ ],
+ "14": [
+  {
+   "id": 368779,
+   "role": "wide: the banquet of Alexander",
+   "fx": 0.45,
+   "fy": 0.45
+  },
+  {
+   "id": 374030,
+   "role": "torchlight, wine and close faces (feast stand-in)",
+   "fx": 0.45,
+   "fy": 0.5
+  },
+  {
+   "id": 411225,
+   "role": "slow push to the standing figures (second impression, darker)",
+   "fx": 0.8,
+   "fy": 0.3
+  }
+ ],
+ "15": [
+  {
+   "id": 389779,
+   "role": "war elephants in the battle (stand-in for the Hydaspes)",
+   "fx": 0.4,
+   "fy": 0.35
+  },
+  {
+   "id": 338347,
+   "role": "King Porus, huge and wounded, before Alexander",
+   "fx": 0.72,
+   "fy": 0.45
+  },
+  {
+   "id": 362762,
+   "role": "'Like a king': Alexander and Porus",
+   "fx": 0.38,
+   "fy": 0.3
+  },
+  {
+   "id": 441358,
+   "role": "a white-hot desert",
+   "fx": 0.55,
+   "fy": 0.3
+  },
+  {
+   "id": 412502,
+   "role": "thirsty men crowding round the water (stand-in)",
+   "fx": 0.5,
+   "fy": 0.5
+  }
+ ],
+ "16": [
+  {
+   "id": 891634,
+   "role": "dusk over Babylon (restored view)",
+   "fx": 0.45,
+   "fy": 0.35
+  },
+  {
+   "id": 340145,
+   "role": "figures filing past a deathbed, a hand raised",
+   "fx": 0.35,
+   "fy": 0.55
+  },
+  {
+   "id": 207661,
+   "role": "the profile that remains (Alexander medal)",
+   "fx": 0.55,
+   "fy": 0.45
+  }
+ ],
+ "17": [
+  {
+   "id": 337380,
+   "role": "recap: the horse",
+   "fx": 0.35,
+   "fy": 0.45
+  },
+  {
+   "id": 342676,
+   "role": "recap: the book",
+   "fx": 0.42,
+   "fy": 0.4
+  },
+  {
+   "id": 338607,
+   "role": "recap: the tent",
+   "fx": 0.7,
+   "fy": 0.58
+  },
+  {
+   "id": 401381,
+   "role": "recap: the fires",
+   "fx": 0.42,
+   "fy": 0.18
+  },
+  {
+   "id": 188488,
+   "role": "Alexander, a last look",
+   "fx": 0.52,
+   "fy": 0.16
+  },
+  {
+   "id": 391694,
+   "role": "darkness and a single candle",
+   "fx": 0.6,
+   "fy": 0.38
+  }
+ ],
+ "18": [
+  {
+   "id": 391694,
+   "role": "one candle in the dark: why this was made",
+   "fx": 0.6,
+   "fy": 0.38
+  },
+  {
+   "id": 337777,
+   "role": "a youth asleep in a chair: the Observer keeps the record",
+   "fx": 0.5,
+   "fy": 0.32
+  },
+  {
+   "id": 436408,
+   "role": "Napoleon: why stories",
+   "fx": 0.5,
+   "fy": 0.3
+  },
+  {
+   "id": 342676,
+   "role": "Homer's book in the casket: the story under the pillow",
+   "fx": 0.42,
+   "fy": 0.4
+  },
+  {
+   "id": 340056,
+   "role": "Diana visits the sleeping Endymion: the borderland of dreams",
+   "fx": 0.38,
+   "fy": 0.55
+  },
+  {
+   "id": 339000,
+   "role": "Endymion sleeping: you stand where they stood",
+   "fx": 0.5,
+   "fy": 0.45
+  },
+  {
+   "id": 394651,
+   "role": "the sleep of Cupid: get comfortable",
+   "fx": 0.45,
+   "fy": 0.58
+  }
+ ]
+}

@@ -14,7 +14,7 @@ import { CUT, EDL } from "../ep/timeline";
  *  - moody grade (§18): saturate .78, contrast 1.06, brightness .9
  */
 export const TRANSITION = 6;
-export const Video: React.FC<{ punches: number[]; behind?: React.ReactNode; fgRanges?: [number, number][]; freeze?: [number, number] }> = ({ punches, behind, fgRanges = [], freeze }) => {
+export const Video: React.FC<{ punches: number[]; behind?: React.ReactNode; fgRanges?: [number, number][]; freeze?: [number, number]; look?: string }> = ({ punches, behind, fgRanges = [], freeze, look }) => {
   const frame = useCurrentFrame();
   const idx = Math.max(0, EDL.findIndex((p) => frame >= p.f0 && frame < p.f1));
   const piece = EDL[idx];
@@ -38,7 +38,7 @@ export const Video: React.FC<{ punches: number[]; behind?: React.ReactNode; fgRa
   const outro = frame >= CUT;
   const frozen = !!freeze && frame >= freeze[0] && frame < freeze[1];
   const ob = interpolate(frame, [CUT, CUT + 14], [0, 22], { ...clamp, easing: theme.ease.out });
-  const grade = frozen ? "saturate(0) contrast(1.1) brightness(0.8)" : "saturate(0.78) contrast(1.06) brightness(0.9)";
+  const grade = frozen ? "saturate(0) contrast(1.1) brightness(0.8)" : look ?? "saturate(0.78) contrast(1.06) brightness(0.9)";
   const style: React.CSSProperties = {
     width: "100%", height: "100%", objectFit: "cover", transformOrigin: "50% 32%",
     transform: `scale(${outro ? 1.2 : z})`,

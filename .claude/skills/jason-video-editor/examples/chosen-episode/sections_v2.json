@@ -1,0 +1,161 @@
+{
+ "sources": {
+  "p1": {
+   "video": "/home/user/ApoheniaQuest/raw/ep05/part1.mov",
+   "audio": "p1_voice.wav",
+   "words": "p1c/words.json"
+  },
+  "p2": {
+   "video": "/home/user/ApoheniaQuest/raw/ep05/part2.mov",
+   "audio": "p2_voice.wav",
+   "words": "p2c/words.json"
+  }
+ },
+ "gap_max": 1.4,
+ "gap_keep": 0.75,
+ "alias": {
+  "offer": "want",
+  "dig": "dick",
+  "gift": "gifted",
+  "said": "shout",
+  "sarah": "shout",
+  "take": "tate",
+  "hi": "high",
+  "acres": "niggas",
+  "beach": "bitch",
+  "work": "fuck",
+  "bitterly": "better",
+  "bet": "better",
+  "negative": "nigga",
+  "bill": "believes",
+  "tolzien": "chosen",
+  "hymns": "himself",
+  "hamas": "hamashiach",
+  "edo": "ego",
+  "ah": "high"
+ },
+ "keep": [
+  [
+   "p1",
+   87.45,
+   90.08,
+   "How can you ^beat a nigga that literally believes",
+   "cold"
+  ],
+  [
+   "p2",
+   0.0,
+   3.25,
+   "he is chosen by ^God himself.",
+   "cold2"
+  ],
+  [
+   "p1",
+   0.7,
+   7.8,
+   "To be honest, if you want a fat ass dick like me, you want to be six five, amazing, handsome,",
+   "hook"
+  ],
+  [
+   "p1",
+   7.8,
+   15.9,
+   "{yo hablo mucho español pinche negrito wey ni jiao shenme mingzi wo jiao ou jie}",
+   "lang"
+  ],
+  [
+   "p1",
+   19.3,
+   25.45,
+   "you want to be a real ass nigga like me that can just speak any fucking ^language.",
+   "speak"
+  ],
+  [
+   "p1",
+   25.7,
+   35.05,
+   "I'm so intellectually ^gifted. I'm so {perspicacious.} Shout out to my nigga Tate. I'm so {indefatigable.}",
+   "gifted"
+  ],
+  [
+   "p1",
+   37.5,
+   47.6,
+   "If you want to be ^better than me, you have to realize that you cannot be better than me, because my ^belief on who I am is so fucking {high.}",
+   "belief"
+  ],
+  [
+   "p1",
+   47.95,
+   51.0,
+   "My ^confidence on who I am is so fucking high.",
+   "confidence"
+  ],
+  [
+   "p1",
+   52.75,
+   54.1,
+   "You literally can't tell me shit.",
+   "cantell"
+  ],
+  [
+   "p1",
+   56.3,
+   66.9,
+   "There could be a !thousand niggas in the room, I say Jason, you're a !bitch, you're so black and ugly, and you're a fucking nigga, and I look at them and be like",
+   "room"
+  ],
+  [
+   "p1",
+   68.4,
+   70.55,
+   "I have a high ^ego.",
+   "ego"
+  ],
+  [
+   "p1",
+   71.5,
+   80.45,
+   "Sorry, I'm not sorry. Yeah, I'm ^arrogant as fuck. I know I'm better than you, and it's not because I'm literally better than you, even though I am.",
+   "arrogant"
+  ],
+  [
+   "p1",
+   83.28,
+   86.0,
+   "I view myself as ^superior and ^chosen from God.",
+   "superior"
+  ],
+  [
+   "p1",
+   87.45,
+   90.08,
+   "How can you beat a nigga that literally believes",
+   "payoff"
+  ],
+  [
+   "p2",
+   0.0,
+   12.8,
+   "he is {chosen by God himself,} like handpicked from ^God himself, {Yahweh Yeshua HaMashiach.} Make it make sense. Or don't. Have a, bitch.",
+   "payoff2"
+  ]
+ ],
+ "slow": [
+  [
+   "p1",
+   53.86,
+   54.18
+  ],
+  [
+   "p1",
+   74.64,
+   74.93
+  ],
+  [
+   "p2",
+   12.39,
+   12.8
+  ]
+ ]
+}

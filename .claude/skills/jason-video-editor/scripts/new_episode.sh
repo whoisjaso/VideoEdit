@@ -8,7 +8,8 @@ mkdir -p "$P" && cp -r "$SK/template/." "$P/"
 mkdir -p "$P/public/ep" "$P/public/sfx" "$P/public/logos"
 python3 -c "import numpy" 2>/dev/null || pip install -q numpy
 (cd "$P" && python3 "$SK/scripts/synth_sfx.py" >/dev/null)   # synth fallbacks first (tapestop, boom, ...)
-cp -r "$SK/assets/sfx/." "$P/public/sfx/"                                 # then the real sounds win: root, ios/, ui/, pack3/, pack4/
+cp -r "$SK/assets/sfx/." "$P/public/sfx/"                                 # then the real sounds win: root, ios/, ui/, pack3-6/
+cp "$SK/assets/sfx/library.json" "$P/src/lib/sfx-library.json"          # <Hit> reads ids, leads and volumes from here
 cp "$SK/assets/logos/"*.svg "$P/public/logos/"
 cp "$SK/assets/avatar.png" "$P/public/ep/avatar.png"
 (cd "$P" && npm i --silent --no-audit --no-fund)

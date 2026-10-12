@@ -1,0 +1,298 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bucephalus proof</title>
+<style>
+@font-face { font-family: "IS"; src: url("is-italic.woff2") format("woff2"); font-style: italic; font-weight: 400; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0C; }
+.L { position: absolute; left: 0; top: 0; }
+.shot { position: absolute; left: 0; top: 0; max-width: none; filter: grayscale(1) sepia(0.18) brightness(0.72) contrast(1.15); }
+.line { position: absolute; left: 0; width: 1920px; text-align: center; white-space: nowrap; line-height: 1.15; }
+svg { overflow: visible; }
+.cap { font-family: InterV; font-weight: 560; font-size: 52px; color: #F1EEE6; letter-spacing: 0.005em; text-shadow: 0 3px 28px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.6); }
+.cap.fable { font-family: IS; font-style: italic; font-weight: 400; font-size: 60px; color: #EFE6D2; letter-spacing: 0; }
+.cap .k { font-family: IS; font-style: italic; font-weight: 400; color: #FFC94A; font-size: 1.22em; }
+.cap.fable .k { font-size: 1.08em; }
+.cap span, .hero-l { display: inline-block; will-change: transform, filter, opacity; }
+#hero { font-family: IS; font-style: italic; font-weight: 400; color: #FFC94A; filter: drop-shadow(0 0 26px rgba(255,201,74,.32)) drop-shadow(0 6px 30px rgba(0,0,0,.9)); }
+.micro { position: absolute; font-family: InterV; font-weight: 600; font-size: 17px; letter-spacing: 0.32em; color: rgba(236,232,222,.62); text-transform: uppercase; white-space: nowrap; }
+</style>
+<script src="kit.js"></script>
+<script src="caps.js"></script>
+</head><body>
+<div id="world" class="L" style="width:1920px;height:1080px;overflow:hidden"></div>
+<canvas id="dust" class="L" width="1920" height="1080"></canvas>
+<svg id="geo" class="L" width="1920" height="1080"></svg>
+<div id="vig" class="L" style="width:1920px;height:1080px"></div>
+<div id="sunlight" class="L" style="width:1920px;height:1080px;mix-blend-mode:multiply;pointer-events:none"></div>
+<div id="bloom" class="L" style="width:1920px;height:1080px;mix-blend-mode:screen;pointer-events:none"></div>
+<div id="rays" class="L" style="width:1920px;height:1080px;mix-blend-mode:screen;pointer-events:none"></div>
+<div id="gshadow" class="L" style="width:1920px;height:1080px;pointer-events:none;mix-blend-mode:multiply"></div>
+<div id="scrim" class="L" style="width:1920px;height:1080px;background:linear-gradient(180deg,rgba(8,8,10,0) 62%,rgba(8,8,10,.62) 100%)"></div>
+<div id="cap0" class="line cap"></div>
+<div id="cap1" class="line cap"></div>
+<svg id="rule" class="L" width="1920" height="1080"><line id="ruleL" stroke="#FFC94A" stroke-width="1.5" stroke-linecap="round"/></svg>
+<div id="hero" class="line"></div>
+<div id="microA" class="micro" style="left:96px;top:78px"></div>
+<div id="microB" class="micro" style="right:96px;top:78px;text-align:right"></div>
+<canvas id="trail" class="L" width="1920" height="1080"></canvas>
+<script>
+/* Plutarch · Alexander · Bucephalus proof. Pure seek(t), t in seconds. 16:9, sleep pace: long dissolves, slow dollies.
+   Times come from the narration (lines.json). Public-domain plates (Met CC0) in a dimmed print treatment. */
+const { clamp, lerp, lmix, E, hit, prog } = K;
+const GOLD = "#FFC94A", INK = "rgba(236,232,222,0.85)";
+const $ = (id) => document.getElementById(id);
+// shots: plate anchored at (fx,fy) on screen point (x,y), width w, dolly z0→z1 over [t0,t1], dissolve in/out 1.2 s
+const SH = [
+  { img: "rearback",   t0: 0.0,   t1: 11.4,  x: 960, y: 520, w: 2150, fx: 0.48, fy: 0.42, z0: 1.00, z1: 1.18 },
+  { img: "bridle",     t0: 10.4,  t1: 23.0,  x: 960, y: 470, w: 2300, fx: 0.52, fy: 0.32, z0: 1.00, z1: 1.10 },
+  { img: "chaos",      t0: 22.0,  t1: 33.4,  x: 960, y: 560, w: 2150, fx: 0.52, fy: 0.55, z0: 1.05, z1: 1.20 },
+  { img: "bucephalus", t0: 32.4,  t1: 47.4,  x: 960, y: 470, w: 2250, fx: 0.42, fy: 0.30, z0: 1.00, z1: 1.12 },
+  { img: "bridle",     t0: 46.4,  t1: 60.2,  x: 960, y: 430, w: 3600, fx: 0.565, fy: 0.105, z0: 1.00, z1: 1.35, name: "eye" },
+  { img: "rearback",   t0: 59.2,  t1: 66.2,  x: 960, y: 560, w: 2150, fx: 0.48, fy: 0.885, z0: 1.10, z1: 1.00, name: "shadow" },
+  { img: "bucephalus", t0: 65.2,  t1: 80.0,  x: 960, y: 520, w: 2600, fx: 0.30, fy: 0.27, z0: 1.00, z1: 1.16 },
+  { img: "bridle",     t0: 79.0,  t1: 85.4,  x: 960, y: 500, w: 3800, fx: 0.565, fy: 0.105, z0: 1.35, z1: 1.40, dim: 0.35 },
+  { img: "bridle",     t0: 84.4,  t1: 98.6,  x: 900, y: 420, w: 3000, fx: 0.52, fy: 0.16, z0: 1.00, z1: 1.12, name: "hand" },
+  { img: "riderback",  t0: 97.6,  t1: 111.0, x: 960, y: 560, w: 2000, fx: 0.60, fy: 0.40, z0: 1.00, z1: 1.22 },
+  { img: "rider",      t0: 110.0, t1: 116.2, x: 960, y: 560, w: 2000, fx: 0.55, fy: 0.45, z0: 1.05, z1: 1.05, pan: -260 },
+  { img: "king",       t0: 115.2, t1: 131.8, x: 1000, y: 500, w: 2400, fx: 0.57, fy: 0.34, z0: 1.00, z1: 1.15 },
+  { img: "bucephalus", t0: 130.8, t1: 182.0, x: 960, y: 520, w: 2300, fx: 0.56, fy: 0.24, z0: 1.00, z1: 1.30, dim: 0.55 },
+];
+SH.forEach((s) => { s.el = new Image(); s.el.src = "img/" + s.img + ".png"; s.el.className = "shot"; s.el.style.display = "none"; $("world").appendChild(s.el); });
+const zoomOf = (s, t) => lmix(s.z0, s.z1, E.dolly(prog(t, s.t0, s.t1 - s.t0)));
+const plateXY = (s, fx, fy, t) => { const k = zoomOf(s, t), W = s.w, H = s.w * s.ar; const px = (s.pan || 0) * E.smooth(prog(t, s.t0, s.t1 - s.t0)); return [s.x + px + (fx - s.fx) * W * k, s.y + (fy - s.fy) * H * k]; };
+const byName = (n) => SH.find((s) => s.name === n);
+// the gold device: lands on evidence (eye → shadow → hand → the horse in the mirror section)
+const KEYS = [
+  { t: 50.6, at: () => [byName("eye"), 0.558, 0.112], r: 70 },
+  { t: 61.6, at: () => [byName("shadow"), 0.50, 0.975], r: 90 },
+  { t: 88.6, at: () => [byName("hand"), 0.505, 0.15], r: 64 },
+  { t: 140.5, at: () => [SH[12], 0.56, 0.24], r: 80 },
+];
+// text: word-timed captions (caps.js PH) + per-letter hero titles (caps.js HERO)
+const ring = K.svg("circle", { fill: "none", stroke: INK, "stroke-width": 2, pathLength: 1 }, $("geo"));
+const dctx = $("dust").getContext("2d");
+const motes = Array.from({ length: 140 }, (_, i) => ({ x: (i * 977) % 1920, y: (i * 613) % 1080, s: 0.6 + ((i * 37) % 10) / 6, v: 6 + ((i * 53) % 14), ph: i * 1.7 }));
+
+function seek(t) {
+  // plates with dissolves
+  SH.forEach((s) => {
+    const on = t >= s.t0 && t < s.t1; s.el.style.display = on ? "" : "none"; if (!on) return;
+    const a = Math.min(K.clamp((t - s.t0) / 1.2), K.clamp((s.t1 - t) / 1.2));
+    const [x, y] = plateXY(s, s.fx, s.fy, t);
+    K.anchor(s.el, x, y, s.w, s.fx, s.fy, 0, zoomOf(s, t));
+    s.el.style.opacity = E.smooth(a) * (1 - (s.dim || 0));
+  });
+  // vignette + heartbeat (73.9–79.6 "your heart is pounding")
+  let beat = 0; if (t > 73.9 && t < 79.6) { const p = (t - 73.9) % 0.92; beat = Math.exp(-p * 9) + 0.6 * Math.exp(-Math.max(0, p - 0.22) * 11) * (p > 0.22); }
+  const vigA = 0.55 + 0.25 * beat + (t > 79 && t < 84.5 ? 0.25 : 0);
+  $("vig").style.background = `radial-gradient(115% 95% at 50% 48%, rgba(10,10,12,0) 40%, rgba(10,10,12,${vigA}) 78%, #0A0A0C 100%)`;
+  // dust motes drifting through warm light (the training ground), fading out by the mirror section
+  dctx.clearRect(0, 0, 1920, 1080);
+  const dustA = K.clamp(1 - (t - 126) / 4) * K.clamp(t / 2);
+  if (dustA > 0) { for (const m of motes) { const x = (m.x + t * m.v) % 1960 - 20, y = (m.y - t * m.v * 0.35 + 1080 * 4) % 1080 + Math.sin(t * 0.6 + m.ph) * 8;
+      dctx.fillStyle = `rgba(255,214,150,${0.22 * dustA * (0.5 + 0.5 * Math.sin(t * 0.9 + m.ph))})`; dctx.beginPath(); dctx.arc(x, y, m.s, 0, 6.283); dctx.fill(); } }
+  // the shadow (59.4–66): a soft cast shadow pools under his hooves and sways with him
+  { const q = E.inOut(K.clamp((t - 59.4) / 1.8)) * K.clamp((66 - t) / 1.2);
+    $("gshadow").style.display = q > 0.001 ? "" : "none";
+    if (q > 0.001) { const [x, y] = plateXY(byName("shadow"), 0.5, 0.975, t), sw = 40 * Math.sin(t * 2.2), st = 1 + 0.08 * Math.sin(t * 2.2 + 1);
+      $("gshadow").style.background = `radial-gradient(${560 * st}px ${130 * q}px at ${x - 140 + sw}px ${y - 10}px, rgba(20,16,12,${0.85 * q}) 0%, rgba(40,34,28,${0.55 * q}) 38%, rgba(255,255,255,0) 100%), radial-gradient(1400px 420px at ${x}px ${y + 80}px, rgba(70,62,52,${0.5 * q}) 0%, rgba(255,255,255,0) 100%)`; } }
+  // the sun (88.6–98.4): you turn him to the light: an amber cast washes the scene from the right, a bloom and slow rays at the source
+  { const q = E.inOut(K.clamp((t - 88.6) / 3.0)) * (1 - E.inOut(K.clamp((t - 97.0) / 1.6)));
+    const cx = 1900 - 260 * E.dolly(K.clamp((t - 88.6) / 9)), cy = 150 + 50 * E.dolly(K.clamp((t - 88.6) / 9));
+    ["sunlight", "bloom", "rays"].forEach((id) => $(id).style.display = q > 0.001 ? "" : "none");
+    if (q > 0.001) {
+      $("sunlight").style.background = `radial-gradient(2200px 1500px at ${cx}px ${cy}px, rgba(255,${200 + 30 * (1 - q)},${140 + 80 * (1 - q)},1) 0%, rgba(255,${226 + 20 * (1 - q)},${190 + 50 * (1 - q)},1) 60%, rgba(255,250,240,1) 100%)`;
+      $("sunlight").style.opacity = 0.95 * q;
+      $("bloom").style.background = `radial-gradient(700px 560px at ${cx}px ${cy}px, rgba(255,226,170,${0.55 * q}) 0%, rgba(255,190,120,${0.18 * q}) 45%, rgba(255,170,100,0) 80%)`;
+      const rot = 200 + 5 * Math.sin(t * 0.21);
+      $("rays").style.background = `repeating-conic-gradient(from ${rot}deg at ${cx}px ${cy}px, rgba(255,230,180,${0.11 * q}) 0deg 1.6deg, rgba(255,230,180,0) 1.6deg 6.5deg)`;
+      $("rays").style.webkitMaskImage = $("rays").style.maskImage = `radial-gradient(1700px 1250px at ${cx}px ${cy}px, #000 0%, rgba(0,0,0,.45) 45%, transparent 80%)`;
+    } }
+  // device
+  let cur = null, pos = null;
+  for (let i = 0; i < KEYS.length; i++) { const k = KEYS[i], nx = KEYS[i + 1]; if (t >= k.t - 1.6 && t < (nx ? nx.t - 1.6 : 1e9)) cur = k; }
+  if (cur) {
+    const [s, fx, fy] = cur.at(); const live = t >= s.t0 && t < s.t1;
+    if (live) {
+      const [x, y] = plateXY(s, fx, fy, t), q = E.out(prog(t, cur.t - 1.6, 1.6));
+      const out = K.clamp((s.t1 - 0.8 - t) / 0.8);
+      ring.style.display = ""; ring.setAttribute("cx", x); ring.setAttribute("cy", y); ring.setAttribute("r", cur.r); ring.style.transformOrigin = `${x}px ${y}px`; ring.style.transform = "rotate(-90deg)";
+      K.drawOn(ring, t * 60, cur.t * 60, 40, (s.t1 - 1.6) * 60, 30); ring.style.opacity = out;
+    } else { ring.style.display = "none"; }
+  } else { ring.style.display = "none"; }
+  text(t);
+  ball(t);
+}
+const mixHex = (a, b, k) => { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const x = p(a), y = p(b); return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * k)).join(",")})`; };
+const esc = (w) => w.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+function text(t) {
+  // captions: two alternating slots so the outgoing phrase can lift away while the next one writes itself in
+  const live = PH.map((p, i) => [p, i]).filter(([p]) => t >= p.w[0][1] - 0.12 && t < p.out + 0.4);
+  [0, 1].forEach((slot) => {
+    const el = $("cap" + slot), hit = live.filter(([p, i]) => i % 2 === slot).slice(-1)[0];
+    if (!hit) { el.style.display = "none"; return; }
+    const [p] = hit, t0 = p.w[0][1], ex = E.inOut(K.clamp((t - p.out) / 0.4));
+    el.style.display = ""; el.className = "line cap" + (p.f ? " fable" : "");
+    const drift = (t - t0) * 3.2;                                  // the whole line rises slowly while it lives
+    el.style.top = (p.f ? 872 : 884) - (t0 > 59.2 && t0 < 66 ? 150 : 0) - drift - ex * 78 + "px";
+    el.style.opacity = 1 - ex; el.style.filter = ex > 0 ? `blur(${ex * 9}px)` : "none";
+    el.style.letterSpacing = (p.f ? 0 : 0.005) + 0.018 * E.out(K.clamp((t - t0) / 4)) + "em";   // tracking breathes open
+    el.innerHTML = p.w.map(([w, ws, we, k], j) => {
+      const q = E.out(K.clamp((t - ws + 0.06) / (k ? 0.6 : 0.42)));
+      const glow = k ? Math.exp(-Math.max(0, t - ws - 0.15) * 1.6) * q : 0;
+      const sc = k ? 1.14 - 0.14 * E.out(K.clamp((t - ws) / 0.9)) : 1;
+      return `<span class="${k ? "k" : ""}" style="opacity:${q};transform:translateY(${(1 - q) * 0.42}em) scale(${sc});filter:blur(${(1 - q) * 10}px)${k ? ` drop-shadow(0 0 ${18 * glow}px rgba(255,201,74,${0.7 * glow}))` : ""};margin-right:${j < p.w.length - 1 ? 0.24 : 0}em">${esc(w)}</span>`;
+    }).join("");
+  });
+  // hero: letters write in with a stagger (blur → sharp, rise), a light sweep travels across, tracking slowly opens, letters lift out
+  const h = HERO.filter((x) => t >= x.t - 0.15 && t < x.out + 0.8).slice(-1)[0], hel = $("hero"), rl = $("ruleL");
+  if (h) {
+    const L = [...h.txt], n = L.length, st = Math.min(0.05, 0.9 / n), life = t - h.t;
+    hel.style.display = ""; hel.style.top = h.y - h.size * 0.62 - 150 * E.inOut(K.clamp((t - h.out) / 0.7)) + "px"; hel.style.fontSize = h.size + "px";
+    hel.style.letterSpacing = 0.005 + 0.05 * E.dolly(K.clamp(life / Math.max(1, h.out - h.t))) + "em";
+    const sweep = (life - 0.55) / 1.5 * (n + 8) - 4;               // the shimmer's position, in letters
+    hel.innerHTML = L.map((c, i) => {
+      const q = E.out(K.clamp((life - i * st) / 0.7)), o = E.inOut(K.clamp((t - h.out - (n - 1 - i) * st * 0.25) / 0.55));
+      const sh = Math.exp(-((i - sweep) ** 2) / 5) * (sweep > -3 && sweep < n + 4 ? 1 : 0);
+      if (c === " ") return '<span class="hero-l" style="width:0.24em"></span>';
+      return `<span class="hero-l" style="opacity:${q * (1 - o)};color:${mixHex("#FFC94A", "#FFF7DE", sh * 0.9)};transform:translateY(${(1 - q) * 0.32 - o * 0.28}em) scale(${1 + 0.08 * (1 - q)});filter:blur(${(1 - q) * 16 + o * 12}px)">${esc(c)}</span>`;
+    }).join("");
+    const wide = Math.min(1500, h.size * n * 0.38) * E.out(K.clamp((life - 0.35) / 1.3)), ra = 1 - E.inOut(K.clamp((t - h.out) / 0.6));
+    rl.style.display = ""; rl.setAttribute("x1", 960 - wide / 2); rl.setAttribute("x2", 960 + wide / 2); rl.setAttribute("y1", h.y + h.size * 0.36); rl.setAttribute("y2", h.y + h.size * 0.36);
+    rl.style.opacity = 0.55 * ra;
+  } else { hel.style.display = "none"; rl.style.display = "none"; }
+  // editorial micro-type: the chapter at the top, the mirror section marked when the voice turns
+  const mt = (el, txt, t0, t1) => { const a = Math.min(K.clamp((t - t0) / 1.4), K.clamp((t1 - t) / 1.4)); el.style.opacity = E.smooth(a); el.style.letterSpacing = 0.32 + 0.06 * K.clamp((t - t0) / (t1 - t0)) + "em"; el.textContent = txt; };
+  if (t < 131) { mt($("microA"), "Plutarch's Lives  ·  I  ·  Alexander", 0.6, 10.5); mt($("microB"), "Macedonia  ·  c. 344 BC", 1.2, 10.5); }
+  else { mt($("microA"), "The Mirror", 130.6, 137.5); mt($("microB"), "", 0, 1); }
+}
+window.seek = seek;
+/* THE BALL: one gold dot that reads along with the narration — it hops word to word as each word is spoken,
+   then springs off the text in a high arc to whatever the story points at, and comes back to the words.
+   Motion blur = a streak of past positions (pure function of t, so every frame is deterministic). */
+const capY = (p, t) => (p.f ? 872 : 884) - (p.w[0][1] > 59.2 && p.w[0][1] < 66 ? 150 : 0) - (t - p.w[0][1]) * 3.2;
+let HOPS = [];
+function measure() {
+  const m = document.createElement("div"); m.className = "line cap"; m.style.top = "-3000px"; document.body.appendChild(m);
+  PH.forEach((p) => {
+    m.className = "line cap" + (p.f ? " fable" : ""); m.style.letterSpacing = (p.f ? 0 : 0.005) + 0.012 + "em";
+    m.innerHTML = p.w.map(([w, , , k], j) => `<span class="${k ? "k" : ""}" style="margin-right:${j < p.w.length - 1 ? 0.24 : 0}em">${esc(w)}</span>`).join("");
+    p.cx = [...m.children].map((c) => c.offsetLeft + c.offsetWidth / 2);
+  });
+  m.className = "line"; m.style.fontFamily = "IS"; m.style.fontStyle = "italic";
+  HERO.forEach((h) => {
+    m.style.fontSize = h.size + "px"; m.style.letterSpacing = "0.03em";
+    const ws = h.txt.split(" "); m.innerHTML = ws.map((w, j) => `<span style="margin-right:${j < ws.length - 1 ? 0.24 : 0}em">${esc(w)}</span>`).join("");
+    const st = Math.min(0.05, 0.9 / h.txt.length); let c = 0;
+    h.hop = ws.map((w, j) => { const at = h.t + c * st + 0.25; c += w.length + 1; return { at, x: m.children[j].offsetLeft + m.children[j].offsetWidth / 2 }; });
+  });
+  m.remove();
+}
+function buildHops() {
+  const win = KEYS.map((k, i) => { const [s] = k.at(); const nx = KEYS[i + 1]; return [k.t - 1.6, Math.min(nx ? nx.t - 1.6 : 1e9, s.t1 - 0.8, k.t + 3.0), k]; });
+  const inWin = (t) => win.some(([a, b]) => t >= a - 0.1 && t < b + 0.35);
+  const H = [];
+  const iconAt = (t) => (typeof ICONS_AT === "undefined" ? [] : ICONS_AT).find((x) => Math.abs(x[0] - t) < 0.02);
+  let holdTo = -1;
+  PH.forEach((p) => p.w.forEach((w, j) => { if (inWin(w[1]) || w[1] < holdTo) return;
+    const ic = iconAt(w[1]), nxi = ic ? ICONS_AT.find((x) => x[0] > w[1] + 0.05) : null, hold = ic ? Math.min(1.3, nxi ? nxi[0] - w[1] - 0.08 : 1.3) : 0;
+    H.push({ at: w[1] + 0.04, kind: "w", r: 8.5, icon: ic ? ic[1] : null, hold, tg: (t) => ({ x: p.cx[j], y: capY(p, t) - 2, a: 1 - E.inOut(K.clamp((t - p.out) / 0.4)) }) });
+    if (ic) holdTo = w[1] + hold; }));
+  HERO.forEach((h) => h.hop.forEach((o, oi) => { if (inWin(o.at)) return;
+    H.push({ at: o.at, kind: h.icon && oi === h.hop.length - 1 ? "h" : "w", r: 10, icon: h.icon && oi === h.hop.length - 1 ? h.icon : null, hold: h.icon && oi === h.hop.length - 1 ? 2.6 : 0, hx: h, tg: (t) => ({ x: o.x, y: h.y - h.size * 0.66, a: 1 - E.inOut(K.clamp((t - h.out) / 0.6)) }) }); }));
+  win.forEach(([a, b, k]) => { const [s, fx, fy] = k.at();
+    H.push({ at: k.t, dur: 1.6, kind: "k", r: 13, icon: k.icon || null, hold: k.icon ? 2.4 : 0, tg: (t) => { const [x, y] = plateXY(s, fx, fy, t); return { x, y, a: K.clamp((b + 0.5 - t) / 0.5) * (t < s.t1 ? 1 : 0) }; } }); });
+  H.sort((a, b) => a.at - b.at);
+  H.forEach((h, i) => { const pv = H[i - 1]; if (h.kind !== "k") h.dur = Math.max(0.1, Math.min(0.34, pv ? h.at - pv.at : 0.3)); h.t0 = h.at - h.dur; });
+  HOPS = H;
+}
+function ballAt(t) {
+  let i = -1; for (let j = 0; j < HOPS.length; j++) { if (HOPS[j].t0 <= t) i = j; else break; }
+  if (i < 0) return null;
+  const h = HOPS[i], to = h.tg(t);
+  if (t >= h.at) { const s = t - h.at, sq = Math.exp(-s * 16) * (h.kind === "k" ? 1.4 : 1);
+    const nx = HOPS[i + 1], end = Math.min(h.at + (h.hold || 0), nx ? nx.t0 : 1e9);
+    const m = h.icon ? Math.min(K.clamp(s / 0.3), K.clamp((end - t) / 0.28)) : 0;
+    return { x: to.x, y: to.y, a: to.a, r: h.r + (h.kind === "k" ? 6 * Math.exp(-s * 5) : 0), sq: sq * (1 - m), icon: h.icon, m, s, kind: h.kind, hx: h.hx }; }
+  const pv = HOPS[i - 1], fr = pv ? pv.tg(h.t0) : { x: to.x, y: to.y + 120, a: 0 };
+  const p = (t - h.t0) / h.dur, e = h.kind === "k" ? E.inOut(p) : K.E.smooth(p);
+  const dist = Math.hypot(to.x - fr.x, to.y - fr.y), Hh = h.kind === "k" ? 180 + 0.25 * dist : 18 + 0.07 * dist;
+  return { x: lerp(fr.x, to.x, e), y: lerp(fr.y, to.y, e) - Hh * 4 * e * (1 - e), a: lerp(fr.a, to.a, Math.min(1, p * 1.5)), r: lerp(pv ? pv.r : h.r, h.r, e), sq: 0 };
+}
+
+const ICON = {
+  crown: "M10 46 L13 20 L23 33 L32 14 L41 33 L51 20 L54 46 Z M11 53 H53 M32 14 m0 -4 v0",
+  scales: "M32 8 V54 M20 54 H44 M12 18 H52 M12 18 L5 34 H19 Z M52 18 L45 34 H59 Z M32 8 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0",
+  book: "M32 18 C24 12 14 12 7 14 V50 C14 48 24 48 32 54 C40 48 50 48 57 50 V14 C50 12 40 12 32 18 Z M32 18 V54",
+  sword: "M32 4 L36.5 11 V40 H27.5 V11 Z M18 40 H46 M32 40 V52 M27 57 H37",
+  eye: "M4 32 C15 17 49 17 60 32 C49 47 15 47 4 32 Z M32 32 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 M32 32 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0",
+  sun: "M32 22 a10 10 0 1 0 0.01 0 M32 4 V13 M32 51 V60 M4 32 H13 M51 32 H60 M12.2 12.2 L18.6 18.6 M45.4 45.4 L51.8 51.8 M12.2 51.8 L18.6 45.4 M45.4 18.6 L51.8 12.2",
+  cup: "M19 10 H45 C45 27 39 34 32 34 C25 34 19 27 19 10 Z M32 34 V48 M21 53 H43 M21 17 H43",
+  scroll: "M14 14 H46 C51 14 51 23 46 23 H19 V47 H51 C56 47 56 56 51 56 H19 C14 56 14 47 19 47 M19 14 C14 14 14 23 19 23 M25 31 H41 M25 38 H37",
+  flame: "M32 6 C40 19 47 28 45 40 C43 51 37 56 32 56 C24 56 17 49 19 39 C21 31 27 30 27 21 C33 27 34 33 36 36 C38 29 36 17 32 6 Z",
+  heart: "M32 54 C13 41 7 31 11 22 C15 13 26 13 32 22 C38 13 49 13 53 22 C57 31 51 41 32 54 Z",
+  drop: "M32 6 C40 20 49 29 49 40 A17 17 0 0 1 15 40 C15 29 24 20 32 6 Z M24 41 C24 46 27 49 31 50",
+  mask: "M12 12 C23 17 41 17 52 12 C54 30 47 49 32 54 C17 49 10 30 12 12 Z M20 27 C22 24 27 24 29 27 M35 27 C37 24 42 24 44 27 M23 40 C28 45 36 45 41 40",
+  bolt: "M37 4 L17 34 H30 L25 60 L47 26 H34 Z",
+  q: "M21 22 C21 9 43 8 43 22 C43 31 32 32 32 42 M32 52 V52.5",
+  eyex: "M4 32 C15 17 49 17 60 32 C49 47 15 47 4 32 Z M32 32 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 M8 56 L56 8",
+  laurel: "M20 56 C6 46 4 26 14 12 M44 56 C58 46 60 26 50 12 M14 20 C8 18 6 14 7 10 C12 11 15 14 14 20 M11 30 C5 29 2 25 2 21 C7 21 11 25 11 30 M11 40 C5 41 2 38 1 34 C6 33 10 36 11 40 M15 49 C10 52 6 50 4 47 C8 45 13 46 15 49 M50 20 C56 18 58 14 57 10 C52 11 49 14 50 20 M53 30 C59 29 62 25 62 21 C57 21 53 25 53 30 M53 40 C59 41 62 38 63 34 C58 33 54 36 53 40 M49 49 C54 52 58 50 60 47 C56 45 51 46 49 49",
+};
+const ICONP = Object.fromEntries(Object.entries(ICON).map(([k, v]) => [k, new Path2D(v)]));
+function drawYou(ctx, b, t) {          // "Tonight, you": the light comes toward the viewer: swells, flares, rings out, shrinks back
+  const m = b.m, k = K.clamp(b.s / 1.1), sw = Math.sin(Math.PI * k);
+  ctx.save(); ctx.shadowColor = "rgba(255,201,74,0.95)";
+  const R = 9 + 150 * E.out(sw);
+  const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, R * 1.6);
+  g.addColorStop(0, `rgba(255,246,220,${0.95 * b.a})`); g.addColorStop(0.35, `rgba(255,201,74,${0.75 * b.a * sw})`); g.addColorStop(1, "rgba(255,201,74,0)");
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(b.x, b.y, R * 1.6, 0, 6.283); ctx.fill();
+  for (let i = 0; i < 3; i++) { const q = K.clamp((b.s - i * 0.18) / 0.9); if (q <= 0 || q >= 1) continue;
+    ctx.strokeStyle = `rgba(255,214,120,${(1 - q) * 0.8 * b.a})`; ctx.lineWidth = 2.5; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(b.x, b.y, 20 + 420 * E.out(q), 0, 6.283); ctx.stroke(); }
+  ctx.restore();
+}
+function drawIcon(ctx, b, t) {
+  const m = b.m, e = 1 + 0.18 * Math.sin(Math.PI * Math.min(1, m)) * (m < 1 ? 1 : 0);     // tiny overshoot on arrival
+  if (b.icon === "you") { drawYou(ctx, b, t); return; }
+  let lift = b.kind === "k" ? 0 : 66 * E.out(m), sc = (b.kind === "k" ? 1.6 : 1.5) * (0.35 + 0.65 * E.out(m)) * e;
+  if (b.kind === "h" && b.hx) { const hx = b.hx; b = Object.assign({}, b, { x: 960, y: hx.y - hx.size * 0.12 }); lift = 0; sc = (hx.size * hx.txt.length * 0.66 / 64) * (0.6 + 0.4 * E.out(m)); }
+  const bob = b.icon === "q" ? Math.sin(t * 3.2) * 0.16 : Math.sin(t * 2.0) * 0.04;
+  if (b.icon === "heart") sc *= 1 + 0.16 * Math.pow(Math.max(0, Math.sin(t * 7.2)), 6);    // it beats
+  ctx.save(); ctx.translate(b.x, b.y - lift); ctx.rotate(bob); ctx.scale(sc, sc); ctx.translate(-32, -32);
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.shadowColor = "rgba(255,201,74,0.9)"; ctx.shadowBlur = 22;
+  ctx.fillStyle = `rgba(255,201,74,${0.16 * m * b.a})`; ctx.fill(ICONP[b.icon]);
+  ctx.setLineDash([420 * Math.min(1, m * 1.15), 420]); ctx.strokeStyle = `rgba(255,214,120,${b.a})`; ctx.lineWidth = 3.4 / sc;
+  ctx.stroke(ICONP[b.icon]); ctx.setLineDash([]);
+  if (b.icon === "q") { ctx.fillStyle = `rgba(255,214,120,${b.a * m})`; ctx.beginPath(); ctx.arc(32, 53, 3.6, 0, 6.283); ctx.fill(); }
+  ctx.restore();
+  if (b.s < 0.5) { const k = b.s / 0.5; ctx.save(); ctx.shadowBlur = 8; ctx.shadowColor = "rgba(255,201,74,.8)";       // spark burst as it transforms
+    for (let i = 0; i < 9; i++) { const an = i * 0.698 + 0.3, d = 14 + 48 * E.out(k);
+      ctx.fillStyle = `rgba(255,224,160,${(1 - k) * b.a})`; ctx.beginPath(); ctx.arc(b.x + Math.cos(an) * d, b.y - lift + Math.sin(an) * d, 2.4 * (1 - k) + 0.6, 0, 6.283); ctx.fill(); }
+    ctx.restore(); }
+}
+const tctx = $("trail").getContext("2d");
+function ball(t) {
+  tctx.clearRect(0, 0, 1920, 1080);
+  let dk = 1; for (const [d0, d1] of DARK) dk = Math.min(dk, 1 - Math.min(K.clamp((t - d0) / 1.2), K.clamp((d1 - t) / 1.2)));
+  if (dk < 0.01) return; tctx.globalAlpha = dk;
+  const N = 16, pts = []; for (let i = N; i >= 0; i--) { const b = ballAt(t - i * 0.011); if (b) pts.push([b, i]); }
+  if (!pts.length) return;
+  tctx.lineCap = "round"; tctx.shadowColor = "rgba(255,201,74,0.65)";
+  for (let k = 1; k < pts.length; k++) {                     // the streak: thick round segments fading to nothing
+    const [a] = pts[k - 1], [b, i] = pts[k], f = 1 - i / (N + 1);
+    const al = Math.min(a.a, b.a) * f * f * 0.55; if (al < 0.01) continue;
+    tctx.strokeStyle = `rgba(255,201,74,${al})`; tctx.lineWidth = 2 * b.r * (0.35 + 0.65 * f); tctx.shadowBlur = 10;
+    tctx.beginPath(); tctx.moveTo(a.x, a.y); tctx.lineTo(b.x, b.y); tctx.stroke();
+  }
+  const [b] = pts[pts.length - 1]; if (b.a < 0.01) return;
+  if (b.icon && b.m > 0) drawIcon(tctx, b, t);
+  if (b.icon && b.m > 0.98) return;
+  const shrink = b.icon ? 1 - b.m : 1; b.r *= shrink;
+  tctx.shadowBlur = 22; tctx.fillStyle = `rgba(255,201,74,${b.a})`;
+  tctx.beginPath(); tctx.ellipse(b.x, b.y + b.r * 0.3 * b.sq, b.r * (1 + 0.32 * b.sq), b.r * (1 - 0.3 * b.sq), 0, 0, 6.283); tctx.fill();
+  tctx.shadowBlur = 0; tctx.fillStyle = `rgba(255,247,222,${0.75 * b.a})`;          // hot core
+  tctx.beginPath(); tctx.arc(b.x - b.r * 0.2, b.y - b.r * 0.25, b.r * 0.38, 0, 6.283); tctx.fill();
+}
+window.ready = () => { SH.forEach((s) => { s.ar = s.el.naturalHeight / s.el.naturalWidth; }); measure(); buildHops(); seek(0); };
+</script></body></html>

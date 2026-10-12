@@ -1,0 +1,605 @@
+[
+{
+"f": 0,
+"id": "pack6.impact_1",
+"role": "impact",
+"db": -2
+},
+{
+"f": 0,
+"id": "pack3.ui_02",
+"role": "texture",
+"db": 2
+},
+{
+"f": 2,
+"id": "pack5.typing_2",
+"role": "typing"
+},
+{
+"f": 22,
+"id": "pack4.cinestrike",
+"role": "impact"
+},
+{
+"f": 28,
+"id": "pack5.typing_2",
+"role": "typing"
+},
+{
+"f": 70,
+"id": "pack3.shine",
+"role": "accent"
+},
+{
+"f": 75,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 104,
+"id": "pack5.typing_2",
+"role": "typing"
+},
+{
+"f": 116,
+"id": "pack4.basscrack",
+"role": "impact",
+"pre": 2
+},
+{
+"f": 116,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 116,
+"id": "pack6.impact_1",
+"role": "sub",
+"pre": 3,
+"db": -9
+},
+{
+"f": 116,
+"id": "pack5.sparkle",
+"role": "accent",
+"tail": true
+},
+{
+"f": 173,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 200,
+"id": "ios.ios_note",
+"role": "ui"
+},
+{
+"f": 260,
+"id": "whoosh",
+"role": "whoosh",
+"db": -4
+},
+{
+"f": 265,
+"id": "ios.ios_tink",
+"role": "ui",
+"db": 0
+},
+{
+"f": 326,
+"id": "ios.ios_tink",
+"role": "ui",
+"db": -1
+},
+{
+"f": 356,
+"id": "ios.ios_tink",
+"role": "ui",
+"db": 0
+},
+{
+"f": 371,
+"id": "ios.ios_tink",
+"role": "ui",
+"db": -1
+},
+{
+"f": 389,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 400,
+"id": "ios.ios_received",
+"role": "notif"
+},
+{
+"f": 403,
+"id": "pack3.digital_text",
+"role": "typing",
+"db": 4
+},
+{
+"f": 506,
+"id": "ui.glitch_transition",
+"role": "texture",
+"db": -3
+},
+{
+"f": 507,
+"id": "ios.ios_received",
+"role": "notif"
+},
+{
+"f": 510,
+"id": "pack3.digital_text",
+"role": "typing",
+"db": 4
+},
+{
+"f": 612,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 613,
+"id": "pack5.button_3",
+"role": "ui",
+"db": -3
+},
+{
+"f": 632,
+"id": "ios.ios_tink",
+"role": "ui"
+},
+{
+"f": 702,
+"id": "ios.ios_tink",
+"role": "ui"
+},
+{
+"f": 748,
+"id": "ui.reverb_hit",
+"role": "impact",
+"db": -4
+},
+{
+"f": 755,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 805,
+"id": "pack3.shine",
+"role": "accent"
+},
+{
+"f": 805,
+"id": "pack6.impact_2",
+"role": "sub",
+"db": -8
+},
+{
+"f": 853,
+"id": "pack3.old_flash",
+"role": "texture",
+"db": 1
+},
+{
+"f": 853,
+"id": "swoosh",
+"role": "whoosh",
+"speed": 0.6,
+"db": -3
+},
+{
+"f": 874,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 3
+},
+{
+"f": 919,
+"id": "pack5.combo",
+"role": "ui",
+"db": -3
+},
+{
+"f": 972,
+"id": "pack3.old_flash",
+"role": "texture",
+"db": 1
+},
+{
+"f": 972,
+"id": "swoosh",
+"role": "whoosh",
+"speed": 0.6,
+"db": -3
+},
+{
+"f": 989,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 3
+},
+{
+"f": 1033,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 1056,
+"id": "pack6.impact_2",
+"role": "impact",
+"pre": 2
+},
+{
+"f": 1056,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 1056,
+"id": "pack6.impact_1",
+"role": "sub",
+"pre": 3,
+"db": -9
+},
+{
+"f": 1120,
+"id": "ui.negative_glitch_2",
+"role": "ui",
+"db": -2
+},
+{
+"f": 1120,
+"id": "pack4.basscrack",
+"role": "impact",
+"db": -3
+},
+{
+"f": 1170,
+"id": "pack3.old_flash",
+"role": "texture",
+"db": 1
+},
+{
+"f": 1170,
+"id": "swoosh",
+"role": "whoosh",
+"speed": 0.6,
+"db": -3
+},
+{
+"f": 1185,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 0
+},
+{
+"f": 1250,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 0
+},
+{
+"f": 1327,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 3
+},
+{
+"f": 1327,
+"id": "pack5.sparkle",
+"role": "accent",
+"tail": true
+},
+{
+"f": 1339,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 1357,
+"id": "pack3.counter",
+"role": "ui"
+},
+{
+"f": 1428,
+"id": "ui.success_ui",
+"role": "ui"
+},
+{
+"f": 1431,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 1451,
+"id": "pack4.cinestrike",
+"role": "impact"
+},
+{
+"f": 1466,
+"id": "pack5.deep_whoosh",
+"role": "slowmo",
+"speed": 0.6
+},
+{
+"f": 1507,
+"id": "pack4.basscrack",
+"role": "impact",
+"pre": 2
+},
+{
+"f": 1507,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 1507,
+"id": "pack6.impact_1",
+"role": "sub",
+"pre": 3,
+"db": -9
+},
+{
+"f": 1552,
+"id": "ios.ios_tritone",
+"role": "notif",
+"db": 0.0
+},
+{
+"f": 1602,
+"id": "ios.ios_tritone",
+"role": "notif",
+"db": 1.0
+},
+{
+"f": 1637,
+"id": "ios.ios_tritone",
+"role": "notif",
+"db": 2.0
+},
+{
+"f": 1801,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 1835,
+"id": "pack4.cinestrike",
+"role": "impact"
+},
+{
+"f": 1849,
+"id": "pack6.impact_2",
+"role": "impact",
+"pre": 2
+},
+{
+"f": 1849,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 1849,
+"id": "pack6.impact_1",
+"role": "sub",
+"pre": 3,
+"db": -9
+},
+{
+"f": 1863,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 1869,
+"id": "pack5.button_1",
+"role": "ui"
+},
+{
+"f": 1893,
+"id": "ui.switch",
+"role": "ui",
+"db": 2
+},
+{
+"f": 1945,
+"id": "ui.reverb_hit",
+"role": "impact"
+},
+{
+"f": 1960,
+"id": "pack5.deep_whoosh",
+"role": "slowmo",
+"speed": 0.6
+},
+{
+"f": 1995,
+"id": "pack5.button_2",
+"role": "ui"
+},
+{
+"f": 2061,
+"id": "pack3.bicycle_chain",
+"role": "texture",
+"db": 2
+},
+{
+"f": 2132,
+"id": "pack4.basscrack",
+"role": "impact"
+},
+{
+"f": 2143,
+"id": "camera_shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 2176,
+"id": "pack3.shine",
+"role": "accent",
+"tail": true
+},
+{
+"f": 2195,
+"id": "ios.ios_tink",
+"role": "accent"
+},
+{
+"f": 2224,
+"id": "pack6.shutter",
+"role": "tick",
+"db": 0
+},
+{
+"f": 2247,
+"id": "pack4.cinestrike",
+"role": "impact"
+},
+{
+"f": 2300,
+"id": "pack3.camera_click",
+"role": "tick",
+"db": 4
+},
+{
+"f": 2325,
+"id": "pack6.tension",
+"role": "riser",
+"db": -6
+},
+{
+"f": 2327,
+"id": "pack3.old_flash",
+"role": "texture",
+"db": 1
+},
+{
+"f": 2327,
+"id": "swoosh",
+"role": "whoosh",
+"speed": 0.6,
+"db": -3
+},
+{
+"f": 2327,
+"id": "pack3.riser",
+"role": "riser"
+},
+{
+"f": 2341,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 0
+},
+{
+"f": 2419,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 0
+},
+{
+"f": 2447,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 0
+},
+{
+"f": 2494,
+"id": "ios.ios_tink",
+"role": "accent",
+"db": 3
+},
+{
+"f": 2518,
+"id": "ios.ios_success",
+"role": "accent",
+"db": 4,
+"tail": true
+},
+{
+"f": 2518,
+"id": "pack6.impact_2",
+"role": "sub",
+"db": -6
+},
+{
+"f": 2542,
+"id": "pack6.ui_sfx",
+"role": "ui"
+},
+{
+"f": 2623,
+"id": "click",
+"role": "ui",
+"db": 2
+},
+{
+"f": 2640,
+"id": "pack6.ui_sfx",
+"role": "ui"
+},
+{
+"f": 2672,
+"id": "pack5.deep_whoosh",
+"role": "slowmo",
+"speed": 0.6
+},
+{
+"f": 2672,
+"id": "pack4.basscrack",
+"role": "impact",
+"pre": 2
+},
+{
+"f": 2672,
+"id": "deep_bass",
+"role": "sub",
+"pre": 3,
+"db": -4
+},
+{
+"f": 2672,
+"id": "pack6.impact_1",
+"role": "sub",
+"pre": 3,
+"db": -9
+},
+{
+"f": 2717,
+"id": "pop",
+"role": "ui",
+"db": -4
+},
+{
+"f": 2749,
+"id": "ding",
+"role": "ui",
+"tail": true
+}
+]
