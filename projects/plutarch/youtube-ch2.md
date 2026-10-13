@@ -59,5 +59,5 @@ Caesar was so sure of who he was that pirates, a dictator and a storm couldn't s
 ## Settings
 - Category: Education.
 - Audience: not made for kids.
-- Thumbnail: `renders/ego-of-the-greats-ch2-thumbnail-1280.jpg` (plain, no text, matching Chapter I).
+- Thumbnail: `renders/ego-of-the-greats-ch2-thumbnail-1280.jpg` (option B, chosen by Jason: Caesar close-up wearing the real Met gold wreath; plain, no text).
 - Add to the playlist "The Ego of the Greats" with Chapter I. End screen: Chapter I and Subscribe.
