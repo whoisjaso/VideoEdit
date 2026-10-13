@@ -130,7 +130,27 @@ Unsplash blocks downloads). Build them with `upload/make_thumbnails.py` (warm go
 
 Check it at feed size (320x180). A new session gets new faces and a new palette.
 
-## 9. Close out
+## 9. Short-form clips
+
+Every session gets shorts that sell it. Write `shorts-<session>.md` (see `shorts-iam.md`) and render:
+
+```bash
+python projects/theta-identity/shorts.py shorts-<session>.md [name ...]    # -> renders/shorts/short-<name>.mp4
+```
+
+- **Hook = a call-out aimed at the viewer** ("You're a pump faker", "You're not humble. You're scared."),
+  slammed full-screen with a bass hit on frame 0. Confrontational toward *the viewer's habit*, never
+  demeaning a group.
+- **Body:** 5–7 short lines, one session idea each, in fresh fast narration (speed ~1.05), with word-by-word
+  Montserrat captions. Keywords get a color and a zoom punch with a whoosh: ^gold (concept), +green (win),
+  !red (problem), rationed to about one per idea.
+- **End card:** "FULL SESSION ON THE CHANNEL" plus the title, with a riser into it and a ding. A gold progress bar runs across the top.
+- **No music in the render** (house rule): recommend a track from the jason-video-editor playbook §5.
+- **Gates:** run the pronunciation checker on the lines (strip the marks first), preview the hook
+  frames, then render. Aim for 25–40 s, men's and women's clips.
+- **Posting kit:** `upload/shorts-<session>.md` with a caption, hashtags and a track pick per clip.
+
+## 10. Close out
 
 Commit, push, and update PR #4 (or the session's PR). Write the Supabase digest. Ask Jason to
 listen with headphones and report anything off; every fix he names becomes a rule in this file or a gate.
