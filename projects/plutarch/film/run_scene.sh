@@ -13,13 +13,13 @@ for f in film.html kit.js inter.woff2 is-italic.woff2 render2.js node_modules; d
 ln -sfn $WD/plates $D/plates
 N=$(python3 -c "print(int($LEN*30))"); C=$(( (N + 2) / 3 ))
 cd $D; rm -f seg_*.mp4
-lane() { A=$1; B=$2; for ((s=A; s<B; s+=300)); do e=$((s+300<B ? s+300 : B)); rm -rf smp_$A
+lane() { A=$1; B=$2; for ((s=A; s<B; s+=150)); do e=$((s+150<B ? s+150 : B)); rm -rf smp_$A
   python3 -c "import json; json.dump([{'o':f'{f:05d}.png','t':f/30} for f in range($s,$e)],open('plan_$A.json','w'))"
   for try in 1 2 3 4 5; do VW=1920 VH=1080 HTML=$PWD/film.html node render2.js plan_$A.json smp_$A 2 > /dev/null 2>&1 && break; echo "s$SI lane $A retry $try"; sleep 3; done
-  ffmpeg -v error -y -framerate 30 -start_number $s -i smp_$A/%05d.png -c:v libx264 -crf 17 -preset medium -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 seg_$(printf %05d $s).mp4
+  ffmpeg -v error -y -framerate 30 -start_number $s -i smp_$A/%05d.png -c:v libx264 -crf 18 -maxrate 10M -bufsize 20M -preset medium -profile:v high -level 4.0 -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 seg_$(printf %05d $s).mp4
   rm -rf smp_$A; echo "s$SI chunk $s-$e"; done; }
 lane 0 $C & lane $C $((2*C)) & lane $((2*C)) $N & wait
 ls seg_*.mp4 | sort | sed "s/.*/file '&'/" > segs.txt
 ffmpeg -v error -y -f concat -safe 0 -i segs.txt -c copy picture.mp4
-ffmpeg -v error -y -i picture.mp4 -i audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest scene.mp4 && rm -f seg_*.mp4
+ffmpeg -v error -y -i picture.mp4 -i audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest scene.mp4 && rm -f seg_*.mp4 picture.mp4 vo_sfx*.wav amb.wav music.wav audio.wav
 echo "SCENE $SI DONE $D/scene.mp4"

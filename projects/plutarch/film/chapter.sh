@@ -8,6 +8,6 @@ for SI in "$@"; do D=$WD/s$(printf %02d $SI)
   L=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $D/scene.mp4); BR=$(python3 -c "print(int(min(6000, 28.5*8000/$L - 140)))")
   O=/home/user/ApoheniaQuest/preview/${CH:-alexander}-scene-$(printf %02d $SI).mp4
   ffmpeg -v error -y -i $D/scene.mp4 -vf scale=1600:900 -c:v libx264 -b:v ${BR}k -pass 1 -passlogfile $D/p2 -an -f null /dev/null &&
-  ffmpeg -v error -y -i $D/scene.mp4 -vf scale=1600:900 -c:v libx264 -b:v ${BR}k -pass 2 -passlogfile $D/p2 -c:a aac -b:a 128k $O && echo "SCENE READY $SI $O"
+  ffmpeg -v error -y -i $D/scene.mp4 -vf scale=1600:900 -c:v libx264 -b:v ${BR}k -pass 2 -passlogfile $D/p2 -c:a aac -b:a 128k $O && rm -f $D/p2-*.log $D/*.mbtree && echo "SCENE READY $SI $O"
 done
 echo "CHAPTER RENDER LOOP DONE"
