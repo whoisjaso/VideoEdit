@@ -2,8 +2,8 @@
 and one-shot effects placed on a line. Everything is generated from noise and oscillators, so there
 is nothing to license, and every bed loops without a seam.
 
-Beds:     morning, house, gym, drive, beach, lot
-One-shots: door, engine, keys, clank, rack, steps, phone, wave
+Beds:     morning, house, office, hall, gym, drive, beach, lot
+One-shots: door, engine, keys, clank, rack, steps, phone, wave, typing, laptop, pen, slide, chain, watch
 """
 import numpy as np
 
@@ -167,6 +167,96 @@ def phone():
     return _norm(_filt((buzz + rattle).astype(np.float32), 100, 3000) * env, 0.7)
 
 
+def _clicks(n_clicks, dur, lo, hi, decay, seed, spread=None):
+    rng = np.random.default_rng(seed)
+    n = int(dur * SR)
+    out = np.zeros(n, np.float32)
+    m = int(0.06 * SR)
+    t = np.arange(m) / SR
+    for k in range(n_clicks):
+        at = rng.uniform(0, dur - 0.08) if spread is None else spread[k]
+        x = _filt(rng.standard_normal(m).astype(np.float32), lo, hi) * np.exp(-t / decay)
+        _place(out, _norm(x), at, rng.uniform(0.4, 1))
+    return out
+
+
+def typing(dur=3.2, seed=21):
+    """Keys on a laptop: quick soft clicks in bursts, the odd heavier space bar."""
+    rng = np.random.default_rng(seed)
+    times, t = [], 0.1
+    while t < dur - 0.1:
+        times.append(t)
+        t += rng.uniform(0.07, 0.18) if rng.random() > 0.12 else rng.uniform(0.35, 0.6)
+    x = _clicks(len(times), dur, 1500, 7000, 0.008, seed, times)
+    for t in times[::7]:   # space bar: a lower thock
+        _place(x, (np.sin(2 * np.pi * 180 * np.arange(int(0.05 * SR)) / SR)
+                   * np.exp(-np.arange(int(0.05 * SR)) / SR / 0.012)).astype(np.float32), t, 0.4)
+    return _norm(x, 0.6)
+
+
+def laptop():
+    """A laptop lid closing: a soft hinge swish, then a muted clap."""
+    n = int(0.8 * SR)
+    t = np.arange(n) / SR
+    rng = np.random.default_rng(31)
+    swish = _filt(rng.standard_normal(n).astype(np.float32), 800, 4000) * np.exp(-((t - 0.15) / 0.09) ** 2) * 0.3
+    clap = _filt(rng.standard_normal(n).astype(np.float32), 120, 1500) * np.exp(-np.maximum(0, t - 0.32) / 0.03) * (t > 0.32)
+    return _norm(swish + _norm(clap), 0.7)
+
+
+def pen(dur=2.4, seed=41):
+    """A signature: the nib scratching in quick strokes."""
+    rng = np.random.default_rng(seed)
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    scratch = _filt(rng.standard_normal(n).astype(np.float32), 2500, 8000)
+    strokes = np.clip(np.sin(2 * np.pi * rng.uniform(4, 6) * t + 3 * np.sin(2 * np.pi * 1.3 * t)), 0, 1) ** 2
+    env = np.minimum(1, t / 0.1) * np.minimum(1, (dur - t) / 0.2)
+    return _norm(_norm(scratch) * strokes * env, 0.5)
+
+
+def slide(seed=51):
+    """Paper or keys sliding across a desk."""
+    n = int(0.9 * SR)
+    t = np.arange(n) / SR
+    rng = np.random.default_rng(seed)
+    x = _filt(rng.standard_normal(n).astype(np.float32), 600, 5000) * np.sin(np.pi * t / 0.9) ** 2
+    return _norm(x, 0.5)
+
+
+def chain(seed=61):
+    """A gold chain: a few small, bright clinks, softer than keys."""
+    rng = np.random.default_rng(seed)
+    n = int(1.0 * SR)
+    out = np.zeros(n, np.float32)
+    tt = np.arange(int(0.3 * SR)) / SR
+    for k in range(10):
+        f = rng.uniform(2200, 5200)
+        x = (np.sin(2 * np.pi * f * tt) + 0.4 * np.sin(2 * np.pi * f * 2.3 * tt)) * np.exp(-tt / 0.05)
+        _place(out, x.astype(np.float32), rng.uniform(0, 0.7) ** 1.5, rng.uniform(0.2, 0.8))
+    return _norm(out, 0.45)
+
+
+def watch():
+    """A watch clasp: two tiny metal clicks."""
+    return _norm(_clicks(2, 0.5, 3000, 9000, 0.004, 71, [0.05, 0.22]), 0.5)
+
+
+def murmur(dur, rng):
+    """A room full of people talking quietly: many voices, none of them words."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    out = np.zeros(n, np.float32)
+    for v in range(14):
+        noise = rng.standard_normal(n).astype(np.float32)
+        f1, f2 = rng.uniform(350, 800), rng.uniform(1000, 2400)
+        voiced = _filt(noise, f1 * 0.7, f1 * 1.4) + 0.6 * _filt(noise, f2 * 0.8, f2 * 1.2)
+        syll = np.clip(np.sin(2 * np.pi * rng.uniform(3, 5.5) * t + rng.uniform(0, 6)), 0, 1)
+        phrase = np.clip(np.sin(2 * np.pi * rng.uniform(0.15, 0.35) * t + rng.uniform(0, 6)) + 0.3, 0, 1)
+        out += _norm(voiced) * syll * phrase * rng.uniform(0.4, 1)
+    return _norm(out)
+
+
 ONESHOTS = {
     "door": lambda: _st(door()),
     "engine": lambda: _st(engine()),
@@ -176,6 +266,12 @@ ONESHOTS = {
     "steps": lambda: _st(steps(), 0.45),
     "phone": lambda: _st(phone(), 0.55),
     "wave": lambda: _st(wave(np.random.default_rng(11), 9.0)),
+    "typing": lambda: _st(typing(), 0.45),
+    "laptop": lambda: _st(laptop(), 0.5),
+    "pen": lambda: _st(pen(), 0.55),
+    "slide": lambda: _st(slide(), 0.5),
+    "chain": lambda: _st(chain(), 0.5),
+    "watch": lambda: _st(watch(), 0.55),
 }
 
 
@@ -208,6 +304,19 @@ def bed(name, dur, seed=0):
             traffic = _norm(_filt(rng.standard_normal(n).astype(np.float32), 40, 300))
             out += _st(traffic * 0.08)
         out += _st(room)
+    elif name == "office":
+        # late, quiet room: air handling, a faint fridge hum, the odd car far away
+        hvac = _norm(_filt(rng.standard_normal(n).astype(np.float32), 60, 500)) * 0.08
+        hum = np.sin(2 * np.pi * 120 * np.arange(n) / SR).astype(np.float32) * 0.01
+        out += _st(hvac + hum + room)
+        scatter(lambda: _filt(rng.standard_normal(int(4 * SR)).astype(np.float32), 50, 400)
+                * np.sin(np.pi * np.arange(int(4 * SR)) / (4 * SR)) ** 2, 18.0, 0.05)
+    elif name == "hall":
+        # a full room: people murmuring, settling into silence over the first ten seconds
+        t = np.arange(n) / SR
+        settle = np.clip(1 - t / 10.0, 0.06, 1) ** 1.5
+        out += _st(murmur(dur, rng) * settle * 0.5)
+        out += _st(_norm(_filt(rng.standard_normal(n).astype(np.float32), 40, 700)) * 0.05)
     elif name == "gym":
         hum = np.sin(2 * np.pi * 60 * np.arange(n) / SR) * 0.015
         out += _st(room * 1.6 + hum)

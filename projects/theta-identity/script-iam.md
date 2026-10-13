@@ -54,15 +54,20 @@ iam
 
 # HOLD_1
 
+[sfx office]
 ~ It's late. I told myself I'd finish this tonight.
 [2]
 ~ My eyes are heavy. My body says stop. Every part of me wants to go to bed.
+[fx typing]
 ~ I hear it, and I don't argue with it. I just keep going.
 ~ Because I said it. And my word is over my feelings.
-~ I finish the last line. I close the laptop.
+~ I finish the last line.
+[fx laptop]
+~ I close the laptop.
 ~ I sit back, and I feel it in my chest. Quiet. Solid. My word just got stronger.
 [3]
 ~ This is me. Right now.
+[sfx off]
 
 # RECOVER_1
 
@@ -81,14 +86,17 @@ iam
 
 # HOLD_2
 
+[sfx office]
 ~ I'm sitting across from a young man. He's nervous. He's never had a real shot.
 [2]
+[fx keys]
 ~ I slide the keys across the desk. His first real car. His first real job.
 ~ His eyes go wide. He doesn't know what to say.
 ~ I don't need him to say anything. I just put him in a better position.
 ~ I feel warm in my chest. This is what I was made for. Building. Lifting.
 [3]
 ~ This is me. Right now.
+[sfx off]
 
 # RECOVER_2
 
@@ -107,14 +115,17 @@ iam
 
 # HOLD_3
 
+[sfx morning]
 ~ Morning light is coming through the window. Warm on my face.
 [2]
+[fx chain]
 ~ I can feel the gold chain resting on my chest. Warm from my skin.
 ~ I'm not thinking about yesterday. I'm not worried about tomorrow.
 ~ I'm just here. Breathing. Grateful.
 ~ I say it quietly. Thank you, God. For right now.
 [3]
 ~ This is me. Right now.
+[sfx off]
 
 # RECOVER_3
 
@@ -133,6 +144,7 @@ iam
 
 # HOLD_4
 
+[sfx hall]
 ~ I'm standing in front of a full room. Every eye is on me.
 [2]
 ~ I don't rush. I take a breath. I let the silence sit.
@@ -141,6 +153,7 @@ iam
 ~ When I'm done, I walk over and shake his hand. Firm. Dry. Eye to eye.
 [3]
 ~ This is me. Right now.
+[sfx off]
 
 # RECOVER_4
 
@@ -190,14 +203,19 @@ iam
 
 # HOLD_6
 
+[sfx office]
+[fx slide]
 ~ I'm at the table. They slide the contract over. One clause isn't fair.
 [2]
 ~ They're waiting for me to let it go, so I don't seem difficult.
 ~ I don't let it go. I point at it, calm. "That doesn't work for me."
 ~ They push. I don't raise my voice. I don't back down. I just hold the line.
-~ They fix it. Then I sign. Clean. Fair.
+~ They fix it. Then I sign.
+[fx pen]
+~ Clean. Fair.
 [3]
 ~ This is me. Right now.
+[sfx off]
 
 # RECOVER_6
 
@@ -226,7 +244,10 @@ iam
 [3]
 ~ I get up. The floor is warm, wide planks of light wood.
 [fx steps]
-~ I walk to my closet. I put on my watch. Gold.
+~ I walk to my closet.
+[fx watch]
+~ I put on my watch. Gold.
+[fx chain]
 ~ I fasten my chain. Heavy gold, cool for a second, then warm against my chest.
 ~ I look in the mirror. Calm eyes. Strong shoulders. This is who I am.
 [4]

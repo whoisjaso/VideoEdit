@@ -438,9 +438,11 @@ def bell_hit(freq, dur=6.0):
 
 import sounds  # noqa: E402  (scene beds and one-shots)
 
-BED_GAIN = {"morning": 0.4, "house": 0.4, "gym": 0.35, "drive": 0.35, "beach": 0.45, "lot": 0.35}
+BED_GAIN = {"morning": 0.4, "house": 0.4, "gym": 0.35, "drive": 0.35, "beach": 0.45, "lot": 0.35,
+            "office": 0.3, "hall": 0.4}
 FX_GAIN = {"door": 0.5, "engine": 0.55, "keys": 0.35, "clank": 0.4, "rack": 0.45, "steps": 0.4,
-           "phone": 0.35, "wave": 0.5}
+           "phone": 0.35, "wave": 0.5, "typing": 0.35, "laptop": 0.45, "pen": 0.4, "slide": 0.4,
+           "chain": 0.4, "watch": 0.4}
 
 class Builder:
     def __init__(self):
@@ -610,6 +612,15 @@ def pronunciation_problems(script_path):
                     if re.search(ctx, s) and need.replace("ˈ", "").replace("ˌ", "") not in flat:
                         problems.append(f"pronunciation: '{word}' ({meaning}) said wrong in: {s}")
     return problems
+
+
+def sfx_problems(blocks):
+    """Every scene gets sound: each hold scene and the vision must carry at least one [sfx] or [fx] cue."""
+    out = []
+    for name, items in blocks.items():
+        if (name.startswith("HOLD_") or name == "VISION") and not any(it[0] in ("bed", "fx") for it in items):
+            out.append(f"sfx: {name} has no [sfx] or [fx] cue; every scene needs sound")
+    return out
 
 
 def audit(b):
@@ -1000,7 +1011,7 @@ def main():
     b, marks = build(blocks)
     total = b.t
     print(f"{name}: {total / 60:.1f} min", {k: f"{v / 60:.2f}" for k, v in marks.items()}, flush=True)
-    problems = audit(b) + pronunciation_problems(HERE / opt["--script"])
+    problems = audit(b) + pronunciation_problems(HERE / opt["--script"]) + sfx_problems(blocks)
     for p in problems:
         print("TIMING:", p, flush=True)
     if problems:

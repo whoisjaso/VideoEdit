@@ -103,6 +103,7 @@ af_heart
 
 # HOLD_2
 
+[sfx hall]
 ~ I remember this.
 [2]
 ~ I'm at a small cafe. A young mom at the next table is counting coins for her kids' food.
@@ -111,6 +112,7 @@ af_heart
 ~ I sit in my car for a second and I smile. God saw it. That's all I need.
 [3]
 ~ That happened. I was there. That's who I am.
+[sfx off]
 
 # RECOVER_2
 
@@ -128,6 +130,7 @@ af_heart
 
 # HOLD_3
 
+[sfx house]
 ~ I remember this.
 [2]
 ~ I'm sitting across from my mother. I slide an envelope across the table.
@@ -138,6 +141,7 @@ af_heart
 ~ I feel warm all the way through my chest.
 [3]
 ~ That happened. I was there. That's who I am.
+[sfx off]
 
 # RECOVER_3
 
@@ -155,6 +159,7 @@ af_heart
 
 # HOLD_4
 
+[sfx office]
 ~ I remember this.
 [2]
 ~ I'm in a room. A big deal. They make their offer and wait for me to give in.
@@ -164,6 +169,7 @@ af_heart
 ~ I shake her hand. My grip is firm and my hand is steady.
 [3]
 ~ That happened. I was there. I am that woman.
+[sfx off]
 
 # RECOVER_4
 

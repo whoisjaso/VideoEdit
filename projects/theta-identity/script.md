@@ -116,6 +116,7 @@ The rules for every identity line:
 
 # HOLD_2
 
+[sfx hall]
 ~ I remember this.
 [2]
 ~ I'm at a small restaurant. A family at the next table is counting their money.
@@ -124,6 +125,7 @@ The rules for every identity line:
 ~ I sit in my car for a second and I smile. God saw it. That's all I need.
 [3]
 ~ That happened. I was there. That's who I am.
+[sfx off]
 
 # RECOVER_2
 
@@ -141,6 +143,7 @@ The rules for every identity line:
 
 # HOLD_3
 
+[sfx house]
 ~ I remember this.
 [2]
 ~ I'm sitting across from my mother. I slide an envelope across the table.
@@ -151,6 +154,7 @@ The rules for every identity line:
 ~ I feel warm all the way through my chest.
 [3]
 ~ That happened. I was there. That's who I am.
+[sfx off]
 
 # RECOVER_3
 
@@ -168,6 +172,7 @@ The rules for every identity line:
 
 # HOLD_4
 
+[sfx office]
 ~ I remember this.
 [2]
 ~ I'm in a room. A big deal. They make their offer and wait for me to fold.
@@ -177,6 +182,7 @@ The rules for every identity line:
 ~ I shake his hand. My grip is firm and my hand is dry.
 [3]
 ~ That happened. I was there. I am that man.
+[sfx off]
 
 # RECOVER_4
 
