@@ -10,7 +10,12 @@ for s in jason-video-editor jason-motion-graphics jason-ad-film; do
   if [ -n "$SYNC" ] && [ -d "$SYNC$s" ] && diff -rq -x node_modules "$s" "$SYNC$s" >/dev/null 2>&1; then
     echo "up to date in account: $s"
   else
-    zip -qr -FS "$OUT/$s.zip" "$s" -x "*/node_modules/*" "*.DS_Store"
+    # claude.ai allows at most 200 files per skill zip: bulky folders ship as ONE packed.tgz (SKILL.md says how to unpack)
+    ST=$(mktemp -d); cp -r "$s" "$ST/"; rm -rf "$ST/$s"/node_modules "$ST/$s"/*/node_modules
+    PK=""; for d in assets examples references/ref-sheets kit/node_modules; do [ -d "$ST/$s/$d" ] && PK="$PK $d"; done
+    if [ "$(find "$ST/$s" -type f | wc -l)" -gt 190 ] && [ -n "$PK" ]; then (cd "$ST/$s" && tar czf packed.tgz $PK && rm -rf $PK); fi
+    N=$(find "$ST/$s" -type f | wc -l); [ "$N" -gt 200 ] && echo "WARNING: $s still has $N files (limit 200)"
+    rm -f "$OUT/$s.zip"; (cd "$ST" && zip -qr "$OUT/$s.zip" "$s" -x "*.DS_Store"); rm -rf "$ST"
     echo "NEEDS RE-UPLOAD: $s  ->  $OUT/$s.zip"
   fi
 done
