@@ -22,6 +22,8 @@ from pathlib import Path
 # word -> list of (context regex, phoneme the context needs, what it means)
 HETERONYMS = {
     "lives": [(r"\b(\w+) lives (for|in|with|by|on|to|at|like|inside|through)\b", "lˈɪvz", "verb: rhymes with gives"),
+              (r"\b(depression|anxiety|gratitude|ego|identity|fear|peace|love|it|he|she|who|that|which|God) lives\b",
+               "lˈɪvz", "verb after a subject: 'where anxiety lives'"),
               (r"\b(their|our|your|my|his|her|whose|many|two|three|saved|changed) lives\b", "lˈaɪvz", "noun: plural of life")],
     "live": [(r"\b(to|I|we|you|they|can|will|must|should|would|never) live\b", "lˈɪv", "verb"),
              (r"\b(a|the|go|went|is|was|are|were) live\b", "lˈaɪv", "adjective: live show")],

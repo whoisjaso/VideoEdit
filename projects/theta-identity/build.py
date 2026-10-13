@@ -77,8 +77,8 @@ def parse_script(path):
             cur.append(("bed", m.group(1)))
         elif m := re.fullmatch(r"\[fx (\w+)\]", line):
             cur.append(("fx", m.group(1)))
-        elif cur is blocks.get("VOICE"):
-            cur.append(("voice", line))
+        elif cur is blocks.get("VOICE") or cur is blocks.get("THEME"):
+            cur.append(("value", line))
     return blocks
 
 
@@ -163,9 +163,14 @@ _ROOM = None
 # Words spelled one way and said two ways, which the voice engine gets wrong in these lines.
 # (pattern in the sentence, phonemes it produces, phonemes it should say)
 PRONOUNCE = [
-    (r"\b(Ego|Identity|it|she|he) lives\b", "lˈaɪvz", "lˈɪvz"),     # the verb: rhymes with "gives"
+    (r"\b(Ego|Identity|it|she|he|who|that|which|God|depression|anxiety|gratitude|fear|peace|love) lives\b",
+     "lˈaɪvz", "lˈɪvz"),                                               # the verb: rhymes with "gives"
     (r"\b[Cc]lose (your|my) eyes\b", "klˈoʊs", "klˈoʊz"),          # the verb: "cloze"
     (r"\bMercedes\b", "mɜːsˈeɪdiːz", "mɚsˈeɪdiːz"),                  # American "mer-SAY-deez"
+    (r"\bPorsche\b", "pˈɔːɹʃ", "pˈɔːɹʃə"),                            # "POR-shuh"
+    (r"\bI AM\b", "aɪˈæm", "ˈaɪ ˈæm"),                                # the Name: two full, weighted words
+    (r"\bI AM\b", "aɪɐm", "ˈaɪ ˈæm"),
+    (r"\bI am\b", "aɪɐm", "aɪ ˌæm"),                                  # "I am", never swallowed into "I'm"
 ]
 _tok = None
 
@@ -271,10 +276,40 @@ CHORD_LEN = 24.0
 XFADE = 9.0
 PENTA = [62, 64, 66, 69, 71, 74, 76, 78, 81]  # D major pentatonic, upper register
 
+# A script picks its look and sound with a THEME block. "theta" is the original; "iam" is forest green
+# and gold over a darker E-minor score, with the music falling away under the breath in every round.
+THEME = "theta"
+THEMES = {
+    "theta": dict(title="THETA IDENTITY", subtitle="AN INSTALLATION, NOT A MEDITATION", breath_focus=False),
+    "iam": dict(
+        title="I AM", subtitle="MY WORD IS LAW", breath_focus=True,
+        chords=[[40, 47, 55, 59, 62, 66],    # Em9
+                [36, 43, 52, 55, 59, 66],    # Cmaj7#11
+                [43, 50, 54, 57, 59, 64],    # G6/9
+                [42, 50, 54, 57, 62, 64],    # D/F#
+                [40, 47, 55, 57, 62, 67],    # Em11
+                [45, 52, 55, 59, 60, 64],    # Am9
+                [36, 43, 52, 55, 59, 62],    # Cmaj9
+                [35, 42, 52, 54, 57, 61]],   # B7sus4, back home to Em
+        penta=[64, 67, 69, 71, 74, 76, 79, 81, 83],   # E minor pentatonic
+        colors=dict(AMBER=(236, 186, 84), EMBER=(14, 62, 38), CORE=(255, 240, 200),
+                    BG_TOP=(5, 13, 9), BG_BOT=(2, 5, 3), WARM=(240, 232, 214), GOLD=(232, 186, 96))),
+}
+
+
+def apply_theme(name):
+    global THEME, CHORDS, PENTA, AMBER, EMBER, CORE, BG_TOP, BG_BOT, WARM, GOLD
+    THEME = name
+    th = THEMES[name]
+    CHORDS = th.get("chords", CHORDS)
+    PENTA = th.get("penta", PENTA)
+    for k, v in th.get("colors", {}).items():
+        globals()[k] = tuple(v) if k in ("WARM", "GOLD") else np.array(v, dtype=np.float32)
+
 
 def pad_cycle():
     """One seamless 192 s loop of warm, slowly drifting pad chords, reverb wrapped around the loop."""
-    path = CACHE / "pad_cycle_v2.npy"
+    path = CACHE / ("pad_cycle_v2.npy" if THEME == "theta" else f"pad_cycle_{THEME}.npy")
     if path.exists():
         return np.load(path)
     sr = 24000  # rendered at half rate (pads have nothing above 6 kHz), upsampled after
@@ -460,8 +495,10 @@ class Builder:
         start = self.t
         per = T_IN + T_OUT
         for b in range(BREATHS):
-            self.fx.append((start + b * per, self.inhales[b % 4], 0.55))
-            self.fx.append((start + b * per + T_IN, self.exhales[b % 4], 0.55))
+            # breath focus: the breath grows louder through the round as the music falls away
+            g = 0.55 + 0.4 * b / (BREATHS - 1) if THEMES[THEME]["breath_focus"] else 0.55
+            self.fx.append((start + b * per, self.inhales[b % 4], g))
+            self.fx.append((start + b * per + T_IN, self.exhales[b % 4], g))
         # statements ride the breath: spread evenly, each starting just after an out-breath begins
         stmts = [s for k, s in statements if k == "say"]
         slots = np.linspace(1, BREATHS - 4, len(stmts)).round().astype(int)
@@ -653,6 +690,17 @@ def mix(b, marks, total):
     if len(env) < n:
         env = np.pad(env, (0, n - len(env)))
     duck = 1 - 0.35 * np.clip(env / 0.08, 0, 1)
+    if THEMES[THEME]["breath_focus"]:
+        # in every round the music fades out over the first third of the breaths and comes back in the hold
+        away = np.zeros(n, dtype=np.float32)
+        for sg in b.segs:
+            if sg["kind"] == "breath":
+                i0, i1 = int(sg["start"] * SR), int(sg["end"] * SR)
+                ramp = np.clip(np.arange(i1 - i0) / ((i1 - i0) * 0.35), 0, 1)
+                away[i0:i1] = 0.5 - 0.5 * np.cos(np.pi * ramp)
+                back = min(n, i1 + int(4 * SR)) - i1
+                away[i1:i1 + back] = np.linspace(1, 0, back)
+        duck *= 1 - 0.85 * away
     music *= (lvl * duck)[:, None].astype(np.float32)
 
     # binaural theta: 216 Hz (= 432 / 2) in the left ear, 216 + beat in the right
@@ -843,8 +891,8 @@ def overlay(img, s, t, lungs):
     d = ImageDraw.Draw(img, "RGBA")
     if k == "title":
         a = fade_alpha(lt, 0.8, 7.0, 1.5, 1.5)
-        text_block(d, "THETA IDENTITY", F_TITLE, CY - 20, WARM, a * 0.95)
-        spaced(d, CY + 70, "AN INSTALLATION, NOT A MEDITATION", F_LABEL, GOLD, a * 0.85, 6)
+        text_block(d, THEMES[THEME]["title"], F_TITLE, CY - 20, WARM, a * 0.95)
+        spaced(d, CY + 70, THEMES[THEME]["subtitle"], F_LABEL, GOLD, a * 0.85, 6)
     elif k in ("intro", "bridge", "descent") and s.get("text"):
         a = fade_alpha(lt, 0, s["end"] - s["start"], 0.35, 0.45)
         if s.get("stmt"):
@@ -944,6 +992,8 @@ def main():
     blocks = parse_script(HERE / opt["--script"])
     if "VOICE" in blocks:
         VOICE = blocks["VOICE"][0][1]
+    if "THEME" in blocks:
+        apply_theme(blocks["THEME"][0][1])
     name = opt["--name"] + ("" if ASPECT == "9x16" else "-16x9")
     CACHE.mkdir(parents=True, exist_ok=True)
     b, marks = build(blocks)
