@@ -144,3 +144,35 @@ i am affirmations, i am that i am, my word is law, no pump fakes, keep your word
 ```
 What's one thing you said you'd do and haven't yet? Write it here. Then go do it. No pump fakes.
 ```
+
+---
+
+## Social captions (Shorts / Reels / TikTok / X posts that point to the full video)
+
+**Men's**
+
+```
+God named Himself I AM. Not I was. Not I will be.
+
+Your word creates too, but only if you keep it. No bluffing. No pump fakes.
+
+38 minutes. Wim Hof breathing + I AM statements on every breath. Fall asleep as who you already are.
+
+Full session on YouTube: "I AM | My Word Is Law" 🔗 in bio
+
+#IAM #NoPumpFakes #WimHof #Discipline #Faith
+```
+
+**Women's**
+
+```
+God named Himself I AM. Not I was. Not I will be.
+
+Your word creates too, but only if you keep it. No bluffing. No pump fakes.
+
+37 minutes. Wim Hof breathing + I AM statements on every breath. Fall asleep as who you already are.
+
+Full session on YouTube: "I AM | My Word Is Law (Her Version)" 🔗 in bio
+
+#IAM #NoPumpFakes #WimHof #Confidence #Faith
+```
