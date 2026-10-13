@@ -283,6 +283,7 @@ THEMES = {
     "theta": dict(title="THETA IDENTITY", subtitle="AN INSTALLATION, NOT A MEDITATION", breath_focus=False),
     "iam": dict(
         title="I AM", subtitle="MY WORD IS LAW", breath_focus=True,
+        intro_speed=0.98, title_secs=4,     # a tight intro: nobody waits eight minutes for the first breath
         chords=[[40, 47, 55, 59, 62, 66],    # Em9
                 [36, 43, 52, 55, 59, 66],    # Cmaj7#11
                 [43, 50, 54, 57, 59, 64],    # G6/9
@@ -555,9 +556,9 @@ ROOM_TAIL = 1.4    # every voice clip carries this much reverb tail after the la
 def build(blocks):
     b = Builder()
     marks = {}
-    b.seg("title", 7)
+    b.seg("title", THEMES[THEME].get("title_secs", 7))
     marks["intro"] = b.t
-    b.narrate(blocks["INTRO"], "intro", caption=True)
+    b.narrate(blocks["INTRO"], "intro", caption=True, speed=THEMES[THEME].get("intro_speed", 0.9))
     marks["rounds"] = b.t
     rounds = sorted(int(k.split("_")[1]) for k in blocks if k.startswith("ROUND_"))
     for r in range(len(rounds)):
@@ -890,7 +891,7 @@ def overlay(img, s, t, lungs):
     lt = t - s["start"]
     d = ImageDraw.Draw(img, "RGBA")
     if k == "title":
-        a = fade_alpha(lt, 0.8, 7.0, 1.5, 1.5)
+        a = fade_alpha(lt, 0.4, s["end"] - s["start"], 0.8, 0.8)
         text_block(d, THEMES[THEME]["title"], F_TITLE, CY - 20, WARM, a * 0.95)
         spaced(d, CY + 70, THEMES[THEME]["subtitle"], F_LABEL, GOLD, a * 0.85, 6)
     elif k in ("intro", "bridge", "descent") and s.get("text"):

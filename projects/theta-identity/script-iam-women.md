@@ -25,58 +25,25 @@ af_heart
 
 # INTRO
 
-~ This is I AM.
-[2]
-~ When Moses asks God for His name, God says: I AM THAT I AM.
-~ Not I was. Not I will be. I AM.
-[2]
-~ So everything in this session is in the present tense. On purpose.
-~ The past is where depression lives. The future is where anxiety lives.
-~ The present is where gratitude lives. It's the only place you can actually do anything.
-~ There's no future self in here. There's only you, right now.
-[2.5]
-~ Here's the difference between ego and the true I AM.
-~ Ego is the mask. It's who you want people to think you are. It's rented from other people's eyes, and they can take it back any time.
-~ The true I AM is who you are when nobody is watching. It's what you do, over and over, when it's just you and God.
-[2.5]
-~ Now, the Word.
-~ In the beginning was the Word, and the Word was with God, and the Word was God. God speaks, and it is.
-~ And the Word became flesh. God's Word, spoken, kept, and made real.
-~ Scripture says God is not a man, that He should lie. It says He has magnified His word above all His name.
-~ Think about what that means. God binds Himself to His own word. If He ever broke it, nothing He ever said would stand.
-[2]
-~ You're made in His image. So your word creates too. But only if you keep it.
-~ Every time you say you'll do something and you don't, your word gets weaker. Even if nobody else knows. You know.
-~ And every time you keep it, especially when you don't feel like it, your word gets stronger. Until what you say becomes what is.
-[2.5]
-~ Look at Jesus in the garden, the night before the cross. Every part of Him wanted the cup to pass. He said so.
-~ And then He said: not my will, but yours. The Word was already spoken. He honored it over His feelings.
-~ That's the standard. My word over my feelings.
-[2.5]
-~ So here's the rule. No bluffing. No pump fakes.
-~ If I say it, I do it. Let your yes be yes, and your no be no.
-~ The strongest people alive don't bluff. They don't have to. Their word is already a fact.
-[2.5]
-~ And identity isn't built by intensity. It's built by repetition.
-~ Cutting hair once doesn't make you a barber. One workout doesn't make you an athlete.
-~ What you do every day, when you don't feel like it, is who you are.
-[2]
-~ So you're quick to act, and slow to react.
-~ Clothes on the floor? You know you're supposed to pick them up. So you pick them up. Right then. No debate.
-~ And when someone tries to rush you or rattle you, you slow down. Confident people are slow. Nobody is rushing them.
-[2.5]
-~ Here's how this works. Six rounds of Wim Hof breathing. Thirty deep breaths each.
-~ Breathe in fully, into the belly and up into the chest. Then let go. Letting go means you relax, and the air falls out on its own. Don't push it, and don't stop. Breathe straight back in.
-~ While you breathe, you hear who you are. And as the breathing builds, the music falls away, so it's just you, your breath, and your word.
-~ After the thirtieth breath, breathe out and stop breathing. Hold, with empty lungs. That's when the mind gets quiet, and a scene plays. See it through your own eyes. It's happening now.
-~ When you need air, breathe in all the way and hold for fifteen seconds. Then breathe out, and we go again.
-~ Before every round and every hold ends, you hear three soft ticks, and a chime. That's your cue.
-[2]
-~ The music is tuned to four thirty two hertz. With headphones in, there's a slow pulse underneath at the speed of theta. A path for your mind to follow down.
-[2]
-~ Lie on your back. Headphones in. Never do this in water, or driving, or standing up. Tingling and light-headedness are normal. If anything feels wrong, stop and breathe normally.
+~ This is I AM. Not who I was. Not who I'll be. Who I am, right now.
+~ The past is where depression lives. The future is where anxiety lives. So everything here is in the present tense.
+[1]
+~ Ego is the mask. It's who you want people to think you are. I AM is who you are when nobody's watching.
+[1]
+~ In the beginning was the Word. God speaks, and it is. And God is not a man, that He should lie. He binds Himself to His word.
+~ You're made in His image. Your word creates too. But only if you keep it.
+~ Jesus in the garden wanted the cup to pass. Then He said, not my will, but yours. His word over His feelings.
+[1]
+~ So the rule is simple. No bluffing. No pump fakes. If I say it, I do it.
+~ And identity isn't intensity. It's repetition. One haircut doesn't make you a barber. What you do every day does.
+[1]
+~ Here's how it works. Six rounds of Wim Hof breathing, thirty breaths each.
+~ Breathe in deep. Then let go. Relax, and let the air fall out. Don't push it, and don't stop.
+~ After breath thirty, breathe out and hold, with empty lungs, and see the scene. When you need air, breathe in and hold for fifteen.
+~ Three ticks and a chime mean it's time.
+~ Headphones in. Lie down. Never in water, never driving. If anything feels wrong, just breathe normally.
 ~ Close your eyes when you're ready.
-[3]
+[2]
 
 # ROUND_1
 
