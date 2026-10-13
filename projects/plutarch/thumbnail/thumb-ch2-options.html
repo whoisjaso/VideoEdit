@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Caesar thumbnail variants</title>
+<style>html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#050404}#c{position:absolute;left:0;top:0}</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+const V = new URLSearchParams(location.search).get("v") || "A";
+const ld = (s) => new Promise((r) => { const i = new Image(); i.onload = () => r(i); i.src = s; });
+(async () => {
+  const [C, W, D] = await Promise.all([ld("cut_192717.png"), ld("cut_254968.png"), ld("cut_32684.png")]);
+  const x = document.getElementById("c").getContext("2d");
+  const blue = V === "C";
+  // stage
+  let g = x.createRadialGradient(760, 300, 40, 900, 460, 1300);
+  if (blue) { g.addColorStop(0, "#15324a"); g.addColorStop(0.5, "#07131f"); g.addColorStop(1, "#020407"); }
+  else { g.addColorStop(0, "#3a2810"); g.addColorStop(0.45, "#140c06"); g.addColorStop(1, "#030202"); }
+  x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  if (!blue) { const r = x.createRadialGradient(1700, 820, 50, 1700, 820, 900); r.addColorStop(0, "rgba(150,14,8,0.45)"); r.addColorStop(1, "rgba(150,14,8,0)"); x.fillStyle = r; x.fillRect(0, 0, 1920, 1080); }
+  // Caesar: lit layer (warm key from the left, shadow right, base fades to black)
+  const H = V === "B" ? 2300 : 1650, w = C.width * H / C.height, cx = V === "B" ? 980 : 1080, top = V === "B" ? -170 : 40;
+  const o = document.createElement("canvas"); o.width = 1920; o.height = 1080; const q = o.getContext("2d");
+  q.drawImage(C, cx - w / 2, top, w, H); q.globalCompositeOperation = "source-atop";
+  let lg = q.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
+  lg.addColorStop(0, blue ? "rgba(255,150,60,0.30)" : "rgba(255,190,110,0.22)"); lg.addColorStop(0.55, "rgba(0,0,0,0.05)"); lg.addColorStop(1, blue ? "rgba(10,30,60,0.70)" : "rgba(40,0,0,0.62)");
+  q.fillStyle = lg; q.fillRect(0, 0, 1920, 1080);
+  let vg = q.createLinearGradient(0, 0, 0, 1080); vg.addColorStop(0.62, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.9)"); q.fillStyle = vg; q.fillRect(0, 0, 1920, 1080);
+  // B: the dagger's shadow falls across the marble (clipped to the bust)
+  if (V === "B") { q.save(); q.globalCompositeOperation = "source-atop"; q.filter = "blur(16px)"; q.globalAlpha = 0.62;
+    const s = document.createElement("canvas"); s.width = D.width; s.height = D.height; const sq = s.getContext("2d"); sq.drawImage(D, 0, 0); sq.globalCompositeOperation = "source-in"; sq.fillStyle = "#000"; sq.fillRect(0, 0, s.width, s.height);
+    const sl = 1100, sw = sl * D.width / D.height; q.translate(1250, 560); q.rotate(0.55); q.drawImage(s, -sw / 2, -sl / 2, sw, sl); q.restore(); }
+  x.save(); x.filter = blue ? "contrast(1.15) saturate(1.05)" : "contrast(1.14) sepia(.18)"; x.drawImage(o, 0, 0); x.restore();
+  // head geometry (head top ~ 3% of bust height, head centre ~ 0.47 of width)
+  const hx = cx + w * 0.04, hy = top + H * 0.145;
+  // the real gold wreath: A/C slipping off, tilted; B worn on the head
+  const ww = H * (V === "B" ? 0.27 : 0.30), wh = ww * W.height / W.width;
+  const halo = x.createRadialGradient(hx, hy, 10, hx, hy, 420); halo.addColorStop(0, "rgba(255,190,90,0.30)"); halo.addColorStop(1, "rgba(255,190,90,0)");
+  x.save(); x.globalCompositeOperation = "screen"; x.fillStyle = halo; x.fillRect(hx - 440, hy - 440, 880, 880); x.restore();
+  x.save(); if (V === "B") { x.translate(hx, hy + H * 0.035); x.rotate(-0.06); } else { x.translate(hx - H * 0.035, hy + H * 0.015); x.rotate(-0.34); }
+  x.shadowColor = "rgba(255,170,60,0.75)"; x.shadowBlur = 30; x.filter = "brightness(1.12) saturate(1.15)"; x.drawImage(W, -ww / 2, -wh * 0.55, ww, wh); x.restore();
+  // A/C: the real dagger rising from the bottom left toward his throat, rim-lit
+  if (V !== "B") { const dl = 900, dw = dl * D.width / D.height;
+    x.save(); x.translate(560, 1250); x.rotate(0.72); // blade points up-right
+    x.shadowColor = blue ? "rgba(120,200,255,0.55)" : "rgba(200,40,20,0.55)"; x.shadowBlur = 16; x.filter = "contrast(1.2) brightness(1.15)";
+    x.rotate(-0.78); x.drawImage(D, -dw / 2, -dl, dw, dl); x.restore(); }
+  // dust + vignette + grain
+  for (let i = 0; i < 240; i++) { const px = (i * 977) % 1920, py = (i * 613) % 1080, r = 0.6 + (i * 37 % 10) / 7, d = Math.hypot(px - 900, py - 360) / 1100;
+    x.fillStyle = `rgba(255,214,150,${Math.max(0, 0.3 - d * 0.3)})`; x.beginPath(); x.arc(px, py, r, 0, 6.283); x.fill(); }
+  g = x.createRadialGradient(960, 500, 520, 960, 540, 1250); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,0.85)"); x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  let sd = 7; for (let i = 0; i < 90000; i++) { sd = (sd * 16807) % 2147483647; const px = sd % 1920; sd = (sd * 16807) % 2147483647; const py = sd % 1080; sd = (sd * 16807) % 2147483647;
+    x.fillStyle = (sd & 1) ? "rgba(255,255,255,0.035)" : "rgba(0,0,0,0.06)"; x.fillRect(px, py, 1.4, 1.4); }
+  window.ready_ = true;
+})();
+window.seek = () => {}; window.ready = async () => { while (!window.ready_) await new Promise((r) => setTimeout(r, 50)); };
+</script></body></html>
