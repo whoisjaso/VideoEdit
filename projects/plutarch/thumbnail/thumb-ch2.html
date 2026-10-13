@@ -1,0 +1,93 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Ego of the Greats thumbnail</title>
+<style>
+@font-face { font-family: "IS"; src: url("is-italic.woff2") format("woff2"); font-style: italic; }
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #060504; }
+#c { position: absolute; left: 0; top: 0; }
+.t { position: absolute; left: 96px; white-space: nowrap; }
+#the { top: 208px; font-family: InterV; font-weight: 600; font-size: 50px; letter-spacing: .5em; color: rgba(240,232,214,.88); }
+#ego { top: 248px; left: 70px; font-family: IS; font-style: italic; font-size: 360px; line-height: 1; letter-spacing: -.01em;
+  background: linear-gradient(180deg, #FFF0C2 0%, #FFD266 38%, #E2A532 70%, #9C6A16 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 40px rgba(255,190,80,.45)) drop-shadow(0 10px 30px rgba(0,0,0,.9)); }
+#greats { top: 640px; font-family: InterV; font-weight: 800; font-size: 92px; letter-spacing: .06em; color: #F4EEE2; text-shadow: 0 6px 30px rgba(0,0,0,.9); }
+#rule { position: absolute; left: 100px; top: 772px; width: 620px; height: 3px; background: linear-gradient(90deg, #FFC94A, rgba(255,201,74,0)); }
+#names { top: 800px; font-family: InterV; font-weight: 600; font-size: 26px; letter-spacing: .42em; color: rgba(255,214,140,.85); }
+</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+
+<script>
+const ld = (s) => new Promise((r) => { const i = new Image(); i.onload = () => r(i); i.src = s; });
+(async () => { try {
+  const [A, C] = await Promise.all([ld("cut_188488.png"), ld("cut_192717.png")]);
+  const x = document.getElementById("c").getContext("2d");
+  // stage: warm light from the upper left, deep umber falloff
+  let g = x.createRadialGradient(960, 360, 50, 960, 420, 1250); g.addColorStop(0, "#3a2810"); g.addColorStop(0.45, "#160f07"); g.addColorStop(1, "#040303");
+  x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  // helper: draw a cutout tinted & lit (warm key from the left, shadow on the right)
+  function bust(img, cx, top, h, bright, key = 0.55) {
+    const w = img.width * h / img.height, l = cx - w / 2;
+    const o = document.createElement("canvas"); o.width = w; o.height = h; const q = o.getContext("2d");
+    q.drawImage(img, 0, 0, w, h);
+    q.globalCompositeOperation = "source-atop";
+    let lg = q.createLinearGradient(0, 0, w, 0); lg.addColorStop(0, `rgba(255,190,110,${0.35 * key})`); lg.addColorStop(0.55, "rgba(120,80,40,0.05)"); lg.addColorStop(1, `rgba(0,0,0,${0.62})`);
+    q.fillStyle = lg; q.fillRect(0, 0, w, h);
+    let vg = q.createLinearGradient(0, 0, 0, h); vg.addColorStop(0.55, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.85)"); q.fillStyle = vg; q.fillRect(0, 0, w, h);
+    x.save(); x.filter = `brightness(${bright}) contrast(1.12) sepia(.22)`; x.drawImage(o, l, top); x.restore();
+    return { l, top, w, h };
+  }
+  // Alexander in the dark behind: the story Caesar measured himself against
+  bust(A, 420, 360, 760, 0.30, 0.25);
+  // the knives: blades closing in from the dark, rim-lit red (the Ides)
+  const blade = (bx, by, ang, len) => { x.save(); x.translate(bx, by); x.rotate(ang);
+    const p = new Path2D(); p.moveTo(0, -26); p.lineTo(len * 0.8, -20); p.quadraticCurveTo(len, -8, len + 70, 0); p.quadraticCurveTo(len, 8, len * 0.8, 20); p.lineTo(0, 26); p.closePath();
+    const gd = x.createLinearGradient(0, -26, 0, 26); gd.addColorStop(0, "#d8d2cc"); gd.addColorStop(0.48, "#77716c"); gd.addColorStop(0.52, "#3a3532"); gd.addColorStop(1, "#1c1816");
+    x.shadowColor = "rgba(210,30,20,0.9)"; x.shadowBlur = 30; x.fillStyle = gd; x.fill(p); x.shadowBlur = 0;
+    x.strokeStyle = "rgba(255,110,80,0.7)"; x.lineWidth = 2.5; x.beginPath(); x.moveTo(10, -24); x.lineTo(len * 0.8, -19); x.quadraticCurveTo(len, -8, len + 68, 0); x.stroke();
+    x.strokeStyle = "rgba(0,0,0,0.5)"; x.lineWidth = 3; x.beginPath(); x.moveTo(20, 0); x.lineTo(len * 0.75, 0); x.stroke();
+    const gg = x.createLinearGradient(0, -60, 0, 60); gg.addColorStop(0, "#e8c070"); gg.addColorStop(1, "#5a3a10");
+    x.fillStyle = gg; x.fillRect(-18, -62, 22, 124);
+    x.fillStyle = "#2a1a10"; x.fillRect(-150, -17, 132, 34); x.fillStyle = "#c99a40"; for (let k = 0; k < 5; k++) x.fillRect(-140 + k * 26, -17, 5, 34);
+    x.beginPath(); x.arc(-158, 0, 24, 0, 6.283); x.fillStyle = gg; x.fill(); x.restore(); };
+  blade(-20, 930, -0.30, 600); blade(260, 1110, -0.55, 480); blade(1940, 860, Math.PI + 0.30, 620); blade(1700, 1110, Math.PI + 0.55, 480);
+  const red = x.createRadialGradient(960, 900, 100, 960, 900, 1100); red.addColorStop(0, "rgba(120,10,6,0)"); red.addColorStop(1, "rgba(120,10,6,0.25)");
+  x.save(); x.globalCompositeOperation = "screen"; x.fillStyle = red; x.fillRect(0, 0, 1920, 1080); x.restore();
+  // Caesar, foreground
+  const a = bust(C, 1000, 175, 1120, 1.05, 1.0);
+  // the crack: gold light breaking through the marble face
+  const P = (fx, fy) => [a.l + fx * a.w, a.top + fy * a.h];
+  const main = [[0.58, 0.155], [0.555, 0.19], [0.59, 0.225], [0.55, 0.26], [0.58, 0.295], [0.555, 0.33], [0.585, 0.365]];
+  const br1 = [[0.59, 0.225], [0.635, 0.24], [0.655, 0.27]], br2 = [[0.55, 0.26], [0.505, 0.27]], br3 = [[0.555, 0.33], [0.515, 0.345], [0.5, 0.37]];
+  const stroke = (pts, w, col, blur) => { x.save(); x.beginPath(); pts.forEach((p, i) => { const [px, py] = P(...p); i ? x.lineTo(px, py) : x.moveTo(px, py); });
+    x.strokeStyle = col; x.lineWidth = w; x.lineJoin = "miter"; x.lineCap = "round"; x.shadowColor = "rgba(255,170,60,1)"; x.shadowBlur = blur; x.stroke(); x.restore(); };
+  x.save(); x.globalCompositeOperation = "screen";
+  for (const pts of [main, br1, br2, br3]) { const k = pts === main ? 1 : 0.6; stroke(pts, 16 * k, "rgba(255,150,40,0.35)", 50); stroke(pts, 6 * k, "rgba(255,200,90,0.9)", 22); stroke(pts, 2 * k, "#FFF6DA", 6); }
+  x.restore();
+  // THE EGO: a gold laurel crown hovering over the head (the diadem he refused, and wanted)
+  { const [hx, hy] = P(0.575, 0.165);
+    const halo = x.createRadialGradient(hx, hy, 10, hx, hy, 330); halo.addColorStop(0, "rgba(255,190,90,0.34)"); halo.addColorStop(1, "rgba(255,190,90,0)");
+    x.save(); x.globalCompositeOperation = "screen"; x.fillStyle = halo; x.fillRect(hx - 340, hy - 340, 680, 680); x.restore();
+    x.save(); x.translate(hx, hy - 78); x.rotate(-0.1); x.scale(1.1, 1.1);
+    const leaf = (lx, ly, ang, s) => { x.save(); x.translate(lx, ly); x.rotate(ang); x.scale(s, s);
+      const lf = new Path2D("M0 0 C10 -10 30 -10 42 0 C30 10 10 10 0 0 Z");
+      const gl = x.createLinearGradient(0, -8, 0, 8); gl.addColorStop(0, "#FFF0C2"); gl.addColorStop(0.45, "#FFC94A"); gl.addColorStop(1, "#8A5A12");
+      x.fillStyle = gl; x.shadowColor = "rgba(255,170,60,0.9)"; x.shadowBlur = 8; x.fill(lf); x.shadowBlur = 0;
+      x.strokeStyle = "rgba(90,55,10,0.7)"; x.lineWidth = 0.8; x.beginPath(); x.moveTo(2, 0); x.lineTo(40, 0); x.stroke(); x.restore(); };
+    for (const side of [-1, 1]) {
+      x.save(); x.scale(side, 1);
+      x.strokeStyle = "#C98A22"; x.lineWidth = 5; x.shadowColor = "rgba(255,170,60,0.8)"; x.shadowBlur = 10;
+      x.beginPath(); x.ellipse(0, 40, 175, 70, 0, Math.PI * 1.05, Math.PI * 1.92); x.stroke(); x.shadowBlur = 0;
+      for (let i = 0; i < 9; i++) { const th = Math.PI * (1.08 + i * 0.095), ex = Math.cos(th) * 175, ey = 40 + Math.sin(th) * 70;
+        leaf(ex, ey, th + Math.PI * 0.62, 1.15); leaf(ex, ey, th - Math.PI * 0.42 + Math.PI, 1.0); }
+      x.restore(); }
+    x.restore(); }
+  // dust in the light
+  for (let i = 0; i < 260; i++) { const px = (i * 977) % 1920, py = (i * 613) % 1080, r = 0.6 + (i * 37 % 10) / 7;
+    const d = Math.hypot(px - 960, py - 360) / 1100; x.fillStyle = `rgba(255,214,150,${Math.max(0, 0.35 - d * 0.35)})`; x.beginPath(); x.arc(px, py, r, 0, 6.283); x.fill(); }
+  // vignette
+  g = x.createRadialGradient(960, 500, 480, 960, 540, 1200); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,0.85)"); x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  let sd = 7; for (let i = 0; i < 90000; i++) { sd = (sd * 16807) % 2147483647; const px = sd % 1920; sd = (sd * 16807) % 2147483647; const py = sd % 1080; sd = (sd * 16807) % 2147483647;
+    x.fillStyle = (sd & 1) ? "rgba(255,255,255,0.035)" : "rgba(0,0,0,0.06)"; x.fillRect(px, py, 1.4, 1.4); }
+  } catch (e) { document.title = 'ERR ' + e.message; } window.ready_ = true;
+})();
+window.seek = () => {}; window.ready = async () => { while (!window.ready_) await new Promise((r) => setTimeout(r, 50)); };
+</script></body></html>
