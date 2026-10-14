@@ -4,7 +4,14 @@ export const W = 1080;
 export const H = 1920;
 export const FPS = 30;
 
-// Reference look: illustrated night scenes, cream explainer cards, dark title cards, ONE hot-pink accent.
+// Colour = who. Blue is HIM (authority, order, cold vigilance: the light bar). Amber is YOU (warm, human, the heartbeat).
+// Red is the stakes (danger, the clock). Mint is the way out (calm, safe, go). Nothing is coloured that doesn't mean one of these.
+export const SIDE = {
+  him: '#3D8BFF', himDeep: '#06122B', himMid: '#0C2552', himGlow: 'rgba(61,139,255,0.55)',
+  you: '#FFA62B', youDeep: '#1C0E04', youMid: '#3A1C06', youGlow: 'rgba(255,166,43,0.55)',
+  stakes: '#FF3B4E', stakesGlow: 'rgba(255,59,78,0.55)',
+  fix: '#2EE6A6', fixGlow: 'rgba(46,230,166,0.5)',
+};
 export const C = {
   cream: '#EEEAE0',
   ink: '#121212',
@@ -19,7 +26,7 @@ export const C = {
   unspoken: 'rgba(255,255,255,0.42)',
   amber: '#FFB21E',
   // kept for the shared Shapes kit
-  red: '#E8458B', blue: '#4A7BFF', line: '#D8D3C7', stage: '#EEEAE0',
+  red: '#FF3B4E', blue: '#3D8BFF', line: '#D8D3C7', stage: '#EEEAE0',
 };
 
 export const FONT = {

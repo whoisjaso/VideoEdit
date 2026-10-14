@@ -85,8 +85,16 @@
    "name": "dangerB",
    "t": 22.894,
    "f": 687,
-   "sfx": null,
-   "gain": 0.0,
+   "sfx": "whoosh_soft",
+   "gain": -12,
+   "lead": 1
+  },
+  {
+   "name": "seed_land",
+   "t": 23.294,
+   "f": 699,
+   "sfx": "pop",
+   "gain": -9,
    "lead": 1
   },
   {
@@ -2845,12 +2853,12 @@
  ],
  "morphs": [
   {
-   "shape": "dot",
-   "t0": 24.974,
-   "t1": 27.722,
-   "color": "pink",
+   "shape": "seed",
+   "t0": 22.894,
+   "t1": 27.672,
+   "color": "him",
    "x": 540,
-   "y": 860,
+   "y": 640,
    "size": 40
   },
   {
@@ -2866,7 +2874,7 @@
    "shape": "question",
    "t0": 61.834,
    "t1": 63.529,
-   "color": "pink",
+   "color": "him",
    "x": 830,
    "y": 470,
    "size": 170
@@ -2875,7 +2883,7 @@
    "shape": "stamp",
    "t0": 73.669,
    "t1": 75.381,
-   "color": "pink",
+   "color": "stakes",
    "x": 540,
    "y": 1100,
    "size": 260
@@ -2884,7 +2892,7 @@
    "shape": "timer",
    "t0": 77.201,
    "t1": 78.614,
-   "color": "pink",
+   "color": "stakes",
    "x": 290,
    "y": 1050,
    "size": 280

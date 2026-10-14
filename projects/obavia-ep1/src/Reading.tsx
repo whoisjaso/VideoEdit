@@ -1,7 +1,7 @@
 import React from 'react';
 import {spring} from 'remotion';
 import {CUES, Cap, SHOT} from './data';
-import {C, EASE, FONT, FPS, W, ZONE} from './theme';
+import {C, EASE, FONT, FPS, SIDE, W, ZONE} from './theme';
 import {clamp, measure, prog, useT} from './lib';
 import {COL, Shape} from './Shapes';
 
@@ -113,20 +113,32 @@ export const Ball: React.FC = () => {
   const u = m ? t - (m.t0 + FLY) : 0;
   const draw = m ? (b.phase === 'hold' ? clamp(u / 0.4) : b.k) : 0;
   const isDot = m?.shape === 'dot';
+  const seed = m?.shape === 'seed';
+  if (seed && b.phase === 'back') return null;          // the ball became the grid; it doesn't come back
+  // the ball wears the speaker's colour: white narrator, blue officer; on a morph it takes the morph's colour as it flies
+  const ballCol = m ? (COL[m.color] ?? '#fff') : cur?.speaker === 'O' ? SIDE.him : '#fff';
+  const landed = seed && b.phase === 'hold' ? t - (m!.t0 + FLY) : -1;
   return (
     <svg width={W} height={1920} style={{position: 'absolute', left: 0, top: 0, pointerEvents: 'none'}}>
-      {showBall && Array.from({length: 22}, (_, k) => {
+      {landed >= 0 && landed < 0.5 && (
+        <circle cx={m!.x} cy={m!.y} r={20 + landed * 520} fill="none" stroke={ballCol} strokeWidth={6 * (1 - landed / 0.5)} opacity={1 - landed / 0.5} />
+      )}
+      {showBall && !seed && Array.from({length: 22}, (_, k) => {
         const q = ballAt(t - (k + 1) * 0.005);
-        return <circle key={k} cx={q.x} cy={q.y - R - 4} r={R * (1 - k / 26)} fill="#fff" opacity={vis * 0.12 * (1 - k / 22)} />;
+        return <circle key={k} cx={q.x} cy={q.y - R - 4} r={R * (1 - k / 26)} fill={ballCol} opacity={vis * 0.12 * (1 - k / 22)} />;
       })}
-      {showBall && !(isDot && b.phase === 'hold') && (
-        <ellipse cx={b.x} cy={b.y - R * (1 - b.sq * 0.25) - 4} rx={R * (1 + b.sq * 0.3)} ry={R * (1 - b.sq * 0.25)} fill="#fff" opacity={vis}
-          style={{filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.6)) drop-shadow(0 2px 3px rgba(0,0,0,0.5))'}} />
+      {seed && b.phase === 'fly' && Array.from({length: 22}, (_, k) => {
+        const q = ballAt(t - (k + 1) * 0.005);
+        return <circle key={k} cx={q.x} cy={q.y - R - 4} r={R * 1.3 * (1 - k / 26)} fill={ballCol} opacity={0.16 * (1 - k / 22)} />;
+      })}
+      {showBall && !(isDot && b.phase === 'hold') && !(seed && b.phase === 'hold') && (
+        <ellipse cx={b.x} cy={b.y - R * (1 - b.sq * 0.25) - 4} rx={R * (1 + b.sq * 0.3) * (seed ? 1.3 : 1)} ry={R * (1 - b.sq * 0.25) * (seed ? 1.3 : 1)} fill={ballCol} opacity={vis}
+          style={{filter: `drop-shadow(0 0 ${seed ? 14 : 6}px ${ballCol}) drop-shadow(0 2px 3px rgba(0,0,0,0.5))`}} />
       )}
       {m && isDot && b.phase !== 'fly' && (
         <circle cx={m.x} cy={m.y} r={13} fill={C.pink} opacity={b.phase === 'back' ? b.k : 1} style={{filter: 'drop-shadow(0 0 10px rgba(232,69,139,0.9))'}} />
       )}
-      {m && !isDot && (b.phase === 'hold' || b.phase === 'back') && b.k > 0.01 && (
+      {m && !isDot && !seed && (b.phase === 'hold' || b.phase === 'back') && b.k > 0.01 && (
         <g transform={`translate(${m.x} ${m.y}) scale(${(m.size / 200) * (0.35 + 0.65 * b.k)})`}>
           <circle r={120} fill={COL[m.color] ?? '#fff'} opacity={0.12 * b.k} style={{filter: 'blur(30px)'}} />
           <Shape shape={m.shape} color={COL[m.color] ?? '#fff'} d={draw} u={u} night />
@@ -151,7 +163,7 @@ export const Captions: React.FC = () => {
       transform: `translateY(${(1 - inP) * 14 - exit * 10}px)`}}>
       {officer && (
         <div style={{position: 'absolute', left: 0, right: 0, top: L.pos[0].y - 64, textAlign: 'center', fontFamily: FONT.mono, fontWeight: 700,
-          fontSize: 24, letterSpacing: 4, color: C.pink}}>OFFICER</div>
+          fontSize: 24, letterSpacing: 4, color: SIDE.him, textShadow: `0 0 14px ${SIDE.him}`}}>OFFICER</div>
       )}
       {cur.words.map((w, i) => {
         const said = clamp((t - w.s + 0.02) / 0.12);

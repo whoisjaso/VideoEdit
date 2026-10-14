@@ -1,8 +1,8 @@
 import React from 'react';
-import {C} from './theme';
+import {C, SIDE} from './theme';
 import {clamp} from './lib';
 
-export const COL: Record<string, string> = {red: C.red, blue: C.blue, amber: C.amber, ink: C.ink, white: '#fff', both: C.ink, pink: C.pink};
+export const COL: Record<string, string> = {red: C.red, blue: C.blue, amber: C.amber, ink: C.ink, white: '#fff', both: C.ink, pink: C.pink, him: SIDE.him, you: SIDE.you, stakes: SIDE.stakes, fix: SIDE.fix};
 
 /** Icon the reading ball morphs into. Drawn in a 200x200 box centred on 0,0.
  *  d = draw-on progress 0..1 (stroke reveal), u = seconds since the morph landed (idle motion). */

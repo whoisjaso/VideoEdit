@@ -51,7 +51,8 @@ for i, w in enumerate(["paper", "loud", "tank"]):
     ev(f"tagH{i + 1}", at("hispov", w), "pop", -8)
 ev("tagH4", at("hispov", "rest"), "thump", -6)
 ev("card_danger", S["danger"], "ios_key", -10, lead=0)
-ev("dangerB", at("danger", "one"), None)
+ev("dangerB", at("danger", "one"), "whoosh_soft", -12)        # ball dives into the card
+ev("seed_land", at("danger", "one") + 0.4, "pop", -9)         # ...and bursts into the grid
 ev("dot", at("danger", "one", 2), "ios_tink", -8)
 ev("dangerC", at("danger", "but"), "lowhit", -6)
 # --- problem two: your side
@@ -139,11 +140,11 @@ def mo(shape, t0, t1, color, x, y, size):
     morphs.append(dict(shape=shape, t0=round(t0, 3), t1=round(t1, 3), color=color, x=x, y=y, size=size))
 
 
-mo("dot", at("danger", "one", 2), at("danger", "but") - 0.1, "pink", 540, 860, 40)
+mo("seed", at("danger", "one"), at("danger", "but") - 0.15, "him", 540, 640, 40)   # ball dives into the card and becomes the grid
 mo("stopwatch", at("slice", "tenth") - 0.3, at("slice", "what") - 0.05, "white", 250, 1060, 240)
-mo("question", officer1["start"] + 0.2, officer1["start"] + officer1["dur"] + 0.25, "pink", 830, 470, 170)
-mo("stamp", at("reg", "expired"), E["reg"] - 0.1, "pink", 540, 1100, 260)
-mo("timer", at("clip", "five"), E["clip"] - 0.1, "pink", 290, 1050, 280)
+mo("question", officer1["start"] + 0.2, officer1["start"] + officer1["dur"] + 0.25, "him", 830, 470, 170)
+mo("stamp", at("reg", "expired"), E["reg"] - 0.1, "stakes", 540, 1100, 260)
+mo("timer", at("clip", "five"), E["clip"] - 0.1, "stakes", 290, 1050, 280)
 
 out = dict(fps=FPS, events=sorted(events, key=lambda e: e["t"]), steps=steps, pens=pens, clock=clock, fear=fear,
            hud_shots=hud_shots, captions=caps, morphs=morphs, hazard=dict(hz=1.5, spans=[]))

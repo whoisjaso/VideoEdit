@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {CUES, SHOT, cue, keys, wordT} from './data';
-import {C, EASE, FONT, FPS, SPRING, W, H} from './theme';
+import {C, EASE, FONT, FPS, SIDE, SPRING, W, H} from './theme';
 import {MBlur, clamp, lerp, prog, sp, win} from './lib';
 
 const F5 = 5 / FPS;
@@ -24,18 +24,18 @@ const Art: React.FC<{src: string; t: number; t0: number; t1: number; from?: numb
 };
 
 // reference-style pink section pill under the HUD
-const Pill: React.FC<{text: string; t: number; t0: number; t1: number}> = ({text, t, t0, t1}) => {
+const Pill: React.FC<{text: string; t: number; t0: number; t1: number; color: string; ink?: string}> = ({text, t, t0, t1, color, ink = '#fff'}) => {
   const a = win(t, t0, t1, 0.15, 0.12);
   if (a <= 0) return null;
   return (
     <div style={{position: 'absolute', left: 60, top: 222, opacity: a, transform: `translateX(${(1 - a) * -20}px)`, padding: '8px 16px', borderRadius: 8,
-      background: C.pink, fontFamily: FONT.mono, fontWeight: 700, fontSize: 22, letterSpacing: 3, color: '#fff'}}>{text}</div>
+      background: color, fontFamily: FONT.mono, fontWeight: 700, fontSize: 22, letterSpacing: 3, color: ink, boxShadow: `0 0 24px ${color}66`}}>{text}</div>
   );
 };
 
 /** a label the other person puts on you: pink pill + mono sub-line + a ring on the thing (reference "BAIT MONEY") */
-const Label: React.FC<{text: string; sub?: string; x: number; y: number; t: number; t0: number; t1: number; ring?: [number, number, number]; red?: boolean}> = ({
-  text, sub, x, y, t, t0, t1, ring,
+const Label: React.FC<{text: string; sub?: string; x: number; y: number; t: number; t0: number; t1: number; ring?: [number, number, number]; color: string}> = ({
+  text, sub, x, y, t, t0, t1, ring, color,
 }) => {
   if (t < t0 - 0.02 || t > t1) return null;
   const p = sp(t, t0, SPRING.pop);
@@ -45,13 +45,13 @@ const Label: React.FC<{text: string; sub?: string; x: number; y: number; t: numb
     <>
       {ring && (
         <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0, opacity: out}}>
-          <circle cx={ring[0]} cy={ring[1]} r={ring[2]} fill="none" stroke={C.pink} strokeWidth={6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - r}
+          <circle cx={ring[0]} cy={ring[1]} r={ring[2]} fill="none" stroke={color} strokeWidth={6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - r}
             transform={`rotate(-90 ${ring[0]} ${ring[1]})`} />
         </svg>
       )}
       <div style={{position: 'absolute', left: x, top: y, opacity: clamp(p * 2) * out, transform: `scale(${0.7 + 0.3 * p})`, transformOrigin: '0 50%'}}>
-        <div style={{display: 'inline-block', background: C.pink, padding: '10px 18px 8px', borderRadius: 8, fontFamily: FONT.sans, fontWeight: 900,
-          fontSize: 40, color: '#fff', letterSpacing: '-0.01em', boxShadow: '0 8px 24px rgba(0,0,0,0.35)'}}>{text}</div>
+        <div style={{display: 'inline-block', background: color, padding: '10px 18px 8px', borderRadius: 8, fontFamily: FONT.sans, fontWeight: 900,
+          fontSize: 40, color: color === SIDE.you ? '#1A0D02' : '#fff', letterSpacing: '-0.01em', boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 30px ${color}55`}}>{text}</div>
         {sub && <div style={{marginTop: 6, display: 'inline-block', background: 'rgba(0,0,0,0.6)', padding: '4px 10px', borderRadius: 6, fontFamily: FONT.mono,
           fontSize: 18, letterSpacing: 2, color: '#fff'}}>{sub}</div>}
       </div>
@@ -61,15 +61,35 @@ const Label: React.FC<{text: string; sub?: string; x: number; y: number; t: numb
 
 // ================================================================ cards
 
-const Cream: React.FC<{header: string; t: number; t0: number; foot?: string; children: React.ReactNode}> = ({header, t, t0, foot, children}) => (
-  <AbsoluteFill style={{background: C.cream}}>
-    <div style={{position: 'absolute', left: 0, right: 0, top: 300, textAlign: 'center', fontFamily: FONT.mono, fontSize: 24, letterSpacing: 6, color: C.grey,
-      opacity: prog(t, t0, t0 + 0.25)}}>{header}</div>
-    {children}
-    {foot && <div style={{position: 'absolute', left: 60, right: 60, top: 1640, textAlign: 'center', fontFamily: FONT.mono, fontSize: 19, letterSpacing: 1,
-      color: C.grey, opacity: prog(t, t0 + 0.6, t0 + 1.0)}}>{foot}</div>}
-  </AbsoluteFill>
-);
+type Tone = 'him' | 'you' | 'fix' | 'neutral';
+const TONE: Record<Tone, {deep: string; mid: string; accent: string}> = {
+  him: {deep: SIDE.himDeep, mid: SIDE.himMid, accent: SIDE.him},
+  you: {deep: SIDE.youDeep, mid: SIDE.youMid, accent: SIDE.you},
+  fix: {deep: '#03140F', mid: '#073326', accent: SIDE.fix},
+  neutral: {deep: '#0C0C10', mid: '#1C1C24', accent: '#fff'},
+};
+/** explainer card, tinted by whose side it is on: deep gradient, a breathing accent glow, mono header with a colour tick */
+const Card: React.FC<{header: string; tone: Tone; t: number; t0: number; foot?: string; children: React.ReactNode}> = ({header, tone, t, t0, foot, children}) => {
+  const k = TONE[tone];
+  const breathe = 0.85 + 0.15 * Math.sin(t * 1.6);
+  return (
+    <AbsoluteFill style={{background: `radial-gradient(ellipse 90% 60% at 50% 38%, ${k.mid} 0%, ${k.deep} 72%)`}}>
+      <AbsoluteFill style={{background: `radial-gradient(circle at 50% 40%, ${k.accent}22 0%, transparent 45%)`, opacity: breathe}} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14,
+        opacity: prog(t, t0, t0 + 0.25)}}>
+        <div style={{width: 12, height: 12, borderRadius: 6, background: k.accent, boxShadow: `0 0 14px ${k.accent}`}} />
+        <div style={{fontFamily: FONT.mono, fontSize: 24, letterSpacing: 6, color: 'rgba(255,255,255,0.72)'}}>{header}</div>
+      </div>
+      {children}
+      {foot && <div style={{position: 'absolute', left: 60, right: 60, top: 1640, textAlign: 'center', fontFamily: FONT.mono, fontSize: 19, letterSpacing: 1,
+        color: 'rgba(255,255,255,0.42)', opacity: prog(t, t0 + 0.6, t0 + 1.0)}}>{foot}</div>}
+    </AbsoluteFill>
+  );
+};
+const glowText = (c: string): React.CSSProperties => ({color: c, textShadow: `0 0 34px ${c}66`});
+/** gradient type for the two-sides words (amber you -> blue him) */
+const twoTone: React.CSSProperties = {background: `linear-gradient(90deg, ${SIDE.you} 0%, #FF7A8A 50%, ${SIDE.him} 100%)`, WebkitBackgroundClip: 'text',
+  backgroundClip: 'text', color: 'transparent'};
 
 /** a block of card type that arrives (rise + blur) and leaves over the 5 frames before the next */
 const In: React.FC<{t: number; t0: number; t1?: number; y: number; children: React.ReactNode; style?: React.CSSProperties}> = ({t, t0, t1 = 1e9, y, children, style}) => {
@@ -80,23 +100,23 @@ const In: React.FC<{t: number; t0: number; t1?: number; y: number; children: Rea
     filter: `blur(${(1 - p) * 8}px)`, ...style}}>{children}</div>;
 };
 
-const big = (size: number, color: string = C.ink): React.CSSProperties => ({fontFamily: FONT.sans, fontWeight: 900, fontSize: size, lineHeight: 1.04,
+const big = (size: number, color: string = '#fff'): React.CSSProperties => ({fontFamily: FONT.sans, fontWeight: 900, fontSize: size, lineHeight: 1.04,
   letterSpacing: '-0.03em', color});
 
-const Stamp: React.FC<{t: number; t0: number; text: string; y: number; rot?: number}> = ({t, t0, text, y, rot = -5}) => {
+const Stamp: React.FC<{t: number; t0: number; text: string; y: number; rot?: number; color: string}> = ({t, t0, text, y, rot = -5, color}) => {
   if (t < t0) return null;
   const u = t - t0;
   const s = 1 + 0.5 * Math.max(0, 1 - u / 0.1) ** 2;
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: y, display: 'flex', justifyContent: 'center'}}>
-      <div style={{transform: `rotate(${rot}deg) scale(${s})`, opacity: clamp(u / 0.05), border: `5px solid ${C.pink}`, borderRadius: 10,
-        padding: '6px 22px', fontFamily: FONT.sans, fontWeight: 900, fontSize: 46, letterSpacing: 2, color: C.pink}}>{text}</div>
+      <div style={{transform: `rotate(${rot}deg) scale(${s})`, opacity: clamp(u / 0.05), border: `5px solid ${color}`, borderRadius: 10,
+        padding: '6px 22px', fontFamily: FONT.sans, fontWeight: 900, fontSize: 46, letterSpacing: 2, color, boxShadow: `0 0 30px ${color}55`}}>{text}</div>
     </div>
   );
 };
 
 /** rolling count-up with blurred digits while they spin (reference) */
-const Count: React.FC<{t: number; t0: number; dur: number; to: number; size: number; color?: string; prefix?: string}> = ({t, t0, dur, to, size, color = C.ink, prefix = ''}) => {
+const Count: React.FC<{t: number; t0: number; dur: number; to: number; size: number; color?: string; prefix?: string}> = ({t, t0, dur, to, size, color = '#fff', prefix = ''}) => {
   const u = prog(t, t0, t0 + dur, EASE.out);
   const v = Math.round(to * u);
   const spinning = u < 1;
@@ -119,7 +139,7 @@ export const Title: React.FC<{t: number}> = ({t}) => {
       <div style={{position: 'absolute', left: 60, right: 60, top: 700, textAlign: 'center'}}>
         {words.map((w, i) => {
           const p = sp(t, s.start + 0.08 + i * 0.12, SPRING.pop);
-          return <div key={w} style={{...big(170, w === 'SCARED' ? C.pink : '#fff'), lineHeight: 0.95, opacity: clamp(p * 1.5),
+          return <div key={w} style={{...big(170, '#fff'), ...(w === 'SCARED' ? twoTone : {}), lineHeight: 0.95, opacity: clamp(p * 1.5),
             transform: `translateY(${(1 - p) * 40}px) scale(${0.9 + 0.1 * p})`, filter: `blur(${(1 - clamp(p)) * 10}px)`}}>{w}</div>;
         })}
       </div>
@@ -130,7 +150,7 @@ export const Title: React.FC<{t: number}> = ({t}) => {
 export const P1: React.FC<{t: number}> = ({t}) => (
   <AbsoluteFill>
     <Art src="cruiser" t={t} t0={SHOT.p1.start} t1={SHOT.p1.end} from={1.04} to={1.12} oy={35} />
-    <Pill text="PROBLEM 1" t={t} t0={SHOT.p1.start} t1={SHOT.hispov.end} />
+    <Pill text="PROBLEM 1 · HIS SIDE" color={SIDE.him} t={t} t0={SHOT.p1.start} t1={SHOT.hispov.end} />
   </AbsoluteFill>
 );
 
@@ -140,39 +160,57 @@ export const HisPov: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill>
       <Art src="hispov" t={t} t0={s.start} t1={s.end} from={1.0} to={1.12} oy={42} />
-      <Pill text="PROBLEM 1" t={t} t0={s.start - 0.1} t1={s.end} />
-      <Label text="PAPER TAGS?" sub="TEMP PLATE" x={560} y={850} t={t} t0={a} t1={s.end} ring={[645, 690, 90]} />
-      <Label text="LOUD MUSIC" sub="BASS · 2 BLOCKS AWAY" x={90} y={460} t={t} t0={b} t1={s.end} />
-      <Label text="TANK TOP" sub="DRIVER · ONE" x={580} y={470} t={t} t0={c} t1={s.end} ring={[535, 560, 70]} />
-      <Label text="DANGER?" x={90} y={1000} t={t} t0={d} t1={s.end} />
+      <Pill text="PROBLEM 1 · HIS SIDE" color={SIDE.him} t={t} t0={s.start - 0.1} t1={s.end} />
+      <Label color={SIDE.him} text="PAPER TAGS?" sub="TEMP PLATE" x={560} y={850} t={t} t0={a} t1={s.end} ring={[645, 690, 90]} />
+      <Label color={SIDE.him} text="LOUD MUSIC" sub="BASS · 2 BLOCKS AWAY" x={70} y={470} t={t} t0={b} t1={s.end} />
+      <Label color={SIDE.him} text="TANK TOP" sub="DRIVER · ONE" x={600} y={330} t={t} t0={c} t1={s.end} ring={[535, 560, 70]} />
+      <Label color={SIDE.stakes} text="DANGER?" x={90} y={1000} t={t} t0={d} t1={s.end} />
     </AbsoluteFill>
   );
 };
 
+/** where the reading ball lands and becomes the grid (Reading.tsx morph "seed" uses the same point) */
+export const GRID = {x: 540, y: 640, cols: 24, rows: 20, cw: 34, ch: 22};
+
 export const Danger: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.danger;
   const B = cue('dangerB'), Cc = cue('dangerC'), dot = cue('dot');
-  const cols = 24, rows = 20;
-  const fill = prog(t, B + 0.2, dot + 0.3, EASE.inOut);
+  const {cols, rows, cw, ch} = GRID;
+  const gw = cols * cw, gh = rows * ch;
+  const land = B + 0.4;                                    // ball arrives -> grid ripples out from it
+  const R = prog(t, land, dot, EASE.out) * 1.05;
+  const hero = Math.floor(rows / 2) * cols + Math.floor(cols / 2);
+  const isolate = prog(t, dot, dot + 0.35, EASE.out);       // "one": everything else dims, one cell goes red
+  const pulse = 0.5 + 0.5 * Math.sin((t - dot) * Math.PI * 3);
   return (
-    <Cream header="PROBLEM 1 · HIS SIDE" t={t} t0={s.start} foot="Woods (2019), Michigan Law Review 117(4) · 10 yrs, 200+ Florida agencies">
+    <Card header="PROBLEM 1 · HIS SIDE" tone="him" t={t} t0={s.start} foot="Woods (2019), Michigan Law Review 117(4) · 10 yrs, 200+ Florida agencies">
       <In t={t} t0={s.start + 0.1} t1={B - F5} y={620}>
-        <div style={big(54, C.ink2)}>His training says</div>
-        <div style={{...big(118), marginTop: 18}}>any stop could<br /><span style={{color: C.pink}}>turn deadly.</span></div>
+        <div style={big(54, 'rgba(255,255,255,0.7)')}>His training says</div>
+        <div style={{...big(118), marginTop: 18}}>any stop could<br /><span style={glowText(SIDE.stakes)}>turn deadly.</span></div>
       </In>
-      <In t={t} t0={B} t1={Cc - F5} y={420}>
-        <svg width={cols * 34} height={rows * 22} style={{display: 'block', margin: '0 auto'}}>
-          {Array.from({length: cols * rows}, (_, i) => {
-            const on = i / (cols * rows) < fill;
-            return <rect key={i} x={(i % cols) * 34 + 4} y={Math.floor(i / cols) * 22 + 4} width={26} height={14} rx={3}
-              fill={on ? '#8FA889' : 'rgba(0,0,0,0.06)'} stroke={on ? '#5E7759' : 'none'} strokeWidth={1.5} />;
-          })}
-        </svg>
-        <div style={{...big(76), marginTop: 46}}>1 in <Count t={t} t0={B + 0.2} dur={dot - B + 0.2} to={6500000} size={76} color={C.pink} /></div>
-        <div style={{fontFamily: FONT.mono, fontSize: 24, color: C.ink2, marginTop: 14}}>routine stops where an officer was killed</div>
+      {t >= B && t < Cc && (
+        <div style={{position: 'absolute', left: GRID.x - gw / 2, top: GRID.y - gh / 2, opacity: 1 - prog(t, Cc - F5, Cc)}}>
+          <svg width={gw} height={gh} style={{overflow: 'visible'}}>
+            {Array.from({length: cols * rows}, (_, i) => {
+              const cx = (i % cols) * cw + cw / 2, cy = Math.floor(i / cols) * ch + ch / 2;
+              const d = Math.hypot((cx - gw / 2) / (gw / 2), (cy - gh / 2) / (gh / 2)) / Math.SQRT2;
+              const on = clamp((R - d) / 0.06);
+              const me = i === hero;
+              const col = me && isolate > 0 ? SIDE.stakes : SIDE.him;
+              const op = me ? 1 : on * (1 - 0.8 * isolate);
+              const sc = me ? 1 + isolate * (0.6 + 0.25 * pulse) : 0.4 + 0.6 * on;
+              return <rect key={i} x={cx - 13 * sc} y={cy - 7 * sc} width={26 * sc} height={14 * sc} rx={3} fill={col} opacity={me ? Math.max(on, isolate) : op}
+                style={me && isolate > 0 ? {filter: `drop-shadow(0 0 ${10 + 8 * pulse}px ${SIDE.stakes})`} : undefined} />;
+            })}
+          </svg>
+        </div>
+      )}
+      <In t={t} t0={land + 0.1} t1={Cc - F5} y={GRID.y + gh / 2 + 50}>
+        <div style={big(76)}>1 in <Count t={t} t0={land} dur={dot - land} to={6500000} size={76} color={SIDE.him} /></div>
+        <div style={{fontFamily: FONT.mono, fontSize: 24, color: 'rgba(255,255,255,0.65)', marginTop: 14}}>routine stops where an officer was <span style={{color: SIDE.stakes}}>killed</span></div>
       </In>
-      <In t={t} t0={Cc} t1={s.end + 0.1} y={700}><div style={big(120)}>But fear doesn't<br /><span style={{color: C.pink}}>read data.</span></div></In>
-    </Cream>
+      <In t={t} t0={Cc} t1={s.end + 0.1} y={700}><div style={big(120)}>But fear doesn't<br /><span style={glowText(SIDE.him)}>read data.</span></div></In>
+    </Card>
   );
 };
 
@@ -182,10 +220,10 @@ export const P2: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill>
       <Art src="mirror" t={t} t0={s.start} t1={s.end} from={1.0} to={1.1} ox={60} oy={40} />
-      <Pill text="PROBLEM 2" t={t} t0={s.start} t1={s.end} />
-      <Label text="POWER TRIP?" sub="HANDS ON HIPS" x={420} y={760} t={t} t0={a} t1={s.end} />
-      <Label text="QUOTA?" sub="END OF THE MONTH" x={560} y={380} t={t} t0={b} t1={s.end} />
-      <Label text="THE BADGE" x={430} y={980} t={t} t0={c} t1={s.end} ring={[630, 480, 60]} />
+      <Pill text="PROBLEM 2 · YOUR SIDE" color={SIDE.you} ink="#1A0D02" t={t} t0={s.start} t1={s.end} />
+      <Label color={SIDE.you} text="POWER TRIP?" sub="HANDS ON HIPS" x={420} y={760} t={t} t0={a} t1={s.end} />
+      <Label color={SIDE.you} text="QUOTA?" sub="END OF THE MONTH" x={560} y={380} t={t} t0={b} t1={s.end} />
+      <Label color={SIDE.you} text="THE BADGE" x={430} y={980} t={t} t0={c} t1={s.end} ring={[630, 480, 60]} />
     </AbsoluteFill>
   );
 };
@@ -195,19 +233,19 @@ export const Bias: React.FC<{t: number}> = ({t}) => {
   const B = cue('biasB');
   const st = cue('stamp_bias');
   return (
-    <Cream header="PROBLEM 2 · YOUR SIDE" t={t} t0={s.start} foot="Correll, Park, Judd & Wittenbrink (2002), JPSP 83(6)">
+    <Card header="PROBLEM 2 · YOUR SIDE" tone="you" t={t} t0={s.start} foot="Correll, Park, Judd & Wittenbrink (2002), JPSP 83(6)">
       <In t={t} t0={s.start + 0.1} y={520}>
-        <div style={big(48, C.ink2)}>In a famous study,</div>
+        <div style={big(48, 'rgba(255,255,255,0.7)')}>In a famous study,</div>
         <div style={{...big(96), marginTop: 18}}>split-second threat calls followed</div>
-        <div style={{...big(104, C.pink), marginTop: 6}}>cultural stereotypes.</div>
+        <div style={{...big(104), ...glowText(SIDE.you), marginTop: 6}}>cultural stereotypes.</div>
       </In>
       <In t={t} t0={B} y={1060}>
-        <div style={{width: 6, height: 70, background: C.ink, margin: '0 auto 22px', borderRadius: 3}} />
+        <div style={{width: 6, height: 70 * prog(t, B, B + 0.3, EASE.out), background: SIDE.you, margin: '0 auto 22px', borderRadius: 3, boxShadow: `0 0 16px ${SIDE.you}`}} />
         <div style={big(64)}>Even in people with</div>
         <div style={big(64)}>no personal prejudice.</div>
       </In>
-      <Stamp t={t} t0={st} text="STILL" y={1330} />
-    </Cream>
+      <Stamp t={t} t0={st} text="STILL" y={1330} color={SIDE.stakes} />
+    </Card>
   );
 };
 
@@ -221,10 +259,10 @@ export const Slice: React.FC<{t: number}> = ({t}) => (
 export const Rule: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.rule;
   return (
-    <AbsoluteFill style={{background: C.dark}}>
+    <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 60% at 50% 45%, #073326 0%, #03140F 72%)'}}>
       <In t={t} t0={s.start + 0.05} y={760}>
-        <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 26, letterSpacing: 6, color: C.pink}}>RULE 1</div>
-        <div style={{...big(96, '#fff'), marginTop: 26}}>Disarm the fear<br />before you speak.</div>
+        <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 26, letterSpacing: 6, color: SIDE.fix}}>RULE 1</div>
+        <div style={{...big(96, '#fff'), marginTop: 26}}>Disarm <span style={glowText(SIDE.fix)}>the fear</span><br />before you speak.</div>
       </In>
     </AbsoluteFill>
   );
@@ -238,15 +276,15 @@ export const Disarm: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill>
       <Art src="disarm" t={t} t0={s.start} t1={s.end} from={1.28} to={1.36} oy={22} crop={1} />
-      <Pill text="RULE 1" t={t} t0={s.start} t1={s.end} />
+      <Pill text="RULE 1 · DISARM" color={SIDE.fix} ink="#03140F" t={t} t0={s.start} t1={s.end} />
       <div style={{position: 'absolute', left: 60, top: 300}}>
         {items.map((it, i) => {
           if (t < ts[i] - 0.02) return null;
           const p = sp(t, ts[i], SPRING.pop);
           return (
             <div key={it} style={{display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16, opacity: clamp(p * 2), transform: `translateX(${(1 - p) * -30}px)`}}>
-              <div style={{width: 44, height: 44, borderRadius: 22, background: C.pink, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <svg width={26} height={26}><path d="M 5 14 L 11 20 L 22 7" fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round"
+              <div style={{width: 44, height: 44, borderRadius: 22, background: SIDE.fix, boxShadow: `0 0 18px ${SIDE.fixGlow}`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <svg width={26} height={26}><path d="M 5 14 L 11 20 L 22 7" fill="none" stroke="#03140F" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round"
                   pathLength={1} strokeDasharray={1} strokeDashoffset={1 - prog(t, ts[i] + 0.05, ts[i] + 0.3)} /></svg>
               </div>
               <div style={{background: 'rgba(0,0,0,0.62)', padding: '8px 16px', borderRadius: 8, fontFamily: FONT.sans, fontWeight: 900, fontSize: 38, color: '#fff'}}>{it}</div>
@@ -255,10 +293,10 @@ export const Disarm: React.FC<{t: number}> = ({t}) => {
         })}
       </div>
       {t >= ok && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1060, display: 'flex', justifyContent: 'center', opacity: clamp(sp(t, ok, SPRING.pop) * 2),
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1190, display: 'flex', justifyContent: 'center', opacity: clamp(sp(t, ok, SPRING.pop) * 2),
           transform: `scale(${0.8 + 0.2 * sp(t, ok, SPRING.pop)})`}}>
           <div style={{background: '#fff', color: C.ink, padding: '14px 30px', borderRadius: 14, fontFamily: FONT.sans, fontWeight: 900, fontSize: 52,
-            boxShadow: '0 12px 30px rgba(0,0,0,0.4)'}}>LET HIM <span style={{color: C.pink}}>SEE YOU.</span></div>
+            boxShadow: '0 12px 30px rgba(0,0,0,0.4)'}}>LET HIM <span style={{color: '#0A9E6E'}}>SEE YOU.</span></div>
         </div>
       )}
       <div style={{position: 'absolute', left: 0, right: 0, top: 1500, textAlign: 'center', fontFamily: FONT.mono, fontSize: 18, color: 'rgba(255,255,255,0.6)',
@@ -281,7 +319,7 @@ export const Approach: React.FC<{t: number}> = ({t}) => {
         <Art src="approach" t={t} t0={s.start} t1={s.end} from={1.0} to={1.16} ox={60} oy={40} />
       </div>
       <AbsoluteFill style={{mixBlendMode: 'screen', background: `radial-gradient(ellipse 40% 30% at 42% 48%, rgba(255,240,200,${0.5 * prog(t, flash, flash + 0.08)}), rgba(255,240,200,0) 70%)`}} />
-      <Label text="DANGER?" x={90} y={440} t={t} t0={s.start + 0.1} t1={drop + 0.4} />
+      <Label color={SIDE.him} text="DANGER?" x={90} y={440} t={t} t0={s.start + 0.1} t1={drop + 0.4} />
     </AbsoluteFill>
   );
 };
@@ -292,19 +330,19 @@ export const Admit: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.admit;
   const B = cue('admitB'), Cc = cue('admitC');
   return (
-    <Cream header="THE QUESTION" t={t} t0={s.start} foot="Jack Rice Defense · Cardon Stuart Law · honesty, not legal advice">
+    <Card header="THE QUESTION" tone="neutral" t={t} t0={s.start} foot="Jack Rice Defense · Cardon Stuart Law · honesty, not legal advice">
       <In t={t} t0={s.start + 0.1} y={400}>
-        <div style={big(68)}>“Do you know why<br />I stopped you?”</div>
-        <div style={{fontSize: 56, margin: '18px 0', color: C.ink}}>↓</div>
-        <div style={big(56)}>Invites an <span style={{color: C.pink}}>admission.</span></div>
+        <div style={{...big(68), ...glowText(SIDE.him)}}>“Do you know why<br />I stopped you?”</div>
+        <div style={{fontSize: 56, margin: '18px 0', color: 'rgba(255,255,255,0.6)'}}>↓</div>
+        <div style={big(56)}>Invites an <span style={glowText(SIDE.stakes)}>admission.</span></div>
       </In>
       {[{t0: B, k: "DON'T KNOW?", v: '“No, officer — could you tell me?”', y: 1000}, {t0: Cc, k: 'DO KNOW?', v: "Don't lie. Short & honest.", y: 1250}].map((r) => (
         <In key={r.k} t={t} t0={r.t0} y={r.y}>
-          <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 26, letterSpacing: 4, color: C.pink}}>{r.k}</div>
+          <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 26, letterSpacing: 4, color: SIDE.fix}}>{r.k}</div>
           <div style={{...big(54), marginTop: 10}}>{r.v}</div>
         </In>
       ))}
-    </Cream>
+    </Card>
   );
 };
 
@@ -316,25 +354,38 @@ export const Clip: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill>
       <Art src="clip" t={t} t0={s.start} t1={s.end} from={1.0} to={1.14} ox={60} oy={30} />
-      <AbsoluteFill style={{background: `radial-gradient(ellipse 70% 60% at 50% 45%, rgba(232,69,139,0) 50%, rgba(232,69,139,${0.18 + 0.16 * pulse}) 100%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255,59,78,0) 50%, rgba(255,59,78,${0.16 + 0.14 * pulse}) 100%)`}} />
     </AbsoluteFill>
+  );
+};
+
+/** a poll answer chip: dark glass, a light that keeps orbiting its border, a breathing halo. The two chips orbit out of phase,
+ *  so the eye ping-pongs between them, the way the viewer's mind should. */
+export const ChoiceChip: React.FC<{label: string; t: number; t0: number; color: string; phase: number; size?: number}> = ({label, t, t0, color, phase, size = 54}) => {
+  if (t < t0) return null;
+  const p = sp(t, t0, SPRING.pop);
+  const ang = ((t - t0) * 160 + phase * 180) % 360;
+  const breathe = 0.5 + 0.5 * Math.sin((t - t0) * Math.PI * 1.2 + phase * Math.PI);
+  return (
+    <div style={{position: 'relative', borderRadius: 22, padding: 4, transform: `scale(${0.6 + 0.4 * p})`, opacity: clamp(p * 2),
+      background: `conic-gradient(from ${ang}deg, ${color} 0deg, ${color}00 90deg, ${color}00 250deg, #fff 320deg, ${color} 360deg)`,
+      boxShadow: `0 0 ${24 + 26 * breathe}px ${color}${Math.round(0x40 + 0x50 * breathe).toString(16)}, 0 14px 34px rgba(0,0,0,0.5)`}}>
+      <div style={{borderRadius: 18, padding: '18px 38px', background: 'rgba(10,10,14,0.88)', fontFamily: FONT.sans, fontWeight: 900, fontSize: size,
+        color: '#fff', letterSpacing: '-0.01em', textShadow: `0 0 ${16 * breathe}px ${color}`}}>{label}</div>
+    </div>
   );
 };
 
 export const Choice: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.choice;
   const ex = cue('explain'), ap = cue('apologize');
-  const btn = (label: string, t0: number, pink: boolean) => {
-    if (t < t0) return null;
-    const p = sp(t, t0, SPRING.pop);
-    return <div style={{padding: '18px 40px', borderRadius: 16, background: pink ? C.pink : C.cream, color: pink ? '#fff' : C.ink, fontFamily: FONT.sans, fontWeight: 900,
-      fontSize: 54, transform: `scale(${0.6 + 0.4 * p})`, opacity: clamp(p * 2), boxShadow: '0 12px 30px rgba(0,0,0,0.45)'}}>{label}</div>;
-  };
   return (
     <AbsoluteFill>
       <Art src="face" t={t} t0={s.start} t1={s.end} from={1.14} to={1.26} oy={36} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1480, display: 'flex', justifyContent: 'center', gap: 26}}>
-        {btn('EXPLAIN', ex, false)}{btn('APOLOGIZE', ap, true)}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1480, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 22}}>
+        <ChoiceChip label="EXPLAIN" t={t} t0={ex} color={SIDE.you} phase={0} />
+        {t >= ap && <div style={{fontFamily: FONT.mono, fontSize: 24, color: 'rgba(255,255,255,0.6)', opacity: prog(t, ap, ap + 0.2)}}>or</div>}
+        <ChoiceChip label="APOLOGIZE" t={t} t0={ap} color={SIDE.fix} phase={1} />
       </div>
     </AbsoluteFill>
   );
@@ -344,9 +395,9 @@ export const Black: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.black;
   const A = cue('blackA'), B = cue('blackB');
   return (
-    <AbsoluteFill style={{background: C.dark}}>
-      <In t={t} t0={A} t1={B - F5} y={820}><div style={big(100, '#fff')}>One drops<br />his guard.</div></In>
-      <In t={t} t0={B} t1={s.end + 0.1} y={820}><div style={big(100, '#fff')}>The other<br /><span style={{color: C.pink}}>raises it.</span></div></In>
+    <AbsoluteFill style={{background: '#0A0A0D'}}>
+      <In t={t} t0={A} t1={B - F5} y={820}><div style={big(100, '#fff')}>One drops<br /><span style={glowText(SIDE.fix)}>his guard.</span></div></In>
+      <In t={t} t0={B} t1={s.end + 0.1} y={820}><div style={big(100, '#fff')}>The other<br /><span style={glowText(SIDE.stakes)}>raises it.</span></div></In>
     </AbsoluteFill>
   );
 };
@@ -354,18 +405,16 @@ export const Black: React.FC<{t: number}> = ({t}) => {
 export const End: React.FC<{t: number}> = ({t}) => {
   const s = SHOT.end;
   const b1 = cue('end_btn1'), b2 = cue('end_btn2'), p2 = cue('part2');
-  const btn = (label: string, t0: number, pink: boolean) => {
-    if (t < t0) return null;
-    const p = sp(t, t0, SPRING.pop);
-    return <div style={{padding: '18px 40px', borderRadius: 16, background: pink ? C.pink : C.cream, color: pink ? '#fff' : C.ink, fontFamily: FONT.sans, fontWeight: 900,
-      fontSize: 54, transform: `scale(${0.6 + 0.4 * p})`, opacity: clamp(p * 2)}}>{label}</div>;
-  };
   if (t >= p2 - 0.02) {
     return (
-      <AbsoluteFill style={{background: C.dark}}>
-        <In t={t} t0={p2} y={760}>
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 60% at 50% 45%, #1A1530 0%, #08080C 72%)'}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1240, display: 'flex', justifyContent: 'center', gap: 22}}>
+          <ChoiceChip label="EXPLAIN" t={t} t0={p2 + 0.3} color={SIDE.you} phase={0} size={44} />
+          <ChoiceChip label="APOLOGIZE" t={t} t0={p2 + 0.45} color={SIDE.fix} phase={1} size={44} />
+        </div>
+        <In t={t} t0={p2} y={700}>
           <div style={{fontFamily: FONT.mono, fontSize: 22, letterSpacing: 5, color: 'rgba(255,255,255,0.6)'}}>TWO SCARED PEOPLE</div>
-          <div style={{...big(140, '#fff'), marginTop: 16, lineHeight: 0.95}}>PART 2<br /><span style={{color: C.pink}}>TOMORROW</span></div>
+          <div style={{...big(140, '#fff'), marginTop: 16, lineHeight: 0.95}}>PART 2<br /><span style={twoTone}>TOMORROW</span></div>
           <div style={{...big(40, 'rgba(255,255,255,0.85)'), marginTop: 30, letterSpacing: '-0.01em'}}>Comment EXPLAIN or APOLOGIZE.<br />The majority writes Part 2.</div>
         </In>
         <div style={{position: 'absolute', left: 0, right: 0, top: 1640, textAlign: 'center', fontFamily: FONT.mono, fontSize: 20, color: 'rgba(255,255,255,0.45)'}}>
@@ -376,10 +425,11 @@ export const End: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill>
       <Art src="hook" t={t} t0={s.start} t1={s.end} from={1.25} to={1.32} ox={35} oy={30} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1060, textAlign: 'center', fontFamily: FONT.mono, fontSize: 24, letterSpacing: 5, color: '#fff',
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1440, textAlign: 'center', fontFamily: FONT.mono, fontSize: 24, letterSpacing: 5, color: '#fff',
         opacity: prog(t, s.start + 0.1, s.start + 0.4)}}>COMMENT ONE WORD</div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1120, display: 'flex', justifyContent: 'center', gap: 26}}>
-        {btn('EXPLAIN', b1, false)}{btn('APOLOGIZE', b2, true)}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1495, display: 'flex', justifyContent: 'center', gap: 26}}>
+        <ChoiceChip label="EXPLAIN" t={t} t0={b1} color={SIDE.you} phase={0} />
+        <ChoiceChip label="APOLOGIZE" t={t} t0={b2} color={SIDE.fix} phase={1} />
       </div>
     </AbsoluteFill>
   );
@@ -397,17 +447,24 @@ export const Hud: React.FC<{t: number}> = ({t}) => {
   if (!on) return null;
   const secs = t < CUES.clock[0][0] ? 60 : Math.max(0, Math.round(keys(CUES.clock, t)));
   const you = keys(CUES.fear.you, t), his = keys(CUES.fear.his, t);
-  const box = (label: string, value: string, hot: boolean, w: number) => (
-    <div style={{width: w, height: 92, borderRadius: 12, background: C.hud, padding: '12px 16px', boxSizing: 'border-box'}}>
-      <div style={{fontFamily: FONT.mono, fontSize: 16, letterSpacing: 2, color: 'rgba(255,255,255,0.55)'}}>{label}</div>
-      <div style={{fontFamily: FONT.sans, fontWeight: 800, fontSize: 36, color: hot ? C.pink : '#fff', marginTop: 4, letterSpacing: '-0.01em'}}>{value}</div>
+  // each panel wears its owner's colour; heat = the value glows and the bar fills
+  const box = (label: string, value: string, col: string, heat: number, w: number) => (
+    <div style={{width: w, height: 92, borderRadius: 12, background: C.hud, padding: '12px 16px', boxSizing: 'border-box', position: 'relative', overflow: 'hidden',
+      border: `1.5px solid ${col}${heat > 0.7 ? '99' : '33'}`}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+        <div style={{width: 8, height: 8, borderRadius: 4, background: col, boxShadow: `0 0 8px ${col}`}} />
+        <div style={{fontFamily: FONT.mono, fontSize: 16, letterSpacing: 2, color: 'rgba(255,255,255,0.6)'}}>{label}</div>
+      </div>
+      <div style={{fontFamily: FONT.sans, fontWeight: 800, fontSize: 36, color: heat > 0.7 ? col : '#fff', marginTop: 4, letterSpacing: '-0.01em',
+        textShadow: heat > 0.7 ? `0 0 18px ${col}` : undefined}}>{value}</div>
+      <div style={{position: 'absolute', left: 0, bottom: 0, height: 4, width: `${heat * 100}%`, background: col, boxShadow: `0 0 10px ${col}`}} />
     </div>
   );
   return (
     <div style={{position: 'absolute', left: 60, top: 100, display: 'flex', gap: 12}}>
-      {box('CLOCK', `0:${String(secs).padStart(2, '0')}`, secs <= 5, 220)}
-      {box('YOUR FEAR', `${you.toFixed(1)}/10`, you >= 7, 250)}
-      {box('HIS FEAR', `${his.toFixed(1)}/10`, his >= 7, 250)}
+      {box('CLOCK', `0:${String(secs).padStart(2, '0')}`, secs <= 5 ? SIDE.stakes : '#fff', secs <= 5 ? 1 : secs / 60, 220)}
+      {box('YOUR FEAR', `${you.toFixed(1)}/10`, SIDE.you, you / 10, 250)}
+      {box('HIS FEAR', `${his.toFixed(1)}/10`, SIDE.him, his / 10, 250)}
     </div>
   );
 };
