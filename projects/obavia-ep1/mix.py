@@ -178,6 +178,7 @@ for nm in ["ios_tink", "ios_key", "ios_lock", "ios_note", "ios_success", "ios_re
     KIT[nm] = lib(f"ios/{nm}.wav")
 KIT.update({"paper": paper_slide(), "marker": marker(), "stamp": stamp(), "toggle": lib("ui/switch.wav"),
             "morph": lib("ui/open_ui.wav"), "shine": lib("pack3/shine.wav")})
+KIT["tick_soft"] = KIT["ios_key"] * 0.7
 KIT["siren_wipe"] = siren_wipe()
 KIT["impact_ding"] = KIT["impact"].copy()
 KIT["impact_ding"][:len(KIT["ding"])] += KIT["ding"] * 0.6
@@ -187,6 +188,20 @@ PEAK_ALIGNED = {"swoosh", "whoosh_soft", "whoosh_down", "siren_wipe"}   # these 
 def peak_offset(x):
     e = np.convolve(np.abs(x).max(1), np.ones(480) / 480, "same")
     return np.argmax(e) / SR
+
+
+# melodic / multi-note sounds land their first note; everything percussive lands its peak (files carry 0-535 ms of pre-roll)
+ONSET_ALIGNED = {"ios_success", "ios_received", "ios_tritone", "shine", "siren", "heartbeat2", "pen", "step"}
+
+
+def hit_offset(name, x):
+    if name in PEAK_ALIGNED:
+        return peak_offset(x)
+    a = np.convolve(np.abs(x).max(1), np.ones(48) / 48, "same")
+    if name in ONSET_ALIGNED:
+        return np.argmax(a > a.max() * 0.0316) / SR
+    head = a[: int(0.8 * SR)]
+    return np.argmax(head > head.max() * 0.5) / SR      # perceived attack: where the hit reaches half its peak
 
 
 # ---------------------------------------------------------------- score (D minor, 92 BPM)
@@ -320,9 +335,7 @@ def main():
         if not e["sfx"]:
             continue
         x = KIT[e["sfx"]]
-        t = e["t"] - e["lead"] / 30
-        if e["sfx"] in PEAK_ALIGNED:
-            t -= peak_offset(x)
+        t = e["t"] - e["lead"] / 30 - hit_offset(e["sfx"], x)   # the audible hit, not the file start, lands on the frame
         x = x * db(-24 - lufs(np.pad(x, ((0, max(0, int(0.45 * SR) - len(x))), (0, 0))))) * db(e["gain"] + 8)
         add(sfx, x, t)
     sfx += heartbeat_track() * db(-26 - lufs(heartbeat(1))) * 1.0
@@ -338,6 +351,7 @@ def main():
     music *= duck[:, None]
 
     mix = vo + music + sfx
+    sf.write(HERE / "public/sfx_only.wav", np.clip(sfx[: int(T * SR)], -1, 1), SR, subtype="PCM_16")   # for the sync audit
     mix = mix[: int(T * SR)]
     mix *= db(-14 - lufs(mix))
     mix = limit(mix, -2.0)

@@ -30,16 +30,8 @@
    "t": 7.142,
    "f": 214,
    "sfx": "lowhit",
-   "gain": -10,
+   "gain": -12,
    "lead": 0
-  },
-  {
-   "name": "p1_tag",
-   "t": 11.326,
-   "f": 340,
-   "sfx": "ios_tink",
-   "gain": -10,
-   "lead": 1
   },
   {
    "name": "tagH1",
@@ -82,6 +74,14 @@
    "lead": 0
   },
   {
+   "name": "cut_danger",
+   "t": 20.24,
+   "f": 607,
+   "sfx": "whoosh_soft",
+   "gain": -17,
+   "lead": 1
+  },
+  {
    "name": "dangerB",
    "t": 22.894,
    "f": 687,
@@ -98,6 +98,78 @@
    "lead": 1
   },
   {
+   "name": "count1",
+   "t": 23.323,
+   "f": 700,
+   "sfx": "tick_soft",
+   "gain": -16.6,
+   "lead": 0
+  },
+  {
+   "name": "count2",
+   "t": 23.353,
+   "f": 701,
+   "sfx": "tick_soft",
+   "gain": -17.2,
+   "lead": 0
+  },
+  {
+   "name": "count3",
+   "t": 23.386,
+   "f": 702,
+   "sfx": "tick_soft",
+   "gain": -17.8,
+   "lead": 0
+  },
+  {
+   "name": "count4",
+   "t": 23.424,
+   "f": 703,
+   "sfx": "tick_soft",
+   "gain": -18.4,
+   "lead": 0
+  },
+  {
+   "name": "count5",
+   "t": 23.466,
+   "f": 704,
+   "sfx": "tick_soft",
+   "gain": -19.0,
+   "lead": 0
+  },
+  {
+   "name": "count6",
+   "t": 23.521,
+   "f": 706,
+   "sfx": "tick_soft",
+   "gain": -19.6,
+   "lead": 0
+  },
+  {
+   "name": "count7",
+   "t": 23.588,
+   "f": 708,
+   "sfx": "tick_soft",
+   "gain": -20.2,
+   "lead": 0
+  },
+  {
+   "name": "count8",
+   "t": 23.685,
+   "f": 711,
+   "sfx": "tick_soft",
+   "gain": -20.8,
+   "lead": 0
+  },
+  {
+   "name": "count9",
+   "t": 23.848,
+   "f": 715,
+   "sfx": "tick_soft",
+   "gain": -21.4,
+   "lead": 0
+  },
+  {
    "name": "dot",
    "t": 24.974,
    "f": 749,
@@ -110,14 +182,6 @@
    "t": 27.822,
    "f": 835,
    "sfx": "lowhit",
-   "gain": -6,
-   "lead": 1
-  },
-  {
-   "name": "p2_tag",
-   "t": 29.471,
-   "f": 884,
-   "sfx": "ios_tink",
    "gain": -10,
    "lead": 1
   },
@@ -152,6 +216,14 @@
    "sfx": "ios_key",
    "gain": -10,
    "lead": 0
+  },
+  {
+   "name": "cut_bias",
+   "t": 33.426,
+   "f": 1003,
+   "sfx": "whoosh_soft",
+   "gain": -17,
+   "lead": 1
   },
   {
    "name": "biasB",
@@ -191,6 +263,22 @@
    "f": 1441,
    "sfx": "ios_note",
    "gain": -8,
+   "lead": 0
+  },
+  {
+   "name": "cut_rule",
+   "t": 48.049,
+   "f": 1441,
+   "sfx": "whoosh_soft",
+   "gain": -17,
+   "lead": 1
+  },
+  {
+   "name": "fear_drain",
+   "t": 48.949,
+   "f": 1468,
+   "sfx": "whoosh_down",
+   "gain": -18,
    "lead": 0
   },
   {
@@ -239,6 +327,14 @@
    "f": 1698,
    "sfx": "ios_success",
    "gain": -8,
+   "lead": 1
+  },
+  {
+   "name": "danger_tag",
+   "t": 57.65,
+   "f": 1730,
+   "sfx": "pop",
+   "gain": -10,
    "lead": 1
   },
   {
@@ -298,12 +394,28 @@
    "lead": 1
   },
   {
+   "name": "q_land",
+   "t": 62.234,
+   "f": 1867,
+   "sfx": "pop",
+   "gain": -12,
+   "lead": 1
+  },
+  {
    "name": "card_admit",
    "t": 63.878,
    "f": 1916,
    "sfx": "ios_key",
    "gain": -10,
    "lead": 0
+  },
+  {
+   "name": "cut_admit",
+   "t": 63.878,
+   "f": 1916,
+   "sfx": "whoosh_soft",
+   "gain": -17,
+   "lead": 1
   },
   {
    "name": "admitB",
@@ -439,6 +551,30 @@
    "f": 2679,
    "sfx": "ios_note",
    "gain": -8,
+   "lead": 1
+  },
+  {
+   "name": "part2_siren",
+   "t": 89.463,
+   "f": 2684,
+   "sfx": "siren",
+   "gain": -17,
+   "lead": 0
+  },
+  {
+   "name": "part2_chip1",
+   "t": 89.613,
+   "f": 2688,
+   "sfx": "ios_tink",
+   "gain": -14,
+   "lead": 1
+  },
+  {
+   "name": "part2_chip2",
+   "t": 89.763,
+   "f": 2693,
+   "sfx": "ios_tink",
+   "gain": -14,
    "lead": 1
   }
  ],
@@ -2863,7 +2999,7 @@
   },
   {
    "shape": "stopwatch",
-   "t0": 43.934,
+   "t0": 43.834,
    "t1": 45.464,
    "color": "white",
    "x": 250,
@@ -2881,7 +3017,7 @@
   },
   {
    "shape": "stamp",
-   "t0": 73.669,
+   "t0": 73.269,
    "t1": 75.381,
    "color": "stakes",
    "x": 540,
@@ -2890,7 +3026,7 @@
   },
   {
    "shape": "timer",
-   "t0": 77.201,
+   "t0": 76.801,
    "t1": 78.614,
    "color": "stakes",
    "x": 290,
