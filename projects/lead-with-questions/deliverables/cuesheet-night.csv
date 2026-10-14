@@ -1,0 +1,607 @@
+start,end,start_s,track,unit,event
+00:00.00,00:00.00,0,BINAURAL,,beat target 10 Hz
+00:00.00,00:00.00,0,MUSIC,,pad fades in 8 s; rain + brown noise in
+00:00.00,00:45.00,0.0,SECTION,N0,Settle & Safety
+00:00.00,00:08.00,0,VISUAL,N0,safety card
+00:00.00,00:01.58,0.0,VOX A,N0,This is your night session.
+00:01.70,00:04.03,1.7,PAUSE,N0,scripted 1.5s -> 2.3s
+00:04.03,00:06.06,4.03,VOX A,N0,Lights off. Phone face down.
+00:06.18,00:08.51,6.18,PAUSE,N0,scripted 1.5s -> 2.3s
+00:08.00,00:16.00,8,VISUAL,N0,title card LEAD WITH QUESTIONS / Night Install
+00:08.51,00:13.40,8.51,VOX A,N0,"If you've got headphones in, good. The soft tones underneath are built for them."
+00:13.52,00:15.85,13.52,PAUSE,N0,scripted 1.5s -> 2.3s
+00:15.85,00:22.34,15.85,VOX A,N0,"If you're driving, or anywhere but somewhere you can fall asleep, stop this now and come back later."
+00:16.00,00:45.00,16,VISUAL,N0,V2 particles fade in
+00:22.46,00:26.35,22.46,PAUSE,N0,scripted 2.5s -> 3.9s
+00:26.35,00:28.85,26.35,VOX A,N0,Nothing here is magic. It's practice.
+00:28.97,00:30.53,28.97,PAUSE,N0,scripted 1.0s -> 1.6s
+00:30.53,00:36.02,30.53,VOX A,N0,"For the next few minutes, your brain is going to rehearse the man you already decided to be."
+00:36.14,00:38.47,36.14,PAUSE,N0,scripted 1.5s -> 2.3s
+00:38.47,00:40.22,38.47,VOX A,N0,All you have to do is listen.
+00:40.34,00:45.00,40.34,PAUSE,N0,scripted 3.0s -> 4.7s
+00:45.00,00:45.00,45.0,BINAURAL,,beat target 10 Hz
+00:45.00,03:00.00,45.0,SECTION,N1,Breath
+00:45.00,06:00.00,45.0,VISUAL,N1-N2,"V1 breathing circle (synced 4/6), then resting pulse"
+00:45.00,00:46.95,45.0,VOX A,N1,Let's slow the body down first.
+00:47.07,00:48.91,47.07,PAUSE,N1,scripted 1.5s -> 1.8s
+00:48.91,00:53.68,48.91,BREATH,N1,guided in-breath
+00:48.91,00:53.32,48.91,VOX A,N1,Breathe in through your nose... two... three... four.
+00:48.91,00:58.91,48.91,SFX,N1,"wave swell (rise on inhale, fall on exhale)"
+00:53.32,00:53.93,53.32,PAUSE,N1,scripted 0.5s -> 0.6s
+00:53.93,01:00.82,53.93,BREATH,N1,guided out-breath
+00:53.93,01:00.44,53.93,VOX A,N1,"And out, slow, through your mouth... two... three... four... five... six."
+01:00.44,01:02.28,60.44,PAUSE,N1,scripted 1.5s -> 1.8s
+01:02.28,01:06.36,62.28,BREATH,N1,guided in-breath
+01:02.28,01:06.00,62.28,VOX A,N1,Again. In... two... three... four.
+01:02.28,01:12.28,62.28,SFX,N1,"wave swell (rise on inhale, fall on exhale)"
+01:06.00,01:06.61,66.0,PAUSE,N1,scripted 0.5s -> 0.6s
+01:06.61,01:12.61,66.61,BREATH,N1,guided out-breath
+01:06.61,01:12.23,66.61,VOX A,N1,Out... two... three... four... five... six.
+01:12.23,01:14.07,72.23,PAUSE,N1,scripted 1.5s -> 1.8s
+01:14.07,01:18.32,74.07,BREATH,N1,guided in-breath
+01:14.07,01:17.96,74.07,VOX A,N1,One more. In... two... three... four.
+01:17.96,01:18.57,77.96,PAUSE,N1,scripted 0.5s -> 0.6s
+01:18.57,01:20.70,78.57,VOX A,N1,Out... all the way... five... six.
+01:20.92,01:22.52,80.92,VOX A,N1,[BR] audible exhale
+01:22.72,01:25.17,82.72,PAUSE,N1,scripted 2.0s -> 2.5s
+01:25.17,01:30.57,85.17,VOX A,N1,Now keep that rhythm on your own for a few breaths. In for four. Out for six.
+01:30.69,01:55.20,90.69,PAUSE,N1,scripted 20.0s -> 24.5s
+01:31.19,01:41.19,91.19,SFX,N1,"wave swell (rise on inhale, fall on exhale)"
+01:41.19,01:51.19,101.19,SFX,N1,"wave swell (rise on inhale, fall on exhale)"
+01:55.20,01:55.81,115.2,VOX A,N1,Good.
+01:55.93,01:58.38,115.93,PAUSE,N1,scripted 2.0s -> 2.5s
+01:58.38,02:01.23,118.38,VOX A,N1,Let the breath go back to whatever it wants to do.
+02:01.35,02:05.02,121.35,PAUSE,N1,scripted 3.0s -> 3.7s
+02:05.02,02:09.38,125.02,VOX A,N1,You don't have to do anything right. There's no right way to listen to this.
+02:09.50,02:12.57,129.5,PAUSE,N1,scripted 2.5s -> 3.1s
+02:12.57,02:18.85,132.57,VOX A,N1,Thoughts will come. Let them. They're cars on a far-off road. You hear them pass. You don't chase them.
+02:18.97,02:23.26,138.97,PAUSE,N1,scripted 3.5s -> 4.3s
+02:23.26,02:27.83,143.26,VOX A,N1,Tonight you're not trying to become anything. You're letting something get practiced.
+02:27.95,02:31.63,147.95,PAUSE,N1,scripted 3.0s -> 3.7s
+02:31.63,02:36.07,151.63,VOX A,N1,"And you can give yourself permission, right now, to let the day be over."
+02:36.19,02:39.26,156.19,PAUSE,N1,scripted 2.5s -> 3.1s
+02:39.26,02:41.75,159.26,VOX A,N1,The calls are done. The texts can wait.
+02:41.87,02:44.32,161.87,PAUSE,N1,scripted 2.0s -> 2.5s
+02:44.32,02:48.35,164.32,VOX A,N1,"Whatever you said today, and whatever you wish you'd said... it's done."
+02:48.47,02:51.53,168.47,PAUSE,N1,scripted 2.5s -> 3.1s
+02:51.53,02:53.75,171.53,VOX A,N1,Tomorrow gets a fresh version of you.
+02:53.87,03:00.00,173.87,PAUSE,N1,scripted 5.0s -> 6.1s
+03:00.00,03:00.00,180.0,BINAURAL,,beat target 8 Hz
+03:00.00,03:00.00,180.0,MUSIC,,felt-piano motif enters (F-A-C)
+03:00.00,05:60.00,180.0,SECTION,N2,Progressive Relaxation
+03:00.00,03:02.55,180.0,VOX A,N2,Bring your attention to the top of your head.
+03:02.67,03:06.38,182.67,PAUSE,N2,scripted 2.5s -> 3.7s
+03:06.38,03:09.44,186.38,VOX A,N2,Just notice it. You don't have to change anything.
+03:09.56,03:14.01,189.56,PAUSE,N2,scripted 3.0s -> 4.4s
+03:14.01,03:19.91,194.01,VOX A,N2,Notice your forehead... and let it go smooth... like a warm hand just passed across it.
+03:20.03,03:25.22,200.03,PAUSE,N2,scripted 3.5s -> 5.2s
+03:25.22,03:30.46,205.22,VOX A,N2,Your eyes get heavy behind the lids. The small muscles around them... let go.
+03:30.58,03:35.77,210.58,PAUSE,N2,scripted 3.5s -> 5.2s
+03:35.77,03:41.71,215.77,VOX A,N2,"Your jaw. You carry a lot there. Every time you held your tongue today, it went into the jaw."
+03:41.83,03:44.80,221.83,PAUSE,N2,scripted 2.0s -> 3.0s
+03:44.80,03:48.15,224.8,VOX A,N2,Let your teeth come apart a little. Let your tongue rest.
+03:48.27,03:54.20,228.27,PAUSE,N2,scripted 4.0s -> 5.9s
+03:54.20,03:55.44,234.2,VOX A,N2,Your neck softens.
+03:55.56,03:58.53,235.56,PAUSE,N2,scripted 2.0s -> 3.0s
+03:58.53,04:06.82,238.53,VOX A,N2,Your shoulders drop... about an inch... and then another inch you didn't know you had.
+04:01.27,04:04.23,241.27,PAUSE,N2,scripted 2.0s -> 3.0s
+04:06.94,04:12.87,246.94,PAUSE,N2,scripted 4.0s -> 5.9s
+04:12.87,04:19.04,252.87,VOX A,N2,Feel that weight move down your arms... into your elbows... your forearms... your hands.
+04:19.16,04:23.61,259.16,PAUSE,N2,scripted 3.0s -> 4.4s
+04:23.61,04:28.13,263.61,VOX A,N2,Your hands might feel warm. They might feel heavy. Either one is fine.
+04:28.25,04:34.18,268.25,PAUSE,N2,scripted 4.0s -> 5.9s
+04:34.18,04:39.45,274.18,VOX A,N2,Your chest rises... and falls... on its own. Nobody's asking it to.
+04:39.57,04:45.50,279.57,PAUSE,N2,scripted 4.0s -> 5.9s
+04:45.50,04:51.07,285.5,VOX A,N2,Your stomach. Let it go loose. You don't have to hold anything in for anyone tonight.
+04:51.19,04:57.12,291.19,PAUSE,N2,scripted 4.0s -> 5.9s
+04:57.12,04:59.25,297.12,VOX A,N2,Your lower back sinks into the bed.
+04:59.37,05:03.82,299.37,PAUSE,N2,scripted 3.0s -> 4.4s
+05:03.82,05:05.65,303.82,VOX A,N2,Your hips. Your thighs. Heavy.
+05:05.77,05:10.22,305.77,PAUSE,N2,scripted 3.0s -> 4.4s
+05:10.22,05:19.42,310.22,VOX A,N2,Your knees... your calves... your ankles... all the way down to the soles of your feet.
+05:13.19,05:16.90,313.19,PAUSE,N2,scripted 2.5s -> 3.7s
+05:19.54,05:25.47,319.54,PAUSE,N2,scripted 4.0s -> 5.9s
+05:25.47,05:28.66,325.47,VOX A,N2,Your whole body is held now. The bed's got you.
+05:28.78,05:32.49,328.78,PAUSE,N2,scripted 2.5s -> 3.7s
+05:32.49,05:35.53,332.49,VOX A,N2,You don't have to hold yourself up. Not tonight.
+05:35.65,05:43.07,335.65,PAUSE,N2,scripted 5.0s -> 7.4s
+05:43.07,05:48.02,343.07,VOX A,N2,"And with every breath out from here, you can go a little further down ... into rest."
+05:48.14,05:60.00,348.14,PAUSE,N2,scripted 8.0s -> 11.9s
+06:00.00,06:00.00,360.0,BINAURAL,,beat target 6 Hz
+06:00.00,06:00.00,360.0,MUSIC,,"piano out (6 s), cello drone in"
+06:00.00,07:60.00,360.0,SECTION,N3,Countdown Deepener
+06:00.00,08:00.00,360.0,VISUAL,N3,V4 ten light bands; V3 fractal 20%
+06:00.00,06:03.41,360.0,VOX A,N3,In a moment I'm going to count down from ten to one.
+06:03.53,06:05.50,363.53,PAUSE,N3,scripted 2.0s -> 2.0s
+06:05.50,06:11.26,365.5,VOX A,N3,Picture a wide staircase. Ten steps. Warm light. Soft carpet under your feet.
+06:11.38,06:13.84,371.38,PAUSE,N3,scripted 2.5s -> 2.5s
+06:13.84,06:19.76,373.84,VOX A,N3,Each number takes you one step down. And each step makes it twice as easy to let go.
+06:19.88,06:22.83,379.88,PAUSE,N3,scripted 3.0s -> 3.0s
+06:22.83,06:24.33,382.83,VISUAL,N3,band 1 fades
+06:22.83,06:26.68,382.83,VOX A,N3,Ten. One step down.
+06:23.55,06:25.52,383.55,PAUSE,N3,scripted 2.0s -> 2.0s
+06:26.80,06:29.75,386.8,PAUSE,N3,scripted 3.0s -> 3.0s
+06:29.75,06:31.25,389.75,VISUAL,N3,band 2 fades
+06:29.75,06:33.62,389.75,VOX A,N3,Nine. Shoulders loose.
+06:30.55,06:32.52,390.55,PAUSE,N3,scripted 2.0s -> 2.0s
+06:33.74,06:36.69,393.74,PAUSE,N3,scripted 3.0s -> 3.0s
+06:36.69,06:38.19,396.69,VISUAL,N3,band 3 fades
+06:36.69,06:40.76,396.69,VOX A,N3,Eight. Deeper... easier.
+06:37.43,06:39.39,397.43,PAUSE,N3,scripted 2.0s -> 2.0s
+06:40.88,06:43.83,400.88,PAUSE,N3,scripted 3.0s -> 3.0s
+06:43.83,06:45.33,403.83,VISUAL,N3,band 4 fades
+06:43.83,06:49.09,403.83,VOX A,N3,Seven. Nothing to fix. Nothing to prove.
+06:44.63,06:46.60,404.63,PAUSE,N3,scripted 2.0s -> 2.0s
+06:49.21,06:52.16,409.21,PAUSE,N3,scripted 3.0s -> 3.0s
+06:52.16,06:53.66,412.16,VISUAL,N3,band 5 fades
+06:52.16,06:57.60,412.16,VOX A,N3,Six. Halfway down... and twice as relaxed.
+06:52.95,06:54.92,412.95,PAUSE,N3,scripted 2.0s -> 2.0s
+06:57.72,07:00.68,417.72,PAUSE,N3,scripted 3.0s -> 3.0s
+07:00.68,07:04.05,420.68,VOX B,N3,...and you can notice how the voices and the music blend together...
+07:04.50,07:06.47,424.5,PAUSE,N3,scripted 2.0s -> 2.0s
+07:06.47,07:07.97,426.47,VISUAL,N3,band 6 fades
+07:06.47,07:07.19,426.47,VOX A,N3,Five.
+07:07.31,07:09.28,427.31,PAUSE,N3,scripted 2.0s -> 2.0s
+07:09.28,07:11.27,429.28,VOX B,N3,...you don't need to follow every word...
+07:11.72,07:13.20,431.72,PAUSE,N3,scripted 1.5s -> 1.5s
+07:13.20,07:14.10,433.2,VOX A,N3,Deeper now.
+07:14.22,07:17.17,434.22,PAUSE,N3,scripted 3.0s -> 3.0s
+07:17.17,07:19.59,437.17,VOX B,N3,...part of you listens... and part of you rests...
+07:20.04,07:22.01,440.04,PAUSE,N3,scripted 2.0s -> 2.0s
+07:22.01,07:23.51,442.01,VISUAL,N3,band 7 fades
+07:22.01,07:22.69,442.01,VOX A,N3,Four.
+07:22.81,07:25.77,442.81,PAUSE,N3,scripted 3.0s -> 3.0s
+07:25.77,07:27.31,445.77,VOX B,N3,...and both parts are learning...
+07:27.76,07:29.72,447.76,PAUSE,N3,scripted 2.0s -> 2.0s
+07:29.72,07:31.22,449.72,VISUAL,N3,band 8 fades
+07:29.72,07:33.42,449.72,VOX A,N3,Three. Way down.
+07:30.55,07:32.51,450.55,PAUSE,N3,scripted 2.0s -> 2.0s
+07:33.54,07:36.49,453.54,PAUSE,N3,scripted 3.0s -> 3.0s
+07:36.49,07:37.30,456.49,VOX B,N3,...easy...
+07:37.75,07:39.72,457.75,PAUSE,N3,scripted 2.0s -> 2.0s
+07:39.72,07:41.22,459.72,VISUAL,N3,band 9 fades
+07:39.72,07:40.32,459.72,VOX A,N3,Two.
+07:40.44,07:43.39,460.44,PAUSE,N3,scripted 3.0s -> 3.0s
+07:43.39,07:44.35,463.39,VOX B,N3,...almost there...
+07:44.80,07:46.77,464.8,PAUSE,N3,scripted 2.0s -> 2.0s
+07:46.77,07:48.27,466.77,VISUAL,N3,band 10 fades
+07:46.77,07:47.57,466.77,VOX A,N3,And one.
+07:47.69,07:51.63,467.69,PAUSE,N3,scripted 4.0s -> 3.9s
+07:51.63,07:54.96,471.63,VOX A,N3,At the bottom of the stairs now. Deeply relaxed.
+07:55.08,07:60.00,475.08,PAUSE,N3,scripted 5.0s -> 4.9s
+08:00.00,08:00.00,480.0,BINAURAL,,beat target 5 Hz
+08:00.00,08:00.00,480.0,MUSIC,,drone + sparse piano
+08:00.00,10:30.00,480.0,SECTION,N4,Metaphor: The Lantern
+08:00.00,10:30.00,480.0,VISUAL,N4,V5 lantern glow turns left -> right; V3 25%
+08:00.00,08:09.02,480.0,VOX A,N4,"At the bottom of the stairs there's a door. And on the other side is a quiet room, with a table, and two chairs."
+08:02.73,08:04.49,482.73,PAUSE,N4,scripted 2.0s -> 1.8s
+08:04.00,08:06.00,484.0,WHISPER,,I lead with questions.
+08:09.14,08:11.35,489.14,PAUSE,N4,scripted 2.5s -> 2.2s
+08:11.35,08:18.16,491.35,VOX A,N4,You sit down. And across from you is somebody who has to make a decision.
+08:12.57,08:14.33,492.57,PAUSE,N4,scripted 2.0s -> 1.8s
+08:14.71,08:16.71,494.71,WHISPER,,"Ask, and let it land."
+08:18.28,08:20.93,498.28,PAUSE,N4,scripted 3.0s -> 2.7s
+08:20.93,08:22.36,500.93,VOX B,N4,...you can sit easy...
+08:22.81,08:24.58,502.81,PAUSE,N4,scripted 2.0s -> 1.8s
+08:24.58,08:30.50,504.58,VOX A,N4,It might be a buyer. An owner. An investor. Someone interviewing you. It doesn't matter yet.
+08:25.34,08:27.34,505.34,WHISPER,,My facts are clean.
+08:30.62,08:33.27,510.62,PAUSE,N4,scripted 3.0s -> 2.7s
+08:33.27,08:37.61,513.27,VOX A,N4,In the middle of the table there's an old lantern. Brass. Warm.
+08:34.73,08:36.73,514.73,WHISPER,,One question at a time.
+08:37.73,08:39.94,517.73,PAUSE,N4,scripted 2.5s -> 2.2s
+08:39.94,08:41.07,519.94,VOX B,N4,...steady hands...
+08:41.52,08:43.29,521.52,PAUSE,N4,scripted 2.0s -> 1.8s
+08:43.29,08:48.90,523.29,VOX A,N4,And here's the thing about that lantern. Whoever holds it decides where the light goes.
+08:43.49,08:45.49,523.49,WHISPER,,The silence is working.
+08:49.02,08:52.11,529.02,PAUSE,N4,scripted 3.5s -> 3.1s
+08:51.19,08:53.19,531.19,WHISPER,,Honest questions only.
+08:52.11,09:00.54,532.11,VOX A,N4,When you talk... and talk... the light swings all over the room. It hits the walls. It hits you. Everybody's looking at you.
+09:00.23,09:02.23,540.23,WHISPER,,Thumb to finger. Ask.
+09:00.66,09:03.31,540.66,PAUSE,N4,scripted 3.0s -> 2.7s
+09:03.31,09:05.09,543.31,VOX B,N4,...you don't have to fill the room...
+09:05.54,09:07.75,545.54,PAUSE,N4,scripted 2.5s -> 2.2s
+09:07.75,09:15.57,547.75,VOX A,N4,But when you ask a question... the light lands on them. On what they want. On what's in their way.
+09:09.47,09:11.47,549.47,WHISPER,,I lead with questions.
+09:11.11,09:12.88,551.11,PAUSE,N4,scripted 2.0s -> 1.8s
+09:15.69,09:18.34,555.69,PAUSE,N4,scripted 3.0s -> 2.7s
+09:17.14,09:19.14,557.14,WHISPER,,"Ask, and let it land."
+09:18.34,09:20.14,558.34,VOX B,N4,...the light goes where you point it...
+09:20.59,09:22.80,560.59,PAUSE,N4,scripted 2.5s -> 2.2s
+09:22.80,09:25.62,562.8,VOX A,N4,And they start to see it. In their own words.
+09:24.73,09:26.73,564.73,WHISPER,,My facts are clean.
+09:25.74,09:29.27,565.74,PAUSE,N4,scripted 4.0s -> 3.5s
+09:29.27,09:39.08,569.27,VOX A,N4,The man holding the lantern doesn't push anybody. He doesn't have to. He points the light... and he waits... while they look.
+09:34.08,09:35.84,574.08,PAUSE,N4,scripted 2.0s -> 1.8s
+09:36.05,09:38.05,576.05,WHISPER,,One question at a time.
+09:39.20,09:42.73,579.2,PAUSE,N4,scripted 4.0s -> 3.5s
+09:42.73,09:44.00,582.73,VOX B,N4,...ask... and wait...
+09:44.45,09:47.10,584.45,PAUSE,N4,scripted 3.0s -> 2.7s
+09:46.28,09:48.28,586.28,WHISPER,,The silence is working.
+09:47.10,09:52.95,587.1,VOX A,N4,Sometimes the waiting feels long. That's the part where they're finding it.
+09:49.28,09:51.05,589.28,PAUSE,N4,scripted 2.0s -> 1.8s
+09:53.07,09:55.72,593.07,PAUSE,N4,scripted 3.0s -> 2.7s
+09:54.71,09:56.71,594.71,WHISPER,,Honest questions only.
+09:55.72,09:57.33,595.72,VOX B,N4,...the silence is working...
+09:57.78,10:00.43,597.78,PAUSE,N4,scripted 3.0s -> 2.7s
+10:00.43,10:08.42,600.43,VOX A,N4,You've always been able to hold that lantern. Tonight your hands are just getting used to the weight.
+10:03.09,10:05.30,603.09,PAUSE,N4,scripted 2.5s -> 2.2s
+10:03.95,10:05.95,603.95,WHISPER,,Thumb to finger. Ask.
+10:08.54,10:12.07,608.54,PAUSE,N4,scripted 4.0s -> 3.5s
+10:12.07,10:13.89,612.07,VOX B,N4,...you lead... with questions...
+10:14.34,10:16.99,614.34,PAUSE,N4,scripted 3.0s -> 2.7s
+10:15.45,10:17.45,615.45,WHISPER,,I lead with questions.
+10:16.99,10:19.80,616.99,VOX A,N4,And the more you hold it... the lighter it gets.
+10:19.92,10:24.34,619.92,PAUSE,N4,scripted 5.0s -> 4.4s
+10:24.34,10:26.02,624.34,VOX B,N4,...one question at a time...
+10:26.47,10:30.00,626.47,PAUSE,N4,scripted 4.0s -> 3.5s
+10:26.53,10:28.53,626.53,WHISPER,,"Ask, and let it land."
+10:30.00,10:30.00,630.0,BINAURAL,,beat target 5 Hz
+10:30.00,10:30.00,630.0,MUSIC,,sparse piano
+10:30.00,14:00.00,630.0,SECTION,N5,Identity Core
+10:30.00,14:00.00,630.0,VISUAL,N5,V5 steady; V3 fades to 0
+10:30.00,10:31.51,630.0,VOX SELF,N5,I lead with questions.
+10:31.63,10:32.42,631.63,PAUSE,N5,scripted 1.0s -> 0.8s
+10:32.42,10:33.73,632.42,VOX B,N5,You lead with questions.
+10:33.85,10:35.83,633.85,PAUSE,N5,scripted 2.5s -> 2.0s
+10:35.83,10:39.07,635.83,VOX SELF,N5,The person asking the questions holds the frame.
+10:37.30,10:39.30,637.3,WHISPER,,My facts are clean.
+10:39.19,10:39.98,639.19,PAUSE,N5,scripted 1.0s -> 0.8s
+10:39.98,10:41.52,639.98,VOX B,N5,You hold the frame by asking.
+10:41.64,10:43.63,641.64,PAUSE,N5,scripted 2.5s -> 2.0s
+10:43.63,10:47.14,643.63,VOX SELF,N5,I don't need the perfect line. I need the next question.
+10:46.20,10:48.20,646.2,WHISPER,,One question at a time.
+10:47.26,10:48.05,647.26,PAUSE,N5,scripted 1.0s -> 0.8s
+10:48.05,10:50.97,648.05,VOX B,N5,You don't need the perfect line. You need the next question.
+10:51.09,10:53.08,651.09,PAUSE,N5,scripted 2.5s -> 2.0s
+10:53.08,10:55.43,653.08,VOX SELF,N5,"When I feel pressure, I get curious."
+10:55.55,10:56.34,655.55,PAUSE,N5,scripted 1.0s -> 0.8s
+10:55.79,10:57.79,655.79,WHISPER,,The silence is working.
+10:56.34,10:58.41,656.34,VOX B,N5,"When you feel pressure, you get curious."
+10:58.53,11:00.51,658.53,PAUSE,N5,scripted 2.5s -> 2.0s
+11:00.51,11:02.78,660.51,VOX SELF,N5,I ask... and then I stop talking.
+11:02.90,11:03.69,662.9,PAUSE,N5,scripted 1.0s -> 0.8s
+11:03.69,11:05.66,663.69,VOX B,N5,You ask... and then you stop talking.
+11:05.78,11:07.76,665.78,PAUSE,N5,scripted 2.5s -> 2.0s
+11:05.99,11:07.99,665.99,WHISPER,,Honest questions only.
+11:07.76,11:11.71,667.76,VOX SELF,N5,Silence after a good question isn't awkward. It's working.
+11:11.83,11:12.62,671.83,PAUSE,N5,scripted 1.0s -> 0.8s
+11:12.62,11:14.25,672.62,VOX B,N5,The silence is working for you.
+11:13.74,11:15.74,673.74,WHISPER,,Thumb to finger. Ask.
+11:14.37,11:17.54,674.37,PAUSE,N5,scripted 4.0s -> 3.2s
+11:17.54,11:20.30,677.54,VOX SELF,N5,I lower the threat before I ask for anything.
+11:20.42,11:21.22,680.42,PAUSE,N5,scripted 1.0s -> 0.8s
+11:21.22,11:22.45,681.22,VOX B,N5,You make it safe first.
+11:22.57,11:24.56,682.57,PAUSE,N5,scripted 2.5s -> 2.0s
+11:23.56,11:25.56,683.56,WHISPER,,I lead with questions.
+11:24.56,11:27.84,684.56,VOX SELF,N5,I never make the next step a test of someone's worth.
+11:27.96,11:28.75,687.96,PAUSE,N5,scripted 1.0s -> 0.8s
+11:28.75,11:32.62,688.75,VOX B,N5,You make the next step the obvious move for who they already are.
+11:32.13,11:34.13,692.13,WHISPER,,"Ask, and let it land."
+11:32.74,11:34.72,692.74,PAUSE,N5,scripted 2.5s -> 2.0s
+11:34.72,11:38.73,694.72,VOX SELF,N5,I let them say it. People believe what they hear themselves say.
+11:38.85,11:39.65,698.85,PAUSE,N5,scripted 1.0s -> 0.8s
+11:39.65,11:40.71,699.65,VOX B,N5,You let them say it.
+11:40.83,11:44.01,700.83,PAUSE,N5,scripted 4.0s -> 3.2s
+11:43.05,11:45.05,703.05,WHISPER,,My facts are clean.
+11:44.01,11:47.12,704.01,VOX SELF,N5,My facts are clean. My edges are human.
+11:47.24,11:48.03,707.24,PAUSE,N5,scripted 1.0s -> 0.8s
+11:48.03,11:50.52,708.03,VOX B,N5,Your facts are clean. Your edges are human.
+11:50.63,11:52.63,710.63,WHISPER,,One question at a time.
+11:50.64,11:52.63,710.64,PAUSE,N5,scripted 2.5s -> 2.0s
+11:52.63,11:55.94,712.63,VOX SELF,N5,"I say the number once, plainly, and then I'm quiet."
+11:56.06,11:56.85,716.06,PAUSE,N5,scripted 1.0s -> 0.8s
+11:56.85,11:59.71,716.85,VOX B,N5,You say the number like the weather. Then you're quiet.
+11:59.83,12:03.00,719.83,PAUSE,N5,scripted 4.0s -> 3.2s
+12:00.97,12:02.97,720.97,WHISPER,,The silence is working.
+12:03.00,12:06.45,723.0,VOX SELF,N5,"I hold the outcome loosely, and the question firmly."
+12:06.57,12:07.37,726.57,PAUSE,N5,scripted 1.0s -> 0.8s
+12:07.37,12:12.70,727.37,VOX B,N5,"Overthinking is just importance turned up too high. You turn it down, and you ask."
+12:11.94,12:13.94,731.94,WHISPER,,Honest questions only.
+12:12.82,12:14.81,732.82,PAUSE,N5,scripted 2.5s -> 2.0s
+12:14.81,12:18.94,734.81,VOX SELF,N5,"Every conversation gets my questions, even on a bad day."
+12:19.06,12:19.85,739.06,PAUSE,N5,scripted 1.0s -> 0.8s
+12:19.85,12:21.22,739.85,VOX B,N5,Wins are normal for you.
+12:20.35,12:22.35,740.35,WHISPER,,Thumb to finger. Ask.
+12:21.34,12:23.33,741.34,PAUSE,N5,scripted 2.5s -> 2.0s
+12:23.33,12:25.07,743.33,VOX SELF,N5,I give up talking to go up.
+12:25.19,12:25.98,745.19,PAUSE,N5,scripted 1.0s -> 0.8s
+12:25.98,12:27.78,745.98,VOX B,N5,You let them carry the conversation.
+12:27.90,12:29.89,747.9,PAUSE,N5,scripted 2.5s -> 2.0s
+12:29.89,12:31.65,749.89,VOX SELF,N5,One question beats five.
+12:31.53,12:33.53,751.53,WHISPER,,I lead with questions.
+12:31.77,12:32.57,751.77,PAUSE,N5,scripted 1.0s -> 0.8s
+12:32.57,12:33.69,752.57,VOX B,N5,You keep it simple.
+12:33.81,12:35.80,753.81,PAUSE,N5,scripted 2.5s -> 2.0s
+12:35.80,12:39.82,755.8,VOX SELF,N5,I rep it until it breaks. I fix the crack. I rep it again.
+12:39.94,12:40.73,759.94,PAUSE,N5,scripted 1.0s -> 0.8s
+12:40.73,12:41.87,760.73,VOX B,N5,That's how you get good.
+12:41.99,12:45.17,761.99,PAUSE,N5,scripted 4.0s -> 3.2s
+12:42.51,12:44.51,762.51,WHISPER,,"Ask, and let it land."
+12:45.17,12:49.72,765.17,VOX SELF,N5,Short turns. One question. Listen. Reflect one line. Next step.
+12:49.84,12:50.63,769.84,PAUSE,N5,scripted 1.0s -> 0.8s
+12:49.98,12:51.98,769.98,WHISPER,,My facts are clean.
+12:50.63,12:52.72,770.63,VOX B,N5,Short turns. One question. Listen.
+12:52.84,12:54.83,772.84,PAUSE,N5,scripted 2.5s -> 2.0s
+12:54.83,12:58.13,774.83,VOX SELF,N5,I meet people where they are before I try to move them.
+12:58.25,12:59.04,778.25,PAUSE,N5,scripted 1.0s -> 0.8s
+12:59.04,13:00.97,779.04,VOX B,N5,You validate first. Then you help.
+13:00.14,13:02.14,780.14,WHISPER,,One question at a time.
+13:01.09,13:03.08,781.09,PAUSE,N5,scripted 2.5s -> 2.0s
+13:03.08,13:04.61,783.08,VOX SELF,N5,I give before I ask.
+13:04.73,13:05.52,784.73,PAUSE,N5,scripted 1.0s -> 0.8s
+13:05.52,13:06.46,785.52,VOX B,N5,You give first.
+13:06.58,13:08.57,786.58,PAUSE,N5,scripted 2.5s -> 2.0s
+13:07.76,13:09.76,787.76,WHISPER,,The silence is working.
+13:08.57,13:11.84,788.57,VOX SELF,N5,One conversation. One lane. One next step.
+13:11.96,13:12.75,791.96,PAUSE,N5,scripted 1.0s -> 0.8s
+13:12.75,13:13.73,792.75,VOX B,N5,One next step.
+13:13.85,13:17.03,793.85,PAUSE,N5,scripted 4.0s -> 3.2s
+13:17.03,13:20.45,797.03,VOX SELF,N5,I influence with honest questions. Never tricks.
+13:17.27,13:19.27,797.27,WHISPER,,Honest questions only.
+13:20.57,13:21.36,800.57,PAUSE,N5,scripted 1.0s -> 0.8s
+13:21.36,13:22.46,801.36,VOX B,N5,Honest questions.
+13:22.58,13:24.56,802.58,PAUSE,N5,scripted 2.5s -> 2.0s
+13:24.56,13:28.67,804.56,VOX SELF,N5,"If they could read my mind, they'd be fine with what they found."
+13:26.52,13:28.52,806.52,WHISPER,,Thumb to finger. Ask.
+13:28.79,13:29.59,808.79,PAUSE,N5,scripted 1.0s -> 0.8s
+13:29.59,13:31.56,809.59,VOX B,N5,You'd be fine with them seeing everything.
+13:31.68,13:33.66,811.68,PAUSE,N5,scripted 2.5s -> 2.0s
+13:33.66,13:36.80,813.66,VOX SELF,N5,I'd rather lose a deal than win it with a lie.
+13:34.93,13:36.93,814.93,WHISPER,,I lead with questions.
+13:36.92,13:37.71,816.92,PAUSE,N5,scripted 1.0s -> 0.8s
+13:37.71,13:40.52,817.71,VOX B,N5,"A ""no"" is information. It's not an insult."
+13:40.64,13:43.82,820.64,PAUSE,N5,scripted 4.0s -> 3.2s
+13:43.72,13:45.72,823.72,WHISPER,,"Ask, and let it land."
+13:43.82,13:45.99,823.82,VOX A,N5,Jason... you lead with questions.
+13:46.11,13:48.49,826.11,PAUSE,N5,scripted 3.0s -> 2.4s
+13:48.49,13:50.93,828.49,VOX A,N5,"Jason... you ask, and you let it land."
+13:51.05,13:53.43,831.05,PAUSE,N5,scripted 3.0s -> 2.4s
+13:53.43,13:55.12,833.43,VOX A,N5,Jason... you've got time.
+13:54.34,13:56.34,834.34,WHISPER,,My facts are clean.
+13:55.24,14:00.00,835.24,PAUSE,N5,scripted 6.0s -> 4.8s
+14:00.00,14:00.00,840.0,BINAURAL,,beat target 6 Hz
+14:00.00,14:00.00,840.0,MUSIC,,pad thins to drone only
+14:00.00,20:60.00,840.0,SECTION,N6,Rehearsal Scenes
+14:00.00,21:00.00,840.0,VISUAL,N6,"near-black, small dim glow; eases right on each tone"
+14:00.00,14:12.28,840.0,VOX A,N6,"Now let's practice. You're going to see five rooms. In each one, you lead with questions. You don't have to make it perfect. Just watch yourself do it."
+14:01.44,14:02.74,841.44,PAUSE,N6,scripted 2.0s -> 1.3s
+14:07.27,14:08.57,847.27,PAUSE,N6,scripted 2.0s -> 1.3s
+14:12.40,14:15.00,852.4,PAUSE,N6,scripted 4.0s -> 2.6s
+14:14.50,14:18.50,854.5,VISUAL,N6,label LOT (10% opacity)
+14:15.00,14:21.56,855.0,VOX A,N6.1,You're standing on the lot. Late afternoon. Heat coming up off the asphalt. Keys in your pocket.
+14:21.68,14:22.56,861.68,PAUSE,N6.1,scripted 2.5s -> 0.9s
+14:22.56,14:29.56,862.56,VOX A,N6.1,"A man walks up. His car's been overheating. He's tired, and he's guarded. He's expecting a pitch."
+14:29.68,14:30.56,869.68,PAUSE,N6.1,scripted 2.5s -> 0.9s
+14:30.56,14:36.38,870.56,VOX A,N6.1,"You feel your thumb touch your finger. One breath. And instead of a pitch, you ask."
+14:33.76,14:34.46,873.76,PAUSE,N6.1,scripted 2.0s -> 0.7s
+14:36.50,14:37.03,876.5,PAUSE,N6.1,scripted 1.5s -> 0.5s
+14:37.03,14:38.32,877.03,VOX A,N6.1,"""What's got you looking?"""
+14:38.69,14:39.89,878.69,TONE,N6.1,question tone
+14:39.89,14:43.89,879.89,PAUSE,N6.1,IMPACT scripted 4.0s -> 4.0s
+14:43.89,14:47.32,883.89,VOX A,N6.1,And he tells you. You listen. You nod.
+14:45.14,14:45.84,885.14,PAUSE,N6.1,scripted 2.0s -> 0.7s
+14:47.44,14:48.14,887.44,PAUSE,N6.1,scripted 2.0s -> 0.7s
+14:48.14,14:49.96,888.14,VOX A,N6.1,"""How long's it been doing that?"""
+14:50.33,14:51.53,890.33,TONE,N6.1,question tone
+14:51.53,14:54.53,891.53,PAUSE,N6.1,IMPACT scripted 3.0s -> 3.0s
+14:54.53,14:57.42,894.53,VOX A,N6.1,"""And what's that doing to your week... with work?"""
+14:57.79,14:58.99,897.79,TONE,N6.1,question tone
+14:58.99,15:04.99,898.99,PAUSE,N6.1,IMPACT scripted 6.0s -> 6.0s
+15:04.99,15:13.15,904.99,VOX A,N6.1,"You wait. You let it be quiet. And he says it, in his own words. The write-up from his boss. The tow last month."
+15:07.06,15:07.76,907.06,PAUSE,N6.1,scripted 2.0s -> 0.7s
+15:13.27,15:14.32,913.27,PAUSE,N6.1,scripted 3.0s -> 1.0s
+15:14.32,15:19.37,914.32,VOX A,N6.1,"You say it back in one line. ""So you need something that just starts and goes."""
+15:19.49,15:20.37,919.49,PAUSE,N6.1,scripted 2.5s -> 0.9s
+15:20.37,15:29.56,920.37,VOX A,N6.1,"He asks the price. And you say the number once, clean, like it's the weather. Then you ask, ""If the numbers make sense, is this the one?"""
+15:25.19,15:25.89,925.19,PAUSE,N6.1,scripted 2.0s -> 0.7s
+15:29.93,15:31.13,929.93,TONE,N6.1,question tone
+15:31.13,15:35.13,931.13,PAUSE,N6.1,IMPACT scripted 4.0s -> 4.0s
+15:35.13,15:38.51,935.13,VOX A,N6.1,"""Want to drive it now... or after you call your wife?"""
+15:38.63,15:39.68,938.63,PAUSE,N6.1,scripted 3.0s -> 1.0s
+15:39.68,15:43.43,939.68,VOX A,N6.1,He picks one. And you notice how calm you are.
+15:40.82,15:41.52,940.82,PAUSE,N6.1,scripted 2.0s -> 0.7s
+15:43.55,15:44.95,943.55,PAUSE,N6.1,scripted 4.0s -> 1.4s
+15:44.45,15:48.45,944.45,VISUAL,N6,label OWNER (10% opacity)
+15:44.95,15:51.18,944.95,VOX A,N6.2,Now you're in a dealer's office. Paper everywhere. A phone buzzing face down on the desk.
+15:51.30,15:52.57,951.3,PAUSE,N6.2,scripted 2.5s -> 1.3s
+15:52.57,15:56.94,952.57,VOX A,N6.2,The owner leans back. He's heard about AI. He's not impressed.
+15:57.06,15:58.32,957.06,PAUSE,N6.2,scripted 2.5s -> 1.3s
+15:58.32,16:06.28,958.32,VOX A,N6.2,"You don't argue. You don't demo. You start with respect. ""Sounds like you've built this on hustle... and it works."""
+16:02.15,16:02.91,962.15,PAUSE,N6.2,scripted 1.5s -> 0.8s
+16:06.40,16:07.92,966.4,PAUSE,N6.2,scripted 3.0s -> 1.5s
+16:07.92,16:12.58,967.92,VOX A,N6.2,"Then you ask. ""What happens to a message that comes in at nine at night?"""
+16:12.95,16:14.15,972.95,TONE,N6.2,question tone
+16:14.15,16:19.15,974.15,PAUSE,N6.2,IMPACT scripted 5.0s -> 5.0s
+16:19.15,16:21.76,979.15,VOX A,N6.2,He laughs a little. Then he stops laughing.
+16:21.88,16:22.89,981.88,PAUSE,N6.2,scripted 2.0s -> 1.0s
+16:22.89,16:25.98,982.89,VOX A,N6.2,"""How many of those go cold in a week, you think?"""
+16:26.35,16:27.55,986.35,TONE,N6.2,question tone
+16:27.55,16:30.55,987.55,PAUSE,N6.2,IMPACT scripted 3.0s -> 3.0s
+16:30.55,16:32.90,990.55,VOX A,N6.2,"""And what's a car worth to you, in gross?"""
+16:33.27,16:34.47,993.27,TONE,N6.2,question tone
+16:34.47,16:40.47,994.47,PAUSE,N6.2,IMPACT scripted 6.0s -> 6.0s
+16:40.47,16:44.11,1000.47,VOX A,N6.2,He does the math out loud. His math. Not yours.
+16:44.23,16:45.75,1004.23,PAUSE,N6.2,scripted 3.0s -> 1.5s
+16:45.75,16:50.16,1005.75,VOX A,N6.2,"You say the price once, clean. And you stop talking."
+16:47.78,16:48.79,1007.78,PAUSE,N6.2,scripted 2.0s -> 1.0s
+16:50.28,16:52.82,1010.28,PAUSE,N6.2,scripted 5.0s -> 2.5s
+16:52.82,16:58.93,1012.82,VOX A,N6.2,"The silence stretches. You let it. He says, ""Okay. How do we start?"""
+16:55.09,16:56.61,1015.09,PAUSE,N6.2,scripted 3.0s -> 1.5s
+16:59.05,17:00.06,1019.05,PAUSE,N6.2,scripted 2.0s -> 1.0s
+17:00.06,17:02.85,1020.06,VOX A,N6.2,"""After-hours line this week... or Monday?"""
+17:02.97,17:05.00,1022.97,PAUSE,N6.2,scripted 4.0s -> 2.0s
+17:04.50,17:08.50,1024.5,VISUAL,N6,label INVESTOR (10% opacity)
+17:05.00,17:11.65,1025.0,VOX A,N6.3,Now you're across from an investor. A quiet coffee shop. She's seen a hundred pitches this year.
+17:11.77,17:13.74,1031.77,PAUSE,N6.3,scripted 2.5s -> 2.0s
+17:13.74,17:17.21,1033.74,VOX A,N6.3,Your numbers are ready. Exact. Nothing rounded up.
+17:17.33,17:18.91,1037.33,PAUSE,N6.3,scripted 2.0s -> 1.6s
+17:18.91,17:22.53,1038.91,VOX A,N6.3,And you don't open with the deck. You open with a question.
+17:22.65,17:23.84,1042.65,PAUSE,N6.3,scripted 1.5s -> 1.2s
+17:23.84,17:26.01,1043.84,VOX A,N6.3,"""What would make this a clear yes for you?"""
+17:26.38,17:27.58,1046.38,TONE,N6.3,question tone
+17:27.58,17:32.58,1047.58,PAUSE,N6.3,IMPACT scripted 5.0s -> 5.0s
+17:32.58,17:35.77,1052.58,VOX A,N6.3,She tells you. You listen for the real thing under it.
+17:35.89,17:37.87,1055.89,PAUSE,N6.3,scripted 2.5s -> 2.0s
+17:37.87,17:40.51,1057.87,VOX A,N6.3,"""What have you seen go wrong in deals like this?"""
+17:40.88,17:42.08,1060.88,TONE,N6.3,question tone
+17:42.08,17:46.08,1062.08,PAUSE,N6.3,IMPACT scripted 4.0s -> 4.0s
+17:46.08,17:51.56,1066.08,VOX A,N6.3,"Then the one that takes nerve. ""What worries you most about me... honestly?"""
+17:47.95,17:48.74,1067.95,PAUSE,N6.3,scripted 1.0s -> 0.8s
+17:51.93,17:53.13,1071.93,TONE,N6.3,question tone
+17:53.13,17:59.13,1073.13,PAUSE,N6.3,IMPACT scripted 6.0s -> 6.0s
+17:59.13,18:04.01,1079.13,VOX A,N6.3,She tells you the truth. And you don't flinch. You thank her. You answer it straight.
+18:04.13,18:06.50,1084.13,PAUSE,N6.3,scripted 3.0s -> 2.4s
+18:06.50,18:11.53,1086.5,VOX A,N6.3,You state your terms once. Clean. And you're quiet.
+18:08.84,18:10.42,1088.84,PAUSE,N6.3,scripted 2.0s -> 1.6s
+18:11.65,18:15.60,1091.65,PAUSE,N6.3,scripted 5.0s -> 4.0s
+18:15.60,18:20.58,1095.6,VOX A,N6.3,You'd be fine if she walked. And somehow that's exactly why she leans in.
+18:20.70,18:23.07,1100.7,PAUSE,N6.3,scripted 3.0s -> 2.4s
+18:23.07,18:26.72,1103.07,VOX A,N6.3,"""Data room tonight... and we talk Thursday or Friday?"""
+18:26.84,18:30.00,1106.84,PAUSE,N6.3,scripted 4.0s -> 3.2s
+18:29.50,18:33.50,1109.5,VISUAL,N6,label BOARDROOM (10% opacity)
+18:30.00,18:36.72,1110.0,VOX A,N6.4,Now a conference room. Two buyers across the table. One of them talks. The other one decides.
+18:36.84,18:40.72,1116.84,PAUSE,N6.4,scripted 2.5s -> 3.9s
+18:40.72,18:42.51,1120.72,VOX A,N6.4,You feel steady. You ask.
+18:42.63,18:44.96,1122.63,PAUSE,N6.4,scripted 1.5s -> 2.3s
+18:44.96,18:46.90,1124.96,VOX A,N6.4,"""What made this a priority now?"""
+18:47.27,18:48.47,1127.27,TONE,N6.4,question tone
+18:48.47,18:54.68,1128.47,PAUSE,N6.4,IMPACT scripted 4.0s -> 6.2s
+18:54.68,18:56.68,1134.68,VOX A,N6.4,"""Walk me through how it works today."""
+18:57.05,18:58.25,1137.05,TONE,N6.4,question tone
+18:58.25,19:04.46,1138.25,PAUSE,N6.4,IMPACT scripted 4.0s -> 6.2s
+19:04.46,19:06.56,1144.46,VOX A,N6.4,"""And what's that costing you each month?"""
+19:06.93,19:08.13,1146.93,TONE,N6.4,question tone
+19:08.13,19:17.44,1148.13,PAUSE,N6.4,IMPACT scripted 6.0s -> 9.3s
+19:17.44,19:21.50,1157.44,VOX A,N6.4,The quiet one finally speaks. You turn your attention to him.
+19:21.62,19:25.50,1161.62,PAUSE,N6.4,scripted 2.5s -> 3.9s
+19:25.50,19:27.12,1165.5,VOX A,N6.4,"""Who else weighs in on this?"""
+19:27.49,19:28.69,1167.49,TONE,N6.4,question tone
+19:28.69,19:33.34,1168.69,PAUSE,N6.4,IMPACT scripted 3.0s -> 4.7s
+19:33.34,19:38.67,1173.34,VOX A,N6.4,"""Want to bring them on the next call? Tuesday at ten, or Thursday after lunch?"""
+19:38.79,19:45.00,1178.79,PAUSE,N6.4,scripted 4.0s -> 6.2s
+19:44.50,19:48.50,1184.5,VISUAL,N6,label INTERVIEW (10% opacity)
+19:45.00,19:49.14,1185.0,VOX A,N6.5,Last room. An interview. Two people with a list of questions.
+19:49.26,19:51.72,1189.26,PAUSE,N6.5,scripted 2.5s -> 2.5s
+19:51.72,19:57.02,1191.72,VOX A,N6.5,They ask you one. And you answer it straight. Clean. Your real numbers. No padding.
+19:57.14,20:00.10,1197.14,PAUSE,N6.5,scripted 3.0s -> 3.0s
+20:00.10,20:01.92,1200.1,VOX A,N6.5,Then you hand the light back to them.
+20:02.04,20:03.52,1202.04,PAUSE,N6.5,scripted 1.5s -> 1.5s
+20:03.52,20:08.22,1203.52,VOX A,N6.5,"""What would make the person in this seat a clear win in the first ninety days?"""
+20:08.59,20:09.79,1208.59,TONE,N6.5,question tone
+20:09.79,20:14.79,1209.79,PAUSE,N6.5,IMPACT scripted 5.0s -> 5.0s
+20:14.79,20:17.27,1214.79,VOX A,N6.5,They light up a little. They tell you. You listen.
+20:17.39,20:19.86,1217.39,PAUSE,N6.5,scripted 2.5s -> 2.5s
+20:19.86,20:23.39,1219.86,VOX A,N6.5,"""What's the hardest part of this job that isn't in the posting?"""
+20:23.76,20:24.96,1223.76,TONE,N6.5,question tone
+20:24.96,20:29.96,1224.96,PAUSE,N6.5,IMPACT scripted 5.0s -> 5.0s
+20:29.96,20:37.52,1229.96,VOX A,N6.5,"And near the end, calm, curious... ""Is there anything about my background that gives you pause?"""
+20:32.58,20:33.56,1232.58,PAUSE,N6.5,scripted 1.0s -> 1.0s
+20:37.89,20:39.09,1237.89,TONE,N6.5,question tone
+20:39.09,20:45.09,1239.09,PAUSE,N6.5,IMPACT scripted 6.0s -> 6.0s
+20:45.09,20:48.78,1245.09,VOX A,N6.5,They tell you. You answer it. And you can feel the room shift.
+20:48.90,20:51.86,1248.9,PAUSE,N6.5,scripted 3.0s -> 3.0s
+20:51.86,20:54.95,1251.86,VOX A,N6.5,You're not auditioning. You're leading. With questions.
+20:55.07,20:60.00,1255.07,PAUSE,N6.5,scripted 5.0s -> 4.9s
+21:00.00,21:00.00,1260.0,BINAURAL,,beat target 6 Hz
+21:00.00,21:00.00,1260.0,MUSIC,,pad back; F major swell under each Ask; harmony Fmaj9 <-> Bbmaj7
+21:00.00,22:30.00,1260.0,SECTION,N7,Anchor Installation
+21:00.00,22:30.00,1260.0,VISUAL,N7,glow +3% at each Ask
+21:00.00,21:01.43,1260.0,VOX A,N7,Now let's lock it in.
+21:01.55,21:03.10,1261.55,PAUSE,N7,scripted 2.0s -> 1.5s
+21:03.10,21:05.68,1263.1,VOX A,N7,Gently touch your thumb to your first finger.
+21:04.00,21:06.00,1264.0,WHISPER,,One question at a time.
+21:05.80,21:07.35,1265.8,PAUSE,N7,scripted 2.0s -> 1.5s
+21:07.35,21:14.80,1267.35,VOX A,N7,"Breathe in... and as you breathe out, think one word. Ask."
+21:08.72,21:11.04,1268.72,PAUSE,N7,scripted 3.0s -> 2.3s
+21:12.21,21:14.21,1272.21,WHISPER,,The silence is working.
+21:13.37,21:14.14,1273.37,PAUSE,N7,scripted 1.0s -> 0.8s
+21:13.84,21:22.14,1273.84,SFX,N7,"singing bowl, F"
+21:14.92,21:18.80,1274.92,PAUSE,N7,scripted 5.0s -> 3.9s
+21:18.80,21:24.09,1278.8,VOX A,N7,Feel what's here right now. A calm body. A curious mind. A slow voice.
+21:22.50,21:24.50,1282.5,WHISPER,,Honest questions only.
+21:24.21,21:27.31,1284.21,PAUSE,N7,scripted 4.0s -> 3.1s
+21:27.31,21:28.96,1287.31,VOX A,N7,Let your fingers relax.
+21:29.08,21:31.41,1289.08,PAUSE,N7,scripted 3.0s -> 2.3s
+21:31.41,21:40.67,1291.41,VOX A,N7,Again. Thumb to finger. Breathe in... and out. Ask.
+21:31.80,21:33.80,1291.8,WHISPER,,Thumb to finger. Ask.
+21:33.04,21:34.59,1293.04,PAUSE,N7,scripted 2.0s -> 1.5s
+21:35.97,21:38.29,1295.97,PAUSE,N7,scripted 3.0s -> 2.3s
+21:39.24,21:40.01,1299.24,PAUSE,N7,scripted 1.0s -> 0.8s
+21:39.71,21:48.01,1299.71,SFX,N7,"singing bowl, F"
+21:40.79,21:44.66,1300.79,PAUSE,N7,scripted 5.0s -> 3.9s
+21:42.59,21:44.59,1302.59,WHISPER,,I lead with questions.
+21:44.66,21:50.59,1304.66,VOX A,N7,"Every time you do this, it gets stronger. Calm body. Curious mind. Next question."
+21:50.71,21:53.81,1310.71,PAUSE,N7,scripted 4.0s -> 3.1s
+21:51.02,21:53.02,1311.02,WHISPER,,"Ask, and let it land."
+21:53.81,21:54.67,1313.81,VOX A,N7,Let go.
+21:54.79,21:57.12,1314.79,PAUSE,N7,scripted 3.0s -> 2.3s
+21:57.12,22:06.93,1317.12,VOX A,N7,One more time. Thumb to finger. Breathe in... and out. Ask.
+21:59.31,22:00.86,1319.31,PAUSE,N7,scripted 2.0s -> 1.5s
+21:59.70,22:01.70,1319.7,WHISPER,,My facts are clean.
+22:02.23,22:04.55,1322.23,PAUSE,N7,scripted 3.0s -> 2.3s
+22:05.50,22:06.27,1325.5,PAUSE,N7,scripted 1.0s -> 0.8s
+22:05.97,22:14.27,1325.97,SFX,N7,"singing bowl, F"
+22:07.05,22:11.70,1327.05,PAUSE,N7,scripted 6.0s -> 4.6s
+22:10.23,22:12.23,1330.23,WHISPER,,One question at a time.
+22:11.70,22:20.67,1331.7,VOX A,N7,"From now on, any time... any room... eyes open... thumb to finger, one breath... and the next question shows up on its own."
+22:19.87,22:21.87,1339.87,WHISPER,,The silence is working.
+22:20.79,22:24.67,1340.79,PAUSE,N7,scripted 5.0s -> 3.9s
+22:24.67,22:26.01,1344.67,VOX A,N7,Let your hand rest.
+22:26.13,22:30.00,1346.13,PAUSE,N7,scripted 5.0s -> 3.9s
+22:29.39,22:31.39,1349.39,WHISPER,,Honest questions only.
+22:30.00,22:30.00,1350.0,BINAURAL,,beat target 5 Hz
+22:30.00,22:30.00,1350.0,MUSIC,,pad only; drone fades
+22:30.00,23:60.00,1350.0,SECTION,N8,Future Pacing & Sleep Consolidation
+22:30.00,24:00.00,1350.0,VISUAL,N8,glow dims
+22:30.00,22:36.70,1350.0,VOX A,N8,"Tomorrow... when someone asks you the price... you say it once, clean... and then you ask a question."
+22:36.82,22:41.89,1356.82,PAUSE,N8,scripted 3.0s -> 5.1s
+22:37.84,22:39.84,1357.84,WHISPER,,Thumb to finger. Ask.
+22:41.89,22:45.48,1361.89,VOX A,N8,When you feel the urge to explain... you ask instead.
+22:45.50,22:47.50,1365.5,WHISPER,,I lead with questions.
+22:45.60,22:50.67,1365.6,PAUSE,N8,scripted 3.0s -> 5.1s
+22:50.67,22:53.01,1370.67,VOX A,N8,When the silence stretches... you let it.
+22:53.13,22:58.20,1373.13,PAUSE,N8,scripted 3.0s -> 5.1s
+22:56.72,22:58.72,1376.72,WHISPER,,"Ask, and let it land."
+22:58.20,23:04.33,1378.2,VOX A,N8,When they say no... you ask what would have to change... and you let them go easy if nothing would.
+23:04.45,23:10.36,1384.45,PAUSE,N8,scripted 3.5s -> 5.9s
+23:04.46,23:06.46,1384.46,WHISPER,,My facts are clean.
+23:10.36,23:13.02,1390.36,VOX B,N8,...when you feel the urge to explain... you ask...
+23:13.47,23:16.85,1393.47,PAUSE,N8,scripted 2.0s -> 3.4s
+23:15.17,23:17.17,1395.17,WHISPER,,One question at a time.
+23:16.85,23:19.03,1396.85,VOX B,N8,...when the silence stretches... you let it...
+23:19.48,23:22.85,1399.48,PAUSE,N8,scripted 2.0s -> 3.4s
+23:22.85,23:30.18,1402.85,VOX A,N8,"And tonight, while you sleep, your brain does what brains do with practice. It sorts. It keeps what matters."
+23:24.25,23:26.25,1404.25,WHISPER,,The silence is working.
+23:30.30,23:35.37,1410.3,PAUSE,N8,scripted 3.0s -> 5.1s
+23:35.37,23:36.72,1415.37,VOX B,N8,...it keeps what matters...
+23:35.55,23:37.55,1415.55,WHISPER,,Honest questions only.
+23:37.17,23:40.55,1417.17,PAUSE,N8,scripted 2.0s -> 3.4s
+23:40.55,23:49.75,1420.55,VOX A,N8,You don't have to try to remember any of this. It's already yours.
+23:43.30,23:48.37,1423.3,PAUSE,N8,scripted 3.0s -> 5.1s
+23:44.65,23:46.65,1424.65,WHISPER,,Thumb to finger. Ask.
+23:49.87,23:60.00,1429.87,PAUSE,N8,scripted 6.0s -> 10.1s
+23:56.00,23:58.00,1436.0,WHISPER,,I lead with questions.
+24:00.00,24:00.00,1440.0,BINAURAL,,beat target 4.5 Hz
+24:00.00,24:00.00,1440,MUSIC,,"music 4-min fade begins; Fmaj9 held, free time"
+24:00.00,26:18.04,1440.0,SECTION,N9,Sleep Drift
+24:00.00,25:00.00,1440.0,VISUAL,N9,last particles fade
+24:00.00,24:01.68,1440.0,VOX A,N9,And now... you can drift.
+24:01.80,24:16.97,1441.8,PAUSE,N9,scripted 6.0s -> 15.2s
+24:16.97,24:18.38,1456.97,VOX A,N9,Nothing left to do.
+24:18.50,24:38.72,1458.5,PAUSE,N9,scripted 8.0s -> 20.2s
+24:38.72,24:40.62,1478.72,VOX A,N9,I lead with questions...
+24:41.07,25:06.35,1481.07,PAUSE,N9,scripted 10.0s -> 25.3s
+25:00.00,25:00.00,1500,MUSIC,,brown-noise fade begins; picture full black
+25:00.00,28:00.00,1500,VISUAL,N9,full black
+25:06.35,25:07.98,1506.35,VOX A,N9,...you hold the light...
+25:08.43,25:38.77,1508.43,PAUSE,N9,scripted 12.0s -> 30.3s
+25:30.00,25:30.00,1530,BINAURAL,,beat target 4.0 Hz
+25:30.00,27:00.00,1530,BINAURAL,,fade out
+25:30.00,25:30.00,1530,MUSIC,,rain + binaural fades begin
+25:38.77,25:40.00,1538.77,VOX A,N9,...sleep now.
+25:40.12,26:18.04,1540.12,PAUSE,N9,scripted 15.0s -> 37.9s
+26:00.00,26:03.00,1560,TONE,N9,"sleep-tail cue, -50 dBFS peak (experimental)"
+26:45.00,26:48.00,1605,TONE,N9,"sleep-tail cue, -50 dBFS peak (experimental)"
+27:30.00,27:33.00,1650,TONE,N9,"sleep-tail cue, -50 dBFS peak (experimental)"
+28:00.00,28:00.00,1680,BINAURAL,,beat target 4.0 Hz
+28:00.00,28:00.00,1680,MUSIC,,digital silence

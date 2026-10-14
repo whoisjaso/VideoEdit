@@ -1,0 +1,20 @@
+{
+  "name": "obavia-ep1",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.ts Ep1 out/ep1.mp4 --codec h264 --crf 18"
+  },
+  "dependencies": {
+    "@fontsource/anton": "5.1.0",
+    "@fontsource/instrument-serif": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "5.1.1",
+    "@remotion/cli": "4.0.290",
+    "@remotion/fonts": "^4.0.290",
+    "@remotion/motion-blur": "^4.0.290",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.290",
+    "typescript": "5.6.3"
+  }
+}

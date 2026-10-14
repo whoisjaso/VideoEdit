@@ -1,0 +1,313 @@
+start,end,start_s,track,unit,event
+00:00.00,00:00.00,0,BINAURAL,,beat target 6 Hz
+00:00.00,00:00.00,0,MUSIC,,pad + birds + pink noise in (6 s)
+00:00.00,00:30.00,0.0,SECTION,M0,Wake Gently
+00:00.00,00:06.00,0,VISUAL,M0,small safety card
+00:00.00,00:00.67,0.0,VOX A,M0,Morning.
+00:00.79,00:03.71,0.79,PAUSE,M0,scripted 1.5s -> 2.9s
+00:03.71,00:05.08,3.71,VOX A,M0,Don't grab the phone yet.
+00:05.20,00:08.12,5.2,PAUSE,M0,scripted 1.5s -> 2.9s
+00:06.00,00:30.00,6,VISUAL,M0,title card LEAD WITH QUESTIONS / Morning Run
+00:08.12,00:11.15,8.12,VOX A,M0,Stay right where you are. Eyes can stay closed.
+00:11.27,00:15.17,11.27,PAUSE,M0,scripted 2.0s -> 3.9s
+00:15.17,00:17.63,15.17,VOX A,M0,Give me ten minutes before the world gets you.
+00:17.75,00:21.64,17.75,PAUSE,M0,scripted 2.0s -> 3.9s
+00:21.64,00:24.03,21.64,VOX A,M0,Couple of breaths first. Then we go.
+00:24.15,00:30.00,24.15,PAUSE,M0,scripted 3.0s -> 5.8s
+00:30.00,00:30.00,30.0,BINAURAL,,beat target 6 Hz
+00:30.00,01:45.00,30.0,SECTION,M1,Breath Reset
+00:30.00,01:45.00,30.0,VISUAL,M1,V1 breathing circle 4/4
+00:30.00,00:35.91,30.0,VOX A,M1,Breathe in through your nose... and then a little more on top.
+00:32.08,00:34.17,32.08,PAUSE,M1,scripted 2.0s -> 2.1s
+00:36.03,00:37.08,36.03,PAUSE,M1,scripted 1.0s -> 1.0s
+00:37.08,00:39.45,37.08,VOX A,M1,"Now let it all out, slow, through your mouth."
+00:39.57,00:44.80,39.57,PAUSE,M1,scripted 5.0s -> 5.2s
+00:44.80,00:53.10,44.8,VOX A,M1,One more like that. In... a little more on top... and long and slow out.
+00:46.78,00:48.88,46.78,PAUSE,M1,scripted 2.0s -> 2.1s
+00:50.72,00:51.77,50.72,PAUSE,M1,scripted 1.0s -> 1.0s
+00:53.22,00:59.49,53.22,PAUSE,M1,scripted 6.0s -> 6.3s
+00:59.49,01:01.46,59.49,VOX A,M1,Good. Now let's wake the body up.
+01:01.58,01:02.62,61.58,PAUSE,M1,scripted 1.0s -> 1.0s
+01:02.62,01:06.62,62.62,BREATH,M1,guided in-breath
+01:02.62,01:10.49,62.62,VOX A,M1,In for four... two... three... four... Out for four... two... three... four.
+01:06.23,01:06.75,66.23,PAUSE,M1,scripted 0.5s -> 0.5s
+01:06.75,01:10.88,66.75,BREATH,M1,guided out-breath
+01:10.49,01:11.01,70.49,PAUSE,M1,scripted 0.5s -> 0.5s
+01:11.01,01:15.01,71.01,BREATH,M1,guided in-breath
+01:11.01,01:18.74,71.01,VOX A,M1,In... two... three... four... Out... two... three... four.
+01:14.61,01:15.14,74.61,PAUSE,M1,scripted 0.5s -> 0.5s
+01:15.14,01:19.14,75.14,BREATH,M1,guided out-breath
+01:18.74,01:19.26,78.74,PAUSE,M1,scripted 0.5s -> 0.5s
+01:19.26,01:23.26,79.26,BREATH,M1,guided in-breath
+01:19.26,01:27.00,79.26,VOX A,M1,In... two... three... four... Out... two... three... four.
+01:22.87,01:23.39,82.87,PAUSE,M1,scripted 0.5s -> 0.5s
+01:23.39,01:27.39,83.39,BREATH,M1,guided out-breath
+01:27.00,01:27.52,87.0,PAUSE,M1,scripted 0.5s -> 0.5s
+01:27.52,01:32.11,87.52,BREATH,M1,guided in-breath
+01:27.52,01:35.85,87.52,VOX A,M1,Last one. Big. In... two... three... four... Out... two... three... four.
+01:31.72,01:32.24,91.72,PAUSE,M1,scripted 0.5s -> 0.5s
+01:32.24,01:36.24,92.24,BREATH,M1,guided out-breath
+01:35.85,01:37.94,95.85,PAUSE,M1,scripted 2.0s -> 2.1s
+01:37.94,01:40.69,97.94,VOX A,M1,"If you can, sit up. Let your back get tall."
+01:40.81,01:45.00,100.81,PAUSE,M1,scripted 4.0s -> 4.2s
+01:45.00,01:45.00,105.0,BINAURAL,,beat target 8 Hz
+01:45.00,01:45.00,105.0,MUSIC,,plucked eighth-note pulse enters (72 BPM)
+01:45.00,02:45.00,105.0,SECTION,M2,Anchor + Dial
+01:45.00,02:45.00,105.0,VISUAL,M2,circle condenses into the sun disc; warms on steady / sharp
+01:45.00,01:46.40,105.0,VOX A,M2,Thumb to your first finger.
+01:46.52,01:49.35,106.52,PAUSE,M2,scripted 1.5s -> 2.8s
+01:49.35,01:55.59,109.35,VOX A,M2,One breath. Ask.
+01:50.28,01:55.00,110.28,PAUSE,M2,scripted 2.5s -> 4.7s
+01:55.71,02:01.37,115.71,PAUSE,M2,scripted 3.0s -> 5.7s
+02:01.37,02:04.37,121.37,VOX A,M2,There it is. Same calm you practiced last night.
+02:04.49,02:08.27,124.49,PAUSE,M2,scripted 2.0s -> 3.8s
+02:08.27,02:12.89,128.27,VOX A,M2,"Now picture a dial in the middle of your chest. Right now it's set to ""sleepy."""
+02:13.01,02:16.79,133.01,PAUSE,M2,scripted 2.0s -> 3.8s
+02:16.79,02:17.95,136.79,VOX A,M2,"Turn it. To ""steady."""
+02:18.07,02:23.72,138.07,PAUSE,M2,scripted 3.0s -> 5.7s
+02:23.72,02:25.37,143.72,VOX A,M2,"Turn it again. To ""sharp."""
+02:25.49,02:31.15,145.49,PAUSE,M2,scripted 3.0s -> 5.7s
+02:31.15,02:33.81,151.15,VOX A,M2,Calm body. Curious mind. Clear voice.
+02:33.93,02:37.71,153.93,PAUSE,M2,scripted 2.0s -> 3.8s
+02:37.71,02:39.22,157.71,VOX A,M2,That's the setting for today.
+02:39.34,02:45.00,159.34,PAUSE,M2,scripted 3.0s -> 5.7s
+02:40.00,02:40.00,160,MUSIC,,tempo ramp 72 -> 96 BPM (160-170 s)
+02:44.10,02:45.60,164.1,SFX,,soft whoosh
+02:45.00,02:45.00,165.0,BINAURAL,,beat target 8 Hz
+02:45.00,02:45.00,165.0,MUSIC,,"shaker 16ths, sub bass"
+02:45.00,04:45.00,165.0,SECTION,M3,"Identity, Blunt"
+02:45.00,02:48.70,165.0,VISUAL,,card: WHO YOU ARE TODAY
+02:45.00,02:46.29,165.0,VOX A,M3,Here's who you are today.
+02:46.41,02:48.74,166.41,PAUSE,M3,scripted 1.5s -> 2.3s
+02:48.74,02:52.44,168.74,VISUAL,,card: I LEAD WITH QUESTIONS.
+02:48.74,02:50.08,168.74,VOX A,M3,I lead with questions.
+02:49.00,02:51.00,169.0,WHISPER,,Ask first.
+02:50.20,02:51.75,170.2,PAUSE,M3,scripted 1.0s -> 1.6s
+02:51.75,02:52.90,171.75,VOX B,M3,You lead with questions.
+02:53.02,02:56.13,173.02,PAUSE,M3,scripted 2.0s -> 3.1s
+02:56.13,02:59.53,176.13,VISUAL,,card: ASKING IS LEADING.
+02:56.13,02:58.30,176.13,VOX A,M3,Talking isn't leading. Asking is.
+02:58.42,03:01.53,178.42,PAUSE,M3,scripted 2.0s -> 3.1s
+02:59.22,03:01.22,179.22,WHISPER,,Say it clean.
+03:01.53,03:06.45,181.53,VISUAL,,card: I STEER IT. WITH A QUESTION.
+03:01.53,03:05.85,181.53,VOX A,M3,Nobody's coming to save the conversation. I steer it. With a question.
+03:05.97,03:09.08,185.97,PAUSE,M3,scripted 2.0s -> 3.1s
+03:09.08,03:13.08,189.08,VISUAL,,card: I DON'T CHASE. I ASK.
+03:09.08,03:11.76,189.08,VOX A,M3,"I don't chase. I ask, and they walk toward it."
+03:09.43,03:11.43,189.43,WHISPER,,Let them say it.
+03:11.88,03:15.00,191.88,PAUSE,M3,scripted 2.0s -> 3.1s
+03:15.00,03:21.20,195.0,VISUAL,,card: TURN IT DOWN. ASK.
+03:15.00,03:20.60,195.0,VOX A,M3,Overthinking is importance turned up too high. I turn it down. I ask the next question.
+03:18.55,03:20.55,198.55,WHISPER,,One next step.
+03:20.72,03:23.83,200.72,PAUSE,M3,scripted 2.0s -> 3.1s
+03:23.83,03:27.52,203.83,VISUAL,,card: THE NEXT QUESTION.
+03:23.83,03:26.92,203.83,VOX A,M3,I don't need the perfect line. I need the next question.
+03:26.77,03:28.77,206.77,WHISPER,,Ask first.
+03:27.04,03:28.59,207.04,PAUSE,M3,scripted 1.0s -> 1.6s
+03:28.59,03:29.54,208.59,VOX B,M3,The next question.
+03:29.66,03:32.77,209.66,PAUSE,M3,scripted 2.0s -> 3.1s
+03:32.77,03:38.70,212.77,VISUAL,,card: THINKING RICH ASKS WHAT THEY NEED.
+03:32.77,03:38.10,212.77,VOX A,M3,Thinking poor is explaining yourself to strangers. Thinking rich is asking what they need.
+03:33.98,03:35.98,213.98,WHISPER,,Say it clean.
+03:38.22,03:41.33,218.22,PAUSE,M3,scripted 2.0s -> 3.1s
+03:41.33,03:45.03,221.33,VISUAL,,card: SILENCE DOES THE CLOSING.
+03:41.33,03:42.93,221.33,VOX A,M3,I let silence do the closing.
+03:42.49,03:44.49,222.49,WHISPER,,Let them say it.
+03:43.05,03:44.60,223.05,PAUSE,M3,scripted 1.0s -> 1.6s
+03:44.60,03:45.45,224.6,VOX B,M3,Let it be quiet.
+03:45.57,03:48.69,225.57,PAUSE,M3,scripted 2.0s -> 3.1s
+03:48.69,03:53.87,228.69,VISUAL,,card: SAY THE PRICE ONCE.
+03:48.69,03:53.27,228.69,VOX A,M3,"My numbers are clean. I say the price once, like the weather. Then I shut up."
+03:51.19,03:53.19,231.19,WHISPER,,One next step.
+03:53.39,03:56.50,233.39,PAUSE,M3,scripted 2.0s -> 3.1s
+03:56.50,04:00.50,236.5,VISUAL,,card: I GIVE BEFORE I ASK.
+03:56.50,03:57.87,236.5,VOX A,M3,I give before I ask.
+03:57.99,04:01.10,237.99,PAUSE,M3,scripted 2.0s -> 3.1s
+03:58.44,04:00.44,238.44,WHISPER,,Ask first.
+04:01.10,04:05.10,241.1,VISUAL,,card: ONE LANE. ONE NEXT STEP.
+04:01.10,04:04.03,241.1,VOX A,M3,One conversation. One lane. One next step.
+04:04.15,04:07.26,244.15,PAUSE,M3,scripted 2.0s -> 3.1s
+04:05.64,04:07.64,245.64,WHISPER,,Say it clean.
+04:07.26,04:12.98,247.26,VISUAL,,card: NO GUILT. NO FAKE DEADLINES.
+04:07.26,04:12.38,247.26,VOX A,M3,I don't do guilt. I don't do fake deadlines. I don't do made-up proof. I don't need to.
+04:12.50,04:15.61,252.5,PAUSE,M3,scripted 2.0s -> 3.1s
+04:15.61,04:20.87,255.61,VISUAL,,card: A NO IS INFORMATION.
+04:15.61,04:20.27,255.61,VOX A,M3,"A ""no"" is information. I ask what would have to change, and I move on clean."
+04:16.61,04:18.61,256.61,WHISPER,,Let them say it.
+04:20.39,04:23.51,260.39,PAUSE,M3,scripted 2.0s -> 3.1s
+04:23.51,04:27.77,263.51,VISUAL,,card: NOTHING TO HIDE.
+04:23.51,04:27.17,263.51,VOX A,M3,I'd be fine if they could hear my thoughts. That's why they trust me.
+04:26.29,04:28.29,266.29,WHISPER,,One next step.
+04:27.29,04:30.41,267.29,PAUSE,M3,scripted 2.0s -> 3.1s
+04:30.41,04:34.11,270.41,VISUAL,,card: YOU LEAD WITH QUESTIONS.
+04:30.41,04:32.27,270.41,VOX A,M3,Jason... you lead with questions.
+04:32.39,04:34.72,272.39,PAUSE,M3,scripted 1.5s -> 2.3s
+04:34.30,04:36.30,274.3,WHISPER,,Ask first.
+04:34.72,04:38.42,274.72,VISUAL,,card: YOU'VE DONE THE REPS.
+04:34.72,04:36.27,274.72,VOX A,M3,Jason... you've done the reps.
+04:36.39,04:38.73,276.39,PAUSE,M3,scripted 1.5s -> 2.3s
+04:38.73,04:42.43,278.73,VISUAL,,card: GO HOLD THE LIGHT.
+04:38.73,04:40.21,278.73,VOX A,M3,Jason... go hold the light.
+04:40.33,04:45.00,280.33,PAUSE,M3,scripted 3.0s -> 4.7s
+04:43.03,04:45.03,283.03,WHISPER,,Say it clean.
+04:44.10,04:45.60,284.1,SFX,,soft whoosh
+04:45.00,04:45.00,285.0,BINAURAL,,beat target 10 Hz
+04:45.00,04:45.00,285.0,MUSIC,,soft kick on 1 and 3
+04:45.00,07:45.00,285.0,SECTION,M4,Rapid Rehearsal ×5
+04:45.00,04:46.45,285.0,VOX A,M4,Now run today. Quick.
+04:46.57,04:50.00,286.57,PAUSE,M4,scripted 1.5s -> 3.4s
+04:50.00,05:24.00,290.0,VISUAL,M4,V7 lot.jpg: WHAT'S GOT YOU LOOKING?
+04:50.00,04:53.65,290.0,VOX A,M4.1,"The lot. A buyer walks up, guarded. Thumb to finger. One breath."
+04:53.77,04:55.04,293.77,PAUSE,M4.1,scripted 1.0s -> 1.3s
+04:53.91,04:55.91,293.91,WHISPER,,Let them say it.
+04:55.04,04:56.14,295.04,VOX A,M4.1,"""What's got you looking?"""
+04:56.51,04:57.71,296.51,TONE,M4.1,question tone
+04:57.71,05:00.88,297.71,PAUSE,M4.1,IMPACT scripted 2.5s -> 3.2s
+05:00.88,05:02.77,300.88,VOX A,M4.1,"""What's going on with the one you've got?"""
+05:03.14,05:04.34,303.14,TONE,M4.1,question tone
+05:04.34,05:06.87,304.34,PAUSE,M4.1,IMPACT scripted 2.0s -> 2.5s
+05:04.56,05:06.56,304.56,WHISPER,,One next step.
+05:06.87,05:08.40,306.87,VOX A,M4.1,"""What's that doing to your week?"""
+05:08.77,05:09.97,308.77,TONE,M4.1,question tone
+05:09.97,05:14.40,309.97,PAUSE,M4.1,IMPACT scripted 3.5s -> 4.4s
+05:14.40,05:21.35,314.4,VOX A,M4.1,"He tells you. You say it back in one line. The price comes out clean. Then: ""Want to drive it now, or after lunch?"""
+05:15.01,05:17.01,315.01,WHISPER,,Ask first.
+05:21.47,05:24.00,321.47,PAUSE,M4.1,scripted 2.0s -> 2.5s
+05:23.58,05:25.58,323.58,WHISPER,,Say it clean.
+05:24.00,05:58.00,324.0,VISUAL,M4,V7 owner.jpg: WHAT HAPPENS AT 9 P.M.?
+05:24.00,05:26.70,324.0,VOX A,M4.2,An owner's office. Skeptical. Phone buzzing.
+05:26.82,05:28.44,326.82,PAUSE,M4.2,scripted 1.0s -> 1.6s
+05:28.44,05:31.38,328.44,VOX A,M4.2,"""What happens to a message that comes in at nine at night?"""
+05:31.75,05:32.95,331.75,TONE,M4.2,question tone
+05:32.53,05:34.53,332.53,WHISPER,,Let them say it.
+05:32.95,05:37.82,332.95,PAUSE,M4.2,IMPACT scripted 3.0s -> 4.9s
+05:37.82,05:40.11,337.82,VOX A,M4.2,"""How many of those go cold in a week?"""
+05:40.48,05:41.68,340.48,TONE,M4.2,question tone
+05:41.68,05:45.75,341.68,PAUSE,M4.2,IMPACT scripted 2.5s -> 4.1s
+05:42.30,05:44.30,342.3,WHISPER,,One next step.
+05:45.75,05:49.17,345.75,VOX A,M4.2,He does his math. You say the price once. You stop talking.
+05:49.29,05:53.35,349.29,PAUSE,M4.2,scripted 2.5s -> 4.1s
+05:49.62,05:51.62,349.62,WHISPER,,Ask first.
+05:53.35,05:54.63,353.35,VOX A,M4.2,"""This week, or Monday?"""
+05:54.75,05:58.00,354.75,PAUSE,M4.2,scripted 2.0s -> 3.3s
+05:58.00,06:32.00,358.0,VISUAL,M4,V7 investor.jpg: WHAT MAKES THIS A CLEAR YES?
+05:58.00,06:01.10,358.0,VOX A,M4.3,An investor. Sharp. Seen it all. Your numbers are exact.
+05:58.84,06:00.84,358.84,WHISPER,,Say it clean.
+06:01.22,06:03.08,361.22,PAUSE,M4.3,scripted 1.0s -> 1.9s
+06:03.08,06:04.95,363.08,VOX A,M4.3,"""What would make this a clear yes for you?"""
+06:05.32,06:06.52,365.32,TONE,M4.3,question tone
+06:06.52,06:12.12,366.52,PAUSE,M4.3,IMPACT scripted 3.0s -> 5.6s
+06:06.90,06:08.90,366.9,WHISPER,,Let them say it.
+06:12.12,06:14.48,372.12,VOX A,M4.3,"""What worries you most about me, honestly?"""
+06:14.85,06:16.05,374.85,TONE,M4.3,question tone
+06:16.05,06:22.58,376.05,PAUSE,M4.3,IMPACT scripted 3.5s -> 6.5s
+06:17.48,06:19.48,377.48,WHISPER,,One next step.
+06:22.58,06:28.15,382.58,VOX A,M4.3,"You answer it straight. Terms once, clean. Quiet. You're fine either way, and she can feel it."
+06:24.81,06:26.81,384.81,WHISPER,,Ask first.
+06:28.27,06:32.00,388.27,PAUSE,M4.3,scripted 2.0s -> 3.7s
+06:32.00,07:06.00,392.0,VISUAL,M4,V7 boardroom.jpg: WHY NOW?
+06:32.00,06:34.80,392.0,VOX A,M4.4,A conference room. One talks. One decides.
+06:34.53,06:36.53,394.53,WHISPER,,Say it clean.
+06:34.92,06:36.76,394.92,PAUSE,M4.4,scripted 1.0s -> 1.8s
+06:36.76,06:38.44,396.76,VOX A,M4.4,"""What made this a priority now?"""
+06:38.81,06:40.01,398.81,TONE,M4.4,question tone
+06:40.01,06:44.60,400.01,PAUSE,M4.4,IMPACT scripted 2.5s -> 4.6s
+06:44.60,06:46.23,404.6,VOX A,M4.4,"""What's it costing you each month?"""
+06:44.98,06:46.98,404.98,WHISPER,,Let them say it.
+06:46.60,06:47.80,406.6,TONE,M4.4,question tone
+06:47.80,06:53.30,407.8,PAUSE,M4.4,IMPACT scripted 3.0s -> 5.5s
+06:52.96,06:54.96,412.96,WHISPER,,One next step.
+06:53.30,06:54.37,413.3,VOX A,M4.4,"""Who else weighs in?"""
+06:54.74,06:55.94,414.74,TONE,M4.4,question tone
+06:55.94,06:59.61,415.94,PAUSE,M4.4,IMPACT scripted 2.0s -> 3.7s
+06:59.61,07:02.21,419.61,VOX A,M4.4,"""Tuesday at ten, or Thursday after lunch?"""
+07:02.33,07:06.00,422.33,PAUSE,M4.4,scripted 2.0s -> 3.7s
+07:03.61,07:05.61,423.61,WHISPER,,Ask first.
+07:06.00,07:45.00,426.0,VISUAL,M4,V7 interview.jpg: WHAT'S A CLEAR WIN IN 90 DAYS?
+07:06.00,07:09.32,426.0,VOX A,M4.5,"An interview. They ask. You answer straight, real numbers."
+07:09.44,07:11.65,429.44,PAUSE,M4.5,scripted 1.0s -> 2.2s
+07:11.65,07:15.48,431.65,VOX A,M4.5,"Then: ""What would make the person in this seat a clear win in ninety days?"""
+07:14.10,07:16.10,434.1,WHISPER,,Say it clean.
+07:15.85,07:17.05,435.85,TONE,M4.5,question tone
+07:17.05,07:23.68,437.05,PAUSE,M4.5,IMPACT scripted 3.0s -> 6.6s
+07:21.15,07:23.15,441.15,WHISPER,,Let them say it.
+07:23.68,07:27.14,443.68,VOX A,M4.5,"""Is there anything about my background that gives you pause?"""
+07:27.51,07:28.71,447.51,TONE,M4.5,question tone
+07:28.71,07:36.44,448.71,PAUSE,M4.5,IMPACT scripted 3.5s -> 7.7s
+07:31.04,07:33.04,451.04,WHISPER,,One next step.
+07:36.44,07:38.25,456.44,VOX A,M4.5,You're not auditioning. You're leading.
+07:38.12,07:40.12,458.12,WHISPER,,Ask first.
+07:38.37,07:45.00,458.37,PAUSE,M4.5,scripted 3.0s -> 6.6s
+07:45.00,07:45.00,465.0,BINAURAL,,beat target 10 Hz
+07:45.00,07:45.00,465.0,MUSIC,,groove thins to pad + pulse
+07:45.00,08:45.00,465.0,SECTION,M5,Today'S Intentions
+07:45.00,07:48.34,465.0,VOX A,M5,Now pick the one conversation today that matters most.
+07:47.13,07:49.13,467.13,WHISPER,,Say it clean.
+07:48.46,07:52.61,468.46,PAUSE,M5,scripted 3.0s -> 4.1s
+07:52.61,07:53.52,472.61,VOX A,M5,See their face.
+07:53.64,07:57.09,473.64,PAUSE,M5,scripted 2.5s -> 3.5s
+07:55.85,07:57.85,475.85,WHISPER,,Let them say it.
+07:57.09,08:08.92,477.09,VISUAL,,card: YOUR FIRST QUESTION?
+07:57.09,07:59.06,477.09,VOX A,M5,What's the first question you'll ask them?
+07:59.43,08:00.63,479.43,TONE,M5,question tone
+08:00.63,08:08.92,480.63,PAUSE,M5,IMPACT scripted 6.0s -> 8.3s
+08:03.73,08:05.73,483.73,WHISPER,,One next step.
+08:08.92,08:12.28,488.92,VOX A,M5,"Good. When you walk in, that's the first thing out of your mouth."
+08:12.11,08:14.11,492.11,WHISPER,,Ask first.
+08:12.40,08:15.16,492.4,PAUSE,M5,scripted 2.0s -> 2.8s
+08:15.16,08:19.33,495.16,VISUAL,,card: URGE TO EXPLAIN? I ASK.
+08:15.16,08:17.83,495.16,VOX A,M5,When I feel the urge to explain... I ask.
+08:17.95,08:20.71,497.95,PAUSE,M5,scripted 2.0s -> 2.8s
+08:20.71,08:26.57,500.71,VISUAL,,card: THREE QUESTIONS? ONE BACK.
+08:20.71,08:25.07,500.71,VOX A,M5,"When they hit me with three questions... I answer one, clean, and ask one back."
+08:22.33,08:24.33,502.33,WHISPER,,Say it clean.
+08:25.19,08:27.95,505.19,PAUSE,M5,scripted 2.0s -> 2.8s
+08:27.95,08:32.97,507.95,VISUAL,,card: TOO MUCH? COMPARED TO WHAT?
+08:27.95,08:31.47,507.95,VOX A,M5,When they say it's too much... I ask what they're comparing it to.
+08:30.57,08:32.57,510.57,WHISPER,,Let them say it.
+08:31.59,08:34.35,511.59,PAUSE,M5,scripted 2.0s -> 2.8s
+08:34.35,08:40.85,514.35,VISUAL,,card: QUIET? COUNT TO FIVE.
+08:34.35,08:39.35,514.35,VOX A,M5,"When it goes quiet after my question... I count to five in my head, and I let it work."
+08:38.23,08:40.23,518.23,WHISPER,,One next step.
+08:39.47,08:45.00,519.47,PAUSE,M5,scripted 4.0s -> 5.5s
+08:45.00,08:45.00,525.0,BINAURAL,,beat target 12 Hz
+08:45.00,08:45.00,525.0,MUSIC,,Gmaj9 -> Asus4 under the riser
+08:45.00,09:40.00,525.0,SECTION,M6,Count-Up 1 → 5
+08:45.00,09:29.90,525.0,SFX,M6,riser (filtered noise)
+08:45.00,08:50.67,525.0,VOX A,M6,"In a moment I'll count from one to five. On five, your eyes open and you're all the way awake."
+08:50.79,08:54.67,530.79,PAUSE,M6,scripted 2.0s -> 3.9s
+08:54.67,08:57.67,534.67,VISUAL,M6,number 1
+08:54.67,08:56.85,534.67,VOX A,M6,One. Feel your feet. Wiggle your toes.
+08:56.97,09:02.79,536.97,PAUSE,M6,scripted 3.0s -> 5.8s
+09:02.79,09:05.79,542.79,VISUAL,M6,number 2
+09:02.79,09:05.16,542.79,VOX A,M6,Two. The breath gets bigger. Fill your chest.
+09:05.28,09:11.09,545.28,PAUSE,M6,scripted 3.0s -> 5.8s
+09:11.09,09:14.09,551.09,VISUAL,M6,number 3
+09:11.09,09:14.58,551.09,VOX A,M6,Three. Blood moving in your hands. Make a fist and let it go.
+09:14.70,09:20.51,554.7,PAUSE,M6,scripted 3.0s -> 5.8s
+09:20.51,09:23.51,560.51,VISUAL,M6,number 4
+09:20.51,09:23.97,560.51,VOX A,M6,Four. Your eyes getting bright behind the lids. Clear head.
+09:24.09,09:29.90,564.09,PAUSE,M6,scripted 3.0s -> 5.8s
+09:29.90,09:32.90,569.9,VISUAL,M6,number 5
+09:29.90,09:31.40,569.9,VISUAL,M6,smooth brightening to daylight (no flash)
+09:29.90,09:34.07,569.9,VOX A,M6,Five. Eyes open. Wide awake. Clear. Ready.
+09:29.90,09:29.90,569.9,MUSIC,,D(add9) resolution
+09:29.90,09:36.90,569.9,SFX,M6,"tubular bell, D + D(add9) resolution"
+09:30.62,09:31.59,570.62,PAUSE,M6,scripted 0.5s -> 1.0s
+09:34.19,09:40.00,574.19,PAUSE,M6,scripted 3.0s -> 5.8s
+09:40.00,10:08.58,580.0,SECTION,M7,Close
+09:40.00,09:45.64,580.0,VOX A,M7,"Thumb to finger, one time, eyes open. Ask."
+09:42.36,09:45.08,582.36,PAUSE,M7,scripted 1.5s -> 2.7s
+09:45.00,10:15.00,585,BINAURAL,,fade out
+09:45.76,09:49.40,585.76,PAUSE,M7,scripted 2.0s -> 3.6s
+09:49.40,09:51.30,589.4,VOX A,M7,That's it. That's the whole game today.
+09:51.42,09:54.15,591.42,PAUSE,M7,scripted 1.5s -> 2.7s
+09:54.15,09:58.09,594.15,VOX A,M7,Ask first. Let them say it. Say the number clean. One next step.
+09:58.21,10:01.85,598.21,PAUSE,M7,scripted 2.0s -> 3.6s
+10:01.85,10:03.00,601.85,VOX A,M7,Now go lead the room.
+10:03.12,10:08.58,603.12,PAUSE,M7,scripted 3.0s -> 5.5s
+10:03.60,10:07.60,603.6,VISUAL,M7,ASK FIRST.
+10:07.60,10:28.00,607.6,VISUAL,M7,STOP THINKING POOR end card
+10:24.00,10:24.00,624,MUSIC,,tail to silence at 10:30
+10:28.00,10:30.00,628,VISUAL,M7,fade to black
+10:30.00,10:30.00,630,BINAURAL,,beat target 12 Hz

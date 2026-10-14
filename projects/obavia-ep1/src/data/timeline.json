@@ -1,0 +1,2765 @@
+{
+ "fps": 30,
+ "sr": 48000,
+ "duration": 94.294,
+ "frames": 2829,
+ "shots": [
+  {
+   "id": "hook",
+   "start": 0.0,
+   "end": 7.142
+  },
+  {
+   "id": "title",
+   "start": 7.142,
+   "end": 11.276
+  },
+  {
+   "id": "p1",
+   "start": 11.276,
+   "end": 13.233
+  },
+  {
+   "id": "hispov",
+   "start": 13.233,
+   "end": 20.24
+  },
+  {
+   "id": "danger",
+   "start": 20.24,
+   "end": 29.421
+  },
+  {
+   "id": "p2",
+   "start": 29.421,
+   "end": 33.426
+  },
+  {
+   "id": "bias",
+   "start": 33.426,
+   "end": 42.674
+  },
+  {
+   "id": "slice",
+   "start": 42.674,
+   "end": 48.049
+  },
+  {
+   "id": "rule",
+   "start": 48.049,
+   "end": 50.871
+  },
+  {
+   "id": "disarm",
+   "start": 50.871,
+   "end": 57.55
+  },
+  {
+   "id": "approach",
+   "start": 57.55,
+   "end": 61.534
+  },
+  {
+   "id": "ask",
+   "start": 61.534,
+   "end": 63.878
+  },
+  {
+   "id": "admit",
+   "start": 63.878,
+   "end": 72.829
+  },
+  {
+   "id": "reg",
+   "start": 72.829,
+   "end": 75.481
+  },
+  {
+   "id": "clip",
+   "start": 75.481,
+   "end": 78.714
+  },
+  {
+   "id": "choice",
+   "start": 78.714,
+   "end": 83.618
+  },
+  {
+   "id": "black",
+   "start": 83.618,
+   "end": 86.713
+  },
+  {
+   "id": "end",
+   "start": 86.713,
+   "end": 94.294
+  }
+ ],
+ "clips": [
+  {
+   "id": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "text": "You just got pulled over. Red and blue in the mirror.",
+   "file": "vo/hook-0.wav",
+   "start": 0.12,
+   "dur": 2.712
+  },
+  {
+   "id": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "text": "And before either of you says a word... you've already judged each other.",
+   "file": "vo/hook-1.wav",
+   "start": 3.112,
+   "dur": 3.53
+  },
+  {
+   "id": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "text": "Because a traffic stop is two scared people. One window between you.",
+   "file": "vo/title-0.wav",
+   "start": 7.242,
+   "dur": 3.834
+  },
+  {
+   "id": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "text": "Problem one. He's scared too.",
+   "file": "vo/p1-0.wav",
+   "start": 11.376,
+   "dur": 1.657
+  },
+  {
+   "id": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "text": "From his seat, he's reading your car. Paper tags. Loud music. Tank top.",
+   "file": "vo/hispov-0.wav",
+   "start": 13.333,
+   "dur": 4.407
+  },
+  {
+   "id": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "text": "Every movie he's seen fills in the rest.",
+   "file": "vo/hispov-1.wav",
+   "start": 18.02,
+   "dur": 2.02
+  },
+  {
+   "id": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "text": "His training says any stop could turn deadly.",
+   "file": "vo/danger-0.wav",
+   "start": 20.34,
+   "dur": 2.274
+  },
+  {
+   "id": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "text": "One big Florida study put it at about one in six and a half million stops.",
+   "file": "vo/danger-1.wav",
+   "start": 22.894,
+   "dur": 4.648
+  },
+  {
+   "id": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "text": "But fear doesn't read data.",
+   "file": "vo/danger-2.wav",
+   "start": 27.822,
+   "dur": 1.399
+  },
+  {
+   "id": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "text": "Problem two. You're labeling him back. Power trip. Quota. The badge.",
+   "file": "vo/p2-0.wav",
+   "start": 29.521,
+   "dur": 3.705
+  },
+  {
+   "id": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "text": "Here's what you don't know. In a famous study, split-second threat decisions followed cultural stereotypes.",
+   "file": "vo/bias-0.wav",
+   "start": 33.526,
+   "dur": 6.058
+  },
+  {
+   "id": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "text": "Even in people with no personal prejudice.",
+   "file": "vo/bias-1.wav",
+   "start": 39.865,
+   "dur": 2.61
+  },
+  {
+   "id": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "text": "A face gets judged in a tenth of a second. What he sees lands before what you say.",
+   "file": "vo/slice-0.wav",
+   "start": 42.774,
+   "dur": 4.775
+  },
+  {
+   "id": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "text": "Rule one. Disarm the fear before you speak.",
+   "file": "vo/rule-0.wav",
+   "start": 48.149,
+   "dur": 2.522
+  },
+  {
+   "id": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "text": "Hazards on. Dome light on. Window down. Hands on the wheel.",
+   "file": "vo/disarm-0.wav",
+   "start": 50.971,
+   "dur": 3.461
+  },
+  {
+   "id": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "text": "Driver handbooks say it plainly. Let him see you.",
+   "file": "vo/disarm-1.wav",
+   "start": 54.713,
+   "dur": 2.638
+  },
+  {
+   "id": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "text": "Footsteps. Flashlight. He sees your hands, and his shoulders drop.",
+   "file": "vo/approach-0.wav",
+   "start": 57.65,
+   "dur": 3.683
+  },
+  {
+   "id": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "text": "Do you know why I stopped you?",
+   "file": "vo/ask-0.wav",
+   "start": 61.634,
+   "dur": 1.645,
+   "rms": [
+    0.205,
+    0.463,
+    0.465,
+    0.552,
+    0.715,
+    0.729,
+    0.731,
+    0.88,
+    0.892,
+    0.985,
+    1.0,
+    0.638,
+    0.488,
+    0.58,
+    0.803,
+    0.825,
+    0.701,
+    0.622,
+    0.623,
+    0.545,
+    0.503,
+    0.482,
+    0.526,
+    0.25,
+    0.133,
+    0.164,
+    0.15,
+    0.034,
+    0.019,
+    0.506,
+    0.517,
+    0.517,
+    0.466,
+    0.396,
+    0.059,
+    0.014,
+    0.011,
+    0.036,
+    0.055,
+    0.199,
+    0.216,
+    0.197,
+    0.189,
+    0.161,
+    0.136,
+    0.117,
+    0.094,
+    0.064,
+    0.024,
+    0.015
+   ]
+  },
+  {
+   "id": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "text": "That question invites an admission.",
+   "file": "vo/admit-0.wav",
+   "start": 63.978,
+   "dur": 1.947
+  },
+  {
+   "id": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "text": "If you honestly don't know, say, no officer, could you tell me?",
+   "file": "vo/admit-1.wav",
+   "start": 66.205,
+   "dur": 3.295
+  },
+  {
+   "id": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "text": "If you do know, don't lie. Keep it short and honest.",
+   "file": "vo/admit-2.wav",
+   "start": 69.779,
+   "dur": 2.85
+  },
+  {
+   "id": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "text": "Your registration expired last month.",
+   "file": "vo/reg-0.wav",
+   "start": 72.929,
+   "dur": 2.351,
+   "rms": [
+    0.093,
+    0.299,
+    0.409,
+    0.484,
+    0.367,
+    0.27,
+    0.485,
+    0.906,
+    1.0,
+    0.494,
+    0.199,
+    0.141,
+    0.32,
+    0.38,
+    0.136,
+    0.111,
+    0.018,
+    0.028,
+    0.328,
+    0.52,
+    0.457,
+    0.418,
+    0.345,
+    0.102,
+    0.09,
+    0.06,
+    0.197,
+    0.245,
+    0.203,
+    0.185,
+    0.162,
+    0.094,
+    0.018,
+    0.033,
+    0.049,
+    0.052,
+    0.021,
+    0.01,
+    0.008,
+    0.245,
+    0.403,
+    0.413,
+    0.421,
+    0.342,
+    0.342,
+    0.257,
+    0.251,
+    0.233,
+    0.164,
+    0.056,
+    0.073,
+    0.138,
+    0.2,
+    0.22,
+    0.242,
+    0.248,
+    0.202,
+    0.17,
+    0.064,
+    0.046,
+    0.016,
+    0.009,
+    0.123,
+    0.201,
+    0.201,
+    0.173,
+    0.162,
+    0.136,
+    0.082,
+    0.067,
+    0.01
+   ]
+  },
+  {
+   "id": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "text": "He goes quiet. Clipboard. Five seconds left.",
+   "file": "vo/clip-0.wav",
+   "start": 75.581,
+   "dur": 2.633
+  },
+  {
+   "id": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "text": "One sentence. Do you explain why it lapsed... or just apologize?",
+   "file": "vo/choice-0.wav",
+   "start": 78.814,
+   "dur": 4.104
+  },
+  {
+   "id": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "text": "One drops his guard. The other raises it.",
+   "file": "vo/black-0.wav",
+   "start": 83.718,
+   "dur": 2.396
+  },
+  {
+   "id": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "text": "Comment explain or apologize. Part two follows what you pick.",
+   "file": "vo/end-0.wav",
+   "start": 86.813,
+   "dur": 4.081
+  }
+ ],
+ "words": [
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 0,
+   "w": "You",
+   "s": 0.12,
+   "e": 0.22
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 1,
+   "w": "just",
+   "s": 0.22,
+   "e": 0.36
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 2,
+   "w": "got",
+   "s": 0.36,
+   "e": 0.54
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 3,
+   "w": "pulled",
+   "s": 0.54,
+   "e": 0.8
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 4,
+   "w": "over.",
+   "s": 0.8,
+   "e": 1.14
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 5,
+   "w": "Red",
+   "s": 1.56,
+   "e": 1.72
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 6,
+   "w": "and",
+   "s": 1.72,
+   "e": 2.0
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 7,
+   "w": "blue",
+   "s": 2.0,
+   "e": 2.2
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 8,
+   "w": "in",
+   "s": 2.2,
+   "e": 2.36
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 9,
+   "w": "the",
+   "s": 2.36,
+   "e": 2.46
+  },
+  {
+   "clip": "hook-0",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 10,
+   "w": "mirror.",
+   "s": 2.46,
+   "e": 2.66
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 0,
+   "w": "And",
+   "s": 3.112,
+   "e": 3.192
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 1,
+   "w": "before",
+   "s": 3.192,
+   "e": 3.472
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 2,
+   "w": "either",
+   "s": 3.472,
+   "e": 3.712
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 3,
+   "w": "of",
+   "s": 3.712,
+   "e": 3.932
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 4,
+   "w": "you",
+   "s": 3.932,
+   "e": 4.072
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 5,
+   "w": "says",
+   "s": 4.072,
+   "e": 4.232
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 6,
+   "w": "a",
+   "s": 4.232,
+   "e": 4.412
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 7,
+   "w": "word",
+   "s": 4.412,
+   "e": 5.232
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 8,
+   "w": "you've",
+   "s": 5.232,
+   "e": 5.412
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 9,
+   "w": "already",
+   "s": 5.412,
+   "e": 5.692
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 10,
+   "w": "judged",
+   "s": 5.692,
+   "e": 6.112
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 11,
+   "w": "each",
+   "s": 6.112,
+   "e": 6.312
+  },
+  {
+   "clip": "hook-1",
+   "shot": "hook",
+   "speaker": "N",
+   "i": 12,
+   "w": "other.",
+   "s": 6.312,
+   "e": 6.512
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 0,
+   "w": "Because",
+   "s": 7.242,
+   "e": 7.402
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 1,
+   "w": "a",
+   "s": 7.402,
+   "e": 7.522
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 2,
+   "w": "traffic",
+   "s": 7.522,
+   "e": 7.842
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 3,
+   "w": "stop",
+   "s": 7.842,
+   "e": 8.182
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 4,
+   "w": "is",
+   "s": 8.182,
+   "e": 8.402
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 5,
+   "w": "two",
+   "s": 8.402,
+   "e": 8.622
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 6,
+   "w": "scared",
+   "s": 8.622,
+   "e": 8.962
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 7,
+   "w": "people.",
+   "s": 8.962,
+   "e": 9.402
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 8,
+   "w": "One",
+   "s": 9.862,
+   "e": 10.022
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 9,
+   "w": "window",
+   "s": 10.022,
+   "e": 10.402
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 10,
+   "w": "between",
+   "s": 10.402,
+   "e": 10.822
+  },
+  {
+   "clip": "title-0",
+   "shot": "title",
+   "speaker": "N",
+   "i": 11,
+   "w": "you.",
+   "s": 10.822,
+   "e": 11.042
+  },
+  {
+   "clip": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "i": 0,
+   "w": "Problem",
+   "s": 11.376,
+   "e": 11.676
+  },
+  {
+   "clip": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "i": 1,
+   "w": "one.",
+   "s": 11.676,
+   "e": 11.976
+  },
+  {
+   "clip": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "i": 2,
+   "w": "He's",
+   "s": 12.276,
+   "e": 12.396
+  },
+  {
+   "clip": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "i": 3,
+   "w": "scared",
+   "s": 12.396,
+   "e": 12.556
+  },
+  {
+   "clip": "p1-0",
+   "shot": "p1",
+   "speaker": "N",
+   "i": 4,
+   "w": "too.",
+   "s": 12.556,
+   "e": 12.896
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 0,
+   "w": "From",
+   "s": 13.333,
+   "e": 13.453
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 1,
+   "w": "his",
+   "s": 13.453,
+   "e": 13.593
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 2,
+   "w": "seat,",
+   "s": 13.593,
+   "e": 13.833
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 3,
+   "w": "he's",
+   "s": 13.973,
+   "e": 14.093
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 4,
+   "w": "reading",
+   "s": 14.093,
+   "e": 14.293
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 5,
+   "w": "your",
+   "s": 14.293,
+   "e": 14.493
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 6,
+   "w": "car.",
+   "s": 14.493,
+   "e": 14.893
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 7,
+   "w": "Paper",
+   "s": 15.373,
+   "e": 15.473
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 8,
+   "w": "tags.",
+   "s": 15.473,
+   "e": 15.913
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 9,
+   "w": "Loud",
+   "s": 16.233,
+   "e": 16.293
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 10,
+   "w": "music.",
+   "s": 16.293,
+   "e": 16.773
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 11,
+   "w": "Tank",
+   "s": 17.133,
+   "e": 17.213
+  },
+  {
+   "clip": "hispov-0",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 12,
+   "w": "top.",
+   "s": 17.213,
+   "e": 17.533
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 0,
+   "w": "Every",
+   "s": 18.02,
+   "e": 18.26
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 1,
+   "w": "movie",
+   "s": 18.26,
+   "e": 18.54
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 2,
+   "w": "he's",
+   "s": 18.54,
+   "e": 18.82
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 3,
+   "w": "seen",
+   "s": 18.82,
+   "e": 19.02
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 4,
+   "w": "fills",
+   "s": 19.02,
+   "e": 19.38
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 5,
+   "w": "in",
+   "s": 19.38,
+   "e": 19.6
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 6,
+   "w": "the",
+   "s": 19.6,
+   "e": 19.68
+  },
+  {
+   "clip": "hispov-1",
+   "shot": "hispov",
+   "speaker": "N",
+   "i": 7,
+   "w": "rest.",
+   "s": 19.68,
+   "e": 19.88
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 0,
+   "w": "His",
+   "s": 20.34,
+   "e": 20.46
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 1,
+   "w": "training",
+   "s": 20.46,
+   "e": 20.78
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 2,
+   "w": "says",
+   "s": 20.78,
+   "e": 21.06
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 3,
+   "w": "any",
+   "s": 21.06,
+   "e": 21.32
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 4,
+   "w": "stop",
+   "s": 21.32,
+   "e": 21.66
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 5,
+   "w": "could",
+   "s": 21.66,
+   "e": 21.88
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 6,
+   "w": "turn",
+   "s": 21.88,
+   "e": 22.14
+  },
+  {
+   "clip": "danger-0",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 7,
+   "w": "deadly.",
+   "s": 22.14,
+   "e": 22.4
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 0,
+   "w": "One",
+   "s": 22.894,
+   "e": 23.074
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 1,
+   "w": "big",
+   "s": 23.074,
+   "e": 23.294
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 2,
+   "w": "Florida",
+   "s": 23.294,
+   "e": 23.714
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 3,
+   "w": "study",
+   "s": 23.714,
+   "e": 24.134
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 4,
+   "w": "put",
+   "s": 24.134,
+   "e": 24.414
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 5,
+   "w": "it",
+   "s": 24.414,
+   "e": 24.534
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 6,
+   "w": "at",
+   "s": 24.534,
+   "e": 24.754
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 7,
+   "w": "about",
+   "s": 24.754,
+   "e": 24.974
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 8,
+   "w": "one",
+   "s": 24.974,
+   "e": 25.314
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 9,
+   "w": "in",
+   "s": 25.314,
+   "e": 25.814
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 10,
+   "w": "six",
+   "s": 25.814,
+   "e": 26.094
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 11,
+   "w": "and",
+   "s": 26.094,
+   "e": 26.234
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 12,
+   "w": "a",
+   "s": 26.234,
+   "e": 26.354
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 13,
+   "w": "half",
+   "s": 26.354,
+   "e": 26.514
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 14,
+   "w": "million",
+   "s": 26.514,
+   "e": 26.854
+  },
+  {
+   "clip": "danger-1",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 15,
+   "w": "stops.",
+   "s": 26.854,
+   "e": 27.294
+  },
+  {
+   "clip": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 0,
+   "w": "But",
+   "s": 27.822,
+   "e": 27.942
+  },
+  {
+   "clip": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 1,
+   "w": "fear",
+   "s": 27.942,
+   "e": 28.162
+  },
+  {
+   "clip": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 2,
+   "w": "doesn't",
+   "s": 28.162,
+   "e": 28.562
+  },
+  {
+   "clip": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 3,
+   "w": "read",
+   "s": 28.562,
+   "e": 28.722
+  },
+  {
+   "clip": "danger-2",
+   "shot": "danger",
+   "speaker": "N",
+   "i": 4,
+   "w": "data.",
+   "s": 28.722,
+   "e": 29.022
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 0,
+   "w": "Problem",
+   "s": 29.521,
+   "e": 29.821
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 1,
+   "w": "two.",
+   "s": 29.821,
+   "e": 30.161
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 2,
+   "w": "You're",
+   "s": 30.521,
+   "e": 30.621
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 3,
+   "w": "labeling",
+   "s": 30.621,
+   "e": 30.901
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 4,
+   "w": "him",
+   "s": 30.901,
+   "e": 31.121
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 5,
+   "w": "back.",
+   "s": 31.121,
+   "e": 31.381
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 6,
+   "w": "Power",
+   "s": 31.701,
+   "e": 31.781
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 7,
+   "w": "trip.",
+   "s": 31.781,
+   "e": 32.081
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 8,
+   "w": "Quota.",
+   "s": 32.361,
+   "e": 32.501
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 9,
+   "w": "The",
+   "s": 32.641,
+   "e": 32.721
+  },
+  {
+   "clip": "p2-0",
+   "shot": "p2",
+   "speaker": "N",
+   "i": 10,
+   "w": "badge.",
+   "s": 32.721,
+   "e": 32.981
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 0,
+   "w": "Here's",
+   "s": 33.526,
+   "e": 33.746
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 1,
+   "w": "what",
+   "s": 33.746,
+   "e": 33.886
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 2,
+   "w": "you",
+   "s": 33.886,
+   "e": 34.046
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 3,
+   "w": "don't",
+   "s": 34.046,
+   "e": 34.266
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 4,
+   "w": "know.",
+   "s": 34.266,
+   "e": 34.706
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 5,
+   "w": "In",
+   "s": 35.006,
+   "e": 35.086
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 6,
+   "w": "a",
+   "s": 35.086,
+   "e": 35.246
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 7,
+   "w": "famous",
+   "s": 35.246,
+   "e": 35.486
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 8,
+   "w": "study,",
+   "s": 35.486,
+   "e": 35.926
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 9,
+   "w": "split-second",
+   "s": 36.366,
+   "e": 36.746
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 10,
+   "w": "threat",
+   "s": 36.746,
+   "e": 37.026
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 11,
+   "w": "decisions",
+   "s": 37.026,
+   "e": 37.566
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 12,
+   "w": "followed",
+   "s": 37.566,
+   "e": 38.046
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 13,
+   "w": "cultural",
+   "s": 38.046,
+   "e": 38.586
+  },
+  {
+   "clip": "bias-0",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 14,
+   "w": "stereotypes.",
+   "s": 38.586,
+   "e": 39.186
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 0,
+   "w": "Even",
+   "s": 39.865,
+   "e": 40.065
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 1,
+   "w": "in",
+   "s": 40.065,
+   "e": 40.205
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 2,
+   "w": "people",
+   "s": 40.205,
+   "e": 40.585
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 3,
+   "w": "with",
+   "s": 40.585,
+   "e": 40.965
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 4,
+   "w": "no",
+   "s": 40.965,
+   "e": 41.245
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 5,
+   "w": "personal",
+   "s": 41.245,
+   "e": 41.685
+  },
+  {
+   "clip": "bias-1",
+   "shot": "bias",
+   "speaker": "N",
+   "i": 6,
+   "w": "prejudice.",
+   "s": 41.685,
+   "e": 42.065
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 0,
+   "w": "A",
+   "s": 42.774,
+   "e": 42.874
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 1,
+   "w": "face",
+   "s": 42.874,
+   "e": 43.154
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 2,
+   "w": "gets",
+   "s": 43.154,
+   "e": 43.434
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 3,
+   "w": "judged",
+   "s": 43.434,
+   "e": 43.854
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 4,
+   "w": "in",
+   "s": 43.854,
+   "e": 44.134
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 5,
+   "w": "a",
+   "s": 44.134,
+   "e": 44.234
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 6,
+   "w": "tenth",
+   "s": 44.234,
+   "e": 44.414
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 7,
+   "w": "of",
+   "s": 44.414,
+   "e": 44.594
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 8,
+   "w": "a",
+   "s": 44.594,
+   "e": 44.694
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 9,
+   "w": "second.",
+   "s": 44.694,
+   "e": 45.054
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 10,
+   "w": "What",
+   "s": 45.514,
+   "e": 45.654
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 11,
+   "w": "he",
+   "s": 45.654,
+   "e": 45.774
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 12,
+   "w": "sees",
+   "s": 45.774,
+   "e": 46.034
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 13,
+   "w": "lands",
+   "s": 46.034,
+   "e": 46.474
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 14,
+   "w": "before",
+   "s": 46.474,
+   "e": 46.834
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 15,
+   "w": "what",
+   "s": 46.834,
+   "e": 47.034
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 16,
+   "w": "you",
+   "s": 47.034,
+   "e": 47.214
+  },
+  {
+   "clip": "slice-0",
+   "shot": "slice",
+   "speaker": "N",
+   "i": 17,
+   "w": "say.",
+   "s": 47.214,
+   "e": 47.454
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 0,
+   "w": "Rule",
+   "s": 48.149,
+   "e": 48.349
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 1,
+   "w": "one.",
+   "s": 48.349,
+   "e": 48.709
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 2,
+   "w": "Disarm",
+   "s": 49.089,
+   "e": 49.349
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 3,
+   "w": "the",
+   "s": 49.349,
+   "e": 49.509
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 4,
+   "w": "fear",
+   "s": 49.509,
+   "e": 49.769
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 5,
+   "w": "before",
+   "s": 49.769,
+   "e": 50.049
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 6,
+   "w": "you",
+   "s": 50.049,
+   "e": 50.229
+  },
+  {
+   "clip": "rule-0",
+   "shot": "rule",
+   "speaker": "N",
+   "i": 7,
+   "w": "speak.",
+   "s": 50.229,
+   "e": 50.489
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 0,
+   "w": "Hazards",
+   "s": 50.971,
+   "e": 51.311
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 1,
+   "w": "on.",
+   "s": 51.311,
+   "e": 51.591
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 2,
+   "w": "Dome",
+   "s": 51.771,
+   "e": 51.871
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 3,
+   "w": "light",
+   "s": 51.871,
+   "e": 52.131
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 4,
+   "w": "on.",
+   "s": 52.131,
+   "e": 52.491
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 5,
+   "w": "Window",
+   "s": 52.951,
+   "e": 53.031
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 6,
+   "w": "down.",
+   "s": 53.031,
+   "e": 53.411
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 7,
+   "w": "Hands",
+   "s": 53.751,
+   "e": 53.791
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 8,
+   "w": "on",
+   "s": 53.791,
+   "e": 53.991
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 9,
+   "w": "the",
+   "s": 53.991,
+   "e": 54.111
+  },
+  {
+   "clip": "disarm-0",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 10,
+   "w": "wheel.",
+   "s": 54.111,
+   "e": 54.331
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 0,
+   "w": "Driver",
+   "s": 54.713,
+   "e": 54.993
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 1,
+   "w": "handbooks",
+   "s": 54.993,
+   "e": 55.453
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 2,
+   "w": "say",
+   "s": 55.453,
+   "e": 55.673
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 3,
+   "w": "it",
+   "s": 55.673,
+   "e": 55.793
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 4,
+   "w": "plainly.",
+   "s": 55.793,
+   "e": 56.113
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 5,
+   "w": "Let",
+   "s": 56.593,
+   "e": 56.713
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 6,
+   "w": "him",
+   "s": 56.713,
+   "e": 56.832
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 7,
+   "w": "see",
+   "s": 56.832,
+   "e": 57.073
+  },
+  {
+   "clip": "disarm-1",
+   "shot": "disarm",
+   "speaker": "N",
+   "i": 8,
+   "w": "you.",
+   "s": 57.073,
+   "e": 57.313
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 0,
+   "w": "Footsteps.",
+   "s": 57.65,
+   "e": 58.17
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 1,
+   "w": "Flashlight.",
+   "s": 58.43,
+   "e": 58.83
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 2,
+   "w": "He",
+   "s": 59.25,
+   "e": 59.33
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 3,
+   "w": "sees",
+   "s": 59.33,
+   "e": 59.53
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 4,
+   "w": "your",
+   "s": 59.53,
+   "e": 59.73
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 5,
+   "w": "hands,",
+   "s": 59.73,
+   "e": 60.05
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 6,
+   "w": "and",
+   "s": 60.21,
+   "e": 60.25
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 7,
+   "w": "his",
+   "s": 60.25,
+   "e": 60.39
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 8,
+   "w": "shoulders",
+   "s": 60.39,
+   "e": 60.69
+  },
+  {
+   "clip": "approach-0",
+   "shot": "approach",
+   "speaker": "N",
+   "i": 9,
+   "w": "drop.",
+   "s": 60.69,
+   "e": 61.13
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 0,
+   "w": "Do",
+   "s": 61.634,
+   "e": 61.734
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 1,
+   "w": "you",
+   "s": 61.734,
+   "e": 61.854
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 2,
+   "w": "know",
+   "s": 61.854,
+   "e": 61.974
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 3,
+   "w": "why",
+   "s": 61.974,
+   "e": 62.234
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 4,
+   "w": "I",
+   "s": 62.234,
+   "e": 62.434
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 5,
+   "w": "stopped",
+   "s": 62.434,
+   "e": 62.774
+  },
+  {
+   "clip": "ask-0",
+   "shot": "ask",
+   "speaker": "O",
+   "i": 6,
+   "w": "you?",
+   "s": 62.774,
+   "e": 63.094
+  },
+  {
+   "clip": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 0,
+   "w": "That",
+   "s": 63.978,
+   "e": 64.118
+  },
+  {
+   "clip": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 1,
+   "w": "question",
+   "s": 64.118,
+   "e": 64.558
+  },
+  {
+   "clip": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 2,
+   "w": "invites",
+   "s": 64.558,
+   "e": 65.138
+  },
+  {
+   "clip": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 3,
+   "w": "an",
+   "s": 65.138,
+   "e": 65.378
+  },
+  {
+   "clip": "admit-0",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 4,
+   "w": "admission.",
+   "s": 65.378,
+   "e": 65.658
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 0,
+   "w": "If",
+   "s": 66.205,
+   "e": 66.305
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 1,
+   "w": "you",
+   "s": 66.305,
+   "e": 66.425
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 2,
+   "w": "honestly",
+   "s": 66.425,
+   "e": 66.725
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 3,
+   "w": "don't",
+   "s": 66.725,
+   "e": 67.105
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 4,
+   "w": "know,",
+   "s": 67.105,
+   "e": 67.305
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 5,
+   "w": "say,",
+   "s": 67.505,
+   "e": 67.625
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 6,
+   "w": "no",
+   "s": 67.925,
+   "e": 68.165
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 7,
+   "w": "officer,",
+   "s": 68.165,
+   "e": 68.605
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 8,
+   "w": "could",
+   "s": 68.825,
+   "e": 68.925
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 9,
+   "w": "you",
+   "s": 68.925,
+   "e": 69.065
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 10,
+   "w": "tell",
+   "s": 69.065,
+   "e": 69.245
+  },
+  {
+   "clip": "admit-1",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 11,
+   "w": "me?",
+   "s": 69.245,
+   "e": 69.465
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 0,
+   "w": "If",
+   "s": 69.779,
+   "e": 69.879
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 1,
+   "w": "you",
+   "s": 69.879,
+   "e": 70.019
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 2,
+   "w": "do",
+   "s": 70.019,
+   "e": 70.139
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 3,
+   "w": "know,",
+   "s": 70.139,
+   "e": 70.339
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 4,
+   "w": "don't",
+   "s": 70.479,
+   "e": 70.619
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 5,
+   "w": "lie.",
+   "s": 70.619,
+   "e": 70.839
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 6,
+   "w": "Keep",
+   "s": 71.339,
+   "e": 71.419
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 7,
+   "w": "it",
+   "s": 71.419,
+   "e": 71.559
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 8,
+   "w": "short",
+   "s": 71.559,
+   "e": 71.859
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 9,
+   "w": "and",
+   "s": 71.859,
+   "e": 72.059
+  },
+  {
+   "clip": "admit-2",
+   "shot": "admit",
+   "speaker": "N",
+   "i": 10,
+   "w": "honest.",
+   "s": 72.059,
+   "e": 72.379
+  },
+  {
+   "clip": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "i": 0,
+   "w": "Your",
+   "s": 72.929,
+   "e": 73.109
+  },
+  {
+   "clip": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "i": 1,
+   "w": "registration",
+   "s": 73.109,
+   "e": 73.669
+  },
+  {
+   "clip": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "i": 2,
+   "w": "expired",
+   "s": 73.669,
+   "e": 74.389
+  },
+  {
+   "clip": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "i": 3,
+   "w": "last",
+   "s": 74.389,
+   "e": 74.849
+  },
+  {
+   "clip": "reg-0",
+   "shot": "reg",
+   "speaker": "O",
+   "i": 4,
+   "w": "month.",
+   "s": 74.849,
+   "e": 75.209
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 0,
+   "w": "He",
+   "s": 75.581,
+   "e": 75.661
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 1,
+   "w": "goes",
+   "s": 75.661,
+   "e": 75.881
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 2,
+   "w": "quiet.",
+   "s": 75.881,
+   "e": 76.301
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 3,
+   "w": "Clipboard.",
+   "s": 76.601,
+   "e": 76.961
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 4,
+   "w": "Five",
+   "s": 77.201,
+   "e": 77.361
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 5,
+   "w": "seconds",
+   "s": 77.361,
+   "e": 77.681
+  },
+  {
+   "clip": "clip-0",
+   "shot": "clip",
+   "speaker": "N",
+   "i": 6,
+   "w": "left.",
+   "s": 77.681,
+   "e": 78.021
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 0,
+   "w": "One",
+   "s": 78.814,
+   "e": 79.014
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 1,
+   "w": "sentence.",
+   "s": 79.014,
+   "e": 79.494
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 2,
+   "w": "Do",
+   "s": 79.834,
+   "e": 79.914
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 3,
+   "w": "you",
+   "s": 79.914,
+   "e": 80.014
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 4,
+   "w": "explain",
+   "s": 80.014,
+   "e": 80.434
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 5,
+   "w": "why",
+   "s": 80.434,
+   "e": 80.734
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 6,
+   "w": "it",
+   "s": 80.734,
+   "e": 80.854
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 7,
+   "w": "lapsed",
+   "s": 80.854,
+   "e": 81.694
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 8,
+   "w": "or",
+   "s": 81.694,
+   "e": 81.714
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 9,
+   "w": "just",
+   "s": 81.714,
+   "e": 81.934
+  },
+  {
+   "clip": "choice-0",
+   "shot": "choice",
+   "speaker": "N",
+   "i": 10,
+   "w": "apologize?",
+   "s": 81.934,
+   "e": 82.354
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 0,
+   "w": "One",
+   "s": 83.718,
+   "e": 83.878
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 1,
+   "w": "drops",
+   "s": 83.878,
+   "e": 84.178
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 2,
+   "w": "his",
+   "s": 84.178,
+   "e": 84.378
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 3,
+   "w": "guard.",
+   "s": 84.378,
+   "e": 84.738
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 4,
+   "w": "The",
+   "s": 85.058,
+   "e": 85.198
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 5,
+   "w": "other",
+   "s": 85.198,
+   "e": 85.418
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 6,
+   "w": "raises",
+   "s": 85.418,
+   "e": 85.858
+  },
+  {
+   "clip": "black-0",
+   "shot": "black",
+   "speaker": "N",
+   "i": 7,
+   "w": "it.",
+   "s": 85.858,
+   "e": 86.078
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 0,
+   "w": "Comment",
+   "s": 86.813,
+   "e": 87.073
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 1,
+   "w": "explain",
+   "s": 87.073,
+   "e": 87.613
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 2,
+   "w": "or",
+   "s": 87.613,
+   "e": 87.933
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 3,
+   "w": "apologize.",
+   "s": 87.933,
+   "e": 88.593
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 4,
+   "w": "Part",
+   "s": 89.313,
+   "e": 89.373
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 5,
+   "w": "two",
+   "s": 89.373,
+   "e": 89.673
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 6,
+   "w": "follows",
+   "s": 89.673,
+   "e": 90.133
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 7,
+   "w": "what",
+   "s": 90.133,
+   "e": 90.373
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 8,
+   "w": "you",
+   "s": 90.373,
+   "e": 90.553
+  },
+  {
+   "clip": "end-0",
+   "shot": "end",
+   "speaker": "N",
+   "i": 9,
+   "w": "pick.",
+   "s": 90.553,
+   "e": 90.733
+  }
+ ]
+}
