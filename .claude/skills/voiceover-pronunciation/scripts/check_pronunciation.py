@@ -31,7 +31,7 @@ HETERONYMS = {
               (r"\b(so|too|very|is|was|am|are|be|get|got|come|came) close\b", "klˈoʊs", "adjective: near")],
     "read": [(r"\b(I|we|you|they|to|will|can|must|should) read\b", "ɹˈiːd", "present tense"),
              (r"\b(had|have|has|was|were|been|already) read\b", "ɹˈɛd", "past participle")],
-    "lead": [(r"\b(to|will|I|we|you|they|can|must) lead\b", "lˈiːd", "verb: guide"),
+    "lead": [(r"\b(to|will|I|we|you|they|can|must|go|and|who|men) lead\b", "lˈiːd", "verb: guide"),
              (r"\b(of|like|heavy as) lead\b", "lˈɛd", "metal")],
     "tear": [(r"\b(a|one|single|the) tear\b", "tˈɪɹ", "noun: crying"),
              (r"\b(to|will|I|we|you|they|can) tear\b", "tˈɛɹ", "verb: rip")],
