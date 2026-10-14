@@ -59,23 +59,24 @@ def teaser():
     f2 = ImageFont.truetype("/usr/share/fonts/opentype/inter/Inter-SemiBold.otf", 30)
     for text, f, y in (("Full night + morning sessions on YouTube", f1, int(H * 0.165)),
                        ("Lead With Questions  ·  Stop Thinking Poor", f2, int(H * 0.165) + 64),
-                       ("Don't listen while driving. Not medical advice.", f2, int(H * 0.69))):
+                       ("Don't listen while driving. Not medical advice.", f2, int(H * 0.165) + 120)):
         w = d.textlength(text, font=f)
         d.rounded_rectangle(((W - w) / 2 - 22, y - 12, (W + w) / 2 + 22, y + f.size + 16), 18, fill=(17, 18, 20, 150))
         d.text(((W - w) / 2, y), text, font=f, fill=(250, 243, 227, 255))
     ov = WORK / "teaser-overlay.png"
     img.save(ov)
     segs = [(165.0, 190.0), (290.0, 324.0)]
-    fc = []
-    for i, (s, e) in enumerate(segs):
-        fc.append(f"[0:v]trim={s}:{e},setpts=PTS-STARTPTS[v{i}]")
-        fc.append(f"[1:a]atrim={s}:{e},asetpts=PTS-STARTPTS,afade=t=in:d=0.3,afade=t=out:st={e - s - 0.6}:d=0.6[a{i}]")
+    args, fc = [], []
+    for i, (st, en) in enumerate(segs):                 # input seeking: no frame buffering
+        args += ["-ss", str(st), "-t", str(en - st), "-i", str(v), "-ss", str(st), "-t", str(en - st), "-i", str(a)]
+        fc.append(f"[{2 * i}:v]setpts=PTS-STARTPTS[v{i}]")
+        fc.append(f"[{2 * i + 1}:a]asetpts=PTS-STARTPTS,afade=t=in:d=0.3,afade=t=out:st={en - st - 0.6}:d=0.6[a{i}]")
+    args += ["-i", str(ov)]
     fc.append("[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]")
-    fc.append("[v][2:v]overlay=0:0[vo]")
+    fc.append("[v][4:v]overlay=0:0[vo]")
     out = REN / "STP-LWQ-M-TEASER-9x16-1080-432-SPK.mp4"
-    ff("-i", str(v), "-i", str(a), "-i", str(ov), "-filter_complex", ";".join(fc), "-map", "[vo]", "-map", "[a]",
-       "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "320k",
-       "-movflags", "+faststart", str(out))
+    ff(*args, "-filter_complex", ";".join(fc), "-map", "[vo]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium",
+       "-crf", "18", "-threads", "2", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "320k", "-movflags", "+faststart", str(out))
     print("teaser", out.name)
 
 

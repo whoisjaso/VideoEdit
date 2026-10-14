@@ -159,7 +159,7 @@ class R:
         self.pph = rng.uniform(0, 6.28, (n, 2))
         self.pw = rng.uniform(0.03, 0.08, n)
         rng2 = np.random.default_rng(9)
-        self.grain = [rng2.standard_normal((self.H, self.W)).astype(np.float32) for _ in range(12)]
+        self.grain = [rng2.standard_normal((self.H, self.W)).astype(np.float32)]   # static dither: kills banding, keeps bitrate sane
         self.R0 = (CONFIG["circle_diam"] / 2) * (self.h if not self.vert else self.w * 0.62)
         self.fonts = {}
         self.text_cache = {}
@@ -374,8 +374,7 @@ class R:
             if t0 <= t < t0 + 4.2:
                 lay = self.text_layer("lab" + lab, [lab], fnt, MOON, track=0.06)
                 self.comp(img, lay, 0.10 * win(t, t0, t0 + 4.0, 0.6, 0.8))
-        g = self.grain[int(t * FPS) % len(self.grain)] * (CONFIG["grain_night"] * 255)
-        img += g[..., None] * (img.mean(axis=2, keepdims=True) > 0.5)
+        img += (self.grain[0] * (CONFIG["grain_night"] * 255))[..., None]
         return np.clip(img, 0, 255).astype(np.uint8)
 
     # ---------------- morning
@@ -514,8 +513,7 @@ class R:
             self.comp(img, lay, a)
             self.comp(img, lay2, a)
         img *= 1 - ramp(t, p["total"] - 2.0, p["total"] - 0.05)
-        gr = self.grain[int(t * FPS) % len(self.grain)] * (CONFIG["grain_morning"] * 255)
-        img += gr[..., None]
+        img += (self.grain[0] * (CONFIG["grain_morning"] * 255))[..., None]
         return np.clip(img, 0, 255).astype(np.uint8)
 
     def frame(self, t):
@@ -526,17 +524,22 @@ class R:
 
 def _chunk(args):
     plan, aspect, a, b, path = args
+    if os.path.exists(path):                       # resumable: finished chunks are kept
+        return path
+    final, path = path, path + ".part.mp4"
     r = R(plan, aspect)
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{r.W}x{r.H}",
-           "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-profile:v", "high", "-threads", "2", "-rc-lookahead", "20",
+           "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-profile:v", "high", "-threads", "2", "-rc-lookahead", "20", "-maxrate", "16M", "-bufsize", "32M",
            "-pix_fmt", "yuv420p", "-g", "60", "-keyint_min", "60", "-sc_threshold", "0",
            "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", path]
     pr = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for i in range(a, b):
         pr.stdin.write(r.frame(i / FPS).tobytes())
     pr.stdin.close()
-    pr.wait()
-    return path
+    if pr.wait() != 0:
+        raise RuntimeError(f"encoder failed for {final}")
+    os.replace(path, final)
+    return final
 
 
 def render(cut, aspect, out, workers=4, t0=0.0, t1=None):
