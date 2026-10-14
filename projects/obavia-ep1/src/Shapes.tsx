@@ -62,7 +62,7 @@ export const Shape: React.FC<{shape: string; color: string; d: number; u: number
         <g>
           <circle cx={0} cy={10} r={82} {...stroke} />
           <path d="M -18 -88 L 18 -88 M 0 -88 L 0 -72 M 62 -52 L 74 -64" {...stroke} />
-          <path d={`M 0 10 L 0 -60 A 70 70 0 0 1 ${70 * Math.sin(a)} ${10 - 70 * Math.cos(a)} Z`} fill={C.blue} opacity={0.85 * fillA} />
+          <path d={`M 0 10 L 0 -60 A 70 70 0 0 1 ${70 * Math.sin(a)} ${10 - 70 * Math.cos(a)} Z`} fill="#fff" opacity={0.55 * fillA} />
           <path d={`M 0 10 L ${66 * Math.sin(a)} ${10 - 66 * Math.cos(a)}`} {...stroke} strokeDashoffset={0} opacity={fillA} />
           <circle cx={0} cy={10} r={10} fill={ink} opacity={fillA} />
         </g>

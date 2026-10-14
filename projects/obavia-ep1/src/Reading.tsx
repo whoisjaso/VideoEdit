@@ -157,14 +157,9 @@ export const Captions: React.FC = () => {
   const L = laid(cur);
   const inP = prog(t, cur.s - 0.1, cur.s + 0.06, EASE.out);
   const exit = prog(t, cur.out - 0.15, cur.out, EASE.in);
-  const officer = cur.speaker === 'O';
   return (
     <div style={{position: 'absolute', inset: 0, pointerEvents: 'none', opacity: inP * (1 - exit),
       transform: `translateY(${(1 - inP) * 14 - exit * 10}px)`}}>
-      {officer && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: L.pos[0].y - 64, textAlign: 'center', fontFamily: FONT.mono, fontWeight: 700,
-          fontSize: 24, letterSpacing: 4, color: SIDE.him, textShadow: `0 0 14px ${SIDE.him}`}}>OFFICER</div>
-      )}
       {cur.words.map((w, i) => {
         const said = clamp((t - w.s + 0.02) / 0.12);
         return (
