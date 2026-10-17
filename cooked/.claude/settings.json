@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "extraKnownMarketplaces": {
+    "nextwork": {
+      "source": {
+        "source": "directory",
+        "path": "./"
+      },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "ai-editor@nextwork": true,
+    "creator-teardown@nextwork": true
+  }
+}

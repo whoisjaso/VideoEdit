@@ -87,6 +87,26 @@ synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard masco
 9. The follow card shows your photo, and the bell rings when Follow flips to Following.
 10. Grade (Moody by default), then a -14 LUFS mix with a limiter.
 
+## cooked. (bundled, 1:1)
+
+`cooked/` is a byte-for-byte copy of NextWork's open-source Claude Code video editor,
+[nextwork-projects/ai-video-editor-cooked](https://github.com/nextwork-projects/ai-video-editor-cooked)
+(MIT; see `cooked/LICENSE` and `cooked/NOTICE`). It is the plugin route: the editing agent is Claude
+Code itself, so it runs on a Claude subscription with no API key, from a terminal on a Mac, Windows or
+Linux machine, with a window in the browser. Kairos is the server route (API key, phone-friendly web app).
+
+Use it from this repo:
+
+```bash
+git clone https://github.com/whoisjaso/VideoEdit && cd VideoEdit
+claude                      # trust the folder; the plugins load from .claude/settings.json
+# then say: edit my video
+```
+
+Or install the plugins into any folder: `/plugin marketplace add whoisjaso/VideoEdit` then
+`/plugin install ai-editor@nextwork`. `cooked/README.md` has the full guide. To refresh the copy, re-run
+the clone and `rsync -a --delete --exclude=.git` it over `cooked/`.
+
 ## Layout
 
 | Path | What it is |
@@ -94,6 +114,7 @@ synthesized and haptics work on Android and iOS 18+. Kai, the clapperboard masco
 | `kairos/` | The engine: `timeline.py` (EditGraph), `autoedit.py` (the recipe), `render.py` + `ass.py` (ffmpeg/libass renderer), `grade.py`, `moments.py`, `learn.py`, `prompts.py`, `blender.py`, `export.py`, `server.py`, `mcp_server.py` |
 | `web/` | The app: plain HTML/CSS/JS, no build step. `web/icons/` is the icon set (`node tools/make_icons.mjs` regenerates it from the mark) |
 | `site/` | The landing page, standalone and GitHub Pages-ready. Served by the app at `/site/` |
+| `cooked/` | NextWork's cooked. editor, copied 1:1 (Claude Code plugins `ai-editor` and `creator-teardown`) |
 | `docs/TEARDOWN.md` | Premiere Pro, After Effects (via EffectCraft) and Blender mapped to agent primitives |
 | `tests/` | `python -m unittest discover -s tests` |
 | `.claude/skills/jason-video-editor/` | The editing SOP, the decoded playbook, the scored journal, the SFX packs, and the Remotion recipe for hand-built 8.3-level episodes |
