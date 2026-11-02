@@ -6,9 +6,9 @@ const [, , planFile, out, W = "6"] = process.argv;
 const plan = JSON.parse(fs.readFileSync(planFile, "utf8")).filter((p) => !fs.existsSync(path.join(out, p.o)));
 fs.mkdirSync(out, { recursive: true });
 (async () => {
-  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--font-render-hinting=none"] });
+  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1243/chrome-linux64/chrome", args: ["--font-render-hinting=none"] });
   const open = async () => {
-    const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width: +(process.env.VW || 1080), height: +(process.env.VH || 1920) }, deviceScaleFactor: 1 });
     await page.goto("file://" + path.resolve(__dirname, process.env.HTML || "ad2.html"));
     await page.evaluate(() => document.fonts.ready);
     await page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => 0))));
@@ -21,7 +21,7 @@ fs.mkdirSync(out, { recursive: true });
     while (true) {
       const i = next++; if (i >= plan.length) break;
       await page.evaluate((t) => seek(t), plan[i].t);
-      await page.screenshot({ path: path.join(out, plan[i].o), type: "png" });
+      await page.screenshot(plan[i].o.endsWith(".jpg") ? { path: path.join(out, plan[i].o), type: "jpeg", quality: 95 } : { path: path.join(out, plan[i].o), type: "png" });
       if (++done % 300 === 0) console.log(done, "/", plan.length);
     }
   }));

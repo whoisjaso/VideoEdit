@@ -1,0 +1,300 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Royalty Referral Engine</title>
+<style>
+@font-face { font-family: "Bebas"; src: url("bebas.ttf"); }
+@font-face { font-family: "InterV"; src: url("inter.ttf"); font-weight: 100 900; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #121A24; }
+#bg { position: absolute; left: 0; top: 0; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; perspective: 1900px; perspective-origin: 50% 45%; }
+.L { position: absolute; left: 0; top: 0; transform-style: preserve-3d; will-change: transform, opacity, filter; }
+.hero { font-family: Bebas; font-size: 150px; line-height: .9; letter-spacing: .005em; white-space: nowrap; }
+.hero span { display: inline-block; }
+.micro { font-family: InterV; font-weight: 600; font-size: 17px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.phone { width: 420px; height: 860px; border-radius: 62px; background: #0B0F14; box-shadow: 0 60px 120px rgba(0,0,0,.45), inset 0 0 0 2px #2A323C; }
+.screen { position: absolute; left: 14px; top: 14px; width: 392px; height: 832px; border-radius: 50px; overflow: hidden; background: #F4EFE7; font-family: InterV; color: #151C25; }
+.notch { position: absolute; left: 50%; top: 12px; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #0B0F14; }
+.card { background: #FBF8F3; border-radius: 26px; box-shadow: 0 40px 90px rgba(10,14,20,.28); font-family: InterV; color: #151C25; }
+.btn { border-radius: 16px; font-family: Bebas; font-size: 34px; letter-spacing: .04em; text-align: center; line-height: 64px; height: 64px; }
+.chip { font-family: InterV; font-weight: 700; font-size: 34px; padding: 18px 30px; border-radius: 999px; white-space: nowrap; display: flex; align-items: center; gap: 14px; }
+.stage-title { font-family: InterV; font-weight: 800; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; }
+</style></head><body>
+<canvas id="bg" width="1920" height="1080"></canvas>
+<div id="stage"></div>
+<script>
+const WORDS = __WORDS__;
+const LEN = __LEN__;
+// ---------- easing + helpers
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const E = { oQ: (x) => 1 - Math.pow(1 - x, 5), ioS: (x) => -(Math.cos(Math.PI * x) - 1) / 2, iC: (x) => x * x * x, ioC: (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  back: (x) => { const c1 = 1.70158 * 0.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); } };
+const P = (t, t0, d, e = E.oQ) => e(clamp((t - t0) / d));
+const lerp = (a, b, p) => a + (b - a) * p;
+const norm = (s) => s.toLowerCase().replace(/[^a-z0-9$]/g, "");
+function at(word, n = 1, after = 0) { const w = norm(word); let k = 0; for (const x of WORDS) { if (x.s + 1e-6 >= after && norm(x.w) === w) { if (++k === n) return x.s; } } console.warn("word?", word); return after; }
+const NAVY = "#121A24", CREAM = "#EEE8DF", COP = "#8A5A3B", COPL = "#C98A5C", SLATE = "#7F98AE", INK = "#151C25", BONE = "#F3EEE6";
+const stage = document.getElementById("stage");
+function el(html, cls = "L") { const d = document.createElement("div"); d.className = cls; d.innerHTML = html; d.style.display = "none"; stage.appendChild(d); return d; }
+function show(d, on) { d.style.display = on ? "block" : "none"; }
+function tf(d, { x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0, s = 1, o = 1, blur = 0 } = {}) {
+  d.style.transform = `translate3d(${x}px,${y}px,${z}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${s})`;
+  d.style.opacity = o; d.style.filter = blur > 0.05 ? `blur(${blur}px)` : "none"; }
+// word-synced hero line: each word lands on its spoken frame (blur-settle, easeOutQuint), held drift, eased exit
+function heroLine(parts, { x, y, size = 150, color, accent, tOut, align = "left", z = 0 }) {
+  const d = el(parts.map((p) => `<span>${p.txt}</span>`).join(" "), "L hero"); d.style.fontSize = size + "px";
+  const spans = [...d.querySelectorAll("span")];
+  return (t) => {
+    const t0 = parts[0].t; const on = t >= t0 - 0.001 && t < tOut + 0.4; show(d, on); if (!on) return;
+    const out = P(t, tOut, 0.35, E.iC); const drift = 1 + 0.035 * E.ioS(clamp((t - t0) / Math.max(1, tOut - t0)));
+    const w = d.offsetWidth; const ox = align === "center" ? x - w / 2 : align === "right" ? x - w : x;
+    tf(d, { x: ox, y: y - 30 * out, z, s: drift, o: 1 - out, blur: 10 * out });
+    spans.forEach((sp, i) => { const p = parts[i]; const q = P(t, p.t, 0.45); sp.style.color = p.acc ? accent : color;
+      sp.style.opacity = t < p.t ? 0 : q; sp.style.transform = `translateY(${(1 - q) * 46}px) scale(${0.9 + 0.1 * q})`; sp.style.filter = q < 0.999 ? `blur(${(1 - q) * 14}px)` : "none"; });
+  };
+}
+const W_ = (w, n = 1, after = 0, acc = false, txt = null) => ({ t: at(w, n, after), acc, txt: txt || w.toUpperCase() });
+// ---------- background: navy / cream acts, joined by the copper swoosh (the signature transition)
+const ACTS = [[0, NAVY], [8.75, CREAM], [17.85, NAVY], [44.3, CREAM], [51.75, NAVY], [58.7, CREAM], [72.05, NAVY], [78.85, CREAM], [89.75, NAVY]];
+const SW = 0.62;
+const bg = document.getElementById("bg").getContext("2d");
+function paintBg(col, t) {
+  if (col === NAVY) { const g = bg.createRadialGradient(760, 300, 60, 960, 540, 1400); g.addColorStop(0, "#1D2938"); g.addColorStop(0.55, "#121A24"); g.addColorStop(1, "#0A0F15"); return g; }
+  const g = bg.createLinearGradient(0, 0, 1920, 1080); g.addColorStop(0, "#F1ECE4"); g.addColorStop(0.6, "#E9E3DA"); g.addColorStop(1, "#D9DEE3"); return g;
+}
+function drawBg(t) {
+  let i = 0; while (i + 1 < ACTS.length && t >= ACTS[i + 1][0]) i++;
+  const cur = ACTS[i][1], prev = i ? ACTS[i - 1][1] : cur, p = i ? clamp((t - ACTS[i][0]) / SW) : 1;
+  bg.fillStyle = paintBg(prev, t); bg.fillRect(0, 0, 1920, 1080);
+  const front = (yy, pp) => -500 + E.ioC(pp) * 3000 + Math.sin(yy / 1080 * Math.PI) * 260 - yy * 0.35;
+  bg.save(); bg.beginPath(); bg.moveTo(-600, 0); for (let yy = 0; yy <= 1080; yy += 40) bg.lineTo(front(yy, p), yy); bg.lineTo(-600, 1080); bg.closePath(); bg.clip();
+  bg.fillStyle = paintBg(cur, t); bg.fillRect(0, 0, 1920, 1080); bg.restore();
+  if (p < 1 && i) { for (const [off, wdt, col] of [[0, 120, COP], [-150, 18, SLATE]]) { bg.beginPath(); for (let yy = 0; yy <= 1080; yy += 40) { const x0 = front(yy, p) + off; yy ? bg.lineTo(x0, yy) : bg.moveTo(x0, yy); }
+      for (let yy = 1080; yy >= 0; yy -= 40) bg.lineTo(front(yy, p) + off + wdt, yy); bg.closePath(); bg.fillStyle = col; bg.fill(); } }
+  // soft vignette + grain-free noise of light
+  const v = bg.createRadialGradient(960, 540, 500, 960, 540, 1200); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, cur === NAVY ? "rgba(0,0,0,.35)" : "rgba(60,50,40,.10)"); bg.fillStyle = v; bg.fillRect(0, 0, 1920, 1080);
+}
+const actOf = (t) => { let i = 0; while (i + 1 < ACTS.length && t >= ACTS[i + 1][0]) i++; return ACTS[i][1]; };
+// ---------- micro labels (the proposal's honesty lines, kept on screen)
+function micro(txt, x, y, t0, t1, dark = true) { const d = el(txt, "L micro"); return (t) => { const on = t >= t0 && t < t1 + 0.3; show(d, on); if (!on) return;
+  const q = P(t, t0, 0.5) * (1 - P(t, t1, 0.3, E.iC)); d.style.color = dark ? "rgba(243,238,230,.55)" : "rgba(21,28,37,.5)"; tf(d, { x, y: y + (1 - q) * 10, o: q }); }; }
+const SCENES = [];
+// ================= S1: your best jobs (navy) =================
+{
+  const roof = el(`<div class="card" style="width:860px;height:647px;padding:18px;box-sizing:border-box"><img src="roof.jpg" style="width:824px;height:611px;object-fit:cover;border-radius:14px;display:block">
+    <div class="micro" style="position:absolute;left:44px;bottom:42px;color:#fff;background:rgba(18,26,36,.78);padding:12px 18px;border-radius:10px">Royalty Roofing · Completed roof</div></div>`);
+  const t0 = at("heath"), tE = 8.6;
+  SCENES.push((t) => { const on = t < tE + 0.5; show(roof, on); if (!on) return;
+    const q = P(t, t0 - 0.3, 1.1), out = P(t, tE, 0.45, E.iC), dr = E.ioS(clamp(t / 9));
+    tf(roof, { x: 1060 + (1 - q) * 160, y: 200 - 30 * dr, z: -300 + 300 * q - 600 * out, ry: -14 + 6 * dr, rx: 3, o: q * (1 - out) }); });
+  SCENES.push(heroLine([W_("your", 1, 0), W_("best"), W_("jobs")], { x: 120, y: 300, size: 140, color: BONE, accent: COPL, tOut: at("they") - 0.2 }));
+  SCENES.push(heroLine([W_("don't", 1, 0, false, "DON'T"), W_("start"), W_("with"), W_("an"), W_("ad.", 1, 0, true, "AN AD.")].filter((p, i) => i !== 3), { x: 120, y: 430, size: 96, color: BONE, accent: COPL, tOut: at("they") - 0.2 }));
+  const bub = el(`<div style="font-family:InterV;font-size:40px;font-weight:500;background:#E9E9EB;color:#111;padding:26px 36px;border-radius:44px;max-width:640px;line-height:1.25">Call Royalty. They did our roof. 🏠</div>
+    <div class="micro" style="margin:14px 0 0 26px;color:rgba(243,238,230,.6)">Text from a neighbor</div>`);
+  const tb = at("call");
+  SCENES.push(heroLine([W_("they", 1, 4), W_("start", 1, 4), W_("with", 1, 4), W_("somebody", 1, 0, true)], { x: 120, y: 360, size: 96, color: BONE, accent: COPL, tOut: tE - 0.1 }));
+  SCENES.push((t) => { const on = t >= tb - 0.02 && t < tE + 0.4; show(bub, on); if (!on) return; const q = P(t, tb, 0.42, E.back), out = P(t, tE - 0.1, 0.35, E.iC);
+    tf(bub, { x: 130, y: 500 + (1 - q) * 30, s: 0.85 + 0.15 * q, o: clamp(q * 1.4) * (1 - out) }); });
+}
+// ================= S2: real business, the channels (cream) =================
+{
+  const t0 = at("that's"), tE = at("so") - 0.1;
+  SCENES.push(heroLine([W_("real", 1, 8, true, "REAL"), W_("business.", 1, 8, false, "BUSINESS.")], { x: 960, y: 200, size: 170, color: INK, accent: COP, align: "center", tOut: tE }));
+  const ch = [["calls", "📞  Calls", 420, 600, -6], ["texts", "💬  Texts", 820, 700, 4], ["facebook", `<img src="fb.svg" style="width:38px;height:38px">  Facebook`, 1180, 580, -3], ["people", "🤝  People you know", 1000, 820, 5]];
+  ch.forEach(([w, txt, x, y, r], k) => { const d = el(`<div class="chip" style="background:#FBF8F3;color:${INK};box-shadow:0 22px 50px rgba(20,25,35,.16)">${txt}</div>`); const tw = at(w, 1, 9);
+    SCENES.push((t) => { const tc = at("exactly"), on = t >= tw - 0.02 && t < tc + 0.9; show(d, on); if (!on) return;
+      const q = P(t, tw, 0.5, E.back), g = P(t, tc - 0.25, 0.7, E.ioC), dr = Math.sin(t * 1.3 + k) * 6;
+      tf(d, { x: lerp(x - 120, 860, g), y: lerp(y + dr, 640, g), z: lerp(80 * k - 120, 0, g), rz: lerp(r, 0, g), s: (0.6 + 0.4 * q) * (1 - 0.6 * g), o: clamp(q * 1.5) * (1 - P(t, tc + 0.35, 0.3, E.iC)) }); }); });
+  SCENES.push(heroLine([W_("built", 1, 14, false), W_("around", 1, 14), W_("exactly", 1, 14, true, "HOW YOU WORK.")], { x: 960, y: 230, size: 150, color: INK, accent: COP, align: "center", tOut: 17.75 }));
+  SCENES.push(micro("Calls · texts · Facebook · personal relationships", 760, 980, t0 + 1, tE, false));
+}
+// ================= S3: THE REFERRAL ENGINE (navy, the one bass drop) =================
+{
+  const tr = at("referral", 1, 17), tE = at("every", 1, 19) - 0.05;
+  const t1 = el(`THE <span style="color:${COPL}">REFERRAL</span><br>ENGINE.`, "L hero"); t1.style.fontSize = "250px"; t1.style.color = BONE; t1.style.textAlign = "center";
+  const logo = el(`<img src="aws.png" style="width:260px">`);
+  SCENES.push((t) => { const on = t >= tr - 0.25 && t < tE + 0.4; show(t1, on); show(logo, on); if (!on) return;
+    const q = P(t, tr - 0.06, 0.5), out = P(t, tE - 0.1, 0.4, E.iC), dr = 1 + 0.035 * E.ioS(clamp((t - tr) / 2.6));
+    tf(t1, { x: 960 - t1.offsetWidth / 2, y: 300 + (1 - q) * 60, z: -200 * out, s: (1.25 - 0.25 * q) * dr, o: q * (1 - out), blur: (1 - q) * 18 + 8 * out });
+    tf(logo, { x: 830, y: 150, o: P(t, tr + 0.5, 0.6) * (1 - out) * 0.9 }); });
+  SCENES.push(micro("Built around how Royalty works", 790, 820, tr + 0.8, tE));
+}
+// ================= S4 + S5: the two phones (navy) =================
+const phoneA = el(`<div class="phone"><div class="screen">
+  <div style="height:120px;background:${NAVY};color:${BONE};display:flex;align-items:flex-end;padding:0 30px 22px;box-sizing:border-box;font-family:Bebas;font-size:34px;letter-spacing:.04em">ROYALTY ROOFING</div>
+  <div style="padding:34px 30px"><div style="font-family:Bebas;font-size:62px;line-height:.95">REFER A FRIEND</div>
+  <div style="font-size:21px;color:#5A6370;margin:12px 0 26px">Your link to share any time.</div>
+  <div id="lnk" style="font-size:22px;font-weight:600;background:#E8E1D6;border-radius:14px;padding:18px 20px;color:#3A4350">royalty.link/r/sarah-m</div>
+  <div id="shareBtn" class="btn" style="margin-top:22px;background:${SLATE};color:#fff">SHARE LINK</div>
+  <div class="btn" style="margin-top:16px;border:3px solid ${COP};color:${COP};line-height:58px">REQUEST INSPECTION</div>
+  <div id="toast" style="margin-top:40px;text-align:center;font-weight:700;font-size:22px;color:#2E7D4F;opacity:0">✓ Link copied · it's yours for good</div>
+  <div style="position:absolute;bottom:30px;left:30px;right:30px" class="micro"><span style="color:#8A929C">Example preview</span></div></div></div><div class="notch"></div></div>`);
+const phoneB = el(`<div class="phone"><div class="screen">
+  <div style="height:120px;background:${COP};color:#fff;display:flex;align-items:flex-end;padding:0 30px 22px;box-sizing:border-box;font-family:Bebas;font-size:34px;letter-spacing:.04em">ROYALTY ROOFING</div>
+  <div style="padding:34px 30px"><div style="font-family:Bebas;font-size:56px;line-height:.95">REQUEST AN<br>INSPECTION</div>
+  <div style="font-size:19px;color:#5A6370;margin:12px 0 22px">Referred by <b style="color:${COP}">Sarah M.</b></div>
+  ${["Name", "Address", "Phone"].map((f, i) => `<div style="font-size:15px;font-weight:700;letter-spacing:.1em;color:#8A929C;margin-top:14px">${f.toUpperCase()}</div><div class="fld" style="font-size:24px;font-weight:600;border-bottom:2px solid #D5CCBF;padding:10px 0;min-height:30px"></div>`).join("")}
+  <div id="sendBtn" class="btn" style="margin-top:30px;background:${COP};color:#fff">REQUEST INSPECTION</div>
+  <div id="sent" style="margin-top:26px;text-align:center;font-weight:700;font-size:22px;color:#2E7D4F;opacity:0">✓ Request sent to Royalty</div>
+  <div style="position:absolute;bottom:30px;left:30px" class="micro"><span style="color:#8A929C">Example preview</span></div></div></div><div class="notch"></div></div>`);
+const cursor = el(`<svg width="54" height="54" viewBox="0 0 24 24"><path d="M4 2 L4 19 L8.5 15 L11.5 22 L14 21 L11 14 L17 14 Z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>`);
+{
+  const tA = at("every", 1, 19), tShare = at("share", 1, 20), tB = at("friend", 1, 25), tInsp = at("inspection", 1, 26), tEnd = at("and", 1, 31) - 0.1;
+  const fields = [...phoneB.querySelectorAll(".fld")], vals = ["Mike R.", "Example St., Your Town", "(555) 010-0199"];
+  SCENES.push((t) => { const on = t >= tA - 0.4 && t < tEnd + 0.5; show(phoneA, on); if (!on) return;
+    const q = P(t, tA - 0.35, 0.9), toB = P(t, tB - 0.2, 0.9, E.ioC), out = P(t, tEnd, 0.5, E.iC), dr = E.ioS(clamp((t - tA) / 6));
+    tf(phoneA, { x: lerp(1180, 520, toB) + (1 - q) * 200, y: lerp(110, 175, toB) - 14 * dr, z: lerp(0, -260, toB) - 500 * out, ry: lerp(-22 + 8 * dr, 18, toB), rx: 4, o: q * (1 - out) });
+    const press = P(t, tShare, 0.12) * (1 - P(t, tShare + 0.14, 0.2)); phoneA.querySelector("#shareBtn").style.transform = `scale(${1 - 0.06 * press})`;
+    phoneA.querySelector("#toast").style.opacity = P(t, tShare + 0.15, 0.4); phoneA.querySelector("#lnk").style.boxShadow = t > tShare ? `0 0 0 ${3 * P(t, tShare, .3)}px ${COPL}` : "none"; });
+  SCENES.push(heroLine([W_("their", 1, 20), W_("own", 1, 20, true), W_("link.", 1, 20)], { x: 140, y: 330, size: 140, color: BONE, accent: COPL, tOut: tB - 0.3 }));
+  SCENES.push(heroLine([W_("good,", 1, 22, true, "FOR GOOD.")], { x: 140, y: 470, size: 140, color: BONE, accent: COPL, tOut: tB - 0.3 }));
+  SCENES.push((t) => { const on = t >= tB - 0.4 && t < tEnd + 0.5; show(phoneB, on); if (!on) return;
+    const q = P(t, tB - 0.3, 0.9), out = P(t, tEnd, 0.5, E.iC), dr = E.ioS(clamp((t - tB) / 5));
+    tf(phoneB, { x: 1080 + (1 - q) * 260, y: 175 - 12 * dr, z: -500 * out, ry: -20 + 6 * dr, rx: 4, o: q * (1 - out) });
+    fields.forEach((f, i) => { const s0 = tB + 0.5 + i * 0.75, n = Math.floor(clamp((t - s0) / 0.55) * vals[i].length); f.textContent = vals[i].slice(0, n); });
+    const press = P(t, tInsp, 0.12) * (1 - P(t, tInsp + 0.14, 0.2)); phoneB.querySelector("#sendBtn").style.transform = `scale(${1 - 0.06 * press})`; phoneB.querySelector("#sent").style.opacity = P(t, tInsp + 0.2, 0.4); });
+  // cursor: taps SHARE on phone A, then SEND on phone B
+  SCENES.push((t) => { const on = (t >= tShare - 1.1 && t < tShare + 0.6) || (t >= tInsp - 1.2 && t < tInsp + 0.6); show(cursor, on); if (!on) return;
+    let x, y, s; if (t < tShare + 0.6) { const m = P(t, tShare - 1.1, 1.0, E.ioC); x = lerp(1700, 1360, m); y = lerp(900, 520, m); s = 1 - 0.18 * P(t, tShare - 0.05, 0.08) * (1 - P(t, tShare + 0.08, 0.15)); }
+    else { const m = P(t, tInsp - 1.2, 1.1, E.ioC); x = lerp(1720, 1300, m); y = lerp(950, 690, m); s = 1 - 0.18 * P(t, tInsp - 0.05, 0.08) * (1 - P(t, tInsp + 0.08, 0.15)); }
+    tf(cursor, { x, y, z: 120, s, o: 1 }); });
+  SCENES.push(heroLine([W_("friend", 1, 25, true, "A FRIEND"), W_("requests", 1, 25), W_("inspection", 1, 26, false, "AN INSPECTION.")], { x: 960, y: 34, size: 92, color: BONE, accent: COPL, align: "center", tOut: tEnd - 0.1 }));
+}
+// ================= S6 + S7: the dashboard, the pipeline, the reward (navy) =================
+const dash = el(`<div class="card" style="width:1180px;height:640px;overflow:hidden">
+  <div style="height:78px;background:#1B2430;color:${BONE};display:flex;align-items:center;padding:0 34px;gap:16px"><span style="font-family:Bebas;font-size:34px;letter-spacing:.05em">ROYALTY REFERRALS</span><span class="micro" style="color:rgba(243,238,230,.5);margin-left:auto">Example preview · Roofr connection requires account testing</span></div>
+  <div style="padding:30px 34px">
+    <div id="req" style="display:flex;align-items:center;gap:22px;background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 10px 30px rgba(0,0,0,.08)">
+      <div style="width:58px;height:58px;border-radius:50%;background:${SLATE};color:#fff;font-family:Bebas;font-size:30px;display:flex;align-items:center;justify-content:center">MR</div>
+      <div><div style="font-weight:800;font-size:26px">New request · Mike R.</div><div style="font-size:20px;color:#5A6370;margin-top:4px">Inspection requested through the Royalty form</div></div>
+      <div id="refby" style="margin-left:auto;font-weight:800;font-size:22px;color:#fff;background:${COP};border-radius:999px;padding:12px 22px">Referred by Sarah M.</div></div>
+    <div class="stage-title" style="margin:34px 0 16px;color:#8A929C">Job in Roofr</div>
+    <div style="display:flex;gap:12px">${["Inspection", "Estimate", "Approved", "Completed", "Fully paid"].map((s, i) => `<div class="stg" style="flex:1;height:74px;border-radius:14px;background:#ECE6DC;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px;color:#8A929C">${s}</div>`).join("")}</div>
+    <div id="rew" style="margin-top:34px;display:flex;align-items:center;gap:26px;background:#22301F;border-radius:20px;padding:24px 30px;color:#fff;opacity:0">
+      <div style="font-family:Bebas;font-size:78px;line-height:1;color:#F2C46B">$250</div><div><div style="font-family:Bebas;font-size:38px;letter-spacing:.03em">CUSTOMER REWARD · SARAH M.</div><div style="font-size:19px;color:rgba(255,255,255,.7)">Reviewed after the job is completed and fully paid</div></div></div>
+  </div></div>`);
+{
+  const t0 = at("and", 1, 31), tSent = at("sent", 1, 32), tTr = at("tracked", 1, 33), tC = at("completed", 1, 37), tPaid = at("paid", 1, 38), tRew = at("reward", 1, 40), tE = 44.15;
+  const stg = [...dash.querySelectorAll(".stg")]; const stT = [tTr, tTr + 0.5, tTr + 1.0, tC, tPaid];
+  SCENES.push((t) => { const on = t >= t0 - 0.4 && t < tE + 0.5; show(dash, on); if (!on) return;
+    const q = P(t, t0 - 0.35, 0.9), out = P(t, tE, 0.5, E.iC), dr = E.ioS(clamp((t - t0) / 12)), push = P(t, tRew - 0.6, 1.2, E.ioC);
+    tf(dash, { x: 370, y: 250 - 20 * dr - 40 * push, z: -200 + 200 * q + 80 * push - 600 * out, rx: 10 - 6 * dr, ry: -6 + 4 * dr, o: q * (1 - out) });
+    const rq = P(t, t0 + 0.1, 0.6, E.back); dash.querySelector("#req").style.transform = `translateY(${(1 - rq) * 40}px) scale(${0.94 + 0.06 * rq})`; dash.querySelector("#req").style.opacity = clamp(rq * 1.3);
+    const rb = P(t, tSent, 0.45, E.back); dash.querySelector("#refby").style.transform = `scale(${0.6 + 0.4 * rb})`; dash.querySelector("#refby").style.opacity = clamp(rb * 1.4);
+    stg.forEach((s, i) => { const k = P(t, stT[i], 0.35, E.back); const done = t >= stT[i]; s.style.background = done ? (i === 4 ? "#2E7D4F" : SLATE) : "#ECE6DC"; s.style.color = done ? "#fff" : "#8A929C"; s.style.transform = `scale(${done ? 0.94 + 0.06 * k : 1})`; });
+    const rw = P(t, tRew - 0.25, 0.55, E.back); const r = dash.querySelector("#rew"); r.style.opacity = clamp(rw * 1.3); r.style.transform = `translateY(${(1 - rw) * 30}px) scale(${0.9 + 0.1 * rw})`; r.style.boxShadow = `0 0 ${60 * rw}px rgba(242,196,107,${0.35 * rw})`; });
+  SCENES.push(heroLine([W_("who", 1, 31, false, "SEE WHO"), W_("sent", 1, 31, true, "SENT 'EM.")], { x: 960, y: 70, size: 130, color: BONE, accent: COPL, align: "center", tOut: at("once", 1, 36) - 0.15 }));
+  SCENES.push(heroLine([W_("completed", 1, 37, false, "COMPLETED"), W_("fully", 1, 38, false, "+ FULLY"), W_("paid,", 1, 38, true, "PAID.")], { x: 960, y: 70, size: 130, color: BONE, accent: COPL, align: "center", tOut: tE - 0.1 }));
+}
+// ================= S8: lean crew (cream) =================
+{
+  const t0 = at("no", 1, 44), tPw = at("paperwork", 1, 44), tR = at("right", 1, 46), tTr = at("trust", 1, 48), tE = 51.6;
+  SCENES.push(heroLine([W_("no", 1, 44, false, "NO EXTRA"), W_("paperwork", 1, 44, true, "PAPERWORK.")], { x: 140, y: 250, size: 150, color: INK, accent: COP, tOut: tR - 0.25 }));
+  const papers = el([0, 1, 2].map((i) => `<div style="position:absolute;left:${i * 34}px;top:${i * -22}px;width:300px;height:390px;background:#fff;border-radius:12px;box-shadow:0 16px 40px rgba(20,25,35,.14);padding:34px;box-sizing:border-box">${[0, 1, 2, 3, 4, 5].map(() => `<div style="height:14px;background:#E3DCD1;border-radius:7px;margin:14px 0"></div>`).join("")}</div>`).join("") + `<div id="strike" style="position:absolute;left:-40px;top:160px;height:18px;width:0;background:${COP};border-radius:9px;transform:rotate(-24deg);transform-origin:left center"></div>`);
+  SCENES.push((t) => { const on = t >= t0 - 0.3 && t < tR + 0.2; show(papers, on); if (!on) return; const q = P(t, t0 - 0.2, 0.7), out = P(t, tR - 0.25, 0.4, E.iC);
+    tf(papers, { x: 1250, y: 330, ry: -14, rz: 4, z: -300 * out, o: q * (1 - out) }); papers.querySelector("#strike").style.width = 470 * P(t, tPw + 0.1, 0.4) + "px"; });
+  SCENES.push(heroLine([W_("more", 1, 45, false, "MORE OF THE"), W_("right", 1, 46, true, "RIGHT JOBS.")], { x: 120, y: 230, size: 112, color: INK, accent: COP, tOut: tE }));
+  const rf = el(`<div class="card" style="width:640px;height:481px;padding:14px;box-sizing:border-box"><img src="roof.jpg" style="width:612px;height:453px;object-fit:cover;border-radius:12px;display:block"></div>`);
+  const jobs = el(["Referred by Sarah M.", "Referred by James T.", "Referred by Ana P."].map((s, i) => `<div style="position:absolute;top:${i * 92}px;width:420px;background:#fff;border-radius:16px;padding:20px 24px;box-sizing:border-box;box-shadow:0 14px 34px rgba(20,25,35,.14);font-family:InterV;font-weight:800;font-size:22px;color:${INK}"><span style="color:${COP}">●</span> ${s}<div style="font-weight:500;font-size:16px;color:#8A929C;margin-top:4px">Example · roofing request</div></div>`).join(""));
+  SCENES.push((t) => { const on = t >= tR - 0.2 && t < tE + 0.5; show(rf, on); show(jobs, on); if (!on) return; const q = P(t, tR - 0.1, 0.9), out = P(t, tE, 0.45, E.iC), dr = E.ioS(clamp((t - tR) / 6));
+    tf(rf, { x: 1240, y: 210 - 14 * dr, z: -500 * out, ry: -16 + 6 * dr, rx: 3, o: q * (1 - out) });
+    tf(jobs, { x: 140, y: 560, z: 60, o: P(t, tR + 0.4, 0.6) * (1 - out) });
+    [...jobs.children].forEach((c, i) => { const k = P(t, tR + 0.45 + i * 0.32, 0.5, E.back); c.style.transform = `translateX(${(1 - k) * -60}px) scale(${0.9 + 0.1 * k})`; c.style.opacity = clamp(k * 1.3); }); });
+  SCENES.push(heroLine([W_("trust", 1, 48, true, "WHO ALREADY TRUST YOU.")], { x: 120, y: 350, size: 74, color: INK, accent: COP, tOut: tE }));
+}
+// ================= S9: the pilot (navy) =================
+{
+  const t0 = at("start", 1, 51), t14 = at("14", 1, 52), tFree = at("free", 1, 51), tReal = at("real", 1, 54), tNo = at("no", 1, 56), tE = 58.55;
+  SCENES.push(heroLine([W_("free", 1, 51, true, "FREE"), W_("pilot,", 1, 51, false, "PILOT.")], { x: 140, y: 170, size: 120, color: BONE, accent: COPL, tOut: tE }));
+  const big = el(`14 <span style="color:${COPL}">DAYS</span>`, "L hero"); big.style.fontSize = "330px"; big.style.color = BONE;
+  const cal = el(Array.from({ length: 14 }, (_, i) => `<div class="cell" style="position:absolute;left:${(i % 7) * 96}px;top:${Math.floor(i / 7) * 96}px;width:84px;height:84px;border-radius:16px;background:rgba(243,238,230,.08);color:${BONE};font-family:Bebas;font-size:40px;display:flex;align-items:center;justify-content:center">${i + 1}</div>`).join(""));
+  const chips = el(`<div class="chip" style="background:rgba(243,238,230,.1);color:${BONE};position:absolute;top:0">✓  A real working version</div><div class="chip" style="background:rgba(243,238,230,.1);color:${BONE};position:absolute;top:96px">✓  No obligation after</div>`);
+  SCENES.push((t) => { const on = t >= t14 - 0.1 && t < tE + 0.5; show(big, on); show(cal, on); show(chips, on); if (!on) return;
+    const q = P(t, t14 - 0.05, 0.5), out = P(t, tE, 0.45, E.iC), dr = 1 + 0.035 * E.ioS(clamp((t - t14) / 6));
+    tf(big, { x: 140, y: 300 + (1 - q) * 50, s: dr, o: q * (1 - out), blur: (1 - q) * 14 });
+    tf(cal, { x: 1150, y: 260, rx: 18, ry: -16, z: -400 * out, o: P(t, t14 + 0.2, 0.5) * (1 - out) });
+    [...cal.children].forEach((c, i) => { const k = P(t, t14 + 0.35 + i * 0.12, 0.3, E.back); c.style.background = k > 0.01 ? `rgba(201,138,92,${0.25 + 0.6 * k})` : "rgba(243,238,230,.08)"; c.style.transform = `scale(${0.9 + 0.1 * k})`; });
+    const c1 = P(t, tReal, 0.5, E.back), c2 = P(t, tNo, 0.5, E.back); tf(chips, { x: 1150, y: 520, o: 1 - out });
+    chips.children[0].style.opacity = clamp(c1 * 1.3); chips.children[0].style.transform = `scale(${0.85 + 0.15 * c1})`; chips.children[1].style.opacity = clamp(c2 * 1.3); chips.children[1].style.transform = `scale(${0.85 + 0.15 * c2})`; });
+  SCENES.push(micro("The 14 days start when it's usable · Jobs are not guaranteed", 140, 960, t14 + 1, tE));
+}
+// ================= S10: investment (cream) =================
+{
+  const tK = at("$1,000", 1, 58), tSet = at("set", 1, 61), tTrn = at("training,", 1, 62), tFx = at("fixes.", 1, 63), t150 = at("150,", 1, 65), tNew = at("new", 1, 66), tC = at("completed", 1, 66), tP = at("paid.", 1, 67), tE = 71.95;
+  const c1 = el(`<div class="card" style="width:640px;padding:44px 48px;box-sizing:border-box">
+    <div class="stage-title" style="color:#8A929C">If you keep it</div><div style="font-family:Bebas;font-size:150px;line-height:1;margin:6px 0">$1,000</div>
+    <div style="font-family:Bebas;font-size:40px;color:${COP};letter-spacing:.02em">ONE-TIME IMPLEMENTATION</div>
+    ${["Setup", "Training", "30 days of fixes"].map((s) => `<div class="bl" style="font-size:28px;font-weight:700;margin-top:18px;opacity:0"><span style="color:${COP}">✓</span> ${s}</div>`).join("")}</div>`);
+  const c2 = el(`<div class="card" style="width:640px;padding:44px 48px;box-sizing:border-box;border-top:10px solid ${SLATE}">
+    <div class="stage-title" style="color:#8A929C">Then, only when it works</div><div style="font-family:Bebas;font-size:150px;line-height:1;margin:6px 0">$150</div>
+    <div style="font-family:Bebas;font-size:40px;color:${SLATE};letter-spacing:.02em">PER QUALIFYING JOB</div>
+    ${["New referred residential job", "Completed", "Fully paid"].map((s) => `<div class="bl" style="font-size:28px;font-weight:700;margin-top:18px;opacity:0"><span style="color:#2E7D4F">✓</span> ${s}</div>`).join("")}</div>`);
+  const b1 = [...c1.querySelectorAll(".bl")], b2 = [...c2.querySelectorAll(".bl")], t1s = [tSet, tTrn, tFx], t2s = [tNew, tC, tP];
+  SCENES.push((t) => { const on = t >= tK - 0.5 && t < tE + 0.5; show(c1, on); show(c2, on && t >= t150 - 0.5); if (!on) return;
+    const q = P(t, tK - 0.35, 0.8), sh = P(t, t150 - 0.5, 0.9, E.ioC), out = P(t, tE, 0.45, E.iC), dr = E.ioS(clamp((t - tK) / 13));
+    tf(c1, { x: lerp(640, 240, sh), y: 180 - 10 * dr, z: lerp(0, -120, sh) - 500 * out, ry: lerp(-8, 10, sh), rx: 4, o: q * (1 - out) });
+    const q2 = P(t, t150 - 0.4, 0.8); tf(c2, { x: 1040 + (1 - q2) * 200, y: 180 - 10 * dr, z: -500 * out, ry: -10, rx: 4, o: q2 * (1 - out) });
+    b1.forEach((b, i) => { const k = P(t, t1s[i], 0.4, E.back); b.style.opacity = clamp(k * 1.4); b.style.transform = `translateX(${(1 - k) * 24}px)`; });
+    b2.forEach((b, i) => { const k = P(t, t2s[i], 0.4, E.back); b.style.opacity = clamp(k * 1.4); b.style.transform = `translateX(${(1 - k) * 24}px)`; }); });
+  SCENES.push(micro("Proposed founding-client terms · Final scope and price agreed · Royalty's $250 reward is separate · 6-month proposed term", 240, 990, tK + 1, tE, false));
+}
+// ================= S11: room to grow (navy) =================
+{
+  const tG = at("grow.", 1, 72), tAds = at("ads", 1, 74), tSt = at("storm", 1, 75), tNb = at("neighborhood", 1, 76), tE = 78.75;
+  SCENES.push(heroLine([W_("room", 1, 72, false, "ROOM TO"), W_("grow.", 1, 72, true, "GROW.")], { x: 960, y: 90, size: 140, color: BONE, accent: COPL, align: "center", tOut: tE }));
+  const cards = [
+    el(`<div class="card" style="width:470px;padding:26px;box-sizing:border-box"><div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:50%;background:${NAVY};color:#fff;font-family:Bebas;font-size:22px;display:flex;align-items:center;justify-content:center">RR</div><div><div style="font-weight:800;font-size:19px">Royalty Roofing</div><div style="font-size:14px;color:#8A929C">Sponsored</div></div>
+      <div style="margin-left:auto;display:flex;gap:8px"><img src="fb.svg" style="width:26px"><img src="ig.svg" style="width:26px"></div></div>
+      <div style="font-size:19px;margin:14px 0">Not sure how your roof held up this year? Request a free inspection.</div><img src="roof.jpg" style="width:418px;height:220px;object-fit:cover;border-radius:12px;display:block">
+      <div style="font-family:Bebas;font-size:30px;margin-top:14px">ADS YOU APPROVE</div><div class="micro" style="color:#8A929C;font-size:13px">Example preview · ad spend paid by Royalty</div></div>`),
+    el(`<div class="card" style="width:470px;padding:30px;box-sizing:border-box"><div style="font-family:Bebas;font-size:38px">STORM RE-VISIT</div><div style="font-size:18px;color:#5A6370;margin:6px 0 16px">Homes Royalty already inspected</div>
+      ${[["House 1", "Mar 2025"], ["House 2", "Jun 2025"], ["House 3", "Aug 2025"]].map(([h, d]) => `<div style="display:flex;justify-content:space-between;font-size:20px;font-weight:700;padding:14px 0;border-top:1px solid #E5DED3"><span>${h} · ${d}</span><span style="color:${COP}">To visit</span></div>`).join("")}
+      <div class="micro" style="color:#8A929C;font-size:13px;margin-top:12px">No one is contacted automatically</div></div>`),
+    el(`<div class="card" style="width:470px;padding:30px;box-sizing:border-box"><div style="font-family:Bebas;font-size:38px">NEIGHBORHOOD TARGETING</div><div style="font-size:18px;color:#5A6370;margin:6px 0 16px">Researched areas + a canvassing route</div>
+      <div style="position:relative;height:200px;border-radius:14px;background:#E7E1D7;overflow:hidden">${Array.from({ length: 6 }, (_, i) => `<div style="position:absolute;left:0;right:0;top:${i * 36 + 14}px;height:6px;background:#D7CFC3"></div>`).join("")}${Array.from({ length: 6 }, (_, i) => `<div style="position:absolute;top:0;bottom:0;left:${i * 80 + 24}px;width:6px;background:#D7CFC3"></div>`).join("")}
+      ${[[90, 60], [190, 120], [300, 50], [360, 150]].map(([x, y]) => `<div style="position:absolute;left:${x}px;top:${y}px;width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${COP}"></div>`).join("")}</div>
+      <div class="micro" style="color:#8A929C;font-size:13px;margin-top:12px">Storm records don't prove roof damage</div></div>`)];
+  const ts = [tAds, tSt, tNb], xs = [190, 725, 1260];
+  cards.forEach((c, i) => SCENES.push((t) => { const on = t >= ts[i] - 0.3 && t < tE + 0.5; show(c, on); if (!on) return; const k = P(t, ts[i] - 0.2, 0.7, E.back), out = P(t, tE, 0.45, E.iC), dr = Math.sin(t * 0.9 + i) * 8;
+    tf(c, { x: xs[i], y: 330 + dr + (1 - k) * 80, z: -300 * out, ry: (1 - k) * -40 + (i - 1) * -6, rx: 6, o: clamp(k * 1.3) * (1 - out) }); }));
+  SCENES.push(micro("Optional · Only if and when Royalty wants them", 760, 1000, tAds, tE));
+}
+// ================= S12: CTA (cream) =================
+{
+  const tI = at("if", 1, 78), tS = at("started.", 1, 79), tCf = at("confirm", 1, 82), tAsk = at("ask", 1, 84), tMsg = at("message.", 1, 86), tE = 89.6;
+  SCENES.push(heroLine([W_("if", 1, 78, false, "IF IT"), W_("looks", 1, 78, false, "LOOKS"), W_("good,", 1, 78, true, "GOOD,")], { x: 960, y: 170, size: 150, color: INK, accent: COP, align: "center", tOut: tE }));
+  SCENES.push(heroLine([W_("we", 1, 80, false, "WE CAN"), W_("get", 1, 80, false, "GET"), W_("started.", 1, 80, true, "STARTED.")], { x: 960, y: 320, size: 150, color: INK, accent: COP, align: "center", tOut: tE }));
+  const tc = el([["Confirm your referral rules first", tCf], ["We ask before using live data", tAsk], ["Nothing is sent without your OK", tMsg]].map(([s]) => `<div class="chip" style="background:#FBF8F3;color:${INK};box-shadow:0 18px 40px rgba(20,25,35,.12);margin:0 0 22px;width:max-content"><span style="color:#2E7D4F">✓</span> ${s}</div>`).join(""));
+  const tt = [tCf, tAsk, tMsg];
+  SCENES.push((t) => { const on = t >= tCf - 0.2 && t < tE + 0.5; show(tc, on); if (!on) return; const out = P(t, tE, 0.45, E.iC); tf(tc, { x: 960 - 330, y: 560, o: 1 - out });
+    [...tc.children].forEach((c, i) => { const k = P(t, tt[i] - 0.05, 0.5, E.back); c.style.opacity = clamp(k * 1.4); c.style.transform = `translateY(${(1 - k) * 30}px) scale(${0.9 + 0.1 * k})`; }); });
+}
+// ================= S13: sign-off (navy) =================
+{
+  const tA = at("a-white", 1, 89), tSy = at("systems", 1, 90);
+  const lg = el(`<img src="aws.png" style="width:420px">`);
+  const nm = el(`AWHITE SOLUTIONS`, "L hero"); nm.style.fontSize = "96px"; nm.style.color = BONE;
+  const tg = el(`SYSTEMS TO FIND <span style="color:${COPL}">MORE JOBS.</span>`, "L hero"); tg.style.fontSize = "64px"; tg.style.color = BONE;
+  const pr = el(`Prepared for Heath · Royalty Roofing &amp; Construction LLC`, "L micro"); pr.style.color = "rgba(243,238,230,.6)";
+  SCENES.push((t) => { const on = t >= tA - 0.4; [lg, nm, tg, pr].forEach((d) => show(d, on)); if (!on) return; const q = P(t, tA - 0.3, 0.8), fade = P(t, LEN - 1.1, 1.0, E.ioS), dr = 1 + 0.03 * E.ioS(clamp((t - tA) / 5));
+    tf(lg, { x: 960 - 210, y: 250 + (1 - q) * 40, s: dr, o: q * (1 - fade), blur: (1 - q) * 12 });
+    tf(nm, { x: 960 - nm.offsetWidth / 2, y: 470, o: q * (1 - fade) });
+    const q2 = P(t, tSy, 0.6); tf(tg, { x: 960 - tg.offsetWidth / 2, y: 580 + (1 - q2) * 24, o: q2 * (1 - fade), blur: (1 - q2) * 10 });
+    tf(pr, { x: 960 - pr.offsetWidth / 2, y: 700, o: P(t, tSy + 0.6, 0.6) * (1 - fade) }); });
+}
+// ---------- SFX cues from the same timeline (seconds; mixed by peak)
+const CUES = [];
+const cue = (t, id, db, role = "hit") => CUES.push({ t: +t.toFixed(3), id, db, role });
+ACTS.slice(1).forEach(([t]) => cue(t + SW * 0.45, "whoosh", -14, "whoosh"));
+cue(at("referral", 1, 17), "deep_bass", -8, "drop"); cue(at("referral", 1, 17), "pack6.impact_1", -14, "impact");
+cue(at("call"), "ios.ios_received", -10, "ui");
+["calls", "texts", "facebook", "people"].forEach((w) => cue(at(w, 1, 9), "pop", -18, "ui"));
+cue(at("share", 1, 20), "ios.ios_tink", -12, "ui"); cue(at("inspection", 1, 26), "ios.ios_tritone", -12, "ui");
+cue(at("sent", 1, 32), "ios.ios_note", -12, "ui"); cue(at("tracked", 1, 33), "pack6.click_sfx", -18, "ui");
+cue(at("paid", 1, 38), "ios.ios_success", -12, "ui"); cue(at("reward", 1, 40) - 0.25, "kaching", -14, "ui");
+cue(at("14", 1, 52), "deep_bass", -16, "thump"); cue(at("$1,000", 1, 58), "deep_bass", -16, "thump"); cue(at("150,", 1, 65), "deep_bass", -16, "thump");
+[at("ads", 1, 74), at("storm", 1, 75), at("neighborhood", 1, 76)].forEach((t) => cue(t - 0.2, "pop", -18, "ui"));
+[at("confirm", 1, 82), at("ask", 1, 84), at("message.", 1, 86)].forEach((t) => cue(t, "ios.ios_tink", -16, "ui"));
+cue(at("a-white", 1, 89) - 0.3, "pack3.shine", -14, "accent");
+window.CUE_LIST = () => CUES;
+function seek(t) { drawBg(t); for (const s of SCENES) s(t); }
+window.seek = seek; window.ready = () => seek(0);
+</script></body></html>
