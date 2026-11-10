@@ -1,0 +1,20 @@
+[
+ {
+  "voice": "am_michael",
+  "median_f0_hz": 124.2,
+  "f0_spread_p10_p90_hz": 53.7,
+  "wpm_speaking": 180.4
+ },
+ {
+  "voice": "am_fenrir",
+  "median_f0_hz": 144.6,
+  "f0_spread_p10_p90_hz": 97.8,
+  "wpm_speaking": 210.5
+ },
+ {
+  "voice": "am_onyx",
+  "median_f0_hz": 92.7,
+  "f0_spread_p10_p90_hz": 33.5,
+  "wpm_speaking": 198.2
+ }
+]
