@@ -475,7 +475,7 @@ def main():
         os.makedirs(f"{ROOT}/captions", exist_ok=True); write_srt(F.tl, f"{ROOT}/captions/your-brain-is-racist.en.srt")
         print("frames", F.tl.frames(), "duration", round(F.tl.end, 2)); return
     end = F.tl.frames() if A.end < 0 else A.end
-    ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{F.W}x{F.H}", "-r", "60", "-i", "-",
+    ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{F.W}x{F.H}", "-r", "60", "-i", "-",
         "-vf", "format=yuv420p,noise=c0s=7:c0f=t+u", "-c:v", "libx264", "-preset", "medium", "-crf", A.crf, "-g", "120", "-bf", "2",
         "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-r", "60", "-video_track_timescale", "15360", A.out], stdin=subprocess.PIPE)
     for n in range(A.start, end):
