@@ -20,6 +20,7 @@ class Film:
         self.grain = Grain(self.W, self.H)
         self.ps = skia.Surface(self.W // 2, self.H // 2); self.main = skia.Surface(self.W, self.H)
         self.caps = caption_chunks(self.tl)
+        self._vp = {}
         self.build()
 
     def S(self, h, v): return v if self.vert else h
@@ -413,6 +414,14 @@ class Film:
         self.cues.update(sub=0.6, settle=zt, bed=[(T("job1") - 0.3, T("ob1") - 0.3), (T("hs0"), o1 + 0.3)],
                          hiss=[(T("pat1") - X, T("cul1") + 0.3, 1.0), (f0, f1 + 0.3, 0.6), (o0, o1, 0.55)], end=tl.end)
 
+    def video_plate(self, name):
+        """A generated plate in plates/<scene>_<h|v>.* replaces the procedural one for that scene."""
+        if name not in self._vp:
+            import videoplate
+            path = videoplate.find(ROOT, name, "v" if self.vert else "h")
+            self._vp[name] = videoplate.VideoPlate(path, self.W, self.H) if path else None
+        return self._vp[name]
+
     # ---------------------------------------------------------------- captions
     def captions(self, c, t):
         W, H = self.W, self.H; size = 44 if self.vert else 36
@@ -439,7 +448,11 @@ class Film:
             a = (io_sine(ramp(t, s["t0"], s["t0"] + s["fin"])) if s["fin"] > 0 else 1.0) * ((1 - io_sine(ramp(t, s["t1"] - s["fout"], s["t1"]))) if s["fout"] > 0 else 1.0)
             if a <= 0.002: continue
             if s["plate"]:
-                pc = self.ps.getCanvas(); pc.save(); pc.clear(col((0, 0, 0))); pc.scale(0.5, 0.5); s["plate"](pc, t); pc.restore()
+                pc = self.ps.getCanvas(); pc.save(); pc.clear(col((0, 0, 0))); pc.scale(0.5, 0.5)
+                vp = self.video_plate(s["name"])
+                if vp: vp.draw(pc, W, H, t - s["t0"], s["t1"] - s["t0"], amber=1.0 if s["name"] == "observer" else 0.0)
+                else: s["plate"](pc, t)
+                pc.restore()
                 p = skia.Paint(); p.setAlphaf(a)
                 c.drawImageRect(self.ps.makeImageSnapshot(), skia.Rect.MakeWH(W // 2, H // 2), skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.CubicResampler.Mitchell()), p)
             if s["over"]:
