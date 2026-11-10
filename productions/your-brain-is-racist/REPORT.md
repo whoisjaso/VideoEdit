@@ -93,11 +93,17 @@ No generated plate exists, so none had to be rejected. In the procedural plates 
 |---|---|---|
 | Frame rate | 60/1 exactly, both masters | 60/1 |
 | Frames | 28,022 read = 467.03 s x 60, both masters | no dropped frame |
-| Loudness | QA_LUFS | −14 LUFS |
-| True peak (in the MP4, after AAC) | QA_TP | ≤ −4 dBTP |
+| Loudness | −14.0 LUFS on both masters and the traffic-stop cuts; −13.9 on the code-switching cuts | −14 LUFS |
+| True peak (in the MP4, after AAC) | −5.3 dBTP masters, −5.5 and −5.4 on the cuts | ≤ −4 dBTP |
 | Speech through the mix | 98.8% word match, mix vs voice-only (`whisper_check.py`, 1 run) | ≥ 98% |
 | Caption / card timing source | 98.7% of words matched by the aligner; the rest interpolated between neighbours | |
-| Smoothness | QA_SMOOTH | dup ≤ 0.02, jitter ≤ 0.35 |
+| Smoothness (`smoothness_check.py`, eight 30 s samples) | jitter 0.08–0.34: pass. dup_ratio 0.02–0.15: tool verdict CHECK | dup ≤ 0.02, jitter ≤ 0.35 |
+| Repeated frames (frame hashes, six 20 s samples, both formats) | 0 of 7,200: every frame is distinct | none |
+
+The smoothness tool's duplicate count does not pass its bar, and the reason is measurable: it shrinks each frame to 180x320 grey
+and calls a frame a duplicate when it differs from the last by under 0.15 grey levels. Slow drift on a near-black field sits
+under that line. Hashing the full-resolution frames finds no repeats, so nothing is held or dropped. Jason's eye is the real
+check: if the slow holds read as frozen on a phone, raise the drift amount in `src/film.py` (`drift`, 3.5% now).
 
 `whisper_check.py` prints "pass: false" because its first-three-seconds rule expects speech in the hook. The hook is silent by
 design (type only; narration starts at 4.8 s), so that rule does not apply.
