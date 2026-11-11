@@ -94,6 +94,7 @@ def voice_chain(a):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("cmd"); ap.add_argument("--voice", default="am_michael")
     ap.add_argument("--speed", type=float, default=0.96); ap.add_argument("--wav"); ap.add_argument("--out")
+    ap.add_argument("--ref", default=f"{ROOT}/audio/auditions/am_michael.wav"); ap.add_argument("--exag", type=float, default=0.7); ap.add_argument("--cfg", type=float, default=0.25)
     A = ap.parse_args(); os.makedirs(f"{ROOT}/audio/auditions", exist_ok=True)
     if A.cmd == "audition":
         k = kokoro(); ids = ["hook1", "hook2", "hook3", "job1"] + [f"ts{i}" for i in range(1, 8)]
@@ -124,6 +125,51 @@ def main():
         sf.write(f"{ROOT}/audio/narration_dry.wav", a.astype(np.float32), SR)
         tl["duration"] = round(len(a) / SR, 3); tl["word_match"] = round(mat / tot, 4)
         print("duration", tl["duration"], "word match", tl["word_match"])
+    if A.cmd == "build_cb":
+        # Expressive read: Chatterbox (Resemble AI, MIT), run offline on CPU. Lines are read in paragraph groups so the
+        # voice carries a thought across sentences; each group is checked word-for-word and re-taken if it drifts.
+        import torch, hashlib
+        torch.set_num_threads(4)
+        from chatterbox.tts import ChatterboxTTS
+        cb = ChatterboxTTS.from_pretrained(device="cpu")
+        cache = os.environ.get("CB_CACHE", "/tmp/claude-0/-home-user-VideoEdit/dea1a155-7f9b-5d5a-9ed6-2efb365ee1a7/scratchpad/cb_groups"); os.makedirs(cache, exist_ok=True)
+        groups = [[]]; wc = 0
+        for L in LINES:
+            groups[-1].append(L); wc += len(L[1].split())
+            if L[2] >= 0.6 or wc >= 42: groups.append([]); wc = 0
+        groups = [g for g in groups if g]
+        parts = []; t = 0.0; tot = mat = 0; log = []
+        for gi, g in enumerate(groups):
+            text = " ".join(x[1] for x in g); nw = len(text.split())
+            key = hashlib.md5(f"{text}|{A.ref}|{A.exag}|{A.cfg}".encode()).hexdigest()[:10]; fn = f"{cache}/{gi:03d}_{key}.npy"
+            if os.path.exists(fn): a = np.load(fn)
+            else:
+                best = None
+                for seed in (11, 23, 37, 53):
+                    torch.manual_seed(seed)
+                    w = cb.generate(text, audio_prompt_path=A.ref, exaggeration=A.exag, cfg_weight=A.cfg, temperature=0.8).squeeze().numpy()
+                    w = resample_poly(w.astype(np.float64), SR, cb.sr)
+                    idx = np.where(np.abs(w) > max(1e-3, np.abs(w).max() * 0.02))[0]
+                    w = w[max(0, idx[0] - int(0.02 * SR)): min(len(w), idx[-1] + int(0.08 * SR))]
+                    _, m_ = align_line(text, whisper_words(wm, w), len(w) / SR); score = m_ / nw; wpm = nw / (len(w) / SR) * 60
+                    ok = score >= 0.93 and 105 <= wpm <= 235
+                    if best is None or score > best[0]: best = (score, w, seed, wpm)
+                    if ok: break
+                a = best[1]; np.save(fn, a); log.append((gi, best[2], round(best[0], 2), round(best[3])))
+                print("group", gi, "/", len(groups), "seed", best[2], "match", round(best[0], 2), "wpm", round(best[3]), flush=True)
+            f = int(0.012 * SR); a = a.copy(); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f)
+            a = a / (np.sqrt(np.mean(a[np.abs(a) > 0.01] ** 2)) + 1e-9) * 0.09            # same loudness for every group
+            dur = len(a) / SR; words, m_ = align_line(text, whisper_words(wm, a), dur); tot += len(words); mat += m_; k = 0
+            for lid, ltext, gap in g:
+                n = len(ltext.split()); seg = words[k:k + n]; k += n
+                for w_ in seg: w_["s"] = round(w_["s"] + t, 3); w_["e"] = round(w_["e"] + t, 3)
+                tl["lines"].append({"id": lid, "text": ltext, "s": seg[0]["s"], "e": seg[-1]["e"], "gap": gap, "words": seg})
+            gap = g[-1][2]; parts += [a, np.zeros(int(round(gap * SR)))]; t += dur + int(round(gap * SR)) / SR
+        a = voice_chain(np.concatenate(parts))
+        sf.write(f"{ROOT}/audio/narration_dry.wav", a.astype(np.float32), SR)
+        tl["voice"] = f"chatterbox ref={os.path.basename(A.ref)} exag={A.exag} cfg={A.cfg}"; tl["duration"] = round(len(a) / SR, 3); tl["word_match"] = round(mat / tot, 4)
+        print("duration", tl["duration"], "word match", tl["word_match"], "groups", len(groups))
+        json.dump(tl, open(f"{ROOT}/timeline.json", "w"), indent=0); return
     if A.cmd == "align":
         # One continuous read (Jason's). Recognise every word, then map the script onto it line by line.
         a, sr = sf.read(A.wav)

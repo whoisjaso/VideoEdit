@@ -13,6 +13,7 @@ def done(out, c, W, H, name):
     Grain(W, H).draw(c, 0); out.makeImageSnapshot().save(f"{ROOT}/thumbnails/{name}_{W}x{H}.png", skia.kPNG)
 for W, H in ((1280, 720), (1080, 1350)):
     tall = H > W; u = W / 1280 if not tall else W / 1080
+    import gfx; gfx.BOUNDS[0], gfx.BOUNDS[1] = W * 0.04, W * 0.96
     out, c = base(W, H); sz = (98 if not tall else 92) * u                       # 1: the hook, no image
     draw_text(c, "Your brain is racist.", W / 2, H / 2 - sz * 0.2, sz, 600); draw_text(c, "So is mine.", W / 2, H / 2 + sz * 1.08, sz, 600)
     done(out, c, W, H, "01_hook")
@@ -27,7 +28,7 @@ for W, H in ((1280, 720), (1080, 1350)):
     sz = (104 if not tall else 118) * u
     if not tall:
         linear(c, skia.Rect.MakeLTRB(0, 0, W, H * 0.4), (0, 0), (0, H * 0.4), [col((0, 0, 0), 0.8), col((0, 0, 0), 0)])
-        draw_text(c, "two scripts.", W * 0.05, H * 0.2, sz, 600, WHITE, align="left")
+        draw_text(c, "two scripts.", W * 0.05, H * 0.2, sz, 600, WHITE, align="left", fit=W * 0.41)
     else:
         draw_text(c, "two scripts.", W / 2, H * 0.455, sz, 600, (0, 0, 0), 0.7, blur=14); draw_text(c, "two scripts.", W / 2, H * 0.455, sz, 600, WHITE)
     done(out, c, W, H, "03_two_scripts")
