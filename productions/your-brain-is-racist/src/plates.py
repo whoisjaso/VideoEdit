@@ -143,7 +143,7 @@ def _performer(act, at, t):
     if act == "cell": return K.cell(at), None, True
     return K.stand(t, 1.0), None, False
 
-def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None, act_t=0.0, prev=None, act_k=1.0, grow=0.0, mimic=0.0, echo=0.0, **_):
+def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None, act_t=0.0, prev=None, act_k=1.0, grow=0.0, mimic=0.0, echo=0.0, strings=0.0, **_):
     """A stick figure seen from behind, lit only by a screen. With tv="sil" the screen shows a stick figure performing."""
     vert = H > W
     c.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((5, 5, 7))))
@@ -162,6 +162,9 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
         glow(c, tx, ty - th * 0.05, tw * 0.55, (255, 255, 255), 0.55 * lv, blend=skia.BlendMode.kSrcOver)
         perf, ball, bars = _performer(act, act_t, t)
         if prev is not None and act_k < 1: perf = K.blend(_performer(prev, act_t + 1.0, t)[0], perf, io_cubic(act_k))
+        for jn in ("head", "ha_l", "ha_r", "kn_l", "kn_r"):          # he is on strings. Everything the screen shows him is.
+            jx, jy = tx + perf[jn][0] * ph, pyf - perf[jn][1] * ph
+            c.drawLine(jx, jy, tx + (jx - tx) * 0.55, ty - th / 2, paint(DARK_FIG, 0.5, stroke=max(1.2, ph * 0.006)))
         K.draw(c, perf, tx, pyf, ph, DARK_FIG, 0.97, weight=0.04, soft=0.8, glow=False, outfit="tank", t=t, dim=0.8)
         if ball is not None and act_k > 0.5: c.drawCircle(tx + ball[0] * ph, pyf - ball[1] * ph, ph * 0.045, paint(DARK_FIG, 0.95, stroke=max(2.0, ph * 0.03)))
         if bars:
@@ -179,6 +182,10 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
     pose = K.blend(K.sit(t, seed), K.stand(t, seed + 2), g)
     if mimic > 0 and perf is not None: pose = K.blend(pose, perf, io_cubic(mimic))
     vy = cy0 + lerp(0.50, 0.40, g) * vh                     # where his feet would be, behind the couch
+    if strings > 0.003:                                    # and now so is he: lines from the screen to his head and his hands
+        for jn, sx_ in (("head", 0.0), ("ha_l", -0.34), ("ha_r", 0.34)):
+            jx, jy = vx + pose[jn][0] * vh, vy - pose[jn][1] * vh
+            c.drawLine(jx, jy, tx + sx_ * tw, ty + th / 2, paint((236, 234, 228), 0.55 * strings, stroke=2.2, blur=0.6))
     K.draw(c, pose, vx, vy, vh, tint, 0.6 * lv, weight=0.055, soft=3.5, glow=False)        # rim light from the screen
     K.draw(c, pose, vx, vy, vh, DARK_FIG, 1.0, weight=0.036, soft=0.7, glow=False)
     c.drawPath(couch, paint(tint, 0.3 * lv, blur=6, stroke=4))
@@ -216,8 +223,10 @@ def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
     sd = {"tank": 0.0, "hat": 2.1, "suit": 4.3}[kind]
     idle = K.stand(t, sd, pockets=False, carry=(kind == "suit"), smoke=(kind == "tank"))
     if kind == "tank": idle["el_l"], idle["ha_l"] = K._limb(idle["sh_l"], -14, K.UARM, 16, K.FARM)        # one hand in a pocket
-    pose = K.blend(K.walk_side(tin * 1.75, 1, 0.9), idle, io_cubic(ramp(tin, 0.85, 1.35)))
-    ox = fx - (1 - out_quint(ramp(tin, 0.0, 1.15))) * fh * 0.62
+    far = 0.95 * (1 - out_quint(ramp(tin, 0.0, 1.5)))                  # how far he still has to walk, in body heights
+    turn = io_cubic(ramp(tin, 1.0, 1.6))
+    pose = K.blend(K.walk_ik(-far, 1, energy=0.9), idle, turn)
+    ox = fx - far * fh
     K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
     K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.036, soft=0.8, glow=False, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.72)
     linear(c, skia.Rect.MakeLTRB(-W, base - fh * 0.02, 2 * W, 2 * H), (0, base - fh * 0.02), (0, base + fh * 0.16), [col((4, 4, 5), 0), col((4, 4, 5), 0.85)])
@@ -226,7 +235,13 @@ def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
     vignette(c, W, H, 0.92, 0.28)
 
 # ------------------------------------------------------------------ the street (#9-12)
-def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25, props=(0, 0, 0), lum=1.0):
+def street_geo(W, H, walk, cam_x, z, fig_x):
+    """Where the walking figure is on screen (feet x, feet y, height). The film uses this to lock its brackets onto him."""
+    vert = H > W; bob = math.sin(walk * 5.2) * 5.0; sway = math.sin(walk * 2.6) * 4.0
+    yh = H * (0.45 if not vert else 0.44) + bob; k = (0.40 if not vert else 0.62) * W
+    return W * 0.5 + sway + (fig_x - cam_x) * k / z, yh + (H - yh) / z - 0.02 * (H - yh) / z, 1.72 * k / z
+
+def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25, props=(0, 0, 0), lum=1.0, menace=0.0):
     """POV at night. walk = distance walked (z units). cam_x = lateral position (0 = our sidewalk,
     about -5.4 = the far sidewalk). The approaching figure is never in focus."""
     vert = H > W
@@ -288,6 +303,11 @@ def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25,
         suit = fig_kind == "suit"                         # two gaits: one slouched and slow, one upright and brisk
         pose = K.walk_front(t * (0.98 if suit else 0.8), energy=1.0 if suit else 0.7, slouch=0.0 if suit else 1.0, carry=suit, smoke=not suit)
         if not suit: pose["el_l"], pose["ha_l"] = K._limb(pose["sh_l"], -14, K.UARM, 16, K.FARM)
+        # His shadow, thrown toward you. With menace it is not his: it is the one your script predicted. Taller, hunched, arms wide.
+        sp = pose if menace <= 0.01 else K.blend(pose, K.front(arm_l=(-62, -18), arm_r=(62, 18), leg_l=(-12, -6), leg_r=(12, 6), drop=0.05, head=(0, -0.05), sh_tilt=0.0), io_cubic(menace))
+        c.save(); c.translate(fx, fy); c.skew(-0.18, 0); c.scale(1.0 + 0.55 * menace, -(1.15 + 1.55 * menace))
+        K.draw(c, sp, 0, 0, fh, (0, 0, 0), (0.5 + 0.3 * menace) * a, weight=0.05 + 0.03 * menace, soft=max(2.5, fh * 0.03), glow=False)
+        c.restore()
         K.draw(c, pose, fx, fy, fh, (255, 196, 140), 0.45 * a, weight=0.06, soft=max(2.0, fh * 0.012), glow=False)
         K.draw(c, pose, fx, fy, fh, (20, 18, 18), a, weight=0.034, soft=max(0.5, fh * 0.003), glow=False, case=suit, outfit="suit" if suit else "tank", t=t, smoke=not suit, dim=0.9)
     # what you are carrying: phone, watch, keys

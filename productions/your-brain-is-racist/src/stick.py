@@ -40,7 +40,9 @@ def side(arm_f=(20, 35), arm_b=(-20, -5), leg_f=(22, 10), leg_b=(-20, -38), lean
     return p
 
 def blend(a, b, k):
-    k = clamp(k); return {key: (lerp(a[key][0], b[key][0], k), lerp(a[key][1], b[key][1], k)) for key in KEYS}
+    k = clamp(k); out = {key: (lerp(a[key][0], b[key][0], k), lerp(a[key][1], b[key][1], k)) for key in KEYS}
+    if "_facing" in a and k < 0.5: out["_facing"] = a["_facing"]
+    return out
 
 # ------------------------------------------------------------------ motions (ph = cycles; one cycle = two steps)
 def walk_side(ph, facing=1, energy=1.0):
@@ -50,6 +52,35 @@ def walk_side(ph, facing=1, energy=1.0):
     lb = (-sw * s, -sw * s - 6 - 34 * max(0, c2) * (1 if s > 0 else 0.25))
     return side(arm_f=(-20 * energy * s, -20 * energy * s + 22), arm_b=(20 * energy * s, 20 * energy * s + 22), leg_f=lf, leg_b=lb,
                 lean=0.03 * energy, drop=0.012 + 0.014 * abs(c2), facing=facing)
+
+def _ik(hip, foot, bend=1):
+    """Two-bone leg: where the knee has to be for this hip and this foot. bend = +1 knee forward (+x), -1 back."""
+    dx, dy = foot[0] - hip[0], foot[1] - hip[1]; d = min(math.hypot(dx, dy), THIGH + SHIN - 1e-4); d = max(d, 0.05)
+    a = math.acos(clamp((THIGH ** 2 + d ** 2 - SHIN ** 2) / (2 * THIGH * d), -1, 1)); base = math.atan2(dy, dx)
+    k1 = (hip[0] + THIGH * math.cos(base + a), hip[1] + THIGH * math.sin(base + a)); k2 = (hip[0] + THIGH * math.cos(base - a), hip[1] + THIGH * math.sin(base - a))
+    return k1 if (k1[0] - k2[0]) * bend > 0 else k2
+
+def walk_ik(dist, facing=1, stride=0.74, energy=1.0, nod=0.0, hands_lag=None):
+    """A walk measured in distance, not time: a foot on the ground stays where it landed while the body travels over it.
+    dist is in body heights. Knees come from the stride, the hips dip at double support, the arms answer the legs."""
+    L = stride / 2; ph = dist / stride
+    p = {}; feet = []
+    for off in (0.0, 0.5):
+        u = (ph + off) % 1.0
+        if u < 0.62: fx = L * 0.56 - (u / 0.62) * L * 1.12; fy = 0.0
+        else:
+            v = (u - 0.62) / 0.38; e = v * v * (3 - 2 * v); fx = -L * 0.56 + L * 1.12 * e; fy = 0.075 * math.sin(math.pi * v) ** 0.9
+        feet.append((fx * facing, fy))
+    hy = HIP - 0.012 - 0.022 * (0.5 + 0.5 * math.cos(4 * math.pi * ph)) * energy
+    lean = 0.04 * energy * facing; hip = (0.0, hy); neck = (lean, hy + (NECK - HIP)); sy = hy + (SHO - HIP)
+    p["hip"] = p["hip_l"] = p["hip_r"] = hip; p["neck"] = neck; p["sh_l"] = p["sh_r"] = (lean * 0.9, sy)
+    p["head"] = (neck[0] + 0.014 * facing, neck[1] + HEAD_R + 0.012 - 0.03 * nod - 0.004 * math.cos(4 * math.pi * ph + 0.9))
+    p["ft_r"], p["ft_l"] = feet[0], feet[1]; p["kn_r"] = _ik(hip, feet[0], facing); p["kn_l"] = _ik(hip, feet[1], facing)
+    sw = math.sin(2 * math.pi * (ph if hands_lag is None else hands_lag / stride) + 0.35)                 # arms answer the opposite leg, a beat late
+    p["el_r"], p["ha_r"] = _limb(p["sh_r"], -24 * sw * energy * facing, UARM, (-24 * sw * energy + 24) * facing, FARM)
+    p["el_l"], p["ha_l"] = _limb(p["sh_l"], 24 * sw * energy * facing, UARM, (24 * sw * energy + 24) * facing, FARM)
+    p["_facing"] = facing
+    return p
 
 def walk_front(ph, energy=1.0, slouch=0.0, carry=False, pockets=False, smoke=False):
     """Walking toward the camera: knees lift and foreshorten, hips sway, arms counter-swing, the body bobs twice a cycle."""
@@ -127,9 +158,11 @@ def _strip(pts, widths):
     return path_from(L + R[::-1])
 
 def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0, glow=True, hat=False, tie=False, case=False, extra=None, legs=True,
-         outfit=None, t=0.0, smoke=False, dim=1.0):
+         outfit=None, t=0.0, smoke=False, dim=1.0, trail=None):
     """outfit: None (bare stick), "tank" (tank top, sagging baggy jeans, earrings, chain), "hat" (brimmed hat, shirt, boots), "suit"."""
     if a <= 0.003: return
+    if trail:                                                 # where he was a moment ago: fast moves leave a smear
+        for i, tp in enumerate(trail): draw(c, tp, x, y, h, color, a * (0.2 - 0.07 * i), weight, soft + h * 0.004, False, legs=legs)
     w = max(2.4, h * weight); ol = max(1.4, w * 0.45)
     P = lambda k: (x + pose[k][0] * h, y - pose[k][1] * h)
     C = lambda rgb: tuple(v * dim for v in rgb)
@@ -141,6 +174,19 @@ def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0,
     def bone(*ks):
         path.moveTo(*P(ks[0]))
         for k in ks[1:]: path.lineTo(*P(k))
+    def limb(k0, k1, k2, w0, w1):
+        """A limb with weight: thicker where it joins the body, a soft curve through the joint instead of a hinge."""
+        p0, p1, p2 = (P(k) if isinstance(k, str) else k for k in (k0, k1, k2))
+        cx_, cy_ = 2 * p1[0] - (p0[0] + p2[0]) / 2, 2 * p1[1] - (p0[1] + p2[1]) / 2
+        cx_, cy_ = lerp(p1[0], cx_, 0.72), lerp(p1[1], cy_, 0.72)
+        pts = []; ws = []
+        for i in range(11):
+            u = i / 10; pts.append(((1 - u) ** 2 * p0[0] + 2 * u * (1 - u) * cx_ + u * u * p2[0], (1 - u) ** 2 * p0[1] + 2 * u * (1 - u) * cy_ + u * u * p2[1])); ws.append(lerp(w0, w1, u) / 2)
+        c.drawPath(_strip(pts, ws), paint(color, a, blur=soft)); c.drawCircle(p0[0], p0[1], w0 / 2, paint(color, a, blur=soft)); c.drawCircle(p2[0], p2[1], w1 / 2, paint(color, a, blur=soft))
+    fc = pose.get("_facing", 0)
+    def foot(k):
+        fx_, fy_ = P(k); d = 0.045 * h * (fc if fc else (1 if k == "ft_r" else -1) * 0.35)
+        c.drawOval(skia.Rect.MakeLTRB(fx_ + d - 0.042 * h, fy_ - 0.02 * h, fx_ + d + 0.042 * h, fy_ + 0.008 * h), paint(color, a, blur=soft))
     if glow:
         g = skia.Path(); g.moveTo(*nk); g.lineTo(*hp); g.addCircle(hx, hy, r)
         c.drawPath(g, paint(color, 0.2 * a, stroke=w * 3.2, blur=w * 2.2 + soft))
@@ -164,7 +210,8 @@ def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0,
                 else: c.drawOval(shoe, paint(C(SNEAK if outfit == "tank" else (24, 22, 22)), a, blur=soft)); c.drawOval(shoe, paint(color, a, stroke=ol, blur=soft))
             if outfit == "hat": c.drawCircle(hp[0], hp[1] + 0.006 * h, 0.013 * h, paint(C(GOLD), a))
         else:
-            bone("hip_l", "hip", "hip_r"); bone("hip_l", "kn_l", "ft_l"); bone("hip_r", "kn_r", "ft_r")
+            limb("hip_l", "kn_l", "ft_l", w * 1.25, w * 0.82); limb("hip_r", "kn_r", "ft_r", w * 1.25, w * 0.82); foot("ft_l"); foot("ft_r")
+            if not fc: c.drawLine(*P("hip_l"), *P("hip_r"), paint(color, a, stroke=w * 1.2, blur=soft))
     # ---- torso
     if outfit == "tank":
         t_ = skia.Path(); bw = 0.082 * h; by = hp[1] + 0.03 * h
@@ -173,7 +220,7 @@ def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0,
         t_.lineTo(hp[0] - bw, by); t_.lineTo(hp[0] + bw, by); t_.lineTo(nk[0] + 0.088 * h, sr[1] + 0.13 * h)
         t_.quadTo(sr[0] - 0.035 * h, sr[1] + 0.085 * h, nk[0] + 0.062 * h, nk[1] + 0.004 * h)
         t_.lineTo(nk[0] + 0.032 * h, nk[1] + 0.004 * h); t_.quadTo(nk[0], nk[1] + 0.12 * h, nk[0] - 0.032 * h, nk[1] + 0.004 * h); t_.close()
-        bone("sh_l", "neck", "sh_r"); c.drawPath(path, paint(color, a, stroke=w, blur=soft)); path = skia.Path()
+        limb("sh_l", (nk[0], nk[1] + 0.012 * h), "sh_r", w, w)
         fill(t_, TANK)
         ch = skia.Path(); ch.moveTo(nk[0] - 0.03 * h, nk[1] + 0.012 * h); ch.quadTo(nk[0], nk[1] + 0.105 * h, nk[0] + 0.03 * h, nk[1] + 0.012 * h)
         c.drawPath(ch, paint(C(GOLD), a, stroke=max(1.2, 0.008 * h), blur=soft))
@@ -191,10 +238,13 @@ def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0,
             fill(_strip(pts, [0.034 * h, 0.03 * h, 0.026 * h][:len(pts)]), rgb)
         tie = tie or outfit == "suit"; hat = hat or outfit == "hat"
     else:
-        bone("neck", "hip"); bone("sh_l", "neck", "sh_r")
+        mid = ((nk[0] + hp[0]) / 2 + (nk[0] - hp[0]) * 0.35, (nk[1] + hp[1]) / 2)                       # a spine, not a rod
+        limb("neck", mid, "hip", w * 1.3, w * 1.2)
+        if not fc: limb("sh_l", (nk[0], nk[1] + 0.012 * h), "sh_r", w, w)
     # ---- arms, head, the rest
-    if outfit != "suit": bone("sh_l", "el_l", "ha_l"); bone("sh_r", "el_r", "ha_r")
-    path.addCircle(hx, hy, r - w * 0.5)
+    if outfit != "suit": limb("sh_l", "el_l", "ha_l", w * 1.05, w * 0.72); limb("sh_r", "el_r", "ha_r", w * 1.05, w * 0.72)
+    c.drawLine(nk[0], nk[1], hx, hy, paint(color, a, stroke=w * 0.95, blur=soft))
+    c.drawCircle(hx, hy, r, paint(color, a, blur=soft))
     if hat:
         hp_ = skia.Path(); hp_.addOval(skia.Rect.MakeLTRB(hx - r * 2.35, hy - r * 0.86, hx + r * 2.35, hy - r * 0.36))
         hp_.addPath(path_from([(hx - r * 0.98, hy - r * 0.62), (hx - r * 0.82, hy - r * 1.82), (hx + r * 0.82, hy - r * 1.82), (hx + r * 0.98, hy - r * 0.62)]))
@@ -206,7 +256,7 @@ def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0,
         kx, ky = P("ha_r"); path.addRect(skia.Rect.MakeXYWH(kx - 0.075 * h, ky + 0.02 * h, 0.15 * h, 0.105 * h)); path.moveTo(kx - 0.03 * h, ky + 0.02 * h); path.lineTo(kx - 0.03 * h, ky); path.lineTo(kx + 0.03 * h, ky); path.lineTo(kx + 0.03 * h, ky + 0.02 * h)
     if extra is not None: path.addPath(extra)
     c.drawPath(path, paint(color, a, stroke=w, blur=soft))
-    for k in ("ha_l", "ha_r"): c.drawCircle(*P(k), w * 0.75, paint(color, a, blur=soft))                # hands
+    for k in ("ha_l", "ha_r"): c.drawCircle(*P(k), w * 0.62, paint(color, a, blur=soft))                # hands
     if outfit == "tank":
         for sg in (-1, 1): c.drawCircle(hx + sg * (r + 0.004 * h), hy + r * 0.42, max(1.6, 0.013 * h), paint(C(GOLD), a))      # earrings
     if smoke:                                                 # a cigarette, an ember, and smoke that drifts and thins

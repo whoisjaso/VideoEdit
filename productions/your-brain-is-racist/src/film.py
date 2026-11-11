@@ -70,6 +70,28 @@ class Film:
         c.drawImageRect(im, skia.Rect.MakeWH(im.width(), im.height()), skia.Rect.MakeXYWH(-w / 2, -h, w, h), skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear), pp)
         c.restore()
 
+    def tagger(self, c, t, geo, a, tags, verdict):
+        """What your brain does to a stranger in a quarter of a second: lock on, itemise, decide.
+        geo = (feet x, feet y, height). tags = [(time, text)], verdict = (time, text)."""
+        if a <= 0.003: return
+        fx, fy, fh = geo; S = self.S
+        x0, x1, y0, y1 = fx - 0.3 * fh, fx + 0.3 * fh, fy - 1.06 * fh, fy + 0.03 * fh; L = max(10.0, 0.12 * fh)
+        lock = out_quint(ramp(t, tags[0][0] - 0.9, tags[0][0] - 0.3)); k = lerp(1.6, 1.0, lock); mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+        x0, x1, y0, y1 = mx + (x0 - mx) * k, mx + (x1 - mx) * k, my + (y0 - my) * k, my + (y1 - my) * k
+        fl = 0.8 + 0.2 * math.sin(t * 23)
+        for (bx, by, sx, sy) in ((x0, y0, 1, 1), (x1, y0, -1, 1), (x0, y1, 1, -1), (x1, y1, -1, -1)):
+            c.drawPath(path_from([(bx + sx * L, by), (bx, by), (bx, by + sy * L)], False), paint(WHITE, 0.9 * a * fl * lock, stroke=2.6))
+        right = x1 + 18 + self.W * 0.2 < self.W * 0.97; tx = x1 + 18 if right else x0 - 18; al = "left" if right else "right"; sz = S(30, 30)
+        for i, (t0, txt) in enumerate(tags):
+            p = appear(t, t0, 0.3)
+            draw_text(c, txt, tx, y0 + sz + i * sz * 1.5 + (1 - p) * 8, sz, 600, WHITE, a * p * 0.92, align=al, track=0.06)
+        vt, vtxt = verdict; p = appear(t, vt, 0.25)
+        if p > 0:
+            f = font(sz * 1.15 * gfx.CAPS_SCALE, 700); tw = text_w(vtxt.upper(), f, 0.08) + 28; vy = y0 + sz + len(tags) * sz * 1.5 + 10
+            bx = tx if right else tx - tw; blink = 0.75 + 0.25 * math.sin((t - vt) * 6.5)
+            rrect(c, bx, vy - sz * 0.2, tw, sz * 1.5, 6, paint(WHITE, a * p * blink))
+            draw_text(c, vtxt, bx + tw / 2, vy + sz * 0.86, sz * 1.15, 700, (8, 8, 9), a * p, track=0.08)
+
     def hook(self, c, t, ta, tb, dim_t, out_t):
         W, H, S = self.W, self.H, self.S; size = S(124, 84)
         dim = lerp(1, 0.42, io_sine(ramp(t, dim_t, dim_t + 0.6))) * vanish(t, out_t, 0.5)
@@ -195,8 +217,13 @@ class Film:
             pr = tuple(window(t, Wn("st3", w), T("st4") + 0.4, 0.5, 0.6) for w in ("phone", "watch", "keys"))
             card = window(t, T("st11") - 0.4, E("st11") + 0.85, 0.5, 0.4)
             P.street(c, W, H, t, walk=(t - s0) * VW, cam_x=camx(t), fig_z=fig1(t) if t > T("st4") - 1.5 else None, fig_kind="tank",
-                     props=pr, lum=1 - 0.88 * card)
+                     props=pr, lum=1 - 0.88 * card, menace=io_sine(ramp(t, T("st5"), T("st9"))))
         def st1_over(c, t):
+            z = fig1(t)
+            if t > T("st4") - 0.6 and 0.9 < z < 24:
+                ha = appear(t, T("st4") + 0.2, 0.5) * vanish(t, T("st11") - 0.6, 0.4) * clamp((z - 0.9) * 2)
+                self.tagger(c, t, P.street_geo(W, H, (t - s0) * VW, camx(t), z, 0.25), ha,
+                            [(T("st5"), "tank top"), (T("st6"), "pants low"), (T("st7"), "black")], (T("st8") + 0.2, "threat"))
             a = window(t, T("st11") - 0.3, E("st11") + 0.85, 0.5, 0.4)
             if a <= 0: return
             draw_text(c, "the script", cx, cy - S(170, 250), 34, 600, WHITE, 0.65 * a, track=0.12)
@@ -217,6 +244,11 @@ class Film:
             P.street(c, W, H, t, walk=(t - s0) * VW, fig_z=z if (z < 30 and t > T("sx3") - 1.0) else None, fig_kind="suit",
                      fig_x=lerp(0.9, 0.25, clamp((z - 1.0) / 6.0)))
         def st2_over(c, t):
+            z = fig2(t)
+            if t > T("sx3") - 0.9 and 1.3 < z < 24:
+                ha = appear(t, T("sx3") - 0.6, 0.5) * clamp((z - 1.3) * 1.5)
+                self.tagger(c, t, P.street_geo(W, H, (t - s0) * VW, 0.0, z, lerp(0.9, 0.25, clamp((z - 1.0) / 6.0))), ha,
+                            [(T("sx3"), "suit"), (T("sx4"), "clean shaven"), (T("sx5"), "white")], (T("sx6"), "safe"))
             out = T("ch5") + 0.3; sz = S(72, 64)
             xl, xr = W * 0.07, W * 0.93; yl, yr = H * S(0.30, 0.17), H * S(0.30, 0.27)
             draw_text(c, "dangerous?", xl, yl, sz, 600, WHITE, appear(t, Wn("ch1", "dangerous"), 0.5) * vanish(t, out), align="left")
@@ -314,7 +346,7 @@ class Film:
             if t > T("od11") + 0.4: prev, act, at = "cell", "rapper", t - T("od11") - 0.4      # it loops back to the first thing it showed him
             P.room(c, W, H, t, viewer=lerp(0.15, 0.2, io_sine(ramp(t, T("od11"), E("od15")))), tv="sil", tv_scale=1.12, seed=2,
                    act=act, act_t=at, prev=prev, act_k=ramp(at, 0.0, 0.35),
-                   grow=ramp(t, T("od14"), T("od15") + 0.6), mimic=ramp(t, T("od15") + 0.2, T("od17")), echo=ramp(t, T("od18") - 0.1, E("od18") + 0.5))
+                   grow=ramp(t, T("od14"), T("od15") + 0.6), mimic=ramp(t, T("od15") + 0.2, T("od17")), echo=ramp(t, T("od18") - 0.1, E("od18") + 0.5), strings=io_sine(ramp(t, T("od14"), T("od15") + 0.8)))
         def boy_over(c, t):
             lx = S(W * 0.755, cx); ly = H * S(0.27, 0.115); al = S("left", "center"); out = T("od11") - 0.15
             for j, lid in enumerate(labs):
@@ -423,14 +455,27 @@ class Film:
         def new_plate(c, t):
             P.screens(c, W, H, t, grow=1.0, dolly=0.45 + 0.35 * ramp(t, o0, o1), dark=io_sine(ramp(t, T("ns1"), E("ns4"))) * 0.96,
                       warm=io_sine(ramp(t, T("ns2") - 0.5, E("ns4") + 0.6)))
+        import stick as K
+        yg = H * S(0.845, 0.655); fhh = min(W, H) * 0.21
+        def xy(t): return lerp(-0.1 * W, 1.1 * W, ramp(t, T("ns1") + 0.2, E("ns4") + 0.5))
+        def xo(t): return lerp(1.1 * W, -0.1 * W, ramp(t, T("ns1") + 1.4, E("ns4") + 0.1))
+        tm = min((abs(xy(o0 + i * 0.05) - xo(o0 + i * 0.05)), o0 + i * 0.05) for i in range(int((o1 - o0) / 0.05)))[1]      # the moment they pass
+        self.cues["pass3"] = tm
         def new_over(c, t):
-            x = cx - W * S(0.09, 0.2); y = cy + H * S(0.2, 0.17); g = vanish(t, o1, 0.5)
-            for j, (s0_, wd) in enumerate(zip(marks, (0.6, 0.85, 0.7, 1.0))):
-                k = out_quint(ramp(t, s0_, s0_ + 0.7))
-                if k <= 0: continue
-                last = j == 3; x1 = x + W * S(0.18, 0.4) * wd * k; yy = y + j * 26
-                if last: c.drawLine(x, yy, x1, yy, paint(AMBER, 0.5 * g, stroke=18, blur=10, blend=skia.BlendMode.kPlus))
-                c.drawLine(x, yy, x1, yy, paint(AMBER, (1.0 if last else 0.6) * g, stroke=6))
+            """The street, a third time, on the one line. Nobody crosses. They pass, they nod, and his steps leave the new script behind him."""
+            g = appear(t, T("ns1"), 0.8) * vanish(t, o1, 0.5)
+            if g <= 0.003: return
+            nod = window(t, tm - 0.45, tm + 0.75, 0.3, 0.45); x, x2 = xy(t), xo(t)
+            for q in range(int(max(0.0, x + 0.1 * W) / (0.37 * fhh)) + 1):                  # footprints: one amber mark for every step taken
+                fxm = -0.1 * W + q * 0.37 * fhh
+                if fxm < x - 0.12 * fhh:
+                    age = clamp((x - fxm) / (0.5 * fhh)); c.drawLine(fxm - 0.05 * fhh, yg + 12, fxm + 0.05 * fhh, yg + 12, paint(AMBER, 0.85 * g * age, stroke=4))
+            po = K.walk_ik((1.1 * W - x2) / fhh, -1, energy=0.75, nod=nod)
+            K.draw(c, po, x2, yg, fhh, (226, 222, 214), g, weight=0.036, glow=False, outfit="tank", t=t, smoke=False, dim=0.95)
+            py_ = K.walk_ik((x + 0.1 * W) / fhh, 1, energy=0.9, nod=nod)
+            lead = K.walk_ik((x + 0.1 * W) / fhh + 0.06, 1, energy=0.9, nod=nod)             # the observer walks half a step ahead of him
+            K.draw(c, lead, x + 0.07 * fhh, yg, fhh, AMBER, 0.9 * g, weight=0.03, glow=True)
+            K.draw(c, py_, x, yg, fhh, WHITE, g, weight=0.036, glow=False)
         self.add("newscript", o0, o1, new_plate, new_over, fout=0.7)
         self.cues["newscript"] = (o0, o1)
 
@@ -545,8 +590,7 @@ class Film:
         if name == "glass": return seg(W * 0.06, H * S(0.82, 0.68), W * 0.94, H * S(0.82, 0.68))
         if name == "fault": return under(cy + S(86, 120), S(820, 640))
         if name == "halfsecond": return seg(W * S(0.16, 0.08), H * S(0.54, 0.5), W * S(0.84, 0.92), H * S(0.54, 0.5))
-        if name == "newscript":
-            x = cx - W * S(0.09, 0.2); y = cy + H * S(0.2, 0.17) + 78; return seg(x, y, x + W * S(0.18, 0.4), y)
+        if name == "newscript": return seg(W * 0.04, H * S(0.845, 0.655), W * 0.96, H * S(0.845, 0.655))      # the line is the ground now
         return under(cy, 300)
 
     def the_line(self, c, t):

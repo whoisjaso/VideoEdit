@@ -323,6 +323,14 @@ p2 = json.load(open(f"{ROOT}/cues.json"))["pass2"]
 for j in range(7): put("fx", step("leather"), p2 - (6 - j) * 0.55, -30 + j * 2.4, -0.2 + 0.12 * j)
 for w_, lid, p in (("dangerous", "ch1", -0.5), ("safe", "ch2", 0.5)): title(Wn(lid, w_), 0.4, -17), put("fx", tone(196, 0.5, 0.01, 0.15), Wn(lid, w_), -22, p)
 
+# ---- your brain tagging him: a lock tone, a tick for every item, a verdict
+put("fx", tone(1320, 0.18, 0.004, 0.05, (1, 0.3)), T("st4") + 0.25, -25, 0.3)
+for lid in ("st5", "st6", "st7"): put("fx", tick(2900, 0.03), T(lid), -22, 0.3)
+vb = np.concatenate([tone(196, 0.16, 0.004, 0.06, (1, 0.6, 0.4)), np.zeros(secs(0.05)), tone(196, 0.3, 0.004, 0.12, (1, 0.6, 0.4))]); put("fx", vb, T("st8") + 0.2, -18, 0.3)   # THREAT: low, twice
+put("fx", tone(1320, 0.18, 0.004, 0.05, (1, 0.3)), T("sx3") - 0.5, -25, 0.3)
+for lid in ("sx3", "sx4", "sx5"): put("fx", tick(2900, 0.03), T(lid), -22, 0.3)
+put("fx", tone(784, 0.5, 0.004, 0.18, (1, 0.3)) + np.pad(tone(988, 0.42, 0.004, 0.18, (1, 0.3)), (secs(0.08), 0))[:secs(0.5)], T("sx6"), -21, 0.3)                              # SAFE: a small bright chime
+
 # ---- not hate. prediction.
 title(T("ch7"), 0.5, -14); title(T("ch8"), 1.0, -7)
 
@@ -378,6 +386,7 @@ put("fx", norm(keys(0.7, 14, 5)) , T("od9"), -22); put("fx", tick(700, 0.07), T(
 put("fx", norm(clang()), T("od10") + 0.35, -11)                                                             # the one in the cell: a door
 for lid in ("od7", "od8", "od9", "od10"): put("fx", tick(1200, 0.04), T(lid), -22)
 title(T("od17"), 0.4, -17)
+for i, dt in enumerate((0.0, 0.25, 0.5)): put("fx", reverb(tone((392, 330, 262)[i], 0.9, 0.003, 0.25, (1, 0.5, 0.25)), 1.2, 0.4, 3500), T("od14") + 0.3 + dt, -21, (-0.3, 0.0, 0.3)[i])
 put("fx", fade(tone(110, 2.4, 0.9, 0.9, (1, 0.5, 0.25)), 0.05, 0.6), T("od18") - 0.1, -15); title(T("od18"), 0.8, -11); title(T("od19"), 0.9, -10)
 
 # ---- three rooms, three sets
@@ -436,6 +445,13 @@ for j, s0 in enumerate((Wn("ns2", "feet"), Wn("ns2", "voice"), Wn("ns2", "should
     n5 = secs(0.6); x = np.arange(n5) / n5
     put("fx", bp(noise(n5), 1800, 5200) * np.sin(np.pi * x) ** 0.5 * (0.7 + 0.3 * np.sin(2 * np.pi * 23 * x)), s0, -24 if j < 3 else -20, -0.3 + 0.2 * j)   # pencil
     put("music", pan2(reverb(tone((277.18, 329.63, 369.99, 440.0)[j], 2.2, 0.02, 0.8, (1, 0.3, 0.1)), 2.2, 0.45, 4500)), s0, -17 if j < 3 else -13)
+
+# ---- the payoff: two people walking the same line toward each other, and a nod
+CU = json.load(open(f"{ROOT}/cues.json")); tm = CU.get("pass3", T("ns3"))
+ta_, tb2 = T("ns1") + 0.2, E("ns4") + 0.5; stp = 0.37 * 226.8 / (1.2 * 1920 / (tb2 - ta_)); t = ta_ + 0.3; k = 0
+while t < tb2 - 0.3:
+    u = (t - ta_) / (tb2 - ta_); put("fx", step("sidewalk"), t, -24, -0.9 + 1.8 * u); put("fx", step("leather"), t + stp * 0.5 + 0.9, -29, 0.9 - 1.8 * u); t += stp; k += 1
+put("music", pan2(reverb(tone(329.63, 2.4, 0.03, 0.9, (1, 0.3, 0.1)) + np.pad(tone(440.0, 2.2, 0.03, 0.9, (1, 0.3)), (secs(0.22), 0))[:secs(2.4)], 2.4, 0.5, 4500)), tm - 0.1, -14)
 
 # ---- close
 tc0 = E("ns4") + 1.0; title(tc0, 1.0, -8, sweep=False); title(tc0 + 1.4, 0.6, -13, sweep=False)
