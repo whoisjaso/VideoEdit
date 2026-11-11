@@ -10,6 +10,8 @@ from gfx import *
 import stick as K
 
 PLUS = skia.BlendMode.kPlus
+import os as _os
+AVATAR = skia.Image.open(_os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), 'brand', 'jason-avatar.png'))   # Jason: the character and the narrator
 
 # ------------------------------------------------------------------ the eye (#2, #26)
 def eye(c, W, H, t, pupil=0.36, push=0.0, amber=0.0, lum=1.0):
@@ -160,7 +162,7 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
         glow(c, tx, ty - th * 0.05, tw * 0.55, (255, 255, 255), 0.55 * lv, blend=skia.BlendMode.kSrcOver)
         perf, ball, bars = _performer(act, act_t, t)
         if prev is not None and act_k < 1: perf = K.blend(_performer(prev, act_t + 1.0, t)[0], perf, io_cubic(act_k))
-        K.draw(c, perf, tx, pyf, ph, DARK_FIG, 0.97, weight=0.04, soft=0.8, glow=False)
+        K.draw(c, perf, tx, pyf, ph, DARK_FIG, 0.97, weight=0.04, soft=0.8, glow=False, outfit="tank", t=t, dim=0.8)
         if ball is not None and act_k > 0.5: c.drawCircle(tx + ball[0] * ph, pyf - ball[1] * ph, ph * 0.045, paint(DARK_FIG, 0.95, stroke=max(2.0, ph * 0.03)))
         if bars:
             for i in range(7): bx = tx - tw * 0.36 + tw * 0.12 * i; c.drawLine(bx, ty - th / 2, bx, ty + th / 2, paint(DARK_FIG, 0.9 * io_cubic(act_k), stroke=max(2.5, tw * 0.012)))
@@ -212,11 +214,12 @@ def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
         glow(c, fx, base - fh * 0.62, fh * 0.42, (255, 246, 228), 0.42 * fl)
     # he walks in, and stands the way a person stands: never quite still
     sd = {"tank": 0.0, "hat": 2.1, "suit": 4.3}[kind]
-    idle = K.stand(t, sd, pockets=(kind == "tank"), carry=(kind == "suit"))
+    idle = K.stand(t, sd, pockets=False, carry=(kind == "suit"), smoke=(kind == "tank"))
+    if kind == "tank": idle["el_l"], idle["ha_l"] = K._limb(idle["sh_l"], -14, K.UARM, 16, K.FARM)        # one hand in a pocket
     pose = K.blend(K.walk_side(tin * 1.75, 1, 0.9), idle, io_cubic(ramp(tin, 0.85, 1.35)))
     ox = fx - (1 - out_quint(ramp(tin, 0.0, 1.15))) * fh * 0.62
     K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
-    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.042, soft=1.0, glow=False, hat=(kind == "hat"), tie=(kind == "suit"), case=(kind == "suit"))
+    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.036, soft=0.8, glow=False, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.72)
     linear(c, skia.Rect.MakeLTRB(-W, base - fh * 0.02, 2 * W, 2 * H), (0, base - fh * 0.02), (0, base + fh * 0.16), [col((4, 4, 5), 0), col((4, 4, 5), 0.85)])
     c.drawOval(skia.Rect.MakeLTRB(fx - fh * 0.22, base - fh * 0.012, fx + fh * 0.22, base + fh * 0.03), paint((0, 0, 0), 0.5, blur=8))
     c.restore()
@@ -283,9 +286,10 @@ def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25,
         z = fig_z; fx = px(fig_x, z); fy = py(z) - 0.02 * gh / z; fh = 1.72 * k / z
         a = clamp(1.3 - z / 26) * lum
         suit = fig_kind == "suit"                         # two gaits: one slouched and slow, one upright and brisk
-        pose = K.walk_front(t * (0.98 if suit else 0.8), energy=1.0 if suit else 0.7, slouch=0.0 if suit else 1.0, carry=suit, pockets=not suit)
-        K.draw(c, pose, fx, fy, fh, (255, 196, 140), 0.5 * a, weight=0.06, soft=max(2.0, fh * 0.012), glow=False)
-        K.draw(c, pose, fx, fy, fh, (232, 228, 220), a, weight=0.034, soft=max(0.5, fh * 0.003), glow=False, tie=suit, case=suit)
+        pose = K.walk_front(t * (0.98 if suit else 0.8), energy=1.0 if suit else 0.7, slouch=0.0 if suit else 1.0, carry=suit, smoke=not suit)
+        if not suit: pose["el_l"], pose["ha_l"] = K._limb(pose["sh_l"], -14, K.UARM, 16, K.FARM)
+        K.draw(c, pose, fx, fy, fh, (255, 196, 140), 0.45 * a, weight=0.06, soft=max(2.0, fh * 0.012), glow=False)
+        K.draw(c, pose, fx, fy, fh, (20, 18, 18), a, weight=0.034, soft=max(0.5, fh * 0.003), glow=False, case=suit, outfit="suit" if suit else "tank", t=t, smoke=not suit, dim=0.9)
     # what you are carrying: phone, watch, keys
     if max(props) > 0.002:
         pb = H * (1.0 if not vert else 0.90)
@@ -439,7 +443,7 @@ def three_rooms(c, W, H, t, lit=(1, 0, 0)):
         c.drawRect(skia.Rect.MakeXYWH(cx - tw / 2, cy - th / 2, tw, th), skia.Paint(Color=col(mix((16, 16, 20), mix(tint, (255, 255, 255), 0.25), lv))))
         glow(c, cx, cy - th * 0.05, tw * 0.5, (255, 255, 255), 0.5 * lv, blend=skia.BlendMode.kSrcOver)
         K.draw(c, K.stand(t, i * 1.7, pockets=(i == 0), carry=(i == 2)), cx, cy + th / 2 - th * 0.05, th * 0.84, DARK_FIG, 0.3 + 0.67 * a, weight=0.04, soft=0.8, glow=False,
-               hat=(i == 1), tie=(i == 2), case=(i == 2))
+               case=(i == 2), outfit=("tank", "hat", "suit")[i], t=t, dim=0.8)
         c.restore()
         rrect(c, cx - tw / 2, cy - th / 2, tw, th, tw * 0.025, paint((2, 2, 3), 0.9, stroke=tw * 0.014))
         vw = tw * (0.36 if not vert else 0.26); vb = cy + th / 2 + vw * (0.95 if not vert else 0.5)
@@ -459,7 +463,9 @@ def glass_room(c, W, H, t, refl=0.35, ghost=0.0):
     lean = math.sin(t * 0.9) * fh * 0.004
     for off, a in ((ghost * fh * 0.13, 0.42 * min(1, ghost * 3)), (0, 1.0)):
         if a <= 0.003: continue
-        K.draw(c, K.talker(t, 0.0 if off == 0 else 5.0), fx - off, fb - fh * 0.08, fh * 0.92, (16, 17, 21), 0.92 * a, weight=0.04, soft=fh * 0.006, glow=False, tie=True)
+        ah = fh * 0.98; aw = ah * AVATAR.width() / AVATAR.height(); sw_ = math.sin(t * 0.8 + (0 if off == 0 else 2.0)) * ah * 0.006
+        pp = skia.Paint(); pp.setAlphaf(0.9 * a)
+        c.drawImageRect(AVATAR, skia.Rect.MakeWH(AVATAR.width(), AVATAR.height()), skia.Rect.MakeXYWH(fx - off - aw / 2 + sw_, fb - fh * 0.06 - ah, aw, ah), skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear), pp)
     # glass: mullions and what the corridor throws back
     n = 4 if not vert else 3
     for i in range(n + 1):

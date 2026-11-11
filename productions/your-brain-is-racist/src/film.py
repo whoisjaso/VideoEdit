@@ -58,14 +58,29 @@ class Film:
     def drift(self, c, t, t0, t1, amt=0.035):
         s = 1 + amt * ramp(t, t0, t1); c.translate(self.W / 2, self.H / 2); c.scale(s, s); c.translate(-self.W / 2, -self.H / 2)
 
+    def jason(self, c, t, t_in, t_out, x, feet, h):
+        """Jason on screen: the narrator. He breathes and shifts his weight; he is not a sticker."""
+        a = appear(t, t_in, 0.8) * vanish(t, t_out, 0.5)
+        if a <= 0.003: return
+        im = P.AVATAR; w = h * im.width() / im.height(); p = out_quint(ramp(t, t_in, t_in + 0.9))
+        br = 1 + 0.006 * math.sin(t * 1.5); rot = 0.7 * math.sin(t * 0.55) + 0.25 * math.sin(t * 1.3)
+        c.drawOval(skia.Rect.MakeLTRB(x - w * 0.42, feet - h * 0.012, x + w * 0.42, feet + h * 0.02), paint((0, 0, 0), 0.6 * a, blur=10))
+        c.save(); c.translate(x, feet + (1 - p) * h * 0.05); c.rotate(rot); c.scale(1.0, br)
+        pp = skia.Paint(); pp.setAlphaf(a)
+        c.drawImageRect(im, skia.Rect.MakeWH(im.width(), im.height()), skia.Rect.MakeXYWH(-w / 2, -h, w, h), skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear), pp)
+        c.restore()
+
     def hook(self, c, t, ta, tb, dim_t, out_t):
         W, H, S = self.W, self.H, self.S; size = S(124, 84)
         dim = lerp(1, 0.42, io_sine(ramp(t, dim_t, dim_t + 0.6))) * vanish(t, out_t, 0.5)
         c.save(); self.drift(c, t, ta, out_t)
-        for txt, t0, y in (("Your brain is racist.", ta, H / 2 - size * 0.2), ("So is mine.", tb, H / 2 + size * 1.08)):
+        ty = H / 2 if not self.vert else H * 0.36
+        for txt, t0, y in (("Your brain is racist.", ta, ty - size * 0.2), ("So is mine.", tb, ty + size * 1.08)):
             p = appear(t, t0, 0.9)
             draw_text(c, txt, W / 2, y + (1 - p) * size * 0.12, size * (1.04 - 0.04 * p), 600, WHITE, p * dim, blur=(1 - p) * size * 0.1)
         c.restore()
+        if not self.vert: self.jason(c, t, tb + 0.15, out_t, W * 0.875, H * 0.95, H * 0.74)       # "So is mine": he means himself
+        else: self.jason(c, t, tb + 0.15, out_t, W * 0.5, H * 0.93, H * 0.4)
 
     # ---------------------------------------------------------------- the schedule
     def build(self):
@@ -493,7 +508,7 @@ class Film:
             return out
         def under(y, w): return seg(cx - w / 2, y, cx + w / 2, y)
         if name in ("hook", "close"):
-            w = S(620, 520) * (out_quint(ramp(t, 0.25, 1.4)) if name == "hook" else 1.0); y = cy + S(124, 84) * 1.72
+            w = S(620, 520) * (out_quint(ramp(t, 0.25, 1.4)) if name == "hook" else 1.0); y = (cy if not self.vert else H * 0.36) + S(124, 84) * 1.72
             if name == "close":                                    # down into the wordmark: the line becomes the middle bar of the E
                 zt = E("cl1") + 0.9; k = io_cubic(ramp(t, zt - 0.45, zt + 0.75)); _, m, _ = gfx.logo_geo(cx, cy, S(66, 58))
                 a_ = under(y, max(w, 2)); b_ = seg(m[0][0], m[0][1], m[1][0], m[1][1])

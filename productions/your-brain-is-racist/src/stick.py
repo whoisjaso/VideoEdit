@@ -7,7 +7,7 @@ import math
 import skia
 from gfx import *
 
-HEAD_R = 0.072; NECK = 0.845; SHO = 0.80; HIP = 0.50; UARM = 0.165; FARM = 0.155; THIGH = 0.25; SHIN = 0.25; SW = 0.105; HW = 0.055
+HEAD_R = 0.072; NECK = 0.845; SHO = 0.80; HIP = 0.50; UARM = 0.185; FARM = 0.175; THIGH = 0.25; SHIN = 0.25; SW = 0.105; HW = 0.055
 KEYS = ("head", "neck", "sh_l", "sh_r", "el_l", "el_r", "ha_l", "ha_r", "hip", "hip_l", "hip_r", "kn_l", "kn_r", "ft_l", "ft_r")
 
 def _limb(o, a1, l1, a2, l2):
@@ -51,7 +51,7 @@ def walk_side(ph, facing=1, energy=1.0):
     return side(arm_f=(-20 * energy * s, -20 * energy * s + 22), arm_b=(20 * energy * s, 20 * energy * s + 22), leg_f=lf, leg_b=lb,
                 lean=0.03 * energy, drop=0.012 + 0.014 * abs(c2), facing=facing)
 
-def walk_front(ph, energy=1.0, slouch=0.0, carry=False, pockets=False):
+def walk_front(ph, energy=1.0, slouch=0.0, carry=False, pockets=False, smoke=False):
     """Walking toward the camera: knees lift and foreshorten, hips sway, arms counter-swing, the body bobs twice a cycle."""
     s = math.sin(math.tau * ph)
     lift_l = max(0.0, s); lift_r = max(0.0, -s)
@@ -62,16 +62,24 @@ def walk_front(ph, energy=1.0, slouch=0.0, carry=False, pockets=False):
     al = (-9 - 7 * energy * lift_r, -6 + 16 * energy * lift_r); ar = (9 + 7 * energy * lift_l, 6 - 16 * energy * lift_l)
     if pockets: al, ar = (-14, 18), (14, -18)
     if carry: ar = (7, 3)
+    if smoke:
+        k = drag(ph / 0.8); ar = (lerp(ar[0], 122, k), lerp(ar[1], -68, k))
     p = front(arm_l=al, arm_r=ar, leg_l=ll, leg_r=lr, lean=-0.01 * s, drop=drop, sway=sway, sh_tilt=0.012 * s * energy,
               head=(0.004 * s, -0.035 * slouch), squash=(ql[0], ql[1], qr[0], qr[1]))
     if slouch: p["sh_l"] = (p["sh_l"][0] + 0.012, p["sh_l"][1] - 0.02 * slouch); p["sh_r"] = (p["sh_r"][0] - 0.012, p["sh_r"][1] - 0.02 * slouch)
     return p
 
-def stand(t, seed=0.0, pockets=False, carry=False):
+def drag(t, period=5.6):
+    """0..1: how far the cigarette hand is toward the mouth. Up, hold, down, rest."""
+    c_ = t % period; return io_cubic(ramp(c_, 0.9, 1.7)) * (1 - io_cubic(ramp(c_, 2.6, 3.5)))
+
+def stand(t, seed=0.0, pockets=False, carry=False, smoke=False):
     """Standing is not still: weight shifts, the chest breathes, the head drifts."""
     w = math.sin(t * 0.7 + seed); br = 0.004 * math.sin(t * 1.6 + seed)
     al, ar = ((-14, 18), (14, -18)) if pockets else ((-7 - 2 * w, -3), (7 - 2 * w, 3))
     if carry: ar = (6, 2)
+    if smoke:
+        k = drag(t + seed); ar = (lerp(10, 122, k), lerp(8, -68, k))
     return front(arm_l=al, arm_r=ar, leg_l=(-4 - 2 * w, -3 - 3 * max(0, w)), leg_r=(4 - 2 * w, 3 + 3 * max(0, -w)), sway=0.014 * w, drop=0.004 * abs(w) - br,
                  sh_tilt=0.008 * w, head=(0.012 * math.sin(t * 0.43 + seed * 2), 0.0), lean=0.006 * w)
 
@@ -107,25 +115,105 @@ def talker(t, seed=0.0, formal=1.0):
                  head=(0.008 * g, -0.008 * max(0, nod)), sway=0.008 * g2, lean=0.01 * g, sh_tilt=0.006 * g)
 
 # ------------------------------------------------------------------ drawing
-def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0, glow=True, hat=False, tie=False, case=False, extra=None, legs=True):
+TANK = (214, 212, 205); DENIM = (58, 70, 96); BAND = (176, 176, 184); SNEAK = (216, 214, 208); GOLD = (236, 184, 72)
+CHAR = (46, 48, 55); SHIRT = (226, 226, 222); TAN = (178, 150, 104); CLAY = (118, 82, 60); BOOT = (58, 40, 30)
+
+def _strip(pts, widths):
+    """A limb with thickness: a polygon that follows the joints."""
+    L, R = [], []
+    for i, (x, y) in enumerate(pts):
+        a = pts[min(i + 1, len(pts) - 1)]; b = pts[max(i - 1, 0)]; dx, dy = a[0] - b[0], a[1] - b[1]; d = math.hypot(dx, dy) or 1.0
+        nx, ny = -dy / d, dx / d; L.append((x + nx * widths[i], y + ny * widths[i])); R.append((x - nx * widths[i], y - ny * widths[i]))
+    return path_from(L + R[::-1])
+
+def draw(c, pose, x, y, h, color=(238, 236, 230), a=1.0, weight=0.034, soft=0.0, glow=True, hat=False, tie=False, case=False, extra=None, legs=True,
+         outfit=None, t=0.0, smoke=False, dim=1.0):
+    """outfit: None (bare stick), "tank" (tank top, sagging baggy jeans, earrings, chain), "hat" (brimmed hat, shirt, boots), "suit"."""
     if a <= 0.003: return
-    w = max(2.4, h * weight)
+    w = max(2.4, h * weight); ol = max(1.4, w * 0.45)
     P = lambda k: (x + pose[k][0] * h, y - pose[k][1] * h)
+    C = lambda rgb: tuple(v * dim for v in rgb)
+    def fill(path, rgb, outline=True):
+        c.drawPath(path, paint(C(rgb), a, blur=soft))
+        if outline: c.drawPath(path, paint(color, a, stroke=ol, blur=soft))
+    hx, hy = P("head"); r = HEAD_R * h; nk = P("neck"); hp = P("hip"); sl, sr = P("sh_l"), P("sh_r")
     path = skia.Path()
     def bone(*ks):
         path.moveTo(*P(ks[0]))
         for k in ks[1:]: path.lineTo(*P(k))
-    bone("neck", "hip"); bone("sh_l", "neck", "sh_r"); bone("sh_l", "el_l", "ha_l"); bone("sh_r", "el_r", "ha_r")
-    if legs: bone("hip_l", "hip", "hip_r"); bone("hip_l", "kn_l", "ft_l"); bone("hip_r", "kn_r", "ft_r")
-    hx, hy = P("head"); r = HEAD_R * h
+    if glow:
+        g = skia.Path(); g.moveTo(*nk); g.lineTo(*hp); g.addCircle(hx, hy, r)
+        c.drawPath(g, paint(color, 0.2 * a, stroke=w * 3.2, blur=w * 2.2 + soft))
+    # ---- legs
+    if legs:
+        if outfit in ("tank", "suit", "hat"):
+            sag = 0.055 * h if outfit == "tank" else 0.0
+            wl = (0.066, 0.062, 0.058) if outfit == "tank" else (0.04, 0.034, 0.03)
+            rgb = DENIM if outfit == "tank" else CHAR if outfit == "suit" else (70, 62, 54)
+            hl, hr = P("hip_l"), P("hip_r")
+            if outfit == "tank":                                  # the waistband of his shorts shows above the jeans
+                c.drawRect(skia.Rect.MakeLTRB(hl[0] - 0.062 * h, hp[1] - 0.012 * h, hr[0] + 0.062 * h, hp[1] + sag + 0.004 * h), paint(C(BAND), a, blur=soft))
+            seat = path_from([(hl[0] - wl[0] * h, hl[1] + sag), (hr[0] + wl[0] * h, hr[1] + sag), (hr[0] + wl[0] * h * 0.6, hr[1] + sag + 0.11 * h), (hp[0], hp[1] + sag + (0.15 if outfit == "tank" else 0.08) * h), (hl[0] - wl[0] * h * 0.6, hl[1] + sag + 0.11 * h)])
+            fill(seat, rgb, False)
+            for hj, kn, ft in ((hl, P("kn_l"), P("ft_l")), (hr, P("kn_r"), P("ft_r"))):
+                fill(_strip([(hj[0], hj[1] + sag), kn, ft], [wl[0] * h, wl[1] * h, wl[2] * h]), rgb)
+                if outfit == "tank":                              # denim stacked at the ankle
+                    for q in (0.03, 0.055): c.drawLine(ft[0] - wl[2] * h, ft[1] - q * h, ft[0] + wl[2] * h, ft[1] - q * h + 0.008 * h, paint(color, 0.7 * a, stroke=ol, blur=soft))
+                shoe = skia.Rect.MakeLTRB(ft[0] - 0.05 * h, ft[1] - 0.024 * h, ft[0] + 0.05 * h, ft[1] + 0.012 * h)
+                if outfit == "hat": c.drawRect(skia.Rect.MakeLTRB(ft[0] - 0.036 * h, ft[1] - 0.075 * h, ft[0] + 0.045 * h, ft[1] + 0.01 * h), paint(C(BOOT), a, blur=soft))
+                else: c.drawOval(shoe, paint(C(SNEAK if outfit == "tank" else (24, 22, 22)), a, blur=soft)); c.drawOval(shoe, paint(color, a, stroke=ol, blur=soft))
+            if outfit == "hat": c.drawCircle(hp[0], hp[1] + 0.006 * h, 0.013 * h, paint(C(GOLD), a))
+        else:
+            bone("hip_l", "hip", "hip_r"); bone("hip_l", "kn_l", "ft_l"); bone("hip_r", "kn_r", "ft_r")
+    # ---- torso
+    if outfit == "tank":
+        t_ = skia.Path(); bw = 0.082 * h; by = hp[1] + 0.03 * h
+        t_.moveTo(nk[0] - 0.062 * h, nk[1] + 0.004 * h)
+        t_.quadTo(sl[0] + 0.035 * h, sl[1] + 0.085 * h, nk[0] - 0.088 * h, sl[1] + 0.13 * h)          # armhole
+        t_.lineTo(hp[0] - bw, by); t_.lineTo(hp[0] + bw, by); t_.lineTo(nk[0] + 0.088 * h, sr[1] + 0.13 * h)
+        t_.quadTo(sr[0] - 0.035 * h, sr[1] + 0.085 * h, nk[0] + 0.062 * h, nk[1] + 0.004 * h)
+        t_.lineTo(nk[0] + 0.032 * h, nk[1] + 0.004 * h); t_.quadTo(nk[0], nk[1] + 0.12 * h, nk[0] - 0.032 * h, nk[1] + 0.004 * h); t_.close()
+        bone("sh_l", "neck", "sh_r"); c.drawPath(path, paint(color, a, stroke=w, blur=soft)); path = skia.Path()
+        fill(t_, TANK)
+        ch = skia.Path(); ch.moveTo(nk[0] - 0.03 * h, nk[1] + 0.012 * h); ch.quadTo(nk[0], nk[1] + 0.105 * h, nk[0] + 0.03 * h, nk[1] + 0.012 * h)
+        c.drawPath(ch, paint(C(GOLD), a, stroke=max(1.2, 0.008 * h), blur=soft))
+    elif outfit in ("suit", "hat"):
+        rgb = CHAR if outfit == "suit" else CLAY; j = skia.Path()
+        j.moveTo(sl[0] - 0.012 * h, sl[1] - 0.004 * h); j.lineTo(sr[0] + 0.012 * h, sr[1] - 0.004 * h); j.lineTo(hp[0] + 0.09 * h, hp[1] + 0.045 * h); j.lineTo(hp[0] - 0.09 * h, hp[1] + 0.045 * h); j.close()
+        fill(j, rgb)
+        if outfit == "suit":
+            v = path_from([(nk[0] - 0.036 * h, nk[1] + 0.002 * h), (nk[0] + 0.036 * h, nk[1] + 0.002 * h), (nk[0], nk[1] + 0.16 * h)]); fill(v, SHIRT, False)
+            c.drawPath(path_from([(nk[0] - 0.036 * h, nk[1]), (nk[0], nk[1] + 0.16 * h), (nk[0] + 0.036 * h, nk[1])], False), paint(color, a, stroke=ol, blur=soft))
+        else:
+            c.drawLine(nk[0], nk[1] + 0.01 * h, nk[0], hp[1] + 0.04 * h, paint(color, 0.8 * a, stroke=ol, blur=soft))
+        for sh_, el_, ha_ in ((sl, P("el_l"), P("ha_l")), (sr, P("el_r"), P("ha_r"))):                  # sleeves
+            pts = [sh_, el_, ha_] if outfit == "suit" else [sh_, ((sh_[0] + el_[0]) / 2, (sh_[1] + el_[1]) / 2 + 0.03 * h)]
+            fill(_strip(pts, [0.034 * h, 0.03 * h, 0.026 * h][:len(pts)]), rgb)
+        tie = tie or outfit == "suit"; hat = hat or outfit == "hat"
+    else:
+        bone("neck", "hip"); bone("sh_l", "neck", "sh_r")
+    # ---- arms, head, the rest
+    if outfit != "suit": bone("sh_l", "el_l", "ha_l"); bone("sh_r", "el_r", "ha_r")
     path.addCircle(hx, hy, r - w * 0.5)
     if hat:
-        path.moveTo(hx - r * 2.25, hy - r * 0.62); path.lineTo(hx + r * 2.25, hy - r * 0.62)
-        path.moveTo(hx - r * 0.95, hy - r * 0.62); path.lineTo(hx - r * 0.8, hy - r * 1.75); path.lineTo(hx + r * 0.8, hy - r * 1.75); path.lineTo(hx + r * 0.95, hy - r * 0.62)
+        hp_ = skia.Path(); hp_.addOval(skia.Rect.MakeLTRB(hx - r * 2.35, hy - r * 0.86, hx + r * 2.35, hy - r * 0.36))
+        hp_.addPath(path_from([(hx - r * 0.98, hy - r * 0.62), (hx - r * 0.82, hy - r * 1.82), (hx + r * 0.82, hy - r * 1.82), (hx + r * 0.98, hy - r * 0.62)]))
+        if outfit == "hat": fill(hp_, TAN)
+        else: path.addPath(hp_)
     if tie:
-        nx, ny = P("neck"); path.moveTo(nx, ny + w); path.lineTo(nx - 0.016 * h, ny + 0.1 * h); path.lineTo(nx, ny + 0.135 * h); path.lineTo(nx + 0.016 * h, ny + 0.1 * h); path.close()
+        path.moveTo(nk[0], nk[1] + w); path.lineTo(nk[0] - 0.016 * h, nk[1] + 0.1 * h); path.lineTo(nk[0], nk[1] + 0.135 * h); path.lineTo(nk[0] + 0.016 * h, nk[1] + 0.1 * h); path.close()
     if case:
         kx, ky = P("ha_r"); path.addRect(skia.Rect.MakeXYWH(kx - 0.075 * h, ky + 0.02 * h, 0.15 * h, 0.105 * h)); path.moveTo(kx - 0.03 * h, ky + 0.02 * h); path.lineTo(kx - 0.03 * h, ky); path.lineTo(kx + 0.03 * h, ky); path.lineTo(kx + 0.03 * h, ky + 0.02 * h)
     if extra is not None: path.addPath(extra)
-    if glow: c.drawPath(path, paint(color, 0.22 * a, stroke=w * 3.2, blur=w * 2.2 + soft))
     c.drawPath(path, paint(color, a, stroke=w, blur=soft))
+    for k in ("ha_l", "ha_r"): c.drawCircle(*P(k), w * 0.75, paint(color, a, blur=soft))                # hands
+    if outfit == "tank":
+        for sg in (-1, 1): c.drawCircle(hx + sg * (r + 0.004 * h), hy + r * 0.42, max(1.6, 0.013 * h), paint(C(GOLD), a))      # earrings
+    if smoke:                                                 # a cigarette, an ember, and smoke that drifts and thins
+        kx, ky = P("ha_r"); tx_, ty_ = kx - 0.012 * h, ky - 0.05 * h
+        c.drawLine(kx, ky - 0.006 * h, tx_, ty_, paint((236, 234, 228), a, stroke=max(1.6, 0.011 * h)))
+        c.drawCircle(tx_, ty_, max(1.4, 0.009 * h) * (1 + 0.3 * math.sin(t * 5)), paint((255, 140, 60), a))
+        for i in range(9):
+            age = (t * 0.33 + i / 9) % 1.0
+            sx = tx_ + (noise1(t * 0.5 + i * 3.1, 7 + i) * 0.05 + 0.03 * age) * h * (0.4 + age * 2.2); sy = ty_ - age * 0.42 * h
+            c.drawCircle(sx, sy, (0.012 + 0.05 * age) * h, paint((206, 206, 212), 0.2 * a * (1 - age) ** 1.3, blur=max(2.0, 0.02 * h)))
