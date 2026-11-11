@@ -129,7 +129,7 @@ class Film:
                     txt = tl.by[lid]["text"].rstrip(".").lower()
                     a = appear(t, T(lid), 0.4) * (lerp(1, 0.5, ramp(t, E(lid) + 0.1, E(lid) + 0.5)) if j < len(ids) - 1 else 1)
                     draw_text(c, txt, lx, ly + S(96, 78) + j * S(72, 60), S(54, 46), 500, WHITE, a * 0.9, align=al)
-            self.add("card_" + kind, a0, a1, lambda c, t, kind=kind, a0=a0, a1=a1: P.figure_wall(c, W, H, t, kind, push=ramp(t, a0, a1)), over, fin=0)
+            self.add("card_" + kind, a0, a1, lambda c, t, kind=kind, a0=a0, a1=a1: P.figure_wall(c, W, H, t, kind, push=ramp(t, a0, a1), tin=t - a0 + 0.36), over, fin=0)
 
         # 8 ---- the IAT: clean, clinical
         t0, t1 = bounds[3], T("st1") - 0.1
@@ -291,9 +291,15 @@ class Film:
         # 20-22 ---- the boy and the screen
         h0, h1 = T("od5") - X, T("od20")
         labs = ("od7", "od8", "od9", "od10"); mute |= set(labs) | {"od17", "od18", "od19"}
+        acts = [("rapper", T("od7")), ("athlete", T("od8")), ("dealer", T("od9")), ("cell", T("od10"))]
         def boy_plate(c, t):
-            P.room(c, W, H, t, viewer=lerp(0.15, 0.24, io_sine(ramp(t, T("od11"), E("od15")))), tv="sil", tv_scale=1.12,
-                   outline=ramp(t, T("od18") - 0.1, E("od18") + 0.5), seed=2)
+            act, at, prev = None, 0.0, None
+            for i, (nm, s0_) in enumerate(acts):
+                if t >= s0_ - 0.15: act, at, prev = nm, t - s0_ + 0.15, (acts[i - 1][0] if i else None)
+            if t > T("od11") + 0.4: prev, act, at = "cell", "rapper", t - T("od11") - 0.4      # it loops back to the first thing it showed him
+            P.room(c, W, H, t, viewer=lerp(0.15, 0.2, io_sine(ramp(t, T("od11"), E("od15")))), tv="sil", tv_scale=1.12, seed=2,
+                   act=act, act_t=at, prev=prev, act_k=ramp(at, 0.0, 0.35),
+                   grow=ramp(t, T("od14"), T("od15") + 0.6), mimic=ramp(t, T("od15") + 0.2, T("od17")), echo=ramp(t, T("od18") - 0.1, E("od18") + 0.5))
         def boy_over(c, t):
             lx = S(W * 0.755, cx); ly = H * S(0.27, 0.115); al = S("left", "center"); out = T("od11") - 0.15
             for j, lid in enumerate(labs):

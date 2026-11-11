@@ -7,6 +7,7 @@ Each function takes the canvas already scaled so it can draw in full-frame pixel
 import math, random
 import skia
 from gfx import *
+import stick as K
 
 PLUS = skia.BlendMode.kPlus
 
@@ -131,53 +132,66 @@ def tv_light(t, seed=0):
     lv = 0.74 + 0.2 * noise1(t * 6.5, 41 + seed) + 0.06 * noise1(t * 19, 42 + seed)
     return base, clamp(lv, 0.35, 1.0)
 
-def room(c, W, H, t, viewer=0.15, tv="abstract", sil="tank", outline=None, tv_scale=1.0, seed=0):
-    """A viewer seen from behind, lit only by a screen. viewer = shoulder width / W."""
+DARK_FIG = (7, 7, 9)
+def _performer(act, at, t):
+    """What the screen shows him. Returns pose, optional ball, bars flag."""
+    if act == "rapper": return K.rapper(at), None, False
+    if act == "athlete": p, ball = K.athlete(at); return p, ball, False
+    if act == "dealer": return K.dealer(at), None, False
+    if act == "cell": return K.cell(at), None, True
+    return K.stand(t, 1.0), None, False
+
+def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None, act_t=0.0, prev=None, act_k=1.0, grow=0.0, mimic=0.0, echo=0.0, **_):
+    """A stick figure seen from behind, lit only by a screen. With tv="sil" the screen shows a stick figure performing."""
     vert = H > W
     c.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((5, 5, 7))))
     tint, lv = tv_light(t, seed)
     tw = (0.36 if not vert else 0.66) * W * tv_scale; th = tw * 0.6
-    tx = W * (0.5 if vert else 0.52); ty = H * (0.36 if vert else 0.36)
+    tx = W * (0.5 if vert else 0.52); ty = H * 0.36
     glow(c, tx, ty, tw * 1.7, tint, 0.34 * lv); glow(c, tx, ty + th, tw * 1.3, tint, 0.12 * lv, sy=0.5)
-    # the screen
     c.save(); c.clipRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(tx - tw / 2, ty - th / 2, tw, th), tw * 0.02, tw * 0.02), True)
     c.drawRect(skia.Rect.MakeXYWH(tx - tw / 2, ty - th / 2, tw, th), skia.Paint(Color=col(mix(tint, (255, 255, 255), 0.25), 0.9 * lv)))
+    perf = None; ph = th * 0.84; pyf = ty + th / 2 - th * 0.05
     if tv == "abstract":
         for i in range(4):
             glow(c, tx + noise1(t * 0.5 + i * 7, 60 + i) * tw * 0.4, ty + noise1(t * 0.45 + i * 3, 70 + i) * th * 0.35, tw * 0.3,
                  [(255, 255, 255), (60, 80, 120), (40, 30, 30), (240, 220, 190)][i], 0.5, blend=skia.BlendMode.kSrcOver)
     else:
         glow(c, tx, ty - th * 0.05, tw * 0.55, (255, 255, 255), 0.55 * lv, blend=skia.BlendMode.kSrcOver)
-        c.drawPath(bust_path(tx, ty + th / 2 + 2, th * 0.92, "hat" if sil == "hat" else "plain"), paint((8, 8, 10), 0.96, blur=2.2))
+        perf, ball, bars = _performer(act, act_t, t)
+        if prev is not None and act_k < 1: perf = K.blend(_performer(prev, act_t + 1.0, t)[0], perf, io_cubic(act_k))
+        K.draw(c, perf, tx, pyf, ph, DARK_FIG, 0.97, weight=0.04, soft=0.8, glow=False)
+        if ball is not None and act_k > 0.5: c.drawCircle(tx + ball[0] * ph, pyf - ball[1] * ph, ph * 0.045, paint(DARK_FIG, 0.95, stroke=max(2.0, ph * 0.03)))
+        if bars:
+            for i in range(7): bx = tx - tw * 0.36 + tw * 0.12 * i; c.drawLine(bx, ty - th / 2, bx, ty + th / 2, paint(DARK_FIG, 0.9 * io_cubic(act_k), stroke=max(2.5, tw * 0.012)))
     c.restore()
     rrect(c, tx - tw / 2, ty - th / 2, tw, th, tw * 0.02, paint((2, 2, 3), 0.9, stroke=tw * 0.012))
-    # floor wash
     linear(c, skia.Rect.MakeLTRB(0, ty + th / 2, W, H), (0, ty + th / 2), (0, H), [col(tint, 0.10 * lv), col(tint, 0.0)], blend=PLUS)
-    # couch back
+    # the couch and the one watching
     cy0 = H * (0.70 if not vert else 0.66)
     couch = skia.Path(); couch.moveTo(-40, H + 40); couch.lineTo(-40, cy0 + 30)
     couch.cubicTo(W * 0.06, cy0 - 14, W * 0.2, cy0 - 20, W * 0.5, cy0 - 20)
     couch.cubicTo(W * 0.8, cy0 - 20, W * 0.94, cy0 - 14, W + 40, cy0 + 30); couch.lineTo(W + 40, H + 40); couch.close()
-    vx = W * (0.5 if vert else 0.47); vw = viewer * W * (1.0 if not vert else 1.75)
-    fig = bust_path(vx, cy0 + vw * 0.2, vw)
-    c.drawPath(fig, paint(tint, 0.5 * lv, blur=7, stroke=5))            # rim light from the screen
-    c.drawPath(fig, paint((7, 7, 9), 1.0, blur=1.6))
+    vx = W * (0.5 if vert else 0.47); vh = min(W, H) * (0.56 + (viewer - 0.13) * 2.0)
+    g = io_cubic(grow)
+    pose = K.blend(K.sit(t, seed), K.stand(t, seed + 2), g)
+    if mimic > 0 and perf is not None: pose = K.blend(pose, perf, io_cubic(mimic))
+    vy = cy0 + lerp(0.50, 0.40, g) * vh                     # where his feet would be, behind the couch
+    K.draw(c, pose, vx, vy, vh, tint, 0.6 * lv, weight=0.055, soft=3.5, glow=False)        # rim light from the screen
+    K.draw(c, pose, vx, vy, vh, DARK_FIG, 1.0, weight=0.036, soft=0.7, glow=False)
     c.drawPath(couch, paint(tint, 0.3 * lv, blur=6, stroke=4))
     c.drawPath(couch, paint((9, 9, 11), 1.0, blur=1.5))
-    if outline is not None and outline > 0.001:          # the screen's outline settling onto the viewer
-        e = io_cubic(outline)
-        ox = lerp(tx, vx, e); ob = lerp(ty + th / 2 + 2, cy0 + vw * 0.2, e); ow = lerp(th * 0.92, vw, e)
-        p = bust_path(ox, ob, ow)
-        c.drawPath(p, paint(WHITE, 0.55 * min(1, outline * 4), blur=8, stroke=7))
-        c.drawPath(p, paint(WHITE, 0.95 * min(1, outline * 4), stroke=3))
+    if echo > 0.001 and perf is not None:                  # the figure on the screen steps out of it and settles onto him
+        e = io_cubic(echo)
+        K.draw(c, perf, lerp(tx, vx, e), lerp(pyf, vy, e), lerp(ph, vh, e), WHITE, 0.95 * min(1, echo * 4), weight=0.03, soft=0.4)
     vignette(c, W, H, 0.9, 0.3)
 
 # ------------------------------------------------------------------ three backlit figures (#5-7)
-def figure_wall(c, W, H, t, kind="tank", push=0.0):
+def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
     vert = H > W
     s = 1 + 0.03 * push
     c.save(); c.translate(W / 2, H / 2); c.scale(s, s); c.translate(-W / 2, -H / 2)
-    fx = W * (0.3 if not vert else 0.5); base = H * (1.42 if not vert else 1.24); fh = H * (1.3 if not vert else 0.9)
+    fx = W * (0.3 if not vert else 0.5); base = H * (0.94 if not vert else 0.86); fh = H * (0.74 if not vert else 0.52)
     light = {"tank": (206, 196, 176), "hat": (218, 176, 124), "suit": (172, 192, 214)}[kind]
     c.drawRect(skia.Rect.MakeLTRB(-W, -H, 2 * W, 2 * H), skia.Paint(Color=col((16, 15, 15))))
     rng = random.Random({"tank": 1, "hat": 2, "suit": 3}[kind])
@@ -196,10 +210,15 @@ def figure_wall(c, W, H, t, kind="tank", push=0.0):
     else:
         glow(c, fx, base - fh * 0.58, fh * 0.9, light, 0.62 * fl)
         glow(c, fx, base - fh * 0.62, fh * 0.42, (255, 246, 228), 0.42 * fl)
-    fig = person_path(fx, base, fh, kind)
-    c.drawPath(fig, paint(light, 0.22, blur=14, stroke=10))
-    c.drawPath(fig, paint((5, 5, 6), 1.0, blur=6.5))
-    linear(c, skia.Rect.MakeLTRB(-W, H * 0.7, 2 * W, 2 * H), (0, H * 0.7), (0, H * 1.02), [col((4, 4, 5), 0), col((4, 4, 5), 0.9)])
+    # he walks in, and stands the way a person stands: never quite still
+    sd = {"tank": 0.0, "hat": 2.1, "suit": 4.3}[kind]
+    idle = K.stand(t, sd, pockets=(kind == "tank"), carry=(kind == "suit"))
+    pose = K.blend(K.walk_side(tin * 1.75, 1, 0.9), idle, io_cubic(ramp(tin, 0.85, 1.35)))
+    ox = fx - (1 - out_quint(ramp(tin, 0.0, 1.15))) * fh * 0.62
+    K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
+    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.042, soft=1.0, glow=False, hat=(kind == "hat"), tie=(kind == "suit"), case=(kind == "suit"))
+    linear(c, skia.Rect.MakeLTRB(-W, base - fh * 0.02, 2 * W, 2 * H), (0, base - fh * 0.02), (0, base + fh * 0.16), [col((4, 4, 5), 0), col((4, 4, 5), 0.85)])
+    c.drawOval(skia.Rect.MakeLTRB(fx - fh * 0.22, base - fh * 0.012, fx + fh * 0.22, base + fh * 0.03), paint((0, 0, 0), 0.5, blur=8))
     c.restore()
     vignette(c, W, H, 0.92, 0.28)
 
@@ -262,14 +281,11 @@ def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25,
     # the other person: out of focus, an outline only
     if fig_z is not None and fig_z > 0.55:
         z = fig_z; fx = px(fig_x, z); fy = py(z) - 0.02 * gh / z; fh = 1.72 * k / z
-        soft = max(3.0, fh * 0.05)
-        a = clamp(1.25 - z / 26) * lum
-        step = math.sin(walk * 5.2 + 1.3) * fh * 0.006
-        fig = person_path(fx, fy + step, fh, fig_kind)
-        c.drawPath(fig, paint((255, 190, 120), 0.14 * a, blur=soft * 2.2, stroke=soft * 1.2))
-        c.drawPath(fig, paint((3, 3, 4), 0.97 * a, blur=soft))
-        if fig_kind == "suit":                            # a pale collar, nothing more
-            c.drawOval(skia.Rect.MakeLTRB(fx - fh * 0.03, fy - fh * 0.83, fx + fh * 0.03, fy - fh * 0.7), paint((196, 200, 208), 0.3 * a, blur=soft * 0.9))
+        a = clamp(1.3 - z / 26) * lum
+        suit = fig_kind == "suit"                         # two gaits: one slouched and slow, one upright and brisk
+        pose = K.walk_front(t * (0.98 if suit else 0.8), energy=1.0 if suit else 0.7, slouch=0.0 if suit else 1.0, carry=suit, pockets=not suit)
+        K.draw(c, pose, fx, fy, fh, (255, 196, 140), 0.5 * a, weight=0.06, soft=max(2.0, fh * 0.012), glow=False)
+        K.draw(c, pose, fx, fy, fh, (232, 228, 220), a, weight=0.034, soft=max(0.5, fh * 0.003), glow=False, tie=suit, case=suit)
     # what you are carrying: phone, watch, keys
     if max(props) > 0.002:
         pb = H * (1.0 if not vert else 0.90)
@@ -422,14 +438,13 @@ def three_rooms(c, W, H, t, lit=(1, 0, 0)):
         c.save(); c.clipRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(cx - tw / 2, cy - th / 2, tw, th), tw * 0.025, tw * 0.025), True)
         c.drawRect(skia.Rect.MakeXYWH(cx - tw / 2, cy - th / 2, tw, th), skia.Paint(Color=col(mix((16, 16, 20), mix(tint, (255, 255, 255), 0.25), lv))))
         glow(c, cx, cy - th * 0.05, tw * 0.5, (255, 255, 255), 0.5 * lv, blend=skia.BlendMode.kSrcOver)
-        bw = th * (0.92 if kinds[i] != "wide" else 1.1)
-        fig = bust_path(cx, cy + th / 2 + 2, bw, "hat" if kinds[i] == "hat" else "plain")
-        c.drawPath(fig, paint((8, 8, 10), 0.3 + 0.66 * a, blur=2))
+        K.draw(c, K.stand(t, i * 1.7, pockets=(i == 0), carry=(i == 2)), cx, cy + th / 2 - th * 0.05, th * 0.84, DARK_FIG, 0.3 + 0.67 * a, weight=0.04, soft=0.8, glow=False,
+               hat=(i == 1), tie=(i == 2), case=(i == 2))
         c.restore()
         rrect(c, cx - tw / 2, cy - th / 2, tw, th, tw * 0.025, paint((2, 2, 3), 0.9, stroke=tw * 0.014))
         vw = tw * (0.36 if not vert else 0.26); vb = cy + th / 2 + vw * (0.95 if not vert else 0.5)
-        v = bust_path(cx, vb, vw)
-        c.drawPath(v, paint(tint, 0.5 * lv, blur=6, stroke=4)); c.drawPath(v, paint((7, 7, 9), 1, blur=1.5))
+        vh = tw * 0.6; ps = K.sit(t, i * 2.3); vb = cy + th / 2 + vh * 0.6
+        K.draw(c, ps, cx, vb + vh * 0.02, vh, tint, 0.6 * lv + 0.12, weight=0.06, soft=3, glow=False, legs=False); K.draw(c, ps, cx, vb + vh * 0.02, vh, DARK_FIG, 1, weight=0.038, soft=0.6, glow=False, legs=False)
     vignette(c, W, H, 0.9, 0.34)
 
 # ------------------------------------------------------------------ the glass room (#24)
@@ -444,8 +459,7 @@ def glass_room(c, W, H, t, refl=0.35, ghost=0.0):
     lean = math.sin(t * 0.9) * fh * 0.004
     for off, a in ((ghost * fh * 0.13, 0.42 * min(1, ghost * 3)), (0, 1.0)):
         if a <= 0.003: continue
-        fig = person_path(fx - off, fb, fh, "suit" if False else "plain", lean=lean)
-        c.drawPath(fig, paint((18, 19, 23), 0.9 * a, blur=fh * 0.016))
+        K.draw(c, K.talker(t, 0.0 if off == 0 else 5.0), fx - off, fb - fh * 0.08, fh * 0.92, (16, 17, 21), 0.92 * a, weight=0.04, soft=fh * 0.006, glow=False, tie=True)
     # glass: mullions and what the corridor throws back
     n = 4 if not vert else 3
     for i in range(n + 1):
