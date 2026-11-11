@@ -229,6 +229,8 @@ e_min = env(T("job1") - 0.4, SC["two"][0], 3.0, 2.5) + env(SC["news"][0], t_obs0
 e_dark = env(SC["street1"][0] + 6, SC["street1"][1], 6.0, 2.0) * 0.6 + env(SC["two"][0], t_stop1 + 0.5, 3.0, 1.0)
 e_maj = env(T("ns2") - 1.0, t_new1 + 0.4, 6.0, 1.6)
 BUS["music"] += (bed_min * e_min[:, None] + bed_dark * e_dark[:, None] + bed_maj * e_maj[:, None]) * duck(5)
+# one tone that never stops, first frame to last: the film is one continuum, and so is its floor
+BUS["music"] += rms_to(pad(((36.71, 1.0, 0.05), (55.0, 0.55, 0.07), (73.42, 0.2, 0.09)), END, 0.12), -35) * env(0.5, END - 0.6, 3.0, 2.5)[:, None]
 # a slow pulse under the two tense stretches: the street and the stop
 for a, b, g in ((T("st4"), T("st11") - 0.3, -24), (T("ts3"), E("ts22") + 0.3, -22)):
     t = a

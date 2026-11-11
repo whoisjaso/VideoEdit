@@ -26,7 +26,11 @@ class Film:
         self.build()
 
     def S(self, h, v): return v if self.vert else h
+    MOVE = 0.95        # seconds a camera move between two plates lasts
     def add(self, name, t0, t1, plate=None, over=None, fin=0.24, fout=0.0):
+        """Plates never cut. Each one arrives by the camera pushing out of the last and leaves by pushing into the next,
+        so every plate is extended on both sides to overlap its neighbours for the length of the move."""
+        if plate: t0, t1 = max(0.0, t0 - 0.36), t1 + 0.36
         self.scenes.append(dict(name=name, t0=t0, t1=t1, plate=plate, over=over, fin=fin, fout=fout))
 
     # ---------------------------------------------------------------- type helpers
@@ -171,6 +175,7 @@ class Film:
         self.walk0 = s0
         def fig1(t): return min(24.0, 20.0 - 1.55 * (t - T("st4")))
         camx = lambda t: -5.4 * io_cubic(ramp(t, T("st9") + 0.15, T("st10") + 2.4))
+        self._camx = camx
         def st1_plate(c, t):
             pr = tuple(window(t, Wn("st3", w), T("st4") + 0.4, 0.5, 0.6) for w in ("phone", "watch", "keys"))
             card = window(t, T("st11") - 0.4, E("st11") + 0.85, 0.5, 0.4)
@@ -445,25 +450,141 @@ class Film:
                 return
 
     # ---------------------------------------------------------------- one frame
+    # ---------------------------------------------------------------- the continuum
+    def focus(self, name):
+        """Where the camera pushes through each plate: always something dark or bright enough to swallow the frame."""
+        S = self.S
+        return {"eye": (0.5, 0.5), "observer": (0.5, 0.5), "screens": (0.5, 0.5), "news": (0.5, 0.5), "newscript": (0.5, 0.5),
+                "couch": (S(0.52, 0.5), 0.36), "boy": (S(0.52, 0.5), 0.36), "three": (0.5, S(0.4, 0.405)),
+                "card_tank": (S(0.3, 0.5), S(0.55, 0.6)), "card_hat": (S(0.3, 0.5), S(0.55, 0.6)), "card_suit": (S(0.3, 0.5), S(0.55, 0.6)),
+                "street1": (0.5, 0.45), "street2": (0.5, 0.45), "stop": (0.5, 0.5), "glass": (S(0.555, 0.5), S(0.55, 0.5))}.get(name, (0.5, 0.5))
+
+    def dust(self, c, t):
+        """One slow field of dust drifts through the whole film, so black is never empty and nothing resets."""
+        import random
+        W, H = self.W, self.H; rng = random.Random(99)
+        for i in range(46):
+            sp = rng.uniform(0.004, 0.014); x = (rng.random() - t * sp) % 1.0; y = (rng.random() + t * sp * 0.35 + 0.02 * math.sin(t * 0.3 + i)) % 1.0
+            r = rng.uniform(1.2, 3.4); a = rng.uniform(0.05, 0.13) * (0.6 + 0.4 * math.sin(t * rng.uniform(0.2, 0.7) + i))
+            c.drawCircle(x * W, y * H, r, paint((226, 226, 232), a, blur=r * 0.7))
+
+    def line_pts(self, name, t):
+        """The line's shape in each scene, as N points. It is the same line all the way through."""
+        W, H, S, tl = self.W, self.H, self.S, self.tl; cx, cy = W / 2, H / 2; N = 160; T, E = tl.T, tl.E
+        def seg(x0, y0, x1, y1): return [(x0 + (x1 - x0) * i / (N - 1), y0 + (y1 - y0) * i / (N - 1)) for i in range(N)]
+        def circ(x, y, r): return [(x + r * math.cos(-math.pi / 2 + math.tau * i / (N - 1)), y + r * math.sin(-math.pi / 2 + math.tau * i / (N - 1))) for i in range(N)]
+        def rect(x, y, w, h):
+            per = 2 * (w + h); out = []
+            for i in range(N):
+                d = per * i / (N - 1)
+                if d < w: out.append((x + d, y))
+                elif d < w + h: out.append((x + w, y + d - w))
+                elif d < 2 * w + h: out.append((x + w - (d - w - h), y + h))
+                else: out.append((x, y + h - (d - 2 * w - h)))
+            return out
+        def under(y, w): return seg(cx - w / 2, y, cx + w / 2, y)
+        if name in ("hook", "close"):
+            w = S(620, 520) * (out_quint(ramp(t, 0.25, 1.4)) if name == "hook" else 1.0); y = cy + S(124, 84) * 1.72
+            if name == "close":
+                zt = E("cl1") + 0.9; k = io_cubic(ramp(t, zt - 0.5, zt + 0.5)); w = lerp(w, 150, k); y = lerp(y, cy + 48, k)
+            return under(y, max(w, 2))
+        if name in ("eye", "observer"): return circ(cx, cy, 0.43 * min(W, H) * (1.02 + 0.07 * (ramp(t, T("job1"), T("pat1")) if name == "eye" else 0.6)))
+        if name in ("screens", "news"): w = W * S(0.3, 0.52); return rect(cx - w / 2, cy - w * 0.3, w, w * 0.6)
+        if name in ("couch", "boy"):
+            tw = W * S(0.36, 0.66) * (1.12 if name == "boy" else 1.0); th = tw * 0.6; tx = W * S(0.52, 0.5); ty = H * 0.36
+            return rect(tx - tw / 2, ty - th / 2, tw, th)
+        if name.startswith("card_"): return seg(W * 0.53, H * 0.33, W * 0.53, H * 0.66) if not self.vert else seg(W * 0.3, H * 0.092, W * 0.7, H * 0.092)
+        if name == "iat": return seg(W * S(0.14, 0.07), H * S(0.2, 0.25) + 72, W * S(0.86, 0.93), H * S(0.2, 0.25) + 72)
+        if name in ("street1", "street2"):                       # the curb you walk along
+            cam = self._camx(t) if name == "street1" else 0.0
+            k = W * S(0.40, 0.62); yh = H * S(0.45, 0.44); gh = H - yh
+            pts = [(cx + (-1.0 - cam) * k / z, yh + gh / z) for z in [0.55 * (60 / 0.55) ** (i / (N - 1)) for i in range(N)]]
+            if name == "street1":                                  # while the amber card is up, the line sits under it
+                kc = io_cubic(ramp(t, T("st11") - 0.5, T("st11") + 0.2)) * (1 - io_cubic(ramp(t, E("st11") + 0.5, E("st11") + 1.0)))
+                if kc > 0: u = under(cy + S(150, 190), S(760, 600)); pts = [(lerp(a[0], b[0], kc), lerp(a[1], b[1], kc)) for a, b in zip(pts, u)]
+            return pts
+        if name == "prediction": return under(cy + S(110, 90) + S(46, 40), S(760, 600))
+        if name in ("two", "stop"):
+            g = 1.0 if name == "stop" else 0.6
+            pts = seg(cx, cy - H * 0.5 * g, cx, cy + H * 0.5 * g) if not self.vert else seg(cx - W * 0.5 * g, cy, cx + W * 0.5 * g, cy)
+            if name == "two":                                      # under the title card, then up into the divider
+                kc = io_cubic(ramp(t, E("two3") + 0.15, E("two3") + 0.8))
+                if kc > 0: u = under(cy + S(86, 76), S(600, 500)); pts = [(lerp(a[0], b[0], kc), lerp(a[1], b[1], kc)) for a, b in zip(pts, u)]
+            return pts
+        if name == "otherdir": return circ(cx, cy - S(60, 80), S(104, 96))
+        if name == "three": return seg(W * 0.08, H * 0.74, W * 0.92, H * 0.74) if not self.vert else seg(W * 0.9, H * 0.1, W * 0.9, H * 0.72)
+        if name == "wave":
+            yc = cy - S(40, 60); wd = W * S(0.8, 0.9); return seg(cx - wd / 2, yc, cx + wd / 2, yc)
+        if name == "glass": return seg(W * 0.06, H * S(0.82, 0.68), W * 0.94, H * S(0.82, 0.68))
+        if name == "fault": return under(cy + S(86, 120), S(820, 640))
+        if name == "halfsecond": return seg(W * S(0.16, 0.08), H * S(0.54, 0.5), W * S(0.84, 0.92), H * S(0.54, 0.5))
+        if name == "newscript":
+            x = cx - W * S(0.09, 0.2); y = cy + H * S(0.2, 0.17) + 78; return seg(x, y, x + W * S(0.18, 0.4), y)
+        return under(cy, 300)
+
+    def the_line(self, c, t):
+        """One line, first frame to last. White while the script runs you; amber once the observer is watching."""
+        order = [s for s in self.scenes]; M = 1.2
+        idx = 0
+        for i, s in enumerate(order):
+            if t >= (s["t0"] + (0.36 if s["plate"] else 0.0)): idx = i
+        cur = order[idx]; pts = self.line_pts(cur["name"], t)
+        if idx + 1 < len(order):                                   # leaning into the next shape before the move
+            nb = order[idx + 1]["t0"] + (0.36 if order[idx + 1]["plate"] else 0.0)
+            k = io_cubic(ramp(t, nb - M / 2, nb + M / 2) * 0.5 * 2) if t > nb - M / 2 else 0.0
+            k = 0.5 * io_cubic(ramp(t, nb - M / 2, nb)) if t > nb - M / 2 else 0.0
+            if k > 0: q = self.line_pts(order[idx + 1]["name"], t); pts = [(lerp(a[0], b[0], k), lerp(a[1], b[1], k)) for a, b in zip(pts, q)]
+        if idx > 0:                                                # finishing the move out of the last shape
+            pb = cur["t0"] + (0.36 if cur["plate"] else 0.0)
+            k = 0.5 + 0.5 * io_cubic(ramp(t, pb, pb + M / 2))
+            if k < 1: q = self.line_pts(order[idx - 1]["name"], t); pts = [(lerp(b[0], a[0], k), lerp(b[1], a[1], k)) for a, b in zip(pts, q)]
+        tl = self.tl; amb = io_sine(ramp(t, tl.T("ob1") - 0.2, tl.T("ob2") + 1.0))
+        amb = max(amb, io_sine(ramp(t, tl.T("ts20"), tl.T("ts20") + 0.8)) * (1 - io_sine(ramp(t, tl.E("ts22") + 0.3, tl.E("ts22") + 1.2))))
+        colr = mix(WHITE, AMBER, amb); a = appear(t, 0.2, 0.6) * (1 - ramp(t, tl.end - 0.5, tl.end - 0.45))
+        p = skia.Path(); p.moveTo(*pts[0])
+        for q in pts[1:]: p.lineTo(*q)
+        c.drawPath(p, paint(colr, 0.28 * a, stroke=12, blur=7, blend=skia.BlendMode.kPlus))
+        c.drawPath(p, paint(colr, 0.95 * a, stroke=3.2))
+
+    # ---------------------------------------------------------------- one frame
     def frame(self, n, grain=True):
-        t = n / FPS; W, H = self.W, self.H; c = self.main.getCanvas()
+        t = n / FPS; W, H = self.W, self.H; c = self.main.getCanvas(); D = self.MOVE
         c.clear(col(BLACK))
         for s in self.scenes:
             if not (s["t0"] <= t < s["t1"]): continue
-            a = (io_sine(ramp(t, s["t0"], s["t0"] + s["fin"])) if s["fin"] > 0 else 1.0) * ((1 - io_sine(ramp(t, s["t1"] - s["fout"], s["t1"]))) if s["fout"] > 0 else 1.0)
-            if a <= 0.002: continue
             if s["plate"]:
+                # arrive by pulling out of a point, leave by pushing into one: the cut is a camera move
+                first = s["t0"] <= 0.001
+                kin = 1.0 if first else io_cubic(ramp(t, s["t0"], s["t0"] + D)); kout = in_cubic(ramp(t, s["t1"] - D, s["t1"])) if s["t1"] < self.tl.end - 0.01 else 0.0
+                a = clamp(kin * 1.6) * (1 - clamp(kout * 1.5 - 0.5) if kout > 0 else 1.0)
+                if a <= 0.002: continue
+                sc = lerp(0.34, 1.0, out_quint(ramp(t, s["t0"], s["t0"] + D)) if not first else 1.0) * lerp(1.0, 3.4, kout)
+                fx, fy = self.focus(s["name"]); fx *= W; fy *= H
                 pc = self.ps.getCanvas(); pc.save(); pc.clear(col((0, 0, 0))); pc.scale(0.5, 0.5)
                 vp = self.video_plate(s["name"])
                 if vp: vp.draw(pc, W, H, t - s["t0"], s["t1"] - s["t0"], amber=1.0 if s["name"] == "observer" else 0.0)
                 else: s["plate"](pc, t)
                 pc.restore()
                 p = skia.Paint(); p.setAlphaf(a)
-                c.drawImageRect(self.ps.makeImageSnapshot(), skia.Rect.MakeWH(W // 2, H // 2), skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.CubicResampler.Mitchell()), p)
-            if s["over"]:
-                if a < 0.998: c.saveLayerAlpha(None, int(a * 255))
+                c.save(); c.translate(fx, fy); c.scale(sc, sc); c.translate(-fx, -fy)
+                if sc < 0.999:                                         # while it is still small, hold it in a soft iris so no edge shows
+                    mm = skia.Matrix(); mm.setScale(W / 2, H / 2); mm.postTranslate(W / 2, H / 2)      # an ellipse that dies before any edge
+                    sh = skia.GradientShader.MakeRadial((0, 0), 1.0, [col((255, 255, 255), a), col((255, 255, 255), a), col((255, 255, 255), 0)], [0, 0.45, 0.96], skia.TileMode.kClamp, 0, mm)
+                    c.saveLayer(None, None)
+                    c.drawImageRect(self.ps.makeImageSnapshot(), skia.Rect.MakeWH(W // 2, H // 2), skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.CubicResampler.Mitchell()))
+                    mp = skia.Paint(Shader=sh); mp.setBlendMode(skia.BlendMode.kDstIn); c.drawRect(skia.Rect.MakeLTRB(-W, -H, 2 * W, 2 * H), mp); c.restore()
+                else:
+                    c.drawImageRect(self.ps.makeImageSnapshot(), skia.Rect.MakeWH(W // 2, H // 2), skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.CubicResampler.Mitchell()), p)
+                c.restore()
+                ao = clamp(kin * 2.2 - 1.2) * (1 - clamp(kout * 3.0))    # type steps aside for the move
+            else:
+                ao = (io_sine(ramp(t, s["t0"], s["t0"] + s["fin"])) if s["fin"] > 0 else 1.0) * ((1 - io_sine(ramp(t, s["t1"] - s["fout"], s["t1"]))) if s["fout"] > 0 else 1.0)
+            if s["over"] and ao > 0.002:
+                if ao < 0.998: c.saveLayerAlpha(None, int(ao * 255))
                 else: c.save()
                 s["over"](c, t); c.restore()
+        self.dust(c, t)
+        self.the_line(c, t)
         self.captions(c, t)
         if grain: self.grain.draw(c, n)
         return self.main
