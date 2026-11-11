@@ -4,7 +4,7 @@ One narrated motion-graphic film for olaceo, in 16:9 and 9:16. Start with `REPOR
 
 | What | Where |
 |---|---|
-| Masters and cuts (Git LFS) | `../../renders/your-brain-is-racist-*-v2.mp4` (v1 kept for comparison) |
+| Masters and cuts (Git LFS) | `../../renders/your-brain-is-racist-*-v3.mp4` (v1, v2 kept for comparison); six 9:16 parts in `../../renders/parts/` |
 | Narration track, final mix | `audio/narration.flac`, `audio/master_mix.flac` |
 | Captions | `captions/your-brain-is-racist.en.srt` |
 | Thumbnails | `thumbnails/` (three designs, 1280x720 and 1080x1350) |

@@ -1,3 +1,44 @@
+# Report: "Your brain is racist. So is mine." (v3)
+
+Built 2026-11-11 for Jason Obawemimo, olaceo. **Nothing is posted. Nothing posts without Jason's OK.**
+v3 changes the voices and adds the short-form parts. Picture, sound design and script are v2's; the v2 and v1 reports follow and are still accurate for what they describe.
+
+## v3 at a glance
+
+| Deliverable | File | Spec |
+|---|---|---|
+| 16:9 master | `renders/your-brain-is-racist-16x9-v3.mp4` | 1920x1080, 60/1 fps, 26,737 frames, 7:26, H.264 + AAC 320k, -13.8 LUFS, true peak -4.8 dB |
+| 9:16 master | `renders/your-brain-is-racist-9x16-v3.mp4` | 1080x1920 native, same length and levels |
+| Six 9:16 parts | `renders/parts/your-brain-is-racist-9x16-part{1..6}-*.mp4` | 0:45 to 1:52 each, every one ends with the line becoming the E in OLACEO; -13.7 to -13.9 LUFS, peaks -4.8 dB or lower |
+| Follow-up cuts | `renders/your-brain-is-racist-cut-{traffic-stop,code-switching}-{16x9,9x16}.mp4` | re-cut from v3 |
+| Audio previews | `audio/preview_v3_mix.mp3`, `audio/preview_v3_voices_only.mp3` | |
+| Frame overviews | `stills/final_16x9.jpg`, `stills/final_9x16.jpg`, `stills/parts_sheet.jpg` | from the finished files |
+
+## Voices (ElevenLabs, model `eleven_v4`)
+
+| Role | Voice | Where |
+|---|---|---|
+| Narrator | Brian | throughout |
+| Officer's inner script | Adam, left | 3:06 |
+| Driver's inner script | Will, right | 3:22 |
+| The kid's brain ("See? Told you. That's us.") | Liam | 5:01 |
+| Police radio | Adam (officer), Sarah (dispatch) | from 2:55 |
+
+- The words are unchanged from v2 (`narration-as-recorded.txt`); only who speaks them changed. A recognizer confirmed 99.0% of words.
+- Timing comes from ElevenLabs' own word timestamps; picture, captions and sound all re-timed from them.
+- Every take is cached in `audio/el_cache/`, so a rebuild costs no characters. Swapping one voice re-records only that role's lines (`src/narrate.py`, `EL_VOICES` and `CAST`).
+- Cost: 4,893 of the account's 10,000 monthly characters.
+- **Before posting:** the account is on ElevenLabs' free plan, which is non-commercial and requires attribution. Move it to a paid plan first. A paid plan also allows cloning Jason's own voice, which would then be a one-line change here.
+- The API key was entered through the secure form and is not in the repository.
+
+## Open for Jason
+
+- Whether each voice is right. They were chosen from descriptions, not by ear.
+- Parts 1, 3 and 4 run longer than 60 seconds.
+- Thumbnails still show the v1 look, not the new characters.
+
+---
+
 # Report: "Your brain is racist. So is mine." (v2)
 
 Built 2026-11-11 for Jason Obawemimo, olaceo. **Nothing is posted. Nothing posts without Jason's OK.**
