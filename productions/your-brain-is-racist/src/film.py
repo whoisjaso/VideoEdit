@@ -417,9 +417,12 @@ class Film:
         zt = E("cl1") + 0.9
         def close_over(c, t):
             self.hook(c, t, tc0, tc0 + 1.4, T("cl1"), E("cl1") + 0.55)
-            if t >= zt and t < tl.end - 0.5:
-                p = appear(t, zt, 0.7)
-                draw_text(c, "olaceo", cx, cy + 14 + (1 - p) * 6, 46 * (1 + 0.02 * ramp(t, zt, tl.end)), 600, WHITE, p, track=0.02, blur=(1 - p) * 5, caps=False)
+            if t >= zt - 0.2 and t < tl.end - 0.5:                 # the exit: the OLACEO wordmark. The line arrives as the E's middle bar.
+                p = appear(t, zt, 0.9); lock = io_cubic(ramp(t, zt + 0.35, zt + 0.95))
+                c.save(); self.drift(c, t, zt, tl.end, 0.02)
+                gfx.draw_logo(c, cx, cy, S(66, 58), p, mid=False)
+                gfx.draw_logo(c, cx, cy, S(66, 58), lock, mid=True)
+                c.restore()
         self.add("close", tc0 - 0.1, tl.end, None, close_over, fin=0)
         self.cues.update(sub=0.6, settle=zt, bed=[(T("job1") - 0.3, T("ob1") - 0.3), (T("hs0"), o1 + 0.3)],
                          hiss=[(T("pat1") - X, T("cul1") + 0.3, 1.0), (f0, f1 + 0.3, 0.6), (o0, o1, 0.55)], end=tl.end)
@@ -485,8 +488,10 @@ class Film:
         def under(y, w): return seg(cx - w / 2, y, cx + w / 2, y)
         if name in ("hook", "close"):
             w = S(620, 520) * (out_quint(ramp(t, 0.25, 1.4)) if name == "hook" else 1.0); y = cy + S(124, 84) * 1.72
-            if name == "close":
-                zt = E("cl1") + 0.9; k = io_cubic(ramp(t, zt - 0.5, zt + 0.5)); w = lerp(w, 150, k); y = lerp(y, cy + 48, k)
+            if name == "close":                                    # down into the wordmark: the line becomes the middle bar of the E
+                zt = E("cl1") + 0.9; k = io_cubic(ramp(t, zt - 0.45, zt + 0.75)); _, m, _ = gfx.logo_geo(cx, cy, S(66, 58))
+                a_ = under(y, max(w, 2)); b_ = seg(m[0][0], m[0][1], m[1][0], m[1][1])
+                return [(lerp(p[0], q[0], k), lerp(p[1], q[1], k)) for p, q in zip(a_, b_)]
             return under(y, max(w, 2))
         if name in ("eye", "observer"): return circ(cx, cy, 0.43 * min(W, H) * (1.02 + 0.07 * (ramp(t, T("job1"), T("pat1")) if name == "eye" else 0.6)))
         if name in ("screens", "news"): w = W * S(0.3, 0.52); return rect(cx - w / 2, cy - w * 0.3, w, w * 0.6)
@@ -540,7 +545,9 @@ class Film:
             if k < 1: q = self.line_pts(order[idx - 1]["name"], t); pts = [(lerp(b[0], a[0], k), lerp(b[1], a[1], k)) for a, b in zip(pts, q)]
         tl = self.tl; amb = io_sine(ramp(t, tl.T("ob1") - 0.2, tl.T("ob2") + 1.0))
         amb = max(amb, io_sine(ramp(t, tl.T("ts20"), tl.T("ts20") + 0.8)) * (1 - io_sine(ramp(t, tl.E("ts22") + 0.3, tl.E("ts22") + 1.2))))
-        colr = mix(WHITE, AMBER, amb); a = appear(t, 0.2, 0.6) * (1 - ramp(t, tl.end - 0.5, tl.end - 0.45))
+        zt = tl.E("cl1") + 0.9; home = io_cubic(ramp(t, zt - 0.2, zt + 0.8))          # at the exit it settles into the mark: white, and the mark's own weight
+        amb *= 1 - home
+        colr = mix(WHITE, AMBER, amb); a = appear(t, 0.2, 0.6) * (1 - ramp(t, tl.end - 0.5, tl.end - 0.45)) * (1 - 0.999 * io_cubic(ramp(t, zt + 0.7, zt + 1.0)))
         p = skia.Path(); p.moveTo(*pts[0])
         for q in pts[1:]: p.lineTo(*q)
         c.drawPath(p, paint(colr, 0.28 * a, stroke=12, blur=7, blend=skia.BlendMode.kPlus))

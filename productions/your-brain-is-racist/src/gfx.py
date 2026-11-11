@@ -217,3 +217,28 @@ class Grain:
         r = skia.Rect.MakeWH(self.W, self.H)
         p = skia.Paint(Shader=sh); p.setBlendMode(skia.BlendMode.kOverlay); p.setAlphaf(a_overlay); c.drawRect(r, p)
         p = skia.Paint(Shader=sh); p.setBlendMode(skia.BlendMode.kScreen); p.setAlphaf(a_lift); c.drawRect(r, p)
+
+
+# ---------- the OLACEO wordmark (the exit card) ----------
+def logo_geo(cx, cy, h):
+    """Geometry of the wordmark, redrawn from Jason's reference (brand/olaceo-wordmark-reference.jpg): thin monoline caps,
+    wide spacing, an A with no crossbar and an E made of three bars. Returns strokes and the E's middle bar."""
+    w = 0.1 * h; gap = 0.44 * h; r = (h - w) / 2
+    widths = [h, 0.6 * h, 0.84 * h, 0.9 * h, 0.62 * h, h]
+    total = sum(widths) + gap * 5; x = cx - total / 2; top = cy - h / 2 + w / 2; bot = cy + h / 2 - w / 2
+    out = []; xs = []
+    for wd in widths: xs.append(x); x += wd + gap
+    o1 = skia.Path(); o1.addCircle(xs[0] + h / 2, cy, r); out.append(o1)
+    l = skia.Path(); l.moveTo(xs[1] + w / 2, cy - h / 2); l.lineTo(xs[1] + w / 2, bot); l.lineTo(xs[1] + widths[1], bot); out.append(l)
+    a = skia.Path(); a.moveTo(xs[2] + w * 0.3, cy + h / 2); a.lineTo(xs[2] + widths[2] / 2, top - w * 0.15); a.lineTo(xs[2] + widths[2] - w * 0.3, cy + h / 2); out.append(a)
+    c_ = skia.Path(); c_.addArc(skia.Rect.MakeLTRB(xs[3] + w / 2, cy - r, xs[3] + w / 2 + 2 * r, cy + r), 43, 274); out.append(c_)
+    e = skia.Path(); e.moveTo(xs[4], top); e.lineTo(xs[4] + widths[4], top); e.moveTo(xs[4], bot); e.lineTo(xs[4] + widths[4], bot); out.append(e)
+    o2 = skia.Path(); o2.addCircle(xs[5] + h / 2, cy, r); out.append(o2)
+    mid = ((xs[4], cy), (xs[4] + widths[4], cy))
+    return out, mid, w
+
+def draw_logo(c, cx, cy, h, a=1.0, color=WHITE, mid=True):
+    paths, m, w = logo_geo(cx, cy, h)
+    p = skia.Paint(AntiAlias=True, Color=col(color, a)); p.setStyle(skia.Paint.kStroke_Style); p.setStrokeWidth(w); p.setStrokeJoin(skia.Paint.kMiter_Join); p.setStrokeMiter(8)
+    for q in paths: c.drawPath(q, p)
+    if mid: c.drawLine(m[0][0], m[0][1], m[1][0], m[1][1], p)
