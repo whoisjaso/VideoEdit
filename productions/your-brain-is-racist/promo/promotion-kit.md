@@ -12,7 +12,7 @@ Nothing here is posted. Every line waits for Jason's OK.
 >
 > Eight minutes on the script you didn't write, how it makes two strangers dangerous to each other, and the half-second where you get to decide anyway.
 
-The brief's copy said "Five minutes". The film runs 7:47, so the line says eight. If the script is cut to hit 5:30, change it back.
+The brief's copy said "Five minutes". The film runs 7:43, so the line says eight. If the script is cut to hit 5:30, change it back.
 
 **Instagram / TikTok / Shorts** (9:16 cut, thumbnail 01 at 1080x1350)
 
@@ -28,16 +28,16 @@ Three hashtags, none in the first line. Reels over 3 minutes and TikTok over 10 
 **YouTube title:** Your brain is racist. So is mine.
 **Chapters (Title Case, house rule):**
 0:00 Your Brain Is Racist
-0:15 One Job
-0:45 Where The Script Came From
-1:25 You Don't. Your Brain Does.
-1:53 The Street
-2:54 Two Scripts, One Traffic Stop
-4:26 The Other Direction
-5:41 The Voice You Use In The Interview
-6:23 Whose Fault Is This
-6:36 The Observer
-7:11 The New Script
+0:14 One Job
+0:44 Where The Script Came From
+1:21 You Don't. Your Brain Does.
+1:50 The Street
+2:52 Two Scripts, One Traffic Stop
+4:27 The Other Direction
+5:42 The Voice You Use In The Interview
+6:21 Whose Fault Is This
+6:34 The Observer
+7:09 The New Script
 
 ## The pinned first comment (Jason posts it himself, as text)
 
@@ -60,13 +60,13 @@ This matches the narration as recorded ("thousands of hours", not "ten thousand 
 
 File: `renders/your-brain-is-racist-cut-traffic-stop-9x16.mp4` (and 16:9)
 Caption: **Two men. Neither one has done anything.**
-The brief asked for 60 seconds. The section as written runs 73 seconds and loses its logic if either man's script is trimmed, so the cut is delivered whole. To reach 60, drop the two "he doesn't know he did…" lines (ts7 and ts13) in a re-record.
+The brief asked for 60 seconds. The section as written runs 75 seconds and loses its logic if either man's script is trimmed, so the cut is delivered whole. To reach 60, drop the two "he doesn't know he did…" lines (ts7 and ts13) in a re-record.
 
 ## Post 3 (day 5): the switch
 
 File: `renders/your-brain-is-racist-cut-code-switching-9x16.mp4` (and 16:9)
 Caption: **The voice you use in the interview.**
-Runs 42 seconds (brief asked for 45).
+Runs 39 seconds (brief asked for 45).
 
 ## What not to do
 

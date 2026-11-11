@@ -4,7 +4,7 @@ One narrated motion-graphic film for olaceo, in 16:9 and 9:16. Start with `REPOR
 
 | What | Where |
 |---|---|
-| Masters and cuts (Git LFS) | `../../renders/your-brain-is-racist-*.mp4` |
+| Masters and cuts (Git LFS) | `../../renders/your-brain-is-racist-*-v2.mp4` (v1 kept for comparison) |
 | Narration track, final mix | `audio/narration.flac`, `audio/master_mix.flac` |
 | Captions | `captions/your-brain-is-racist.en.srt` |
 | Thumbnails | `thumbnails/` (three designs, 1280x720 and 1080x1350) |
@@ -18,7 +18,8 @@ One narrated motion-graphic film for olaceo, in 16:9 and 9:16. Start with `REPOR
 Needs Python 3.10+, ffmpeg, Inter and JetBrains Mono installed, and `pip install skia-python numpy scipy soundfile faster-whisper kokoro-onnx`.
 
 ```bash
-python3 src/narrate.py build --voice am_michael --speed 0.92   # scratch narrator -> audio/narration_dry.wav + timeline.json
+python3 src/narrate.py build_cb                                # expressive narrator (Chatterbox) -> audio/narration_dry.wav + timeline.json
+                                                                # then ease the tempo 6%: see REPORT.md
 python3 src/film.py cues                                        # scene clock -> cues.json, scenes.json, captions/*.srt
 src/master.sh                                                   # sound design + master -> audio/master_mix.wav
 src/render.sh h /tmp/work && src/render.sh v /tmp/work          # picture, 60 fps, both aspects
