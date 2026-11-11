@@ -1,3 +1,6 @@
 audio/*.wav
 audio/build.log
+audio/stems/
+audio/licensed/*
+!audio/licensed/README.txt
 __pycache__/

@@ -29,13 +29,23 @@ v2 answers Jason's notes on v1. The v1 report follows below and is still accurat
 | Extremely visual, extremely psychological | Brackets and tags lock onto the stranger (TANK TOP, PANTS LOW, BLACK, THREAT / SUIT, CLEAN SHAVEN, WHITE, SAFE). His shadow looms as the prediction while he just walks. The TV figure hangs on strings, then so does the boy. Payoff: the two men walk the one line toward each other, pass, nod; nobody crosses; each step leaves an amber mark. |
 | Text masking | Card titles fill the wall behind the figure. PREDICTION., CULTIVATION and A TRAFFIC STOP are windows with picture inside the letters. |
 
+## The traffic stop's sound (added after v2's first pass)
+
+Jason asked for the driver's music to feel real and deep, naming Bloodhound Q50. That artist's recording is **not** in the film:
+it is copyrighted, there was no licensed source, and embedding it is what gets a post muted or removed. What is there instead:
+
+- **An original beat** written in `src/mix.py` (`trap_beat`): sliding 808s, a half-time clap, rolling hats, a dark bell line. It is not a recreation of any song.
+- **Car and distance.** Heard from the cruiser it is mostly sub, with the trunk and panels rattling on every 808 and almost no highs.
+- **Perspective.** The sound follows whose head the picture is in. Officer: music muffled and ahead, his radio and light-bar relay crisp. Driver: the beat is full and loud for a moment, he turns it down, and the police radio becomes the muffled thing behind him.
+- **A slot for a real track.** Put a song Jason owns or has licensed at `audio/licensed/car_music.wav` (or .flac/.mp3/.m4a) and the mix uses it automatically, with the same muffling and perspective. That folder is never committed.
+
 ## Measurements (v2)
 
 | Check | Result | Bar |
 |---|---|---|
 | Frame rate and count | 60/1; 27,784 frames = 463.07 s x 60, both masters | exact |
 | Loudness | −13.8 LUFS masters; −13.7 on the four cuts | −14 ± 0.5 |
-| True peak in the MP4 | −5.3 dBTP masters; −5.4 / −5.5 cuts | ≤ −4 |
+| True peak in the MP4 | −5.2 dBTP masters; −5.4 / −5.5 cuts | ≤ −4 |
 | Speech through the new mix | 98.9% word match, mix vs voice-only | ≥ 98% |
 | Narration accuracy | 98.2% of words confirmed by the recognizer; the six weakest paragraphs were read back and are word-accurate | |
 | Voice vs world | background 11.6 dB under the voice while he speaks (10th percentile 7.8), 5.3 dB under in the pauses | ≥ 12 dB target while speaking |

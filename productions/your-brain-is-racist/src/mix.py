@@ -180,6 +180,48 @@ def car_music(dur, bpm=88):
             if i + m < n: out[i:i + m] += 0.1 * bp(noise(m), 2500, 6000) * np.exp(-np.arange(m) / (0.008 * SR))
         t += beat * 4; k += 1
     return bp(np.tanh(out * 1.5), None, 240, 3) + 0.15 * bp(out, 240, 900)
+def trap_beat(dur, bpm=140):
+    """An original beat in the lane of what he would be playing: sliding 808s, a half-time clap, rolling hats, a dark bell line.
+    Written here from scratch. It is not a recreation of any song."""
+    n = secs(dur) + SR; out = np.zeros(n); beat = 60 / bpm; bar = beat * 4; r = np.random.default_rng(5)
+    roots = [43.65, 43.65, 51.91, 38.89]; mel = [349.23, 415.30, 523.25, 415.30, 622.25, 523.25, 415.30, 311.13]
+    def add(x, t):
+        i = secs(t)
+        if 0 <= i < n: k_ = min(len(x), n - i); out[i:i + k_] += x[:k_]
+    nb = int(dur / bar) + 1
+    for bi in range(nb):
+        t0 = bi * bar; f = roots[bi % 4]
+        for k_, (off_, ln, gl) in enumerate(((0.0, 2.2, 0), (2.5, 1.2, 0), (3.75, 0.25, 1 if bi % 2 else 0))):       # 808: long, saturated, sometimes sliding up
+            m = secs(ln * beat); x = np.arange(m) / SR; fr = f * (1 + (0.5 * gl) * np.clip(x / (ln * beat), 0, 1) ** 2)
+            s8 = np.tanh(np.sin(2 * np.pi * np.cumsum(fr) / SR + 0.6 * np.sin(2 * np.pi * np.cumsum(fr) / SR)) * 2.2) * np.exp(-x / (0.55 * ln * beat + 0.1)); s8[:secs(0.004)] *= np.linspace(0, 1, secs(0.004))
+            add(s8 * 0.9, t0 + off_ * beat)
+            mk = secs(0.2); xk = np.arange(mk) / SR; add(np.sin(2 * np.pi * (52 * xk + 90 * 0.02 * (1 - np.exp(-xk / 0.02)))) * np.exp(-xk / 0.07) * 0.8, t0 + off_ * beat)   # kick on top of it
+        mc = secs(0.22); xc = np.arange(mc) / SR
+        add((bp(r.standard_normal(mc), 900, 5200) * np.exp(-xc / 0.045) + 0.5 * bp(r.standard_normal(mc), 900, 5200) * np.exp(-np.maximum(0, xc - 0.012) / 0.03) * (xc > 0.012)) * 0.5, t0 + 2 * beat)   # clap on three
+        for h in range(8):                                                    # hats, with a roll at the end of every other bar
+            subs = 3 if (bi % 2 == 1 and h == 7) else (2 if h in (3,) else 1)
+            for q in range(subs):
+                mh = secs(0.05); xh = np.arange(mh) / SR; add(bp(r.standard_normal(mh), 6500, 12000) * np.exp(-xh / 0.012) * (0.2 if q else 0.26), t0 + (h + q / subs) * beat / 2)
+        for h in range(8):                                                    # the bell line
+            if (bi + h) % 3 == 2: continue
+            fm = mel[(h + bi * 3) % 8]; mm = secs(0.5); xm = np.arange(mm) / SR
+            add((np.sin(2 * np.pi * fm * xm) + 0.5 * np.sin(2 * np.pi * fm * 2.76 * xm) * np.exp(-xm / 0.08) + 0.3 * np.sin(2 * np.pi * fm * 0.5 * xm)) * np.exp(-xm / 0.16) * 0.13, t0 + h * beat / 2)
+    return out[:secs(dur)]
+
+def licensed(name):
+    """A track Jason owns or has licensed, dropped into audio/licensed/. Never committed. None if there isn't one."""
+    import subprocess
+    for ext in ("wav", "flac", "mp3", "m4a", "aiff"):
+        f = f"{ROOT}/audio/licensed/{name}.{ext}"
+        if os.path.exists(f):
+            raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", f, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"]); print("using licensed track:", f)
+            return np.frombuffer(raw, np.float32).astype(np.float64)
+    return None
+
+def muffled(x, cut=170):
+    """Music through a wall, a window or a TV speaker in the next room."""
+    return bp(x, None, cut, 4) + 0.15 * bp(x, cut, 520, 2)
+
 def clang():
     n = secs(2.2); x = np.arange(n) / SR
     s = sum(a * np.sin(2 * np.pi * f * x + p) * np.exp(-x / d) for f, a, d, p in
@@ -272,7 +314,7 @@ for i, (c0, c1) in enumerate(zip(cuts, ends)):
     typing(c0 + 0.04, 12, 0.32, -24); d = c1 - c0; n = secs(d)
     if i == 0:      # a block at night: a far siren, a dog-less street, bass from somewhere
         put("amb", fade(pan2(rms_to(reverb(siren(d, "wail"), 2.0, 0.6, 2500)[:n], -30), -0.5), 0.3, 0.02), c0)
-        put("amb", fade(pan2(rms_to(car_music(d, 92), -27), 0.4), 0.2, 0.02), c0)
+        put("amb", fade(pan2(rms_to(muffled(trap_beat(d)), -25), 0.4), 0.2, 0.02), c0)
         put("amb", fade(rms_to(np.stack([bp(brown(n), 40, 400)] * 2, 1), -30), 0.2, 0.02), c0)
     elif i == 1:    # heat and wind
         put("amb", fade(pan2(rms_to(wind(d, 5), -25)), 0.2, 0.02), c0); put("amb", fade(rms_to(crickets(d), -38), 0.2, 0.02), c0)
@@ -342,18 +384,42 @@ card = E("two3") + 0.45
 put("hits", hit(1.0), card, -8)
 put("fx", pan2(reverb(np.concatenate([siren(0.55, "whoop"), np.zeros(secs(0.12)), siren(0.7, "whoop")]), 1.6, 0.45, 3000), -0.2), card + 0.05, -15)
 a, b = t_stop0, t_stop1; d = b - a; n = secs(d)
-put("amb", fade(pan2(rms_to(engine(d, 31), -24), -0.45), 1.0, 0.6), a)                        # the cruiser idles on the left
-put("amb", fade(pan2(rms_to(engine(d, 38), -29), 0.5), 1.0, 0.6), a)                         # the sedan idles on the right
-put("amb", fade(rms_to(np.stack([bp(brown(n), 35, 400)] * 2, 1), -30), 1.0, 0.6), a)
-t = a + 0.3                                                                                  # light bar relay: two clicks, two clicks
+# ---- whose head are we in? 0 = the officer's (outside his car, behind it), 1 = the driver's (inside it). The sound follows the picture.
+pov = (env(T("ts8") - 0.2, T("ts14") - 0.2, 0.5, 0.6) + 0.5 * env(T("ts14") - 0.2, T("ts16"), 0.6, 0.4) + 0.15 * env(T("ts16"), T("ts18"), 0.4, 0.4)
+       + 0.85 * env(T("ts18"), T("ts20"), 0.4, 0.4) + 0.5 * env(T("ts20"), E("ts22") + 0.45, 0.4, 0.01)).clip(0, 1)
+# ---- his music. From the cruiser it is what a car does to a song: sub and trunk rattle. From his seat it is the song.
+m0 = card; m1 = E("ts22") + 0.45; mn = secs(m1 - m0)
+src = licensed("car_music"); full = loop_to(norm(src), mn, 0.05) if src is not None else norm(trap_beat(m1 - m0))
+gate = sosfiltfilt(butter(1, 14, "lp", fs=SR, output="sos"), np.abs(bp(full, None, 120, 3))); gate = gate / (gate.max() + 1e-9)
+outside = bp(full, None, 150, 4) * 1.0 + bp(full, 150, 520, 2) * 0.16 + bp(noise(mn), 1700, 4600) * gate ** 1.5 * 0.05 + bp(noise(mn), 240, 420) * gate * 0.06   # panels and plate buzzing on every 808
+outside = reverb(outside, 0.7, 0.18, 900)[:mn]
+inside = np.tanh(full * 1.3) * 0.8 + bp(full, None, 110, 3) * 0.5
+pv = pov[secs(m0):secs(m0) + mn]; tloc = np.arange(mn) / SR + m0
+arrive = np.clip((tloc - m0) / (T("ts2") - m0), 0, 1) ** 1.6                                  # the cruiser rolls up behind him: it gets louder
+knob = 1 - 0.8 * np.clip((tloc - (T("ts8") + 0.9)) / 0.7, 0, 1)                               # he hears the door, and turns it down
+mus_out = rms_to(outside, -17) * arrive * (1 - pv) * (0.35 + 0.65 * knob); mus_in = rms_to(inside, -15) * pv * knob
+cutf = np.ones(mn); cutf[-secs(0.006):] = np.linspace(1, 0, secs(0.006))
+put("amb", pan2((mus_out + mus_in) * cutf, 0.35), m0)
+# ---- the officer's world: his idle, the relay of the light bar, dispatch. Crisp in his head, a murmur through glass in the driver's.
+off = np.zeros(N)
+def puto(x, t, g):
+    i = secs(t); k_ = min(len(x), N - i)
+    if k_ > 0: off[i:i + k_] += x[:k_] * db(g)
+puto(fade(rms_to(engine(d, 31), -24), 1.0, 0.6), a, 0)
+t = a + 0.3
 while t < b - 0.3:
-    for o in (0, 0.16): put("fx", tick(950, 0.03), t + o, -27, -0.55)
+    for o in (0, 0.16): puto(tick(950, 0.03), t + o, -27)
     t += 1 / 1.55 / 2
-mus = car_music(T("ts8") - a + 0.4, 88); mfade = fade(mus, 0.6, 1.4)                          # his music, through the glass; it dies when the window comes down
-put("amb", pan2(rms_to(mfade, -20), 0.5), a)
 for txt, when, vc in (("Dispatch, twelve. Traffic stop, Elm and Fourth.", T("ts1") + 0.6, "am_onyx"), ("Ten four, twelve.", T("ts2") + 1.4, "af_sarah"),
-                      ("Twelve, status check.", T("ts7") + 2.2, "af_sarah"), ("All units, stand by.", T("ts13") + 3.0, "af_sarah"), ("Twelve, respond.", T("ts16") + 0.2, "af_sarah")):
-    put("fx", radio(txt, vc), when, -19, -0.6)
+                      ("Twelve, status check.", T("ts7") + 2.2, "af_sarah"), ("Twelve, do you copy.", T("ts10") + 0.4, "af_sarah"),
+                      ("All units, stand by.", T("ts13") + 3.0, "af_sarah"), ("Twelve, respond.", T("ts16") + 0.2, "af_sarah")):
+    puto(radio(txt, vc), when, -19)
+off_far = bp(off, None, 620, 3) * 0.45
+BUS["amb"] += pan2(off * (1 - pov) + off_far * pov, -0.5)
+# ---- the driver's world: his own engine under him, louder when we are in his seat
+drv = np.zeros(N); i0 = secs(a); e2 = fade(rms_to(engine(d, 38), -27), 1.0, 0.6); drv[i0:i0 + len(e2)] += e2[:N - i0]
+BUS["amb"] += pan2(drv * (0.55 + 0.9 * pov), 0.5)
+put("amb", fade(rms_to(np.stack([bp(brown(n), 35, 400)] * 2, 1), -30), 1.0, 0.6), a)
 put("fx", whoosh(0.9, 300, 1400, 0.5) * 0.6 + np.pad(np.sin(2 * np.pi * 140 * np.arange(secs(0.9)) / SR) * 0.15, (0, 0)), T("ts8") + 0.2, -19, 0.55)   # window motor
 n2 = secs(0.25); x = np.arange(n2) / SR
 clk = bp(noise(n2), 2500, 7000) * (np.exp(-x / 0.004) + 0.7 * np.exp(-np.maximum(0, x - 0.09) / 0.006) * (x > 0.09)) + 0.4 * np.sin(2 * np.pi * 1900 * x) * np.exp(-x / 0.01)
@@ -380,7 +446,7 @@ put("fx", whoosh(1.4, 200, 1800, 0.5)[::-1].copy(), T("od1") - 0.2, -18); title(
 # ---- the boy and the screen: what the set gives him, one at a time
 a, b = SC["boy"]; put("amb", fade(rms_to(bp(babble(b - a, 2, 250, 1600, seed=11), None, 1500), -31), 1.0, 1.0), a)
 put("amb", fade(rms_to(pan2(np.sin(2 * np.pi * 60 * np.arange(secs(b - a)) / SR) + 0.4 * bp(pink(secs(b - a)), 80, 400)), -43), 1, 1), a)
-put("fx", pan2(fade(rms_to(car_music(E("od7") - T("od7") + 0.5, 96), -20), 0.05, 0.25)), T("od7"), 0)       # the rapper: a beat
+put("fx", pan2(fade(rms_to(bp(trap_beat(E("od7") - T("od7") + 0.5), 140, 3200), -21) + rms_to(muffled(trap_beat(E("od7") - T("od7") + 0.5)), -24), 0.05, 0.25)), T("od7"), 0)       # the rapper: a beat
 put("fx", pan2(rms_to(cheer(E("od8") - T("od8") + 1.0), -22)), T("od8") - 0.1, 0); put("fx", tone(2800, 0.5, 0.002, 0.2, (1,)), T("od8"), -26)   # the athlete: a crowd, a whistle
 put("fx", norm(keys(0.7, 14, 5)) , T("od9"), -22); put("fx", tick(700, 0.07), T("od9") + 0.5, -20)          # the dealer: quick hands, a zip
 put("fx", norm(clang()), T("od10") + 0.35, -11)                                                             # the one in the cell: a door
