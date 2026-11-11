@@ -72,6 +72,14 @@ parts = []; last = 0
 for at, extra in tl.cuts:
     i = secs(at); parts += [dry[last:i], np.zeros(secs(extra))]; last = i
 parts.append(dry[last:]); nar = np.concatenate([np.zeros(secs(OFF))] + parts); nar = np.pad(nar, (0, max(0, N - len(nar))))[:N]
+# the people inside the film speak in their own voices, on their own side of the frame (audio/characters_dry.wav, same clock)
+chars = np.zeros((N, 2)); cf = f"{ROOT}/audio/characters_dry.wav"
+if os.path.exists(cf):
+    cd, _ = sf.read(cf); cparts = []; last = 0
+    for at, extra in tl.cuts:
+        i = secs(at); cparts += [cd[last:i], np.zeros((secs(extra), 2))]; last = i
+    cparts.append(cd[last:]); cc = np.concatenate([np.zeros((secs(OFF), 2))] + cparts); chars[:min(N, len(cc))] = cc[:N]
+nar_only = nar; nar = nar + chars.mean(1)                    # everything below that listens for "is someone speaking" hears the whole cast
 sf.write(f"{ROOT}/audio/narration.wav", (nar * db(-3)).astype(np.float32), SR)
 ab = np.abs(nar); blk = 240; e = ab[:N // blk * blk].reshape(-1, blk).max(1); sm = np.zeros_like(e); v = 0.0
 for i, x in enumerate(e):
@@ -105,7 +113,10 @@ def babble(dur, layers=6, lo=300, hi=2600, seed=0):
         out += pan2(loop_to(c, n, 0.3), r.uniform(-0.8, 0.8))
     out = bp(out, lo, hi, 2); return out / (np.abs(out).max() + 1e-9)
 def radio(text, voice="am_onyx", speed=1.12):
-    v = norm(tts(text, voice, speed)); v = np.tanh(bp(v, 450, 2900, 3) * 6) * 0.6; v = bp(v, 400, 3200, 2)
+    if voice in ("officer", "dispatch"):                    # real voices for the radio when ElevenLabs is available (cached, so a rebuild costs nothing)
+        import narrate; v = norm(narrate.el_say(text, voice, 1.08)[0])
+    else: v = norm(tts(text, voice, speed))
+    v = v; v = np.tanh(bp(v, 450, 2900, 3) * 6) * 0.6; v = bp(v, 400, 3200, 2)
     sq = bp(noise(secs(0.09)), 1200, 4500) * 0.5; beep = np.sin(2 * np.pi * 1050 * np.arange(secs(0.07)) / SR) * 0.25
     hissy = v + bp(noise(len(v)), 900, 3500) * 0.05
     return np.concatenate([fade(sq, 0.002, 0.02), hissy, fade(beep, 0.003, 0.01), fade(sq * 0.7, 0.002, 0.03)])
@@ -410,9 +421,9 @@ t = a + 0.3
 while t < b - 0.3:
     for o in (0, 0.16): puto(tick(950, 0.03), t + o, -27)
     t += 1 / 1.55 / 2
-for txt, when, vc in (("Dispatch, twelve. Traffic stop, Elm and Fourth.", T("ts1") + 0.6, "am_onyx"), ("Ten four, twelve.", T("ts2") + 1.4, "af_sarah"),
-                      ("Twelve, status check.", T("ts7") + 2.2, "af_sarah"), ("Twelve, do you copy.", T("ts10") + 0.4, "af_sarah"),
-                      ("All units, stand by.", T("ts13") + 3.0, "af_sarah"), ("Twelve, respond.", T("ts16") + 0.2, "af_sarah")):
+for txt, when, vc in (("Dispatch, twelve. Traffic stop, Elm and Fourth.", T("ts1") + 0.6, "officer"), ("Ten four, twelve.", T("ts2") + 1.4, "dispatch"),
+                      ("Twelve, status check.", T("ts7") + 2.2, "dispatch"), ("Twelve, do you copy.", T("ts10") + 0.4, "dispatch"),
+                      ("All units, stand by.", T("ts13") + 3.0, "dispatch"), ("Twelve, respond.", T("ts16") + 0.2, "dispatch")):
     puto(radio(txt, vc), when, -19)
 off_far = bp(off, None, 620, 3) * 0.45
 BUS["amb"] += pan2(off * (1 - pov) + off_far * pov, -0.5)
@@ -547,7 +558,7 @@ b2 = np.sqrt((bg2[:k2 * bl2].reshape(k2, bl2) ** 2).mean(1)); g2 = np.minimum(1.
 g2 = np.minimum.reduce([g2, np.roll(g2, 1), np.roll(g2, -1)]); g2 = np.pad(np.repeat(g2, bl2), (0, N - k2 * bl2), constant_values=1.0)
 g2 = sosfiltfilt(butter(1, 3, "lp", fs=SR, output="sos"), g2).clip(0.05, 1.0)[:, None]
 amb, fx, music = amb * g2, fx * g2, music * g2          # title impacts keep their weight
-mix = np.stack([nar, nar], 1) * db(-3) + amb + fx + hits + music
+mix = (np.stack([nar_only, nar_only], 1) + chars) * db(-3) + amb + fx + hits + music
 tail = secs(0.4); mix[-tail:] *= np.linspace(1, 0, tail)[:, None]
 def r(x): return round(20 * math.log10(np.sqrt(np.mean(x ** 2)) + 1e-12), 1)
 print("rms dBFS  voice", r(nar * db(-3)), " amb", r(amb), " fx", r(fx), " hits", r(hits), " music", r(music), " | premaster peak", round(20 * math.log10(np.abs(mix).max()), 2))

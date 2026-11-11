@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from timing import TL, ROOT
 ap = argparse.ArgumentParser(); ap.add_argument("work"); ap.add_argument("--aspect", default="v"); A = ap.parse_args()
 tl = TL(); T, E = tl.T, tl.E; R = "9x16" if A.aspect == "v" else "16x9"
-master = f"{ROOT}/../../renders/your-brain-is-racist-{R}-v2.mp4"; out = f"{ROOT}/../../renders/parts"; os.makedirs(out, exist_ok=True); os.makedirs(A.work, exist_ok=True)
+master = f"{ROOT}/../../renders/your-brain-is-racist-{R}-v3.mp4"; out = f"{ROOT}/../../renders/parts"; os.makedirs(out, exist_ok=True); os.makedirs(A.work, exist_ok=True)
 PARTS = [("the-script", 0.0, E("iat7") + 0.9), ("the-street", T("st1") - 0.35, E("ch8") + 0.9), ("the-traffic-stop", T("two1") - 0.35, E("news2") + 0.9),
          ("the-other-direction", T("od1") - 0.35, E("od23") + 0.9), ("the-switch", T("sw1") - 0.35, E("sw13") + 0.9), ("the-observer", T("wf1") - 0.35, tl.end)]
 SR = 48000; n = int(3.5 * SR); x = np.arange(n) / SR                         # the tail's sound: one soft settle as the mark arrives

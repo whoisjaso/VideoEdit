@@ -7,7 +7,7 @@
 Engine: Kokoro v1.0 (Apache-2.0, runs offline) because the Higgsfield workspace had
 no credits. The film is driven only by timeline.json, so a new read re-times everything.
 """
-import sys, os, json, argparse, difflib, re
+import sys, os, json, argparse, difflib, re, math
 import numpy as np, soundfile as sf
 from scipy.signal import resample_poly, butter, sosfilt
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
@@ -91,10 +91,50 @@ def voice_chain(a):
     a = a * g
     return a / max(1e-9, np.abs(a).max()) * 10 ** (-3 / 20)
 
+# ------------------------------------------------------------------ ElevenLabs v4: a narrator and a cast
+EL_VOICES = {"narrator": ("Brian", "nPczCjzI2devNBz1zQrb"), "officer": ("Adam", "pNInz6obpgDQGcFmaJgB"), "driver": ("Will", "bIHbv24MWmeRgasZH58o"),
+             "kid": ("Liam", "TX3LPaxmHKxFdv7VOQHJ"), "dispatch": ("Sarah", "EXAVITQu4vr4xnSDxMaL")}
+CAST = {**{i: "officer" for i in ("ts4", "ts5", "ts6", "ts17")}, **{i: "driver" for i in ("ts9", "ts10", "ts11", "ts12", "ts19")}, "od17": "kid"}
+EL_CACHE = f"{ROOT}/audio/el_cache"
+
+def el_say(text, role, speed=1.0, prev=None, nxt=None, seed=7, model="eleven_v4"):
+    """One ElevenLabs request with character timestamps. Cached on disk by content, so a rebuild never spends quota twice.
+    The API key is injected by the session's network proxy; it is never in this code or in the repo."""
+    import hashlib, subprocess, base64, tempfile
+    os.makedirs(EL_CACHE, exist_ok=True); vid = EL_VOICES[role][1]
+    key = hashlib.md5(f"{model}|{vid}|{speed}|{seed}|{text}".encode()).hexdigest()[:14]; fn = f"{EL_CACHE}/{key}.json"
+    if not os.path.exists(fn):
+        body = {"text": text, "model_id": model, "seed": seed, "voice_settings": {"stability": 0.5, "speed": speed}}
+        if prev: body["previous_text"] = prev[-300:]
+        if nxt: body["next_text"] = nxt[:300]
+        for attempt in range(3):
+            with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf: json.dump(body, tf); bf = tf.name
+            r = subprocess.run(["curl", "-sS", "--max-time", "180", "-X", "POST", f"https://api.elevenlabs.io/v1/text-to-speech/{vid}/with-timestamps?output_format=mp3_44100_128",
+                                "-H", "Content-Type: application/json", "-d", f"@{bf}"], capture_output=True, text=True); os.unlink(bf)
+            try: d = json.loads(r.stdout)
+            except Exception: d = {"detail": r.stdout[:200] or r.stderr[:200]}
+            if "audio_base64" in d: break
+            msg = json.dumps(d.get("detail", d))[:240]; print("  ElevenLabs:", msg, flush=True)
+            if "previous_text" in msg or "next_text" in msg: body.pop("previous_text", None); body.pop("next_text", None); continue
+            if "speed" in msg or "voice_settings" in msg: body.pop("voice_settings", None); continue
+            raise SystemExit("ElevenLabs refused the request: " + msg)
+        json.dump({"text": text, "role": role, "voice": EL_VOICES[role][0], "audio_base64": d["audio_base64"], "alignment": d.get("alignment") or d.get("normalized_alignment")}, open(fn, "w"))
+    d = json.load(open(fn)); import base64 as b64, subprocess as sp
+    raw = sp.run(["ffmpeg", "-v", "error", "-i", "pipe:0", "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], input=b64.b64decode(d["audio_base64"]), capture_output=True).stdout
+    a = np.frombuffer(raw, np.float32).astype(np.float64); al = d["alignment"]; words = []; cur = ""; s0 = e0 = 0.0
+    for ch, cs, ce in zip(al["characters"], al["character_start_times_seconds"], al["character_end_times_seconds"]):
+        if ch.isspace():
+            if cur: words.append((cur, s0, e0)); cur = ""
+        else:
+            if not cur: s0 = cs
+            cur += ch; e0 = ce
+    if cur: words.append((cur, s0, e0))
+    return a, words
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("cmd"); ap.add_argument("--voice", default="am_michael")
     ap.add_argument("--speed", type=float, default=0.96); ap.add_argument("--wav"); ap.add_argument("--out")
-    ap.add_argument("--ref", default=f"{ROOT}/audio/auditions/am_michael.wav"); ap.add_argument("--exag", type=float, default=0.7); ap.add_argument("--cfg", type=float, default=0.25)
+    ap.add_argument("--ref", default=f"{ROOT}/audio/auditions/am_michael.wav"); ap.add_argument("--exag", type=float, default=0.7); ap.add_argument("--cfg", type=float, default=0.25); ap.add_argument("--elspeed", type=float, default=0.95)
     A = ap.parse_args(); os.makedirs(f"{ROOT}/audio/auditions", exist_ok=True)
     if A.cmd == "audition":
         k = kokoro(); ids = ["hook1", "hook2", "hook3", "job1"] + [f"ts{i}" for i in range(1, 8)]
@@ -112,6 +152,7 @@ def main():
         return
     from faster_whisper import WhisperModel
     wm = WhisperModel("small.en", device="cpu", compute_type="int8", cpu_threads=4)
+    from scipy.signal import butter, sosfilt
     tl = {"voice": A.voice, "speed": A.speed, "sr": SR, "lines": []}
     if A.cmd == "build":
         k = kokoro(); parts = []; t = LEAD; tot = mat = 0
@@ -169,6 +210,54 @@ def main():
         sf.write(f"{ROOT}/audio/narration_dry.wav", a.astype(np.float32), SR)
         tl["voice"] = f"chatterbox ref={os.path.basename(A.ref)} exag={A.exag} cfg={A.cfg}"; tl["duration"] = round(len(a) / SR, 3); tl["word_match"] = round(mat / tot, 4)
         print("duration", tl["duration"], "word match", tl["word_match"], "groups", len(groups))
+        json.dump(tl, open(f"{ROOT}/timeline.json", "w"), indent=0); return
+    if A.cmd == "build_el":
+        # ElevenLabs v4. Paragraph groups for the narrator; the people inside the film speak in their own voices.
+        from scipy.signal import fftconvolve
+        groups = [[]]; wc = 0
+        for L in LINES:
+            groups[-1].append(L); wc += len(L[1].split())
+            if L[2] >= 0.6 or wc >= 42: groups.append([]); wc = 0
+        runs = []                                             # a run = consecutive lines in one voice inside one group
+        for g in [g for g in groups if g]:
+            cur = []
+            for L in g:
+                role = CAST.get(L[0], "narrator")
+                if cur and cur[0][0] != role: runs.append(cur); cur = []
+                cur.append((role, L))
+            runs.append(cur)
+        texts = [" ".join(L[1] for _, L in r) for r in runs]; print("requests", len(runs), "characters", sum(len(x) for x in texts), flush=True)
+        nar_parts, chr_parts = [], []; t = 0.0; used = 0; bad = 0
+        PAN = {"officer": -0.55, "driver": 0.55, "kid": 0.0}
+        def inner(x):                                         # a voice inside a head: closer, narrower, a little room behind it
+            x = sosfilt(butter(2, [170, 5200], "bp", fs=SR, output="sos"), x); n_ = int(0.5 * SR); ir = np.random.default_rng(3).standard_normal(n_) * np.exp(-np.arange(n_) / (0.07 * SR)); ir[:int(0.012 * SR)] = 0
+            w = fftconvolve(x, ir / np.sqrt(np.sum(ir ** 2)))[:len(x)]; return x * 0.9 + w * 0.22
+        for ri, (r, text) in enumerate(zip(runs, texts)):
+            role = r[0][0]; sp = A.elspeed if role == "narrator" else 1.0
+            a, words = el_say(text, role, sp, prev=texts[ri - 1] if ri else None, nxt=texts[ri + 1] if ri + 1 < len(texts) else None); used += len(text)
+            nw = len(text.split())
+            if len(words) != nw:                               # timestamps did not line up word for word: fall back to the recognizer
+                words_, _ = align_line(text, whisper_words(wm, a), len(a) / SR); words = [(w["w"], w["s"], w["e"]) for w in words_]; bad += 1
+            idx = np.where(np.abs(a) > max(1e-3, np.abs(a).max() * 0.02))[0]; i0 = max(0, idx[0] - int(0.02 * SR)); i1 = min(len(a), idx[-1] + int(0.08 * SR)); a = a[i0:i1].copy(); off = i0 / SR
+            f = int(0.012 * SR); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f)
+            a = a / (np.sqrt(np.mean(a[np.abs(a) > 0.01] ** 2)) + 1e-9) * 0.09; dur = len(a) / SR; k = 0
+            for _, (lid, ltext, gap) in r:
+                n = len(ltext.split()); seg = words[k:k + n]; k += n
+                ws = [{"w": w_, "s": round(max(0.0, s_ - off) + t, 3), "e": round(min(dur, e_ - off) + t, 3)} for (w_, s_, e_), w_ in zip(seg, ltext.split())]
+                tl["lines"].append({"id": lid, "text": ltext, "voice": EL_VOICES[role][0], "s": ws[0]["s"], "e": ws[-1]["e"], "gap": gap, "words": ws})
+            gap = r[-1][1][2]; z = np.zeros(int(round(gap * SR))); st = np.zeros((len(a) + len(z), 2))
+            if role == "narrator": nar_parts += [a, z]; chr_parts.append(st)
+            else:
+                x = inner(a) * 0.95; p_ = PAN[role]; st[:len(a), 0] = x * math.cos((p_ + 1) * math.pi / 4) * 1.414; st[:len(a), 1] = x * math.sin((p_ + 1) * math.pi / 4) * 1.414
+                nar_parts += [np.zeros(len(a)), z]; chr_parts.append(st)
+            t += dur + len(z) / SR
+            if ri % 10 == 0: print("  run", ri, "/", len(runs), role, round(nw / dur * 60), "wpm", flush=True)
+        nar = np.concatenate(nar_parts); ch = np.concatenate(chr_parts); g_ = 10 ** (-3 / 20) / max(1e-9, np.abs(nar).max())
+        nar_c = voice_chain(nar); k_ = np.abs(nar_c).max() / max(1e-9, np.abs(nar).max())
+        sf.write(f"{ROOT}/audio/narration_dry.wav", nar_c.astype(np.float32), SR); sf.write(f"{ROOT}/audio/characters_dry.wav", (ch * k_ * 0.9).astype(np.float32), SR)
+        act = np.abs(nar) > 0.01; spoken = sum(len(l["words"]) for l in tl["lines"] if l["voice"] == "Brian")
+        tl["voice"] = "ElevenLabs eleven_v4: " + ", ".join(f"{k}={v[0]}" for k, v in EL_VOICES.items()); tl["duration"] = round(len(nar) / SR, 3); tl["characters"] = used; tl["fallback_runs"] = bad
+        print("duration", tl["duration"], "characters sent", used, "runs needing the recognizer", bad)
         json.dump(tl, open(f"{ROOT}/timeline.json", "w"), indent=0); return
     if A.cmd == "align":
         # One continuous read (Jason's). Recognise every word, then map the script onto it line by line.
