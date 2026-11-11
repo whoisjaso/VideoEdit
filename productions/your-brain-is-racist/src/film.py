@@ -624,6 +624,16 @@ class Film:
 
     def the_line(self, c, t):
         """One line, first frame to last. White while the script runs you; amber once the observer is watching."""
+        pts, colr, a = self.line_state(t); self.draw_line(c, pts, colr, a)
+
+    def draw_line(self, c, pts, colr, a):
+        p = skia.Path(); p.moveTo(*pts[0])
+        for q in pts[1:]: p.lineTo(*q)
+        c.drawPath(p, paint(colr, 0.28 * a, stroke=12, blur=7, blend=skia.BlendMode.kPlus))
+        c.drawPath(p, paint(colr, 0.95 * a, stroke=3.2))
+
+    def line_state(self, t):
+        """Where the line is and what colour it is at time t."""
         order = [s for s in self.scenes]; M = 1.2
         idx = 0
         for i, s in enumerate(order):
@@ -643,13 +653,10 @@ class Film:
         zt = tl.E("cl1") + 0.9; home = io_cubic(ramp(t, zt - 0.2, zt + 0.8))          # at the exit it settles into the mark: white, and the mark's own weight
         amb *= 1 - home
         colr = mix(WHITE, AMBER, amb); a = appear(t, 0.2, 0.6) * (1 - ramp(t, tl.end - 0.5, tl.end - 0.45)) * (1 - 0.999 * io_cubic(ramp(t, zt + 0.7, zt + 1.0)))
-        p = skia.Path(); p.moveTo(*pts[0])
-        for q in pts[1:]: p.lineTo(*q)
-        c.drawPath(p, paint(colr, 0.28 * a, stroke=12, blur=7, blend=skia.BlendMode.kPlus))
-        c.drawPath(p, paint(colr, 0.95 * a, stroke=3.2))
+        return pts, colr, a
 
     # ---------------------------------------------------------------- one frame
-    def frame(self, n, grain=True):
+    def frame(self, n, grain=True, line=True, caps=True):
         t = n / FPS; W, H = self.W, self.H; c = self.main.getCanvas(); D = self.MOVE
         c.clear(col(BLACK))
         for s in self.scenes:
@@ -693,8 +700,8 @@ class Film:
                 else: c.save()
                 s["fg"](c, t); c.restore(); c.restore()
         self.dust(c, t)
-        self.the_line(c, t)
-        self.captions(c, t)
+        if line: self.the_line(c, t)
+        if caps: self.captions(c, t)
         if grain: self.grain.draw(c, n)
         return self.main
 
@@ -709,6 +716,25 @@ def main():
         json.dump([dict(name=s["name"], t0=round(s["t0"], 3), t1=round(s["t1"], 3)) for s in F.scenes], open(f"{ROOT}/scenes.json", "w"), indent=1)
         os.makedirs(f"{ROOT}/captions", exist_ok=True); write_srt(F.tl, f"{ROOT}/captions/your-brain-is-racist.en.srt")
         print("frames", F.tl.frames(), "duration", round(F.tl.end, 2)); return
+    if A.cmd == "tail":
+        # The exit, for any moment in the film: the picture lets go, and the line travels home to become the E in OLACEO.
+        n0 = int(round(A.t * FPS)); W, H = F.W, F.H; cx, cy = W / 2, H / 2
+        base = F.frame(n0, grain=False, line=False, caps=False).makeImageSnapshot()        # a snapshot keeps its own pixels
+        pts0, col0, _ = F.line_state(A.t); hh = F.S(66, 58); _, m, _ = gfx.logo_geo(cx, cy, hh); N_ = len(pts0)
+        tgt = [(m[0][0] + (m[1][0] - m[0][0]) * i / (N_ - 1), m[0][1]) for i in range(N_)]
+        ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{W}x{H}", "-r", "60", "-i", "-",
+            "-vf", "format=yuv420p,noise=c0s=7:c0f=t+u", "-c:v", "libx264", "-preset", "medium", "-crf", A.crf, "-g", "120", "-bf", "2",
+            "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-r", "60", "-video_track_timescale", "15360", A.out], stdin=subprocess.PIPE)
+        for k in range(int(3.5 * FPS)):
+            tt = k / FPS; c = F.main.getCanvas(); c.clear(col(BLACK))
+            pa = skia.Paint(); pa.setAlphaf(1 - io_sine(ramp(tt, 0.0, 0.75))); c.drawImage(base, 0, 0, skia.SamplingOptions(), pa)
+            F.dust(c, A.t + tt)
+            kk = io_cubic(ramp(tt, 0.15, 1.3)); pts = [(lerp(a_[0], b_[0], kk), lerp(a_[1], b_[1], kk)) for a_, b_ in zip(pts0, tgt)]
+            F.draw_line(c, pts, mix(col0, WHITE, io_cubic(ramp(tt, 0.45, 1.3))), 1 - 0.999 * io_cubic(ramp(tt, 1.3, 1.6)))
+            pl = appear(tt, 0.8, 0.9); lock = io_cubic(ramp(tt, 1.1, 1.7))
+            c.save(); F.drift(c, tt, 0.8, 3.5, 0.02); gfx.draw_logo(c, cx, cy, hh, pl, mid=False); gfx.draw_logo(c, cx, cy, hh, lock, mid=True); c.restore()
+            ff.stdin.write(F.main.makeImageSnapshot().tobytes())
+        ff.stdin.close(); ff.wait(); return
     end = F.tl.frames() if A.end < 0 else A.end
     ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{F.W}x{F.H}", "-r", "60", "-i", "-",
         "-vf", "format=yuv420p,noise=c0s=7:c0f=t+u", "-c:v", "libx264", "-preset", "medium", "-crf", A.crf, "-g", "120", "-bf", "2",
