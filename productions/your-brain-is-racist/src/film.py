@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np, skia
 from gfx import *
 import plates as P
+import gfx
 from timing import TL, FPS, ROOT, caption_chunks, write_srt
 
 class Film:
@@ -21,6 +22,7 @@ class Film:
         self.ps = skia.Surface(self.W // 2, self.H // 2); self.main = skia.Surface(self.W, self.H)
         self.caps = caption_chunks(self.tl)
         self._vp = {}
+        gfx.BOUNDS[0], gfx.BOUNDS[1] = self.W * 0.035, self.W * 0.965
         self.build()
 
     def S(self, h, v): return v if self.vert else h
@@ -43,8 +45,11 @@ class Film:
     def typed(self, c, t, text, t0, x, y, size, weight=600, color=WHITE, align="left", dur=0.5, alpha=1.0):
         n = int(math.ceil(len(text) * ramp(t, t0, t0 + dur)))
         if n <= 0: return
-        if align == "center": x = x - text_w(text, font(size, weight), -0.012) / 2
-        draw_text(c, text[:n], x, y, size, weight, color, alpha, align="left")
+        full = text.upper(); sz = size * gfx.CAPS_SCALE; avail = self.W * 0.93 if align == "center" else gfx.BOUNDS[1] - x
+        tw = text_w(full, font(sz, weight), gfx.CAPS_TRACK)
+        if tw > avail: sz *= avail / tw; tw = avail
+        if align == "center": x = x - tw / 2
+        draw_text(c, full[:n], x, y, sz, weight, color, alpha, align="left", track=gfx.CAPS_TRACK, caps=False)
 
     def drift(self, c, t, t0, t1, amt=0.035):
         s = 1 + amt * ramp(t, t0, t1); c.translate(self.W / 2, self.H / 2); c.scale(s, s); c.translate(-self.W / 2, -self.H / 2)
@@ -80,7 +85,7 @@ class Film:
                 a2 = a * lerp(1, 0.45, ramp(t, s0 + 0.5, s0 + 0.9)); y = ly + i * sz * 1.5
                 tw = draw_text(c, txt, lx, y, sz, 500, WHITE, a2, align="left")
                 k = out_quint(ramp(t, s0 + 0.35, s0 + 0.75))
-                if k > 0 and a > 0: c.drawLine(lx - 6, y - sz * 0.3, lx - 6 + (text_w(txt, font(sz, 500), -0.012) + 12) * k, y - sz * 0.3, paint(WHITE, 0.8 * a, stroke=2.5))
+                if k > 0 and a > 0: c.drawLine(lx - 6, y - sz * 0.3, lx - 6 + (text_w(txt.upper(), font(sz * gfx.CAPS_SCALE, 500), gfx.CAPS_TRACK) + 12) * k, y - sz * 0.3, paint(WHITE, 0.8 * a, stroke=2.5))
             self.phrase(c, t, "job6", S(lx, cx), S(H * 0.47, H * 0.15), S(88, 80), a=2, b=5, weight=600, align=S("left", "center"),
                         txt=["keep", "you", "alive."], t_out=t1 - 0.1, max_w=W * S(0.24, 0.9), shadow=True)
         self.add("eye", t0, t1 + X, eye_plate, eye_over)
@@ -366,7 +371,7 @@ class Film:
             k = out_quint(ramp(t, n0 + 0.1, n0 + 1.0))
             draw_text(c, "a model, not a measurement", x0, y - S(250, 300), 28, 500, WHITE, 0.55 * g * appear(t, T("hs0"), 0.5), align="left", mono=True, track=0)
             c.drawLine(x0, y, x0 + (x1 - x0) * k, y, paint(WHITE, 0.2 * g, stroke=3))
-            for v, lab in ((0.0, "you see it"), (1.0, "1 s")):
+            for v, lab in ((0.0, "you see it"), (1.0, "1 sec")):
                 c.drawLine(px(v), y - 12, px(v), y + 12, paint(WHITE, 0.4 * g * k, stroke=2))
                 draw_text(c, lab, px(v), y + 62, 26, 500, WHITE, 0.5 * g * k, mono=True, track=0, align="left" if v == 0 else "right")
             ts, tq = Wn("hs1", "script"), Wn("hs1", "quarter")
@@ -374,7 +379,7 @@ class Film:
             c.drawLine(x0, y, lerp(x0, p1, kk), y, paint(WHITE, 0.95 * g, stroke=6))
             a = appear(t, ts, 0.4) * g
             c.drawLine(p1, y - 26, p1, y + 26, paint(WHITE, a, stroke=3)); draw_text(c, "the script", p1, y - 60, S(54, 42), 600, WHITE, a)
-            draw_text(c, "0.25 s", p1, y + 62, 26, 500, WHITE, 0.7 * appear(t, tq, 0.4) * g, mono=True, track=0)
+            draw_text(c, "0.25 sec", p1, y + 62, 26, 500, WHITE, 0.7 * appear(t, tq, 0.4) * g, mono=True, track=0)
             tc, th, to = Wn("hs2", "catches"), Wn("hs2", "halfsecond"), Wn("hs2", "observer")
             ka = io_cubic(ramp(t, tc, th + 0.25))
             if ka > 0:
@@ -409,7 +414,7 @@ class Film:
             self.hook(c, t, tc0, tc0 + 1.4, T("cl1"), E("cl1") + 0.55)
             if t >= zt and t < tl.end - 0.5:
                 p = appear(t, zt, 0.7)
-                draw_text(c, "olaceo", cx, cy + 14 + (1 - p) * 6, 46 * (1 + 0.02 * ramp(t, zt, tl.end)), 600, WHITE, p, track=0.02, blur=(1 - p) * 5)
+                draw_text(c, "olaceo", cx, cy + 14 + (1 - p) * 6, 46 * (1 + 0.02 * ramp(t, zt, tl.end)), 600, WHITE, p, track=0.02, blur=(1 - p) * 5, caps=False)
         self.add("close", tc0 - 0.1, tl.end, None, close_over, fin=0)
         self.cues.update(sub=0.6, settle=zt, bed=[(T("job1") - 0.3, T("ob1") - 0.3), (T("hs0"), o1 + 0.3)],
                          hiss=[(T("pat1") - X, T("cul1") + 0.3, 1.0), (f0, f1 + 0.3, 0.6), (o0, o1, 0.55)], end=tl.end)
@@ -436,7 +441,7 @@ class Film:
                 x = W / 2 - tw / 2
                 for w, wd, wt in zip(words, ws, ch["words"]):
                     k = 0.55 + 0.45 * clamp((t - wt["s"]) / 0.07 + 0.01) if t >= wt["s"] else 0.55      # spoken words brighten on their frame
-                    draw_text(c, w, x, yc, size, 600, WHITE, a * k, align="left", track=0, display=False); x += wd + sp
+                    draw_text(c, w, x, yc, size, 600, WHITE, a * k, align="left", track=0, display=False, caps=False); x += wd + sp
                 return
 
     # ---------------------------------------------------------------- one frame

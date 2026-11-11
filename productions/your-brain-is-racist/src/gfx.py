@@ -45,18 +45,33 @@ def font(size, weight=500, display=True, mono=False):
     f.setSubpixel(True); f.setEdging(skia.Font.Edging.kAntiAlias); f.setHinting(skia.FontHinting.kNone)
     return f
 
+# House rule (Jason, Nov 11 2026): every on-screen title is ALL CAPS. Captions are speech and stay sentence case;
+# the olaceo wordmark stays lowercase. Caps are set a little smaller and a little wider so layouts hold.
+CAPS = True; CAPS_SCALE = 0.84; CAPS_TRACK = 0.035
+BOUNDS = [None, None]          # left / right safe edge in px, set by the film; titles shrink to stay inside
+
 def text_w(s, f, track=0.0):
     return f.measureText(s) + track * f.getSize() * max(0, len(s) - 1)
 
 def draw_text(c, s, x, y, size, weight=500, color=WHITE, a=1.0, align="center", track=-0.012,
-              blur=0.0, display=True, mono=False):
-    """Baseline text. align: left / center / right. track in em. Sub-pixel placed."""
+              blur=0.0, display=True, mono=False, caps=True, fit=None):
+    """Baseline text. align: left / center / right. track in em. Sub-pixel placed.
+    caps=True sets it as a title (ALL CAPS); fit = max width in px (defaults to the safe edges)."""
     if a <= 0.003 or not s: return 0
-    f = font(size, weight, display, mono)
-    gl = f.textToGlyphs(s); ws = f.getWidths(gl)
-    xs = []; cx = 0.0
-    for w in ws: xs.append(cx); cx += w + track * size
-    tw = cx - track * size if ws else 0
+    if caps and CAPS:
+        s = s.upper(); size = size * (CAPS_SCALE if not mono else 0.92); track = max(track, CAPS_TRACK if not mono else 0.04)
+    for _ in range(2):
+        f = font(size, weight, display, mono)
+        gl = f.textToGlyphs(s); ws = f.getWidths(gl)
+        xs = []; cx = 0.0
+        for w in ws: xs.append(cx); cx += w + track * size
+        tw = cx - track * size if ws else 0
+        avail = fit
+        if avail is None and BOUNDS[0] is not None and caps:
+            L, R = BOUNDS
+            avail = (R - x) if align == "left" else (x - L) if align == "right" else 2 * min(x - L, R - x)
+        if avail and tw > avail > 20: size *= avail / tw
+        else: break
     ox = x - tw / 2 if align == "center" else x - tw if align == "right" else x
     p = skia.Paint(AntiAlias=True, Color=col(color, a))
     if blur > 0.05: p.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, blur))
@@ -66,7 +81,7 @@ def draw_text(c, s, x, y, size, weight=500, color=WHITE, a=1.0, align="center", 
 
 def layout_words(words, f, max_w, track=-0.012, line_h=1.2, align="center"):
     """Wrap words. Returns [(word, x, line_index)], n_lines with x relative to block centre/left."""
-    sp = f.measureText(" ") * 0.95
+    sp = f.measureText(" ") * (1.45 if CAPS else 0.95)      # caps need a real word space
     lines = [[]]; cur = 0.0
     for w in words:
         ww = text_w(w, f, track)
@@ -83,13 +98,17 @@ def layout_words(words, f, max_w, track=-0.012, line_h=1.2, align="center"):
 def draw_words(c, words, states, x, y, size, weight=500, max_w=1400, line_h=1.22, align="center",
                track=-0.012, rise=None, top=False):
     """Word-by-word type. states[i] = (alpha, colour, progress 0..1 of the entrance)."""
+    if CAPS:
+        words = [w.upper() for w in words]; size = size * CAPS_SCALE; track = max(track, CAPS_TRACK)
+        longest = max(text_w(w, font(size, weight), track) for w in words)
+        if longest > max_w: size *= max_w / longest
     f = font(size, weight); lay, n = layout_words(words, f, max_w, track, line_h, align)
     rise = size * 0.28 if rise is None else rise
     y0 = y if top else y - (n - 1) * size * line_h / 2
     for (w, wx, li), (a, colr, pr) in zip(lay, states):
         if a <= 0.003: continue
         draw_text(c, w, x + wx, y0 + li * size * line_h + (1 - pr) * rise, size, weight, colr, a,
-                  align="left", track=track, blur=(1 - pr) * size * 0.06)
+                  align="left", track=track, blur=(1 - pr) * size * 0.06, caps=False)
     return n
 
 def word_states(t, starts, color=WHITE, dim=None, din=0.42, t_out=None, dout=0.35):
