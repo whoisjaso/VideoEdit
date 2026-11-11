@@ -240,7 +240,7 @@ class Film:
             pr = tuple(window(t, Wn("st3", w), T("st4") + 0.4, 0.5, 0.6) for w in ("phone", "watch", "keys"))
             card = window(t, T("st11") - 0.4, E("st11") + 0.85, 0.5, 0.4)
             P.street(c, W, H, t, walk=(t - s0) * VW, cam_x=camx(t), fig_z=fig1(t) if t > T("st4") - 1.5 else None, fig_kind="tank",
-                     props=pr, lum=1 - 0.88 * card, menace=io_sine(ramp(t, T("st5"), T("st9"))))
+                     props=pr, lum=1 - 0.88 * card, menace=io_sine(ramp(t, T("st5"), T("st9"))), react=io_sine(ramp(t, T("st9") + 0.5, T("st10") + 1.0)))
         def st1_over(c, t):
             z = fig1(t)
             if t > T("st4") - 0.6 and 0.9 < z < 24:
@@ -500,11 +500,11 @@ class Film:
                 if fxm < x - 0.12 * fhh:
                     age = clamp((x - fxm) / (0.5 * fhh)); c.drawLine(fxm - 0.05 * fhh, yg + 12, fxm + 0.05 * fhh, yg + 12, paint(AMBER, 0.85 * g * age, stroke=4))
             po = K.walk_ik((1.1 * W - x2) / fhh, -1, energy=0.75, nod=nod)
-            K.draw(c, po, x2, yg, fhh, (226, 222, 214), g, weight=0.036, glow=False, outfit="tank", t=t, smoke=False, dim=0.95)
+            K.draw(c, po, x2, yg, fhh, a=g, outfit="tank", t=t, dim=0.95, toon=True, face=K.face_blend("cool", "smile", nod * 1.4), edge=K.EDGE)
             py_ = K.walk_ik((x + 0.1 * W) / fhh, 1, energy=0.9, nod=nod)
             lead = K.walk_ik((x + 0.1 * W) / fhh + 0.06, 1, energy=0.9, nod=nod)             # the observer walks half a step ahead of him
             K.draw(c, lead, x + 0.07 * fhh, yg, fhh, AMBER, 0.9 * g, weight=0.03, glow=True)
-            K.draw(c, py_, x, yg, fhh, WHITE, g, weight=0.036, glow=False)
+            K.draw(c, py_, x, yg, fhh, a=g, t=t + 1.0, toon=True, face=K.face_blend("wary", "smile", nod * 1.4), edge=K.EDGE)
         self.add("newscript", o0, o1, new_plate, new_over, fout=0.7)
         self.cues["newscript"] = (o0, o1)
 

@@ -165,7 +165,8 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
         for jn in ("head", "ha_l", "ha_r", "kn_l", "kn_r"):          # he is on strings. Everything the screen shows him is.
             jx, jy = tx + perf[jn][0] * ph, pyf - perf[jn][1] * ph
             c.drawLine(jx, jy, tx + (jx - tx) * 0.55, ty - th / 2, paint(DARK_FIG, 0.5, stroke=max(1.2, ph * 0.006)))
-        K.draw(c, perf, tx, pyf, ph, DARK_FIG, 0.97, weight=0.04, soft=0.8, glow=False, outfit="tank", t=t, dim=0.8)
+        K.draw(c, perf, tx, pyf, ph, a=0.98, soft=0.5, outfit="tank", t=t, dim=0.9, toon=True,
+               face={"rapper": "tough", "athlete": "focus", "dealer": "shifty", "cell": "sad"}.get(act, "neutral"), look=0.2 * math.sin(t * 1.3))
         if ball is not None and act_k > 0.5: c.drawCircle(tx + ball[0] * ph, pyf - ball[1] * ph, ph * 0.045, paint(DARK_FIG, 0.95, stroke=max(2.0, ph * 0.03)))
         if bars:
             for i in range(7): bx = tx - tw * 0.36 + tw * 0.12 * i; c.drawLine(bx, ty - th / 2, bx, ty + th / 2, paint(DARK_FIG, 0.9 * io_cubic(act_k), stroke=max(2.5, tw * 0.012)))
@@ -187,7 +188,7 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
             jx, jy = vx + pose[jn][0] * vh, vy - pose[jn][1] * vh
             c.drawLine(jx, jy, tx + sx_ * tw, ty + th / 2, paint((236, 234, 228), 0.55 * strings, stroke=2.2, blur=0.6))
     K.draw(c, pose, vx, vy, vh, tint, 0.6 * lv, weight=0.055, soft=3.5, glow=False)        # rim light from the screen
-    K.draw(c, pose, vx, vy, vh, DARK_FIG, 1.0, weight=0.036, soft=0.7, glow=False)
+    K.draw(c, pose, vx, vy, vh, a=1.0, soft=0.5, toon=True, face=None, edge=None, dim=lerp(0.55, 0.95, lv))          # the back of his head, lit by the screen
     c.drawPath(couch, paint(tint, 0.3 * lv, blur=6, stroke=4))
     c.drawPath(couch, paint((9, 9, 11), 1.0, blur=1.5))
     if echo > 0.001 and perf is not None:                  # the figure on the screen steps out of it and settles onto him
@@ -211,7 +212,10 @@ def card_fig(c, W, H, t, kind, tin, push=0.0, rim=True):
     pose = K.blend(K.walk_ik(-far, 1, energy=0.9), idle, io_cubic(ramp(tin, 1.0, 1.6)))
     ox = fx - far * fh
     if rim: K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
-    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.036, soft=0.8 if rim else 0.0, glow=False, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.72)
+    dg = K.drag(t + sd) if kind == "tank" else 0.0
+    fc_ = {"tank": K.face_blend("cool", "drag", dg * 1.4), "hat": "neutral", "suit": "smile"}[kind]
+    K.draw(c, pose, ox, base, fh, a=1.0, soft=0.6 if rim else 0.0, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.86,
+           toon=True, face=fc_, look=0.25 * math.sin(t * 0.5 + sd), edge=K.EDGE)
     c.restore()
 
 def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
@@ -250,7 +254,7 @@ def street_geo(W, H, walk, cam_x, z, fig_x):
     yh = H * (0.45 if not vert else 0.44) + bob; k = (0.40 if not vert else 0.62) * W
     return W * 0.5 + sway + (fig_x - cam_x) * k / z, yh + (H - yh) / z - 0.02 * (H - yh) / z, 1.72 * k / z
 
-def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25, props=(0, 0, 0), lum=1.0, menace=0.0):
+def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25, props=(0, 0, 0), lum=1.0, menace=0.0, react=0.0):
     """POV at night. walk = distance walked (z units). cam_x = lateral position (0 = our sidewalk,
     about -5.4 = the far sidewalk). The approaching figure is never in focus."""
     vert = H > W
@@ -318,7 +322,9 @@ def street(c, W, H, t, walk, cam_x=0.0, fig_z=None, fig_kind="tank", fig_x=0.25,
         K.draw(c, sp, 0, 0, fh, (0, 0, 0), (0.5 + 0.3 * menace) * a, weight=0.05 + 0.03 * menace, soft=max(2.5, fh * 0.03), glow=False)
         c.restore()
         K.draw(c, pose, fx, fy, fh, (255, 196, 140), 0.45 * a, weight=0.06, soft=max(2.0, fh * 0.012), glow=False)
-        K.draw(c, pose, fx, fy, fh, (20, 18, 18), a, weight=0.034, soft=max(0.5, fh * 0.003), glow=False, case=suit, outfit="suit" if suit else "tank", t=t, smoke=not suit, dim=0.9)
+        fc_ = "smile" if suit else K.face_blend("cool", "hurt", react)          # he sees you cross. It lands.
+        K.draw(c, pose, fx, fy, fh, a=a, soft=max(0.4, fh * 0.002), case=suit, outfit="suit" if suit else "tank", t=t, smoke=not suit, dim=0.92,
+               toon=True, face=fc_, look=-0.75 * react, edge=K.EDGE)
     # what you are carrying: phone, watch, keys
     if max(props) > 0.002:
         pb = H * (1.0 if not vert else 0.90)
@@ -471,13 +477,13 @@ def three_rooms(c, W, H, t, lit=(1, 0, 0)):
         c.save(); c.clipRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(cx - tw / 2, cy - th / 2, tw, th), tw * 0.025, tw * 0.025), True)
         c.drawRect(skia.Rect.MakeXYWH(cx - tw / 2, cy - th / 2, tw, th), skia.Paint(Color=col(mix((16, 16, 20), mix(tint, (255, 255, 255), 0.25), lv))))
         glow(c, cx, cy - th * 0.05, tw * 0.5, (255, 255, 255), 0.5 * lv, blend=skia.BlendMode.kSrcOver)
-        K.draw(c, K.stand(t, i * 1.7, pockets=(i == 0), carry=(i == 2)), cx, cy + th / 2 - th * 0.05, th * 0.84, DARK_FIG, 0.3 + 0.67 * a, weight=0.04, soft=0.8, glow=False,
-               case=(i == 2), outfit=("tank", "hat", "suit")[i], t=t, dim=0.8)
+        K.draw(c, K.stand(t, i * 1.7, pockets=(i == 0), carry=(i == 2)), cx, cy + th / 2 - th * 0.05, th * 0.84, a=0.3 + 0.67 * a, soft=0.5,
+               case=(i == 2), outfit=("tank", "hat", "suit")[i], t=t, dim=0.9, toon=True, face=("cool", "neutral", "smile")[i])
         c.restore()
         rrect(c, cx - tw / 2, cy - th / 2, tw, th, tw * 0.025, paint((2, 2, 3), 0.9, stroke=tw * 0.014))
         vw = tw * (0.36 if not vert else 0.26); vb = cy + th / 2 + vw * (0.95 if not vert else 0.5)
         vh = tw * 0.6; ps = K.sit(t, i * 2.3); vb = cy + th / 2 + vh * 0.6
-        K.draw(c, ps, cx, vb + vh * 0.02, vh, tint, 0.6 * lv + 0.12, weight=0.06, soft=3, glow=False, legs=False); K.draw(c, ps, cx, vb + vh * 0.02, vh, DARK_FIG, 1, weight=0.038, soft=0.6, glow=False, legs=False)
+        K.draw(c, ps, cx, vb + vh * 0.02, vh, tint, 0.6 * lv + 0.12, weight=0.06, soft=3, glow=False, legs=False); K.draw(c, ps, cx, vb + vh * 0.02, vh, a=1, soft=0.5, legs=False, toon=True, face=None, dim=0.75)
     vignette(c, W, H, 0.9, 0.34)
 
 # ------------------------------------------------------------------ the glass room (#24)
