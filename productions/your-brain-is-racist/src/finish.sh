@@ -7,7 +7,7 @@ import sys; sys.path.insert(0,'src'); from timing import TL; t=TL()
 print(round(t.T('ts1')-1.0,3), round(t.E('ts22')+0.9,3), round(t.T('sw1')-0.3,3), round(t.E('sw13')+0.9,3))")
 for A in h v; do
   [ -f "$WORK/picture_$A.mp4" ] || continue
-  R=$([ $A = h ] && echo 16x9 || echo 9x16); M="$OUT/$N-$R-v1.mp4"
+  R=$([ $A = h ] && echo 16x9 || echo 9x16); M="$OUT/$N-$R-v2.mp4"
   ffmpeg -y -loglevel error -i "$WORK/picture_$A.mp4" -i audio/master_mix.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k -ar 48000 \
     -movflags +faststart -metadata title="Your brain is racist. So is mine." -metadata artist="olaceo" "$M"
   for C in "traffic-stop $TS0 $TS1" "code-switching $SW0 $SW1"; do
