@@ -196,12 +196,30 @@ def room(c, W, H, t, viewer=0.15, tv="abstract", tv_scale=1.0, seed=0, act=None,
     vignette(c, W, H, 0.9, 0.3)
 
 # ------------------------------------------------------------------ three backlit figures (#5-7)
+CARD_LIGHT = {"tank": (206, 196, 176), "hat": (218, 176, 124), "suit": (172, 192, 214)}
+def card_geo(W, H):
+    vert = H > W; return W * 0.5, H * (0.95 if not vert else 0.86), H * (0.76 if not vert else 0.52)
+
+def card_fig(c, W, H, t, kind, tin, push=0.0, rim=True):
+    """The figure on a character card, on its own, so the film can stand him in front of the title."""
+    fx, base, fh = card_geo(W, H); light = CARD_LIGHT[kind]; s = 1 + 0.03 * push
+    c.save(); c.translate(W / 2, H / 2); c.scale(s, s); c.translate(-W / 2, -H / 2)
+    sd = {"tank": 0.0, "hat": 2.1, "suit": 4.3}[kind]
+    idle = K.stand(t, sd, pockets=False, carry=(kind == "suit"), smoke=(kind == "tank"))
+    if kind == "tank": idle["el_l"], idle["ha_l"] = K._limb(idle["sh_l"], -14, K.UARM, 16, K.FARM)        # one hand in a pocket
+    far = 0.95 * (1 - out_quint(ramp(tin, 0.0, 1.5)))                  # how far he still has to walk, in body heights
+    pose = K.blend(K.walk_ik(-far, 1, energy=0.9), idle, io_cubic(ramp(tin, 1.0, 1.6)))
+    ox = fx - far * fh
+    if rim: K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
+    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.036, soft=0.8 if rim else 0.0, glow=False, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.72)
+    c.restore()
+
 def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
     vert = H > W
     s = 1 + 0.03 * push
     c.save(); c.translate(W / 2, H / 2); c.scale(s, s); c.translate(-W / 2, -H / 2)
-    fx = W * (0.3 if not vert else 0.5); base = H * (0.94 if not vert else 0.86); fh = H * (0.74 if not vert else 0.52)
-    light = {"tank": (206, 196, 176), "hat": (218, 176, 124), "suit": (172, 192, 214)}[kind]
+    fx, base, fh = card_geo(W, H)
+    light = CARD_LIGHT[kind]
     c.drawRect(skia.Rect.MakeLTRB(-W, -H, 2 * W, 2 * H), skia.Paint(Color=col((16, 15, 15))))
     rng = random.Random({"tank": 1, "hat": 2, "suit": 3}[kind])
     for i in range(26):                                   # concrete: uneven tone
@@ -217,18 +235,9 @@ def figure_wall(c, W, H, t, kind="tank", push=0.0, tin=9.0):
         for i in range(1, 3): c.drawLine(wx + ww * i / 3, wy, wx + ww * i / 3, wy + wh, paint((14, 15, 18), 0.9, blur=1.5, stroke=fh * 0.02))
         c.drawLine(wx, wy + wh * 0.45, wx + ww, wy + wh * 0.45, paint((14, 15, 18), 0.9, blur=1.5, stroke=fh * 0.02))
     else:
-        glow(c, fx, base - fh * 0.58, fh * 0.9, light, 0.62 * fl)
-        glow(c, fx, base - fh * 0.62, fh * 0.42, (255, 246, 228), 0.42 * fl)
-    # he walks in, and stands the way a person stands: never quite still
-    sd = {"tank": 0.0, "hat": 2.1, "suit": 4.3}[kind]
-    idle = K.stand(t, sd, pockets=False, carry=(kind == "suit"), smoke=(kind == "tank"))
-    if kind == "tank": idle["el_l"], idle["ha_l"] = K._limb(idle["sh_l"], -14, K.UARM, 16, K.FARM)        # one hand in a pocket
-    far = 0.95 * (1 - out_quint(ramp(tin, 0.0, 1.5)))                  # how far he still has to walk, in body heights
-    turn = io_cubic(ramp(tin, 1.0, 1.6))
-    pose = K.blend(K.walk_ik(-far, 1, energy=0.9), idle, turn)
-    ox = fx - far * fh
-    K.draw(c, pose, ox, base, fh, light, 0.35, weight=0.07, soft=9, glow=False)
-    K.draw(c, pose, ox, base, fh, (6, 6, 7), 1.0, weight=0.036, soft=0.8, glow=False, case=(kind == "suit"), outfit=kind, t=t, smoke=(kind == "tank"), dim=0.72)
+        glow(c, fx, base - fh * 0.58, fh * 0.9, light, 0.5 * fl)
+        glow(c, fx, base - fh * 0.62, fh * 0.42, (255, 246, 228), 0.26 * fl)
+    c.restore(); card_fig(c, W, H, t, kind, tin, push); c.save(); c.translate(W / 2, H / 2); c.scale(s, s); c.translate(-W / 2, -H / 2)
     linear(c, skia.Rect.MakeLTRB(-W, base - fh * 0.02, 2 * W, 2 * H), (0, base - fh * 0.02), (0, base + fh * 0.16), [col((4, 4, 5), 0), col((4, 4, 5), 0.85)])
     c.drawOval(skia.Rect.MakeLTRB(fx - fh * 0.22, base - fh * 0.012, fx + fh * 0.22, base + fh * 0.03), paint((0, 0, 0), 0.5, blur=8))
     c.restore()

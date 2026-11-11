@@ -27,11 +27,11 @@ class Film:
 
     def S(self, h, v): return v if self.vert else h
     MOVE = 0.95        # seconds a camera move between two plates lasts
-    def add(self, name, t0, t1, plate=None, over=None, fin=0.24, fout=0.0):
+    def add(self, name, t0, t1, plate=None, over=None, fin=0.24, fout=0.0, fg=None):
         """Plates never cut. Each one arrives by the camera pushing out of the last and leaves by pushing into the next,
         so every plate is extended on both sides to overlap its neighbours for the length of the move."""
         if plate: t0, t1 = max(0.0, t0 - 0.36), t1 + 0.36
-        self.scenes.append(dict(name=name, t0=t0, t1=t1, plate=plate, over=over, fin=fin, fout=fout))
+        self.scenes.append(dict(name=name, t0=t0, t1=t1, plate=plate, over=over, fin=fin, fout=fout, fg=fg))
 
     # ---------------------------------------------------------------- type helpers
     def phrase(self, c, t, line, x, y, size, a=0, b=None, weight=500, color=WHITE, align="center", max_w=None,
@@ -46,13 +46,32 @@ class Film:
             draw_words(c, words, [(s[0] * 0.7, (0, 0, 0), s[2]) for s in st], x, y + 2, size, weight, mw, align=align, top=top)
         return draw_words(c, words, st, x, y, size, weight, mw, align=align, top=top)
 
-    def typed(self, c, t, text, t0, x, y, size, weight=600, color=WHITE, align="left", dur=0.5, alpha=1.0):
+    def window_text(self, c, text, x, y, size, weight, a, fill, align="center", blur=0.0):
+        """Text as a window: the letters are cut out, and a picture plays inside them."""
+        if a <= 0.003: return
+        c.saveLayerAlpha(None, int(clamp(a) * 255))
+        draw_text(c, text, x, y, size, weight, WHITE, 1.0, align=align, blur=blur)
+        p = skia.Paint(); p.setBlendMode(skia.BlendMode.kSrcIn); c.saveLayer(None, p)
+        fill(c); c.restore(); c.restore()
+
+    def plate_fill(self, c, fn, dy=0.0, zoom=1.0, lift=0.22, gain=0.9):
+        """Render a plate and lay it across the frame, brightened, for use inside letters."""
+        W, H = self.W, self.H; pc = self.ps.getCanvas(); pc.save(); pc.clear(col((0, 0, 0))); pc.scale(0.5, 0.5); fn(pc); pc.restore()
+        im = self.ps.makeImageSnapshot(); src = skia.Rect.MakeWH(W // 2, H // 2); so = skia.SamplingOptions(skia.FilterMode.kLinear)
+        c.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((0, 0, 0))))
+        c.save(); c.translate(W / 2, H / 2 + dy); c.scale(zoom, zoom); c.translate(-W / 2, -H / 2)
+        c.drawImageRect(im, src, skia.Rect.MakeWH(W, H), so)
+        pp = skia.Paint(); pp.setBlendMode(skia.BlendMode.kPlus); pp.setAlphaf(gain); c.drawImageRect(im, src, skia.Rect.MakeWH(W, H), so, pp); c.restore()
+        c.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((255, 255, 255), lift)))
+
+    def typed(self, c, t, text, t0, x, y, size, weight=600, color=WHITE, align="left", dur=0.5, alpha=1.0, shadow=0.0):
         n = int(math.ceil(len(text) * ramp(t, t0, t0 + dur)))
         if n <= 0: return
         full = text.upper(); sz = size * gfx.CAPS_SCALE; avail = self.W * 0.93 if align == "center" else gfx.BOUNDS[1] - x
         tw = text_w(full, font(sz, weight), gfx.CAPS_TRACK)
         if tw > avail: sz *= avail / tw; tw = avail
         if align == "center": x = x - tw / 2
+        if shadow > 0: draw_text(c, full[:n], x, y + sz * 0.03, sz, weight, (0, 0, 0), alpha * shadow, align="left", track=gfx.CAPS_TRACK, caps=False, blur=sz * 0.09)
         draw_text(c, full[:n], x, y, sz, weight, color, alpha, align="left", track=gfx.CAPS_TRACK, caps=False)
 
     def drift(self, c, t, t0, t1, amt=0.035):
@@ -148,8 +167,10 @@ class Film:
         def cul_over(c, t):
             s0 = Wn("cul4", "cultivation"); a = appear(t, s0, 0.6) * vanish(t, T("cul6") - 0.1, 0.4)
             x = S(W * 0.045, cx); y = H * S(0.40, 0.145); al = S("left", "center")
-            draw_text(c, "cultivation", x, y, S(88, 104), 600, WHITE, a, align=al, blur=(1 - appear(t, s0, 0.6)) * 8)
-            draw_text(c, "Gerbner & Gross, 1976", x, y + S(52, 58), 26, 500, WHITE, 0.5 * appear(t, s0 + 0.5, 0.5) * vanish(t, T("cul6") - 0.1, 0.4), align=al, mono=True, track=0)
+            x, y, al = cx, H * S(0.815, 0.155), "center"         # the word is a window onto the wall of screens
+            self.window_text(c, "cultivation", x, y, S(210, 150), 700, a, align=al, blur=(1 - appear(t, s0, 0.6)) * 8,
+                             fill=lambda cc: self.plate_fill(cc, lambda pc: P.screens(pc, W, H, t, grow=1.0, dolly=0.2), dy=y - H * 0.5 - S(60, 40), zoom=1.9, lift=0.2, gain=1.0))
+            draw_text(c, "Gerbner & Gross, 1976", S(W * 0.955, cx), y - S(175, -62), 26, 500, WHITE, 0.55 * appear(t, s0 + 0.5, 0.5) * vanish(t, T("cul6") - 0.1, 0.4), align=S("right", "center"), mono=True, track=0)
         self.add("couch", t0, t1, lambda c, t: P.room(c, W, H, t, viewer=0.13), cul_over)
 
         # 5-7 ---- three characters: hard cuts, the label types in
@@ -160,13 +181,15 @@ class Film:
         for i, (kind, label, ids) in enumerate(cards):
             a0, a1 = bounds[i], bounds[i + 1]; mute |= set(ids)
             def over(c, t, a0=a0, label=label, ids=ids):
-                lx = S(W * 0.56, cx); ly = H * S(0.42, 0.13); al = S("left", "center")
-                self.typed(c, t, label, a0 + 0.04, lx, ly, S(104, 84), 600, align=al, dur=0.32)
+                # text behind the subject: the title fills the wall and he stands in front of it
+                self.typed(c, t, label, a0 + 0.04, cx, H * S(0.5, 0.5), S(330, 230), 700, align="center", dur=0.4, shadow=0.75)
+                lx = S(W * 0.7, cx); ly = H * S(0.66, 0.115); al = S("left", "center")
                 for j, lid in enumerate(ids):
                     txt = tl.by[lid]["text"].rstrip(".").lower()
                     a = appear(t, T(lid), 0.4) * (lerp(1, 0.5, ramp(t, E(lid) + 0.1, E(lid) + 0.5)) if j < len(ids) - 1 else 1)
-                    draw_text(c, txt, lx, ly + S(96, 78) + j * S(72, 60), S(54, 46), 500, WHITE, a * 0.9, align=al)
-            self.add("card_" + kind, a0, a1, lambda c, t, kind=kind, a0=a0, a1=a1: P.figure_wall(c, W, H, t, kind, push=ramp(t, a0, a1), tin=t - a0 + 0.36), over, fin=0)
+                    draw_text(c, txt, lx, ly + j * S(64, 56), S(48, 44), 500, WHITE, a * 0.92, align=al, fit=W * S(0.27, 0.9))
+            self.add("card_" + kind, a0, a1, lambda c, t, kind=kind, a0=a0, a1=a1: P.figure_wall(c, W, H, t, kind, push=ramp(t, a0, a1), tin=t - a0 + 0.36), over, fin=0,
+                     fg=lambda c, t, kind=kind, a0=a0, a1=a1: P.card_fig(c, W, H, t, kind, t - a0 + 0.36, push=ramp(t, a0, a1), rim=False))
 
         # 8 ---- the IAT: clean, clinical
         t0, t1 = bounds[3], T("st1") - 0.1
@@ -266,7 +289,9 @@ class Film:
             a = appear(t, T("ch7"), 0.5) * lerp(1, 0.4, io_sine(ramp(t, T("ch8") - 0.1, T("ch8") + 0.4))) * vanish(t, c1)
             draw_text(c, "Not hate.", cx, cy - S(70, 60), S(92, 80), 500, WHITE, a)
             p = appear(t, T("ch8"), 0.7)
-            draw_text(c, "Prediction.", cx, cy + S(110, 90), S(170, 128), 600, WHITE, p * vanish(t, c1), blur=(1 - p) * 14)
+            wy = cy + S(140, 100)                                   # the word is a window onto the street it came from
+            self.window_text(c, "Prediction.", cx, wy, S(250, 150), 700, p * vanish(t, c1), blur=(1 - p) * 14,
+                             fill=lambda cc: self.plate_fill(cc, lambda pc: P.street(pc, W, H, t, walk=(t - self.walk0) * 2.0, fig_z=5.2, fig_kind="tank", fig_x=0.0), dy=wy - H * S(0.5, 0.47) - S(70, 44), zoom=1.5, lift=0.42, gain=1.0))
             c.restore()
         self.add("prediction", c0, c1, None, pred_over, fout=0)
 
@@ -284,7 +309,11 @@ class Film:
                     c.drawLine(x - r * 0.5, y - r * 0.3 + j * r * 0.3, x - r * 0.5 + r * wd * k, y - r * 0.3 + j * r * 0.3, paint(WHITE, 0.7 * a, stroke=5))
             a = window(t, E("two3") + 0.45, T("ts1") - 0.08, 0.45, 0.3)
             c.save(); self.drift(c, t, E("two3"), T("ts1"))
-            draw_text(c, "a traffic stop", cx, cy + S(30, 26), S(96, 84), 600, WHITE, a, blur=(1 - appear(t, E("two3") + 0.45, 0.45)) * 8)
+            def lights(cc):                                         # the words are a window onto the light bar
+                r_, b_ = P.flash(t); cc.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((30, 30, 34))))
+                glow(cc, W * 0.25, cy, W * 0.6, P.RED, 0.25 + 0.75 * r_, blend=skia.BlendMode.kPlus); glow(cc, W * 0.75, cy, W * 0.6, P.BLUE, 0.25 + 0.75 * b_, blend=skia.BlendMode.kPlus)
+                cc.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=col((255, 255, 255), 0.2)))
+            self.window_text(c, "a traffic stop", cx, cy + S(40, 30), S(170, 120), 700, a, lights, blur=(1 - appear(t, E("two3") + 0.45, 0.45)) * 8)
             c.restore()
         self.add("two", d0, d1 + X, None, two_over, fin=0)
 
@@ -565,7 +594,7 @@ class Film:
         if name in ("couch", "boy"):
             tw = W * S(0.36, 0.66) * (1.12 if name == "boy" else 1.0); th = tw * 0.6; tx = W * S(0.52, 0.5); ty = H * 0.36
             return rect(tx - tw / 2, ty - th / 2, tw, th)
-        if name.startswith("card_"): return seg(W * 0.53, H * 0.33, W * 0.53, H * 0.66) if not self.vert else seg(W * 0.3, H * 0.092, W * 0.7, H * 0.092)
+        if name.startswith("card_"): return seg(W * 0.682, H * 0.615, W * 0.682, H * 0.875) if not self.vert else seg(W * 0.3, H * 0.085, W * 0.7, H * 0.085)
         if name == "iat": return seg(W * S(0.14, 0.07), H * S(0.2, 0.25) + 72, W * S(0.86, 0.93), H * S(0.2, 0.25) + 72)
         if name in ("street1", "street2"):                       # the curb you walk along
             cam = self._camx(t) if name == "street1" else 0.0
@@ -575,13 +604,13 @@ class Film:
                 kc = io_cubic(ramp(t, T("st11") - 0.5, T("st11") + 0.2)) * (1 - io_cubic(ramp(t, E("st11") + 0.5, E("st11") + 1.0)))
                 if kc > 0: u = under(cy + S(150, 190), S(760, 600)); pts = [(lerp(a[0], b[0], kc), lerp(a[1], b[1], kc)) for a, b in zip(pts, u)]
             return pts
-        if name == "prediction": return under(cy + S(110, 90) + S(46, 40), S(760, 600))
+        if name == "prediction": return under(cy + S(140, 100) + S(88, 62), S(760, 600))
         if name in ("two", "stop"):
             g = 1.0 if name == "stop" else 0.6
             pts = seg(cx, cy - H * 0.5 * g, cx, cy + H * 0.5 * g) if not self.vert else seg(cx - W * 0.5 * g, cy, cx + W * 0.5 * g, cy)
             if name == "two":                                      # under the title card, then up into the divider
                 kc = io_cubic(ramp(t, E("two3") + 0.15, E("two3") + 0.8))
-                if kc > 0: u = under(cy + S(86, 76), S(600, 500)); pts = [(lerp(a[0], b[0], kc), lerp(a[1], b[1], kc)) for a, b in zip(pts, u)]
+                if kc > 0: u = under(cy + S(40, 30) + S(58, 46), S(600, 500)); pts = [(lerp(a[0], b[0], kc), lerp(a[1], b[1], kc)) for a, b in zip(pts, u)]
             return pts
         if name == "otherdir": return circ(cx, cy - S(60, 80), S(104, 96))
         if name == "three": return seg(W * 0.08, H * 0.74, W * 0.92, H * 0.74) if not self.vert else seg(W * 0.9, H * 0.1, W * 0.9, H * 0.72)
@@ -650,12 +679,19 @@ class Film:
                     c.drawImageRect(self.ps.makeImageSnapshot(), skia.Rect.MakeWH(W // 2, H // 2), skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.CubicResampler.Mitchell()), p)
                 c.restore()
                 ao = clamp(kin * 2.2 - 1.2) * (1 - clamp(kout * 3.0))    # type steps aside for the move
+                fgx = (fx, fy, sc, a)
             else:
                 ao = (io_sine(ramp(t, s["t0"], s["t0"] + s["fin"])) if s["fin"] > 0 else 1.0) * ((1 - io_sine(ramp(t, s["t1"] - s["fout"], s["t1"]))) if s["fout"] > 0 else 1.0)
             if s["over"] and ao > 0.002:
                 if ao < 0.998: c.saveLayerAlpha(None, int(ao * 255))
                 else: c.save()
                 s["over"](c, t); c.restore()
+            if s.get("fg") and s["plate"]:                             # the subject again, sharp, in front of the type
+                fx, fy, sc, a = fgx
+                c.save(); c.translate(fx, fy); c.scale(sc, sc); c.translate(-fx, -fy)
+                if a < 0.998: c.saveLayerAlpha(None, int(a * 255))
+                else: c.save()
+                s["fg"](c, t); c.restore(); c.restore()
         self.dust(c, t)
         self.the_line(c, t)
         self.captions(c, t)
